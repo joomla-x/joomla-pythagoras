@@ -408,7 +408,7 @@ class AbstractCms extends \JApplicationWeb
 		if (empty(static::$instances[$name]))
 		{
 			// Create a \Joomla\Cms\Application\AbstractCms object.
-			$classname = 'JApplication' . ucfirst($name);
+			$classname = '\\Joomla\\Cms\\Application\\' . ucfirst($name);
 
 			if (!class_exists($classname))
 			{
