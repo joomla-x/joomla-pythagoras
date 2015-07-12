@@ -8,6 +8,7 @@
 
 namespace Joomla\Application;
 
+use Joomla\Filesystem\Folder;
 use Joomla\Registry\Registry;
 use Joomla\Input\Cli;
 use Psr\Log\LoggerAwareInterface;
