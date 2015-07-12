@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.updater.update');
 
 /**
@@ -416,7 +418,7 @@ class InstallationModelLanguages extends JModelBase
 	 */
 	protected function getClient($client = 'administrator')
 	{
-		$this->client = JApplicationHelper::getClientInfo($client, true);
+		$this->client = Helper::getClientInfo($client, true);
 
 		return $this->client;
 	}

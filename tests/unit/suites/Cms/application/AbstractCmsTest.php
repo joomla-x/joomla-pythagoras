@@ -288,7 +288,7 @@ class AbstractCmsTest extends TestCaseDatabase
 	{
 		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array('CmsInspector' => $this->class));
 
-		$this->assertInstanceOf('JApplicationCmsInspector', AbstractCms::getInstance('CmsInspector'));
+		$this->assertInstanceOf('\\Joomla\\Cms\\Tests\\Application\\Stubs\\CmsInspector', AbstractCms::getInstance('CmsInspector'));
 
 		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array('CmsInspector' => 'foo'));
 

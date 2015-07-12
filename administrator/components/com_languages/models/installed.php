@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Languages Component Languages Model
  *
@@ -116,7 +118,7 @@ class LanguagesModelInstalled extends JModelList
 	{
 		if (is_null($this->client))
 		{
-			$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
+			$this->client = Helper::getClientInfo($this->getState('filter.client_id', 0));
 		}
 
 		return $this->client;
@@ -175,7 +177,7 @@ class LanguagesModelInstalled extends JModelList
 			foreach ($langlist as $lang)
 			{
 				$file = $path . '/' . $lang . '/' . $lang . '.xml';
-				$info = JApplicationHelper::parseXMLLangMetaFile($file);
+				$info = Helper::parseXMLLangMetaFile($file);
 				$row = new JObject;
 				$row->language = $lang;
 

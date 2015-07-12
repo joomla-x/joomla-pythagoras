@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\AbstractCms;
+
 /**
  * Pagination Class. Provides a common interface for content pagination for the Joomla! CMS.
  *
@@ -80,7 +82,7 @@ class JPagination
 	protected $additionalUrlParams = array();
 
 	/**
-	 * @var    JApplicationCms  The application object
+	 * @var    AbstractCms  The application object
 	 * @since  3.4
 	 */
 	protected $app = null;
@@ -96,15 +98,15 @@ class JPagination
 	/**
 	 * Constructor.
 	 *
-	 * @param   integer          $total       The total number of items.
-	 * @param   integer          $limitstart  The offset of the item to start at.
-	 * @param   integer          $limit       The number of items to display per page.
-	 * @param   string           $prefix      The prefix used for request variables.
-	 * @param   JApplicationCms  $app         The application object
+	 * @param   integer      $total       The total number of items.
+	 * @param   integer      $limitstart  The offset of the item to start at.
+	 * @param   integer      $limit       The number of items to display per page.
+	 * @param   string       $prefix      The prefix used for request variables.
+	 * @param   AbstractCms  $app         The application object
 	 *
 	 * @since   1.5
 	 */
-	public function __construct($total, $limitstart, $limit, $prefix = '', JApplicationCms $app = null)
+	public function __construct($total, $limitstart, $limit, $prefix = '', AbstractCms $app = null)
 	{
 		// Value/type checking.
 		$this->total = (int) $total;

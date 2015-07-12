@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\Helper;
 
 jimport('joomla.filesystem.folder');
 
@@ -96,7 +97,7 @@ class JInstallerAdapterLanguage extends JInstallerAdapter
 		if ($cname = (string) $this->getManifest()->attributes()->client)
 		{
 			// Attempt to map the client to a base path
-			$client = JApplicationHelper::getClientInfo($cname, true);
+			$client = Helper::getClientInfo($cname, true);
 
 			if ($client === null)
 			{
@@ -328,7 +329,7 @@ class JInstallerAdapterLanguage extends JInstallerAdapter
 		$cname = $xml->attributes()->client;
 
 		// Attempt to map the client to a base path
-		$client = JApplicationHelper::getClientInfo($cname, true);
+		$client = Helper::getClientInfo($cname, true);
 
 		if ($client === null || (empty($cname) && $cname !== 0))
 		{
@@ -472,7 +473,7 @@ class JInstallerAdapterLanguage extends JInstallerAdapter
 		$extension->load($eid);
 
 		// Grab a copy of the client details
-		$client = JApplicationHelper::getClientInfo($extension->get('client_id'));
+		$client = Helper::getClientInfo($extension->get('client_id'));
 
 		// Check the element isn't blank to prevent nuking the languages directory...just in case
 		$element = $extension->get('element');
@@ -646,7 +647,7 @@ class JInstallerAdapterLanguage extends JInstallerAdapter
 	public function discover_install()
 	{
 		// Need to find to find where the XML file is since we don't store this normally
-		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		$client = Helper::getClientInfo($this->parent->extension->client_id);
 		$short_element = $this->parent->extension->element;
 		$manifestPath = $client->path . '/language/' . $short_element . '/' . $short_element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
@@ -682,7 +683,7 @@ class JInstallerAdapterLanguage extends JInstallerAdapter
 	 */
 	public function refreshManifestCache()
 	{
-		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		$client = Helper::getClientInfo($this->parent->extension->client_id);
 		$manifestPath = $client->path . '/language/' . $this->parent->extension->element . '/' . $this->parent->extension->element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);

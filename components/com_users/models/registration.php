@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Registration model class for Users.
  *
@@ -78,7 +80,7 @@ class UsersModelRegistration extends JModelForm
 
 			// Compile the admin notification mail values.
 			$data = $user->getProperties();
-			$data['activation'] = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$data['activation'] = Helper::getHash(JUserHelper::genRandomPassword());
 			$user->set('activation', $data['activation']);
 			$data['siteurl'] = JUri::base();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
@@ -367,7 +369,7 @@ class UsersModelRegistration extends JModelForm
 		// Check if the user needs to activate their account.
 		if (($useractivation == 1) || ($useractivation == 2))
 		{
-			$data['activation'] = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$data['activation'] = Helper::getHash(JUserHelper::genRandomPassword());
 			$data['block'] = 1;
 		}
 

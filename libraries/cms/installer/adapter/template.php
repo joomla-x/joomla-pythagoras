@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.filesystem.folder');
 
 /**
@@ -258,7 +260,7 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 	 */
 	public function prepareDiscoverInstall()
 	{
-		$client = JApplicationHelper::getClientInfo($this->extension->client_id);
+		$client = Helper::getClientInfo($this->extension->client_id);
 		$manifestPath = $client->path . '/templates/' . $this->extension->element . '/templateDetails.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);
@@ -281,7 +283,7 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 		if ($cname)
 		{
 			// Attempt to map the client to a base path
-			$client = JApplicationHelper::getClientInfo($cname, true);
+			$client = Helper::getClientInfo($cname, true);
 
 			if ($client === false)
 			{
@@ -445,7 +447,7 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 		}
 
 		// Get the template root path
-		$client = JApplicationHelper::getClientInfo($clientId);
+		$client = Helper::getClientInfo($clientId);
 
 		if (!$client)
 		{
@@ -522,8 +524,8 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 		$results = array();
 		$site_list = JFolder::folders(JPATH_SITE . '/templates');
 		$admin_list = JFolder::folders(JPATH_ADMINISTRATOR . '/templates');
-		$site_info = JApplicationHelper::getClientInfo('site', true);
-		$admin_info = JApplicationHelper::getClientInfo('administrator', true);
+		$site_info = Helper::getClientInfo('site', true);
+		$admin_info = Helper::getClientInfo('administrator', true);
 
 		foreach ($site_list as $template)
 		{
@@ -586,7 +588,7 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 	public function refreshManifestCache()
 	{
 		// Need to find to find where the XML file is since we don't store this normally.
-		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		$client = Helper::getClientInfo($this->parent->extension->client_id);
 		$manifestPath = $client->path . '/templates/' . $this->parent->extension->element . '/templateDetails.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);

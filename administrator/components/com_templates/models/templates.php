@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Methods supporting a list of template extension records.
  *
@@ -59,7 +61,7 @@ class TemplatesModelTemplates extends JModelList
 
 		foreach ($items as &$item)
 		{
-			$client = JApplicationHelper::getClientInfo($item->client_id);
+			$client = Helper::getClientInfo($item->client_id);
 			$item->xmldata = TemplatesHelper::parseXMLTemplateFile($client->path, $item->element);
 		}
 

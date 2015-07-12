@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.filesystem.folder');
 
 /**
@@ -230,7 +232,7 @@ class JInstallerAdapterModule extends JInstallerAdapter
 	 */
 	public function prepareDiscoverInstall()
 	{
-		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		$client = Helper::getClientInfo($this->parent->extension->client_id);
 		$manifestPath = $client->path . '/modules/' . $this->parent->extension->element . '/' . $this->parent->extension->element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);
@@ -253,7 +255,7 @@ class JInstallerAdapterModule extends JInstallerAdapter
 		if ($cname)
 		{
 			// Attempt to map the client to a base path
-			$client = JApplicationHelper::getClientInfo($cname, true);
+			$client = Helper::getClientInfo($cname, true);
 
 			if ($client === false)
 			{
@@ -425,8 +427,8 @@ class JInstallerAdapterModule extends JInstallerAdapter
 		$results = array();
 		$site_list = JFolder::folders(JPATH_SITE . '/modules');
 		$admin_list = JFolder::folders(JPATH_ADMINISTRATOR . '/modules');
-		$site_info = JApplicationHelper::getClientInfo('site', true);
-		$admin_info = JApplicationHelper::getClientInfo('administrator', true);
+		$site_info = Helper::getClientInfo('site', true);
+		$admin_info = Helper::getClientInfo('administrator', true);
 
 		foreach ($site_list as $module)
 		{
@@ -476,7 +478,7 @@ class JInstallerAdapterModule extends JInstallerAdapter
 	 */
 	public function refreshManifestCache()
 	{
-		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		$client = Helper::getClientInfo($this->parent->extension->client_id);
 		$manifestPath = $client->path . '/modules/' . $this->parent->extension->element . '/' . $this->parent->extension->element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);
@@ -530,7 +532,7 @@ class JInstallerAdapterModule extends JInstallerAdapter
 
 		// Get the extension root path
 		$element = $this->extension->element;
-		$client  = JApplicationHelper::getClientInfo($this->extension->client_id);
+		$client  = Helper::getClientInfo($this->extension->client_id);
 
 		if ($client === false)
 		{

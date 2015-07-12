@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\Helper;
 
 /**
  * Module model.
@@ -738,7 +739,7 @@ class ModulesModelModule extends JModelAdmin
 			$this->_cache[$pk]->assignment = $assignment;
 
 			// Get the module XML.
-			$client = JApplicationHelper::getClientInfo($table->client_id);
+			$client = Helper::getClientInfo($table->client_id);
 			$path   = JPath::clean($client->path . '/modules/' . $table->module . '/' . $table->module . '.xml');
 
 			if (file_exists($path))
@@ -817,7 +818,7 @@ class ModulesModelModule extends JModelAdmin
 		$clientId = $this->getState('item.client_id');
 		$module   = $this->getState('item.module');
 
-		$client   = JApplicationHelper::getClientInfo($clientId);
+		$client   = Helper::getClientInfo($clientId);
 		$formFile = JPath::clean($client->path . '/modules/' . $module . '/' . $module . '.xml');
 
 		// Load the core and/or local language file(s).

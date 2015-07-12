@@ -90,7 +90,7 @@ class TestMockApplicationCms extends TestMockApplicationWeb
 		if (isset($options))
 		// Create the mock.
 		$mockObject = $test->getMock(
-			'JApplicationCms',
+			'\\Joomla\\Cms\\Application\\AbstractCms',
 			$methods,
 			// Constructor arguments.
 			$constructor,

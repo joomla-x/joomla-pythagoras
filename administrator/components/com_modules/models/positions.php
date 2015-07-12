@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Modules Component Positions Model
  *
@@ -98,7 +100,7 @@ class ModulesModelPositions extends JModelList
 			$direction       = $this->getState('list.direction');
 			$limitstart      = $this->getState('list.start');
 			$limit           = $this->getState('list.limit');
-			$client          = JApplicationHelper::getClientInfo($clientId);
+			$client          = Helper::getClientInfo($clientId);
 
 			if ($type != 'template')
 			{

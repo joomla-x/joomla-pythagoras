@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\AbstractCms;
+
 /**
  * Class to create and parse routes for the site application
  *
@@ -27,7 +29,7 @@ class JRouterSite extends JRouter
 	/**
 	 * Current JApplication-Object
 	 *
-	 * @var    JApplicationCms
+	 * @var    AbstractCms
 	 * @since  3.4
 	 */
 	protected $app;
@@ -43,17 +45,17 @@ class JRouterSite extends JRouter
 	/**
 	 * Class constructor
 	 *
-	 * @param   array            $options  Array of options
-	 * @param   JApplicationCms  $app      JApplicationCms Object
-	 * @param   JMenu            $menu     JMenu object
+	 * @param   array        $options  Array of options
+	 * @param   AbstractCms  $app      JApplicationCms Object
+	 * @param   JMenu        $menu     JMenu object
 	 *
 	 * @since   3.4
 	 */
-	public function __construct($options = array(), JApplicationCms $app = null, JMenu $menu = null)
+	public function __construct($options = array(), AbstractCms $app = null, JMenu $menu = null)
 	{
 		parent::__construct($options);
 
-		$this->app  = $app ? $app : JApplicationCms::getInstance('site');
+		$this->app  = $app ? $app : AbstractCms::getInstance('site');
 		$this->menu = $menu ? $menu : $this->app->getMenu();
 	}
 

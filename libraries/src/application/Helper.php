@@ -217,7 +217,7 @@ class Helper
 	 */
 	public static function parseXMLInstallFile($path)
 	{
-		JLog::add('JApplicationHelper::parseXMLInstallFile is deprecated. Use JInstaller::parseXMLInstallFile instead.', JLog::WARNING, 'deprecated');
+		JLog::add('\\Joomla\\Cms\\Application\\Helper::parseXMLInstallFile is deprecated. Use JInstaller::parseXMLInstallFile instead.', JLog::WARNING, 'deprecated');
 
 		return JInstaller::parseXMLInstallFile($path);
 	}
@@ -236,7 +236,7 @@ class Helper
 	 */
 	public static function parseXMLLangMetaFile($path)
 	{
-		JLog::add('JApplicationHelper::parseXMLLangMetaFile is deprecated. Use JInstaller::parseXMLInstallFile instead.', JLog::WARNING, 'deprecated');
+		JLog::add('\\Joomla\\Cms\\Application\\Helper::parseXMLLangMetaFile is deprecated. Use JInstaller::parseXMLInstallFile instead.', JLog::WARNING, 'deprecated');
 
 		// Read the file to see if it's a valid component XML file
 		$xml = simplexml_load_file($path);

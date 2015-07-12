@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\Cms\Tests\Application\Stubs\HelperInspector;
+
 require_once __DIR__ . '/stubs/JRouterInspector.php';
 
 /**
@@ -65,14 +67,13 @@ class JRouterTest extends TestCase
 		$object2 = JRouter::getInstance('administrator');
 		$this->assertSame($object, $object2);
 
-		require_once JPATH_TESTS . '/suites/libraries/cms/application/stubs/JApplicationHelperInspector.php';
-		$apps      = JApplicationHelperInspector::get();
+		$apps      = HelperInspector::get();
 		$obj       = new stdClass();
 		$obj->id   = 3;
 		$obj->name = 'tester';
 		$obj->path = dirname(__FILE__).'/example';
 		$apps[3]   = $obj;
-		JApplicationHelperInspector::set($apps);
+		HelperInspector::set($apps);
 
 		// Test if legacy app routers are still loaded
 		$object3 = JRouter::getInstance('tester');

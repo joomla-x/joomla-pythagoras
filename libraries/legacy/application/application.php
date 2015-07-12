@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\Helper;
+use Joomla\Cms\Application\AbstractCms;
 
 JLog::add('JApplication is deprecated.', JLog::WARNING, 'deprecated');
 
@@ -164,7 +166,7 @@ class JApplication extends JApplicationBase
 	 * @param   array   $config  An optional associative array of configuration settings.
 	 * @param   string  $prefix  A prefix for class names
 	 *
-	 * @return  JApplicationCms  A JApplicationCms object.
+	 * @return  AbstractCms  A JApplicationCms object.
 	 *
 	 * @since   11.1
 	 * @deprecated  4.0  Use JApplicationCms::getInstance() instead
@@ -172,7 +174,7 @@ class JApplication extends JApplicationBase
 	 */
 	public static function getInstance($client, $config = array(), $prefix = 'J')
 	{
-		return JApplicationCms::getInstance($client);
+		return AbstractCms::getInstance($client);
 	}
 
 	/**
@@ -839,11 +841,11 @@ class JApplication extends JApplicationBase
 	 * @return  string  Processed string
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationHelper::stringURLSafe instead
+	 * @deprecated  4.0  Use Helper::stringURLSafe instead
 	 */
 	public static function stringURLSafe($string)
 	{
-		return JApplicationHelper::stringURLSafe($string);
+		return Helper::stringURLSafe($string);
 	}
 
 	/**
@@ -914,11 +916,11 @@ class JApplication extends JApplicationBase
 	 * @return  string  A secure hash
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationHelper::getHash instead
+	 * @deprecated  4.0  Use Helper::getHash instead
 	 */
 	public static function getHash($seed)
 	{
-		return JApplicationHelper::getHash($seed);
+		return Helper::getHash($seed);
 	}
 
 	/**

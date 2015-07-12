@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Mask for the raw routing mode
  *
@@ -177,7 +179,7 @@ class JRouter
 			{
 				// @deprecated 4.0 Everything in this block is deprecated but the warning is only logged after the file_exists
 				// Load the router object
-				$info = JApplicationHelper::getClientInfo($client, true);
+				$info = Helper::getClientInfo($client, true);
 
 				if (is_object($info))
 				{

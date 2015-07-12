@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.updater.updateadapter');
 
 /**
@@ -131,7 +133,7 @@ class JUpdaterCollection extends JUpdateAdapter
 					}
 				}
 
-				$client = JApplicationHelper::getClientInfo($attrs['CLIENT'], 1);
+				$client = Helper::getClientInfo($attrs['CLIENT'], 1);
 
 				if (isset($client->id))
 				{

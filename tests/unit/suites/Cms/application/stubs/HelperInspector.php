@@ -12,7 +12,7 @@ namespace Joomla\Cms\Tests\Application\Stubs;
 use Joomla\Cms\Application\Helper;
 
 /**
- * Test class for JApplicationHelper
+ * Test class for Helper
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application

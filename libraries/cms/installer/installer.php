@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.path');
@@ -1201,7 +1203,7 @@ class JInstaller extends JAdapter
 		$copyfiles = array();
 
 		// Get the client info
-		$client = JApplicationHelper::getClientInfo($cid);
+		$client = Helper::getClientInfo($cid);
 
 		/*
 		 * Here we set the folder we are going to remove the files from.
@@ -1327,7 +1329,7 @@ class JInstaller extends JAdapter
 		$copyfiles = array();
 
 		// Get the client info
-		$client = JApplicationHelper::getClientInfo($cid);
+		$client = Helper::getClientInfo($cid);
 
 		// Here we set the folder we are going to copy the files to.
 		// 'languages' Files are copied to JPATH_BASE/language/ folder
@@ -1374,7 +1376,7 @@ class JInstaller extends JAdapter
 				if ((string) $file->attributes()->client != '')
 				{
 					// Override the client
-					$langclient = JApplicationHelper::getClientInfo((string) $file->attributes()->client, true);
+					$langclient = Helper::getClientInfo((string) $file->attributes()->client, true);
 					$path['dest'] = $langclient->path . '/language/' . $file->attributes()->tag . '/' . basename((string) $file);
 				}
 				else
@@ -1692,7 +1694,7 @@ class JInstaller extends JAdapter
 		// Get the client info if we're using a specific client
 		if ($cid > -1)
 		{
-			$client = JApplicationHelper::getClientInfo($cid);
+			$client = Helper::getClientInfo($cid);
 		}
 		else
 		{
@@ -1735,7 +1737,7 @@ class JInstaller extends JAdapter
 
 				if ($lang_client)
 				{
-					$client = JApplicationHelper::getClientInfo($lang_client, true);
+					$client = Helper::getClientInfo($lang_client, true);
 					$source = $client->path . '/language';
 				}
 				else
@@ -1785,7 +1787,7 @@ class JInstaller extends JAdapter
 				}
 				else
 				{
-					$target_client = JApplicationHelper::getClientInfo((string) $file->attributes()->client, true);
+					$target_client = Helper::getClientInfo((string) $file->attributes()->client, true);
 					$path = $target_client->path . '/language/' . $file->attributes()->tag . '/' . basename((string) $file);
 				}
 
@@ -1838,7 +1840,7 @@ class JInstaller extends JAdapter
 	public function copyManifest($cid = 1)
 	{
 		// Get the client info
-		$client = JApplicationHelper::getClientInfo($cid);
+		$client = Helper::getClientInfo($cid);
 
 		$path['src'] = $this->getPath('manifest');
 

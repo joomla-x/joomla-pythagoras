@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\Helper;
 
 JLoader::register('MenusHelper', JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');
 JLoader::register('MultilangstatusHelper', JPATH_ADMINISTRATOR . '/components/com_languages/helpers/multilangstatus.php');
@@ -703,7 +704,7 @@ class PlgSystemLanguageFilter extends JPlugin
 		$cookie_domain = $this->app->get('cookie_domain');
 		$cookie_path   = $this->app->get('cookie_path', '/');
 		$cookie_secure = $this->app->isSSLConnection();
-		$this->app->input->cookie->set(JApplicationHelper::getHash('language'), $lang_code, $cookie_expire, $cookie_path, $cookie_domain, $cookie_secure);
+		$this->app->input->cookie->set(Helper::getHash('language'), $lang_code, $cookie_expire, $cookie_path, $cookie_domain, $cookie_secure);
 	}
 
 	/**
@@ -715,7 +716,7 @@ class PlgSystemLanguageFilter extends JPlugin
 	 */
 	private function getLanguageCookie()
 	{
-		$lang_code = $this->app->input->cookie->getString(JApplicationHelper::getHash('language'));
+		$lang_code = $this->app->input->cookie->getString(Helper::getHash('language'));
 
 		// Let's be sure we got a valid language code. Fallback to null.
 		if (!array_key_exists($lang_code, $this->lang_codes))

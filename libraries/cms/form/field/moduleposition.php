@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 JFormHelper::loadFieldClass('text');
 
 /**
@@ -106,7 +108,7 @@ class JFormFieldModulePosition extends JFormFieldText
 
 				if (isset($clientName))
 				{
-					$client = JApplicationHelper::getClientInfo($clientName, true);
+					$client = Helper::getClientInfo($clientName, true);
 					$clientId = $client->id;
 				}
 			}
