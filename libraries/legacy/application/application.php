@@ -23,7 +23,7 @@ JLog::add('JApplication is deprecated.', JLog::WARNING, 'deprecated');
  * and render() functions.
  *
  * @since       11.1
- * @deprecated  4.0  Use JApplicationCms instead unless specified otherwise
+ * @deprecated  4.0  Use \Joomla\Cms\Application\AbstractCms instead unless specified otherwise
  */
 class JApplication extends JApplicationBase
 {
@@ -159,7 +159,7 @@ class JApplication extends JApplicationBase
 	}
 
 	/**
-	 * Returns the global JApplicationCms object, only creating it if it
+	 * Returns the global \Joomla\Cms\Application\AbstractCms object, only creating it if it
 	 * doesn't already exist.
 	 *
 	 * @param   mixed   $client  A client identifier or name.
@@ -169,8 +169,8 @@ class JApplication extends JApplicationBase
 	 * @return  AbstractCms  A JApplicationCms object.
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationCms::getInstance() instead
-	 * @note    As of 3.2, this proxies to JApplicationCms::getInstance()
+	 * @deprecated  4.0  Use \Joomla\Cms\Application\AbstractCms::getInstance() instead
+	 * @note    As of 3.2, this proxies to \Joomla\Cms\Application\AbstractCms::getInstance()
 	 */
 	public static function getInstance($client, $config = array(), $prefix = 'J')
 	{

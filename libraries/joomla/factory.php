@@ -102,7 +102,7 @@ abstract class JFactory
 	/**
 	 * Get a application object.
 	 *
-	 * Returns the global {@link JApplicationCms} object, only creating it if it doesn't already exist.
+	 * Returns the global {@link \Joomla\Cms\Application\AbstractCms} object, only creating it if it doesn't already exist.
 	 *
 	 * @param   mixed   $id      A client identifier or name.
 	 * @param   array   $config  An optional associative array of configuration settings.

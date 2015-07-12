@@ -18,7 +18,7 @@ class ConfigControllerApplicationSave extends JControllerBase
 	/**
 	 * Application object - Redeclared for proper typehinting
 	 *
-	 * @var    JApplicationCms
+	 * @var    \Joomla\Cms\Application\AbstractCms
 	 * @since  3.2
 	 */
 	protected $app;

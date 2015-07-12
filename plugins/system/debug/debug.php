@@ -75,7 +75,7 @@ class PlgSystemDebug extends JPlugin
 	/**
 	 * Application object.
 	 *
-	 * @var    JApplicationCms
+	 * @var    \Joomla\Cms\Application\AbstractCms
 	 * @since  3.3
 	 */
 	protected $app;

@@ -392,11 +392,11 @@ class AbstractCms extends \JApplicationWeb
 	}
 
 	/**
-	 * Returns a reference to the global JApplicationCms object, only creating it if it doesn't already exist.
+	 * Returns a reference to the global \Joomla\Cms\Application\AbstractCms object, only creating it if it doesn't already exist.
 	 *
-	 * This method must be invoked as: $web = JApplicationCms::getInstance();
+	 * This method must be invoked as: $web = \Joomla\Cms\Application\AbstractCms::getInstance();
 	 *
-	 * @param   string  $name  The name (optional) of the JApplicationCms class to instantiate.
+	 * @param   string  $name  The name (optional) of the \Joomla\Cms\Application\AbstractCms class to instantiate.
 	 *
 	 * @return  $this
 	 *
@@ -407,7 +407,7 @@ class AbstractCms extends \JApplicationWeb
 	{
 		if (empty(static::$instances[$name]))
 		{
-			// Create a JApplicationCms object.
+			// Create a \Joomla\Cms\Application\AbstractCms object.
 			$classname = 'JApplication' . ucfirst($name);
 
 			if (!class_exists($classname))

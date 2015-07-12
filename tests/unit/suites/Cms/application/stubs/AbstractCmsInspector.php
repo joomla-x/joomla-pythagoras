@@ -11,7 +11,7 @@ namespace Joomla\Cms\Tests\Application\Stubs;
 use Joomla\Cms\Application\AbstractCms;
 
 /**
- * Inspector for the JApplicationCms class.
+ * Inspector for the \Joomla\Cms\Application\AbstractCms class.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application

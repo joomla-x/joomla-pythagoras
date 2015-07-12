@@ -19,7 +19,7 @@ class JPaginationTest extends TestCase
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    JApplicationCmsInspector
+	 * @var    TestMockApplicationCms
 	 * @since  3.4
 	 */
 	protected $app;

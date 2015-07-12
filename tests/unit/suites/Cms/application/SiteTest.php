@@ -153,7 +153,7 @@ class SiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getClientId method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getClientId method.
 	 *
 	 * @return  void
 	 *
@@ -165,7 +165,7 @@ class SiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getName method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getName method.
 	 *
 	 * @return  void
 	 *
@@ -177,7 +177,7 @@ class SiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getMenu method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getMenu method.
 	 *
 	 * @return  void
 	 *
@@ -209,7 +209,7 @@ class SiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getPathway method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getPathway method.
 	 *
 	 * @return  void
 	 *
@@ -249,7 +249,7 @@ class SiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isAdmin method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::isAdmin method.
 	 *
 	 * @return  void
 	 *
@@ -261,7 +261,7 @@ class SiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isSite method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::isSite method.
 	 *
 	 * @return  void
 	 *
@@ -273,7 +273,7 @@ class SiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::render method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::render method.
 	 *
 	 * @return  void
 	 *
