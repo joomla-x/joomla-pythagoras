@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Joomla\\Cms\\Tests\\": "tests/suites/Cms/"
+            "Joomla\\Cms\\Tests\\": "tests/unit/suites/Cms/"
         }
     }
 }

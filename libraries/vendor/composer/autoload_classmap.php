@@ -7,6 +7,7 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     'Cache_Lite' => $vendorDir . '/pear/cache_lite/Cache/Lite.php',
+    'CallbackFilterIterator' => $vendorDir . '/joomla/compat/src/CallbackFilterIterator.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/File/Iterator.php',
     'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/File/Iterator/Facade.php',
     'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/File/Iterator/Factory.php',
@@ -127,6 +128,7 @@ return array(
     'PHPUnit_Extensions_Database_DataSet_AbstractTable' => $vendorDir . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/AbstractTable.php',
     'PHPUnit_Extensions_Database_DataSet_AbstractTableMetaData' => $vendorDir . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/AbstractTableMetaData.php',
     'PHPUnit_Extensions_Database_DataSet_AbstractXmlDataSet' => $vendorDir . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/AbstractXmlDataSet.php',
+    'PHPUnit_Extensions_Database_DataSet_ArrayDataSet' => $vendorDir . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/ArrayDataSet.php',
     'PHPUnit_Extensions_Database_DataSet_CompositeDataSet' => $vendorDir . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/CompositeDataSet.php',
     'PHPUnit_Extensions_Database_DataSet_CsvDataSet' => $vendorDir . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/CsvDataSet.php',
     'PHPUnit_Extensions_Database_DataSet_DataSetFilter' => $vendorDir . '/phpunit/dbunit/PHPUnit/Extensions/Database/DataSet/DataSetFilter.php',
