@@ -7,16 +7,30 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Cms\Application;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use \JInput;
+use \JApplicationWebClient;
+use \JUri;
+use \JAdministratorHelper;
+use \JFactory;
+use \JText;
+use \JComponentHelper;
+use \JPluginHelper;
+use \JSession;
+use \JFilterInput;
+use \JRouter;
+use \JLanguage;
 
 /**
  * Joomla! Administrator Application class
  *
  * @since  3.2
  */
-class JApplicationAdministrator extends JApplicationCms
+class Administrator extends AbstractCms
 {
 	/**
 	 * Class constructor.
@@ -178,7 +192,7 @@ class JApplicationAdministrator extends JApplicationCms
 	 * @return  string  The name of the template.
 	 *
 	 * @since   3.2
-	 * @throws  InvalidArgumentException
+	 * @throws  \InvalidArgumentException
 	 */
 	public function getTemplate($params = false)
 	{
@@ -226,7 +240,7 @@ class JApplicationAdministrator extends JApplicationCms
 
 		if (!file_exists(JPATH_THEMES . '/' . $template->template . '/index.php'))
 		{
-			throw new InvalidArgumentException(JText::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $template->template));
+			throw new \InvalidArgumentException(JText::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $template->template));
 		}
 
 		if ($params)
@@ -326,7 +340,7 @@ class JApplicationAdministrator extends JApplicationCms
 
 		$result = parent::login($credentials, $options);
 
-		if (!($result instanceof Exception))
+		if (!($result instanceof \Exception))
 		{
 			$lang = $this->input->getCmd('lang', 'en-GB');
 			$lang = preg_replace('/[^A-Z-]/i', '', $lang);

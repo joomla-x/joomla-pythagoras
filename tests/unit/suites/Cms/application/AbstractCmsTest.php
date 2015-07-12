@@ -7,9 +7,17 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-use Joomla\Registry\Registry;
+namespace Joomla\Cms\Tests\CmsTest;
 
-include_once __DIR__ . '/stubs/JApplicationCmsInspector.php';
+use Joomla\Cms\Application\AbstractCms;
+use Joomla\Registry\Registry;
+use Joomla\Cms\Tests\Application\Stubs\AbstractCmsInspector;
+use \TestCaseDatabase;
+use \JFactory;
+use \PHPUnit_Extensions_Database_DataSet_CsvDataSet;
+use \TestReflection;
+use \TestMockDispatcher;
+use \JApplicationWebClient;
 
 /**
  * Test class for JApplicationCms.
@@ -18,7 +26,7 @@ include_once __DIR__ . '/stubs/JApplicationCmsInspector.php';
  * @subpackage  Application
  * @since       3.2
  */
-class JApplicationCmsTest extends TestCaseDatabase
+class AbstractCmsTest extends TestCaseDatabase
 {
 	/**
 	 * Value for test host.
@@ -47,7 +55,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    JApplicationCmsInspector
+	 * @var    AbstractCmsInspector
 	 * @since  3.2
 	 */
 	protected $class;
@@ -105,7 +113,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 		$config->set('session', false);
 
 		// Get a new JApplicationCmsInspector instance.
-		$this->class = new JApplicationCmsInspector($this->getMockInput(), $config);
+		$this->class = new AbstractCmsInspector($this->getMockInput(), $config);
 	}
 
 	/**
@@ -119,11 +127,11 @@ class JApplicationCmsTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		// Reset the dispatcher instance.
-		TestReflection::setValue('JEventDispatcher', 'instance', null);
+		TestReflection::setValue('\\JEventDispatcher', 'instance', null);
 
 		// Reset some web inspector static settings.
-		JApplicationCmsInspector::$headersSent = false;
-		JApplicationCmsInspector::$connectionAlive = true;
+		AbstractCmsInspector::$headersSent = false;
+		AbstractCmsInspector::$connectionAlive = true;
 
 		$_SERVER = $this->backupServer;
 
@@ -187,7 +195,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 
 		$mockClient = $this->getMock('JApplicationWebClient', array('test'), array(), '', false);
 
-		$inspector = new JApplicationCmsInspector($mockInput, $config, $mockClient);
+		$inspector = new AbstractCmsInspector($mockInput, $config, $mockClient);
 
 		$this->assertAttributeSame($mockInput, 'input', $inspector);
 		$this->assertFalse($inspector->get('session'));
@@ -278,13 +286,13 @@ class JApplicationCmsTest extends TestCaseDatabase
 	 */
 	public function testGetInstance()
 	{
-		TestReflection::setValue('JApplicationCms', 'instances', array('CmsInspector' => $this->class));
+		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array('CmsInspector' => $this->class));
 
-		$this->assertInstanceOf('JApplicationCmsInspector', JApplicationCms::getInstance('CmsInspector'));
+		$this->assertInstanceOf('JApplicationCmsInspector', AbstractCms::getInstance('CmsInspector'));
 
-		TestReflection::setValue('JApplicationCms', 'instances', array('CmsInspector' => 'foo'));
+		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array('CmsInspector' => 'foo'));
 
-		$this->assertEquals('foo', JApplicationCms::getInstance('CmsInspector'));
+		$this->assertEquals('foo', AbstractCms::getInstance('CmsInspector'));
 	}
 
 	/**
@@ -509,7 +517,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 		$url = 'index.php';
 
 		// Emulate headers already sent.
-		JApplicationCmsInspector::$headersSent = true;
+		AbstractCmsInspector::$headersSent = true;
 
 		// Inject the internal configuration.
 		$config = new Registry;

@@ -9,6 +9,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\AbstractCms;
 
 /**
  * Joomla Platform Factory class.
@@ -20,7 +21,7 @@ abstract class JFactory
 	/**
 	 * Global application object
 	 *
-	 * @var    JApplicationCms
+	 * @var    AbstractCms
 	 * @since  11.1
 	 */
 	public static $application = null;
@@ -107,9 +108,8 @@ abstract class JFactory
 	 * @param   array   $config  An optional associative array of configuration settings.
 	 * @param   string  $prefix  Application prefix
 	 *
-	 * @return  JApplicationCms object
+	 * @return  AbstractCms object
 	 *
-	 * @see     JApplication
 	 * @since   11.1
 	 * @throws  Exception
 	 */
@@ -122,7 +122,7 @@ abstract class JFactory
 				throw new Exception('Application Instantiation Error', 500);
 			}
 
-			self::$application = JApplicationCms::getInstance($id);
+			self::$application = AbstractCms::getInstance($id);
 		}
 
 		return self::$application;

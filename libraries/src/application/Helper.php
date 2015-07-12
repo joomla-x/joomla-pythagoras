@@ -7,14 +7,22 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\Cms\Application;
+
 defined('JPATH_PLATFORM') or die;
+
+use \JFactory;
+use \JLog;
+use \JFilterOutput;
+use \JInstaller;
+use \JText;
 
 /**
  * Application helper functions
  *
  * @since  1.5
  */
-class JApplicationHelper
+class Helper
 {
 	/**
 	 * Client information array
@@ -113,7 +121,7 @@ class JApplicationHelper
 		// Only create the array if it does not exist
 		if (self::$_clients === null)
 		{
-			$obj = new stdClass;
+			$obj = new \stdClass;
 
 			// Site Client
 			$obj->id = 0;

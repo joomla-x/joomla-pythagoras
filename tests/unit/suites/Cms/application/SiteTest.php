@@ -9,14 +9,16 @@
 
 use Joomla\Registry\Registry;
 
+use Joomla\Cms\Application\Site;
+
 /**
- * Test class for JApplicationAdministrator.
+ * Test class for JApplicationSite.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application
  * @since       3.2
  */
-class JApplicationAdministratorTest extends TestCaseDatabase
+class SiteTest extends TestCaseDatabase
 {
 	/**
 	 * Value for test host.
@@ -45,7 +47,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    JApplicationAdministrator
+	 * @var    Site
 	 * @since  3.2
 	 */
 	protected $class;
@@ -102,9 +104,9 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 		$config = new Registry;
 		$config->set('session', false);
 
-		// Get a new JApplicationAdministrator instance.
-		$this->class = new JApplicationAdministrator($this->getMockInput(), $config);
-		TestReflection::setValue('JApplicationCms', 'instances', array('administrator' => $this->class));
+		// Get a new JApplicationSite instance.
+		$this->class = new Site($this->getMockInput(), $config);
+		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array('site' => $this->class));
 	}
 
 	/**
@@ -118,8 +120,8 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		// Reset the dispatcher and application instances.
-		TestReflection::setValue('JEventDispatcher', 'instance', null);
-		TestReflection::setValue('JApplicationCms', 'instances', array());
+		TestReflection::setValue('\\JEventDispatcher', 'instance', null);
+		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array());
 
 		$_SERVER = $this->backupServer;
 
@@ -159,7 +161,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetClientId()
 	{
-		$this->assertSame(1, $this->class->getClientId());
+		$this->assertSame(0, $this->class->getClientId());
 	}
 
 	/**
@@ -171,7 +173,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetName()
 	{
-		$this->assertSame('administrator', $this->class->getName());
+		$this->assertSame('site', $this->class->getName());
 	}
 
 	/**
@@ -183,7 +185,27 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetMenu()
 	{
-		$this->assertInstanceOf('JMenuAdministrator', $this->class->getMenu());
+		$this->assertInstanceOf('JMenuSite', $this->class->getMenu());
+	}
+
+	/**
+	 * Tests the JApplicationSite::getParams method.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function testGetParams()
+	{
+		JFactory::$application = $this->class;
+		$this->class->loadLanguage();
+		$params = $this->class->getParams('com_content');
+
+		$this->assertEquals(
+			$params->get('show_item_navigation'),
+			'1',
+			'com_content show_item_navigation defaults to 1'
+		);
 	}
 
 	/**
@@ -195,11 +217,11 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetPathway()
 	{
-		$this->assertNull($this->class->getPathway());
+		$this->assertInstanceOf('JPathwaySite', $this->class->getPathway());
 	}
 
 	/**
-	 * Tests the JApplicationAdministrator::getRouter method.
+	 * Tests the JApplicationSite::getRouter method.
 	 *
 	 * @return  void
 	 *
@@ -207,11 +229,11 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetRouter()
 	{
-		$this->assertInstanceOf('JRouterAdministrator', $this->class->getRouter());
+		$this->assertInstanceOf('JRouterSite', $this->class->getRouter());
 	}
 
 	/**
-	 * Tests the JApplicationAdministrator::getTemplate method.
+	 * Tests the JApplicationSite::getTemplate method.
 	 *
 	 * @return  void
 	 *
@@ -219,13 +241,11 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetTemplate()
 	{
-		$this->markTestSkipped('Test fails due to JPATH_THEMES being defined for site.');
-
 		$template = $this->class->getTemplate(true);
 
 		$this->assertInstanceOf('\\Joomla\\Registry\\Registry', $template->params);
 
-		$this->assertEquals('isis', $template->template);
+		$this->assertEquals('protostar', $template->template);
 	}
 
 	/**
@@ -237,7 +257,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testIsAdmin()
 	{
-		$this->assertTrue($this->class->isAdmin());
+		$this->assertFalse($this->class->isAdmin());
 	}
 
 	/**
@@ -249,7 +269,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testIsSite()
 	{
-		$this->assertFalse($this->class->isSite());
+		$this->assertTrue($this->class->isSite());
 	}
 
 	/**
@@ -273,5 +293,51 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 		TestReflection::invoke($this->class, 'render');
 
 		$this->assertEquals(array('JWeb Body'), TestReflection::getValue($this->class, 'response')->body);
+	}
+
+	/**
+	 * Tests the JApplicationSite::setDetectBrowser and getDetectBrowser methods.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function testSetGetDetectBrowser()
+	{
+		$this->assertFalse($this->class->setDetectBrowser(true));
+
+		$this->assertTrue($this->class->getDetectBrowser());
+	}
+
+	/**
+	 * Tests the JApplicationSite::setLanguageFilter and getLanguageFilter methods.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function testSetGetLanguageFilter()
+	{
+		$this->assertFalse($this->class->setLanguageFilter(true));
+
+		$this->assertTrue($this->class->getLanguageFilter());
+	}
+
+	/**
+	 * Tests the JApplicationSite::setTemplate method.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function testSetTemplate()
+	{
+		$this->class->setTemplate('beez3');
+
+		$template = $this->class->getTemplate(true);
+
+		$this->assertInstanceOf('\\Joomla\\Registry\\Registry', $template->params);
+
+		$this->assertEquals('beez3', $template->template);
 	}
 }
