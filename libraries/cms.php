@@ -78,4 +78,4 @@ JLoader::register('JInstallerPlugin',  JPATH_PLATFORM . '/cms/installer/adapter/
 JLoader::register('JInstallerTemplate',  JPATH_PLATFORM . '/cms/installer/adapter/template.php');
 JLoader::register('JExtension',  JPATH_PLATFORM . '/cms/installer/extension.php');
 JLoader::registerAlias('JAdministrator',  'JApplicationAdministrator');
-JLoader::registerAlias('JSite',  'JApplicationSite');
+JLoader::registerAlias('JSite',  '\\Joomla\\CMS\\Application\\Site');

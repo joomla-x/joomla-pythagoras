@@ -11,7 +11,6 @@ namespace Joomla\CMS\Application;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\Registry\Registry;
 
 use Exception;
@@ -727,7 +726,7 @@ class AbstractCMS extends JApplicationWeb
 		}
 
 		// Generate a session name.
-		$name = JApplicationHelper::getHash($this->get('session_name', get_class($this)));
+		$name = Helper::getHash($this->get('session_name', get_class($this)));
 
 		// Calculate the session lifetime.
 		$lifetime = (($this->get('lifetime')) ? $this->get('lifetime') * 60 : 900);
