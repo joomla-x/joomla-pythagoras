@@ -12,6 +12,9 @@
 	-->
 
 	<testsuites>
+		<testsuite name="libraries-psr4">
+			<directory>tests/unit/suites/Cms</directory>
+		</testsuite>
 		<testsuite name="libraries-cms">
 			<directory>tests/unit/suites/libraries/cms</directory>
 		</testsuite>

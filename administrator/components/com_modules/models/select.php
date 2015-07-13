@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Module model.
  *
@@ -112,7 +114,7 @@ class ModulesModelSelect extends JModelList
 		// Get the list of items from the database.
 		$items = parent::getItems();
 
-		$client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
+		$client = Helper::getClientInfo($this->getState('filter.client_id', 0));
 		$lang = JFactory::getLanguage();
 
 		// Loop through the results to add the XML metadata,

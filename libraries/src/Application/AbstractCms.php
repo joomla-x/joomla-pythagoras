@@ -7,16 +7,36 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Cms\Application;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use \JAuthentication;
+use \JApplicationWebClient;
+use \JInput;
+use \JProfiler;
+use \JError;
+use \JFactory;
+use \JUser;
+use \JText;
+use \JDocument;
+use \JLanguage;
+use \JLog;
+use \JRoute;
+use \JRouter;
+use \JMenu;
+use \JPathway;
+use \JPluginHelper;
+use \JSession;
+use \JUri;
 
 /**
  * Joomla! CMS Application class
  *
  * @since  3.2
  */
-class JApplicationCms extends JApplicationWeb
+class AbstractCms extends \JApplicationWeb
 {
 	/**
 	 * Array of options for the JDocument object
@@ -159,7 +179,7 @@ class JApplicationCms extends JApplicationWeb
 	 * @return  void
 	 *
 	 * @since   3.2
-	 * @throws  RuntimeException
+	 * @throws  \RuntimeException
 	 */
 	public function checkSession()
 	{
@@ -207,9 +227,9 @@ class JApplicationCms extends JApplicationWeb
 			{
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (\RuntimeException $e)
 			{
-				throw new RuntimeException(JText::_('JERROR_SESSION_STARTUP'));
+				throw new \RuntimeException(JText::_('JERROR_SESSION_STARTUP'));
 			}
 		}
 	}
@@ -373,27 +393,27 @@ class JApplicationCms extends JApplicationWeb
 	}
 
 	/**
-	 * Returns a reference to the global JApplicationCms object, only creating it if it doesn't already exist.
+	 * Returns a reference to the global \Joomla\Cms\Application\AbstractCms object, only creating it if it doesn't already exist.
 	 *
-	 * This method must be invoked as: $web = JApplicationCms::getInstance();
+	 * This method must be invoked as: $web = \Joomla\Cms\Application\AbstractCms::getInstance();
 	 *
-	 * @param   string  $name  The name (optional) of the JApplicationCms class to instantiate.
+	 * @param   string  $name  The name (optional) of the \Joomla\Cms\Application\AbstractCms class to instantiate.
 	 *
-	 * @return  JApplicationCms
+	 * @return  $this
 	 *
 	 * @since   3.2
-	 * @throws  RuntimeException
+	 * @throws  \RuntimeException
 	 */
 	public static function getInstance($name = null)
 	{
 		if (empty(static::$instances[$name]))
 		{
-			// Create a JApplicationCms object.
-			$classname = 'JApplication' . ucfirst($name);
+			// Create a \Joomla\Cms\Application\AbstractCms object.
+			$classname = '\\Joomla\\Cms\\Application\\' . ucfirst($name);
 
 			if (!class_exists($classname))
 			{
-				throw new RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_APPLICATION_LOAD', $name), 500);
+				throw new \RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_APPLICATION_LOAD', $name), 500);
 			}
 
 			static::$instances[$name] = new $classname;
@@ -423,7 +443,7 @@ class JApplicationCms extends JApplicationWeb
 		{
 			$menu = JMenu::getInstance($name, $options);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return null;
 		}
@@ -489,7 +509,7 @@ class JApplicationCms extends JApplicationWeb
 		{
 			$pathway = JPathway::getInstance($name, $options);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return null;
 		}
@@ -519,7 +539,7 @@ class JApplicationCms extends JApplicationWeb
 		{
 			$router = JRouter::getInstance($name, $options);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return null;
 		}
@@ -538,7 +558,7 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function getTemplate($params = false)
 	{
-		$template = new stdClass;
+		$template = new \stdClass;
 
 		$template->template = 'system';
 		$template->params   = new Registry;
@@ -687,7 +707,7 @@ class JApplicationCms extends JApplicationWeb
 	 *
 	 * @param   JSession  $session  An optional session object. If omitted, the session is created.
 	 *
-	 * @return  JApplicationCms  This method is chainable.
+	 * @return  $this
 	 *
 	 * @since   3.2
 	 */
@@ -701,7 +721,7 @@ class JApplicationCms extends JApplicationWeb
 		}
 
 		// Generate a session name.
-		$name = JApplicationHelper::getHash($this->get('session_name', get_class($this)));
+		$name = Helper::getHash($this->get('session_name', get_class($this)));
 
 		// Calculate the session lifetime.
 		$lifetime = (($this->get('lifetime')) ? $this->get('lifetime') * 60 : 900);

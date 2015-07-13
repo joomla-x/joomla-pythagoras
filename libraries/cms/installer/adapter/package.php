@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Package installer
  *
@@ -564,7 +566,7 @@ class JInstallerAdapterPackage extends JInstallerAdapter
 		{
 			$tmpInstaller = new JInstaller;
 			$id = $this->_getExtensionID($extension->type, $extension->id, $extension->client, $extension->group);
-			$client = JApplicationHelper::getClientInfo($extension->client, true);
+			$client = Helper::getClientInfo($extension->client, true);
 
 			if ($id)
 			{
@@ -645,7 +647,7 @@ class JInstallerAdapterPackage extends JInstallerAdapter
 			case 'module':
 			case 'template':
 				// Languages, modules and templates have a client but not a folder
-				$client = JApplicationHelper::getClientInfo($client, true);
+				$client = Helper::getClientInfo($client, true);
 				$query->where('client_id = ' . (int) $client->id);
 				break;
 		}

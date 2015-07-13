@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\Cms\Tests\Application\Stubs;
+
+use Joomla\Cms\Application\Helper;
+
 /**
- * Test class for JApplicationHelper
+ * Test class for Helper
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application
  * @since       3.4
  */
-class JApplicationHelperInspector extends JApplicationHelper
+class HelperInspector extends Helper
 {
 	/**
 	 * Method to get the current application data

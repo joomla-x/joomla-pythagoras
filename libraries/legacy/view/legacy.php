@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Base class for a Joomla View
  *
@@ -719,7 +721,7 @@ class JViewLegacy extends JObject
 	 */
 	protected function _setPath($type, $path)
 	{
-		$component = JApplicationHelper::getComponentName();
+		$component = Helper::getComponentName();
 		$app = JFactory::getApplication();
 
 		// Clear out the prior search dirs

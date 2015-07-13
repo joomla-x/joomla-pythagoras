@@ -9,6 +9,8 @@
 
 use Joomla\Registry\Registry;
 
+use Joomla\Cms\Application\Site;
+
 /**
  * Test class for JApplicationSite.
  *
@@ -16,7 +18,7 @@ use Joomla\Registry\Registry;
  * @subpackage  Application
  * @since       3.2
  */
-class JApplicationSiteTest extends TestCaseDatabase
+class SiteTest extends TestCaseDatabase
 {
 	/**
 	 * Value for test host.
@@ -45,7 +47,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    JApplicationSite
+	 * @var    Site
 	 * @since  3.2
 	 */
 	protected $class;
@@ -103,8 +105,8 @@ class JApplicationSiteTest extends TestCaseDatabase
 		$config->set('session', false);
 
 		// Get a new JApplicationSite instance.
-		$this->class = new JApplicationSite($this->getMockInput(), $config);
-		TestReflection::setValue('JApplicationCms', 'instances', array('site' => $this->class));
+		$this->class = new Site($this->getMockInput(), $config);
+		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array('site' => $this->class));
 	}
 
 	/**
@@ -118,8 +120,8 @@ class JApplicationSiteTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		// Reset the dispatcher and application instances.
-		TestReflection::setValue('JEventDispatcher', 'instance', null);
-		TestReflection::setValue('JApplicationCms', 'instances', array());
+		TestReflection::setValue('\\JEventDispatcher', 'instance', null);
+		TestReflection::setValue('\\Joomla\\Cms\\Application\\AbstractCms', 'instances', array());
 
 		$_SERVER = $this->backupServer;
 
@@ -151,7 +153,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getClientId method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getClientId method.
 	 *
 	 * @return  void
 	 *
@@ -163,7 +165,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getName method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getName method.
 	 *
 	 * @return  void
 	 *
@@ -175,7 +177,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getMenu method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getMenu method.
 	 *
 	 * @return  void
 	 *
@@ -207,7 +209,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getPathway method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::getPathway method.
 	 *
 	 * @return  void
 	 *
@@ -247,7 +249,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isAdmin method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::isAdmin method.
 	 *
 	 * @return  void
 	 *
@@ -259,7 +261,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isSite method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::isSite method.
 	 *
 	 * @return  void
 	 *
@@ -271,7 +273,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::render method.
+	 * Tests the \Joomla\Cms\Application\AbstractCms::render method.
 	 *
 	 * @return  void
 	 *

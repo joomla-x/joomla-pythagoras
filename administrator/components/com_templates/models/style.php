@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\Helper;
 
 /**
  * Template style model.
@@ -355,7 +356,7 @@ class TemplatesModelStyle extends JModelAdmin
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Get the template XML.
-			$client	= JApplicationHelper::getClientInfo($table->client_id);
+			$client	= Helper::getClientInfo($table->client_id);
 			$path	= JPath::clean($client->path . '/templates/' . $table->template . '/templateDetails.xml');
 
 			if (file_exists($path))
@@ -402,7 +403,7 @@ class TemplatesModelStyle extends JModelAdmin
 		$clientId = $this->getState('item.client_id');
 		$template = $this->getState('item.template');
 		$lang     = JFactory::getLanguage();
-		$client   = JApplicationHelper::getClientInfo($clientId);
+		$client   = Helper::getClientInfo($clientId);
 
 		if (!$form->loadFile('style_' . $client->name, true))
 		{

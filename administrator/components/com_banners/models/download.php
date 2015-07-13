@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Download model.
  *
@@ -31,10 +33,10 @@ class BannersModelDownload extends JModelForm
 	{
 		$input = JFactory::getApplication()->input;
 
-		$basename = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.basename'), '__SITE__');
+		$basename = $input->cookie->getString(Helper::getHash($this->_context . '.basename'), '__SITE__');
 		$this->setState('basename', $basename);
 
-		$compressed = $input->cookie->getInt(JApplicationHelper::getHash($this->_context . '.compressed'), 1);
+		$compressed = $input->cookie->getInt(Helper::getHash($this->_context . '.compressed'), 1);
 		$this->setState('compressed', $compressed);
 	}
 

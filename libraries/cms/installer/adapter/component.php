@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.filesystem.folder');
 
 /**
@@ -438,7 +440,7 @@ class JInstallerAdapterComponent extends JInstallerAdapter
 	public function prepareDiscoverInstall()
 	{
 		// Need to find to find where the XML file is since we don't store this normally
-		$client = JApplicationHelper::getClientInfo($this->extension->client_id);
+		$client = Helper::getClientInfo($this->extension->client_id);
 		$short_element = str_replace('com_', '', $this->extension->element);
 		$manifestPath = $client->path . '/components/' . $this->extension->element . '/' . $short_element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
@@ -1230,7 +1232,7 @@ class JInstallerAdapterComponent extends JInstallerAdapter
 	public function refreshManifestCache()
 	{
 		// Need to find to find where the XML file is since we don't store this normally
-		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		$client = Helper::getClientInfo($this->parent->extension->client_id);
 		$short_element = str_replace('com_', '', $this->parent->extension->element);
 		$manifestPath = $client->path . '/components/' . $this->parent->extension->element . '/' . $short_element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);

@@ -10,13 +10,14 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\AbstractCms;
 
 /**
  * Joomla! Installation Application class.
  *
  * @since  3.1
  */
-final class InstallationApplicationWeb extends JApplicationCms
+final class InstallationApplicationWeb extends AbstractCms
 {
 	/**
 	 * Class constructor.

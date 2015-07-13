@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.filesystem.folder');
 
 /**
@@ -46,7 +48,7 @@ class JFormFieldComponentlayout extends JFormField
 
 		$clientId = (int) $clientId;
 
-		$client = JApplicationHelper::getClientInfo($clientId);
+		$client = Helper::getClientInfo($clientId);
 
 		// Get the extension.
 		$extension = (string) $this->element['extension'];

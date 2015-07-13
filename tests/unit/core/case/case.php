@@ -173,14 +173,14 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	 * @param   array  $options      A set of options to configure the mock.
 	 * @param   array  $constructor  An array containing constructor arguments to inject into the mock.
 	 *
-	 * @return  JApplicationCms
+	 * @return  \Joomla\Cms\Application\AbstractCms
 	 *
 	 * @since   3.2
 	 */
 	public function getMockCmsApp($options = array(), $constructor = array())
 	{
 		// Attempt to load the real class first.
-		class_exists('JApplicationCms');
+		class_exists('\\Joomla\\Cms\\Application\\AbstractCms');
 
 		return TestMockApplicationCms::create($this, $options, $constructor);
 	}

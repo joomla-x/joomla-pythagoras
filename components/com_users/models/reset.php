@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Rest model class for Users.
  *
@@ -440,7 +442,7 @@ class UsersModelReset extends JModelForm
 		}
 
 		// Set the confirmation token.
-		$token = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+		$token = Helper::getHash(JUserHelper::genRandomPassword());
 		$salt = JUserHelper::getSalt('crypt-md5');
 		$hashedToken = md5($token . $salt) . ':' . $salt;
 		$user->activation = $hashedToken;

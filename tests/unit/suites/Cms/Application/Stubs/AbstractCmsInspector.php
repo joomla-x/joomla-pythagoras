@@ -7,14 +7,17 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\Cms\Tests\Application\Stubs;
+use Joomla\Cms\Application\AbstractCms;
+
 /**
- * Inspector for the JApplicationCms class.
+ * Inspector for the \Joomla\Cms\Application\AbstractCms class.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application
  * @since       3.2
  */
-class JApplicationCmsInspector extends JApplicationCms
+class AbstractCmsInspector extends AbstractCms
 {
 	/**
 	 * @var     boolean  True to mimic the headers already being sent.

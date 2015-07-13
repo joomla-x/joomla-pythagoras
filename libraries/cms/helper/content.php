@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Helper for standard content style extensions.
  * This class mainly simplifies static helper methods often repeated in individual components
@@ -137,7 +139,7 @@ class JHelperContent
 	public static function getCurrentLanguage($detectBrowser = true)
 	{
 		$app = JFactory::getApplication();
-		$langCode = $app->input->cookie->getString(JApplicationHelper::getHash('language'));
+		$langCode = $app->input->cookie->getString(Helper::getHash('language'));
 
 		// No cookie - let's try to detect browser language or use site default
 		if (!$langCode)

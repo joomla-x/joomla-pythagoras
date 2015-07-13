@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Base Helper class.
  *
@@ -28,7 +30,7 @@ class JHelper
 	public function getCurrentLanguage($detectBrowser = true)
 	{
 		$app = JFactory::getApplication();
-		$langCode = $app->input->cookie->getString(JApplicationHelper::getHash('language'));
+		$langCode = $app->input->cookie->getString(Helper::getHash('language'));
 
 		// No cookie - let's try to detect browser language or use site default
 		if (!$langCode)

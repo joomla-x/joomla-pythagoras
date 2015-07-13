@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Cms\Application\Helper;
 
 /**
  * JMenu class
@@ -99,7 +100,7 @@ class JMenu
 			{
 				// @deprecated 4.0 Everything in this block is deprecated but the warning is only logged after the file_exists
 				// Load the menu object
-				$info = JApplicationHelper::getClientInfo($client, true);
+				$info = Helper::getClientInfo($client, true);
 
 				if (is_object($info))
 				{

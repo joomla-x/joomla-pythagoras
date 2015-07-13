@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Prototype admin view.
  *
@@ -59,7 +61,7 @@ abstract class ConfigViewCmsHtml extends JViewHtml
 	public function __construct(JModel $model, SplPriorityQueue $paths = null)
 	{
 		$app = JFactory::getApplication();
-		$component = JApplicationHelper::getComponentName();
+		$component = Helper::getComponentName();
 		$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
 
 		if (isset($paths))

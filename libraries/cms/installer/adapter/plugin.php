@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.filesystem.folder');
 
 /**
@@ -303,7 +305,7 @@ class JInstallerAdapterPlugin extends JInstallerAdapter
 	 */
 	public function prepareDiscoverInstall()
 	{
-		$client   = JApplicationHelper::getClientInfo($this->extension->client_id);
+		$client   = Helper::getClientInfo($this->extension->client_id);
 		$basePath = $client->path . '/plugins/' . $this->extension->folder;
 
 		if (is_dir($basePath . '/' . $this->extension->element))
@@ -699,7 +701,7 @@ class JInstallerAdapterPlugin extends JInstallerAdapter
 		 * Similar to modules and templates, rather easy
 		 * If it's not in the extensions table we just add it
 		 */
-		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		$client = Helper::getClientInfo($this->parent->extension->client_id);
 		$manifestPath = $client->path . '/plugins/' . $this->parent->extension->folder . '/' . $this->parent->extension->element . '/'
 			. $this->parent->extension->element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);

@@ -19,7 +19,7 @@ abstract class JComponentRouterBase implements JComponentRouterInterface
 	/**
 	 * Application object to use in the router
 	 *
-	 * @var    JApplicationCms
+	 * @var    \Joomla\Cms\Application\AbstractCms
 	 * @since  3.4
 	 */
 	public $app;
@@ -35,8 +35,8 @@ abstract class JComponentRouterBase implements JComponentRouterInterface
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JApplicationCms  $app   Application-object that the router should use
-	 * @param   JMenu            $menu  Menu-object that the router should use
+	 * @param   \Joomla\Cms\Application\AbstractCms  $app   Application-object that the router should use
+	 * @param   JMenu                                $menu  Menu-object that the router should use
 	 *
 	 * @since   3.4
 	 */

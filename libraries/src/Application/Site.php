@@ -7,16 +7,32 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Cms\Application;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use \JInput;
+use \JApplicationWebClient;
+use \JFactory;
+use \JMenu;
+use \JRouter;
+use \JRoute;
+use \JUri;
+use \JText;
+use \JLanguageHelper;
+use \JComponentHelper;
+use \JPathway;
+use \JPluginHelper;
+use \JFilterInput;
+use \JLanguage;
 
 /**
  * Joomla! Site Application class
  *
  * @since  3.2
  */
-final class JApplicationSite extends JApplicationCms
+final class Site extends AbstractCms
 {
 	/**
 	 * Option to filter by language
@@ -72,7 +88,7 @@ final class JApplicationSite extends JApplicationCms
 	 *
 	 * @since   3.2
 	 *
-	 * @throws  Exception When you are not authorised to view the home page menu item
+	 * @throws  \Exception When you are not authorised to view the home page menu item
 	 */
 	protected function authorise($itemid)
 	{
@@ -99,7 +115,7 @@ final class JApplicationSite extends JApplicationCms
 				// If we are already in the homepage raise an exception
 				if ($menus->getActive()->id == $home_item->id)
 				{
-					throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+					throw new \Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
 				}
 
 				// Otherwise redirect to the homepage and show an error
@@ -415,7 +431,7 @@ final class JApplicationSite extends JApplicationCms
 	 * @return  string  The name of the template.
 	 *
 	 * @since   3.2
-	 * @throws  InvalidArgumentException
+	 * @throws  \InvalidArgumentException
 	 */
 	public function getTemplate($params = false)
 	{
@@ -423,7 +439,7 @@ final class JApplicationSite extends JApplicationCms
 		{
 			if (!file_exists(JPATH_THEMES . '/' . $this->template->template . '/index.php'))
 			{
-				throw new InvalidArgumentException(JText::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $this->template->template));
+				throw new \InvalidArgumentException(JText::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $this->template->template));
 			}
 
 			if ($params)
@@ -550,7 +566,7 @@ final class JApplicationSite extends JApplicationCms
 			// Check, the data were found and if template really exists
 			if (!file_exists(JPATH_THEMES . '/' . $template->template . '/index.php'))
 			{
-				throw new InvalidArgumentException(JText::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
+				throw new \InvalidArgumentException(JText::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
 			}
 		}
 
@@ -814,7 +830,7 @@ final class JApplicationSite extends JApplicationCms
 	{
 		if (is_dir(JPATH_THEMES . '/' . $template))
 		{
-			$this->template = new stdClass;
+			$this->template = new \stdClass;
 			$this->template->template = $template;
 
 			if ($styleParams instanceof Registry)

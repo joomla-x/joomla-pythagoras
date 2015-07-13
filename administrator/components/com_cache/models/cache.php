@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Cache Model
  *
@@ -54,7 +56,7 @@ class CacheModelCache extends JModelList
 		$clientId = $this->getUserStateFromRequest($this->context . '.filter.client_id', 'filter_client_id', 0, 'int');
 		$this->setState('clientId', $clientId == 1 ? 1 : 0);
 
-		$client = JApplicationHelper::getClientInfo($clientId);
+		$client = Helper::getClientInfo($clientId);
 		$this->setState('client', $client);
 
 		parent::populateState('group', 'asc');

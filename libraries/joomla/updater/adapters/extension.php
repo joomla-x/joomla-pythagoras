@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 jimport('joomla.updater.updateadapter');
 
 /**
@@ -271,7 +273,7 @@ class JUpdaterExtension extends JUpdateAdapter
 					$byName = true;
 				}
 
-				$this->latest->client_id = JApplicationHelper::getClientInfo($this->latest->client, $byName)->id;
+				$this->latest->client_id = Helper::getClientInfo($this->latest->client, $byName)->id;
 				unset($this->latest->client);
 			}
 

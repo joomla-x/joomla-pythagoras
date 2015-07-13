@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Cms\Application\Helper;
+
 /**
  * Extension object
  *
@@ -105,7 +107,7 @@ class JInstallerExtension extends JObject
 				case 'template':
 				case 'language':
 					$this->client = (string) $element->attributes()->client;
-					$tmp_client_id = JApplicationHelper::getClientInfo($this->client, 1);
+					$tmp_client_id = Helper::getClientInfo($this->client, 1);
 
 					if ($tmp_client_id == null)
 					{
@@ -126,7 +128,7 @@ class JInstallerExtension extends JObject
 					// Get and set client and group if we don't recognise the extension
 					if ($element->attributes()->client)
 					{
-						$this->client_id = JApplicationHelper::getClientInfo($this->client, 1);
+						$this->client_id = Helper::getClientInfo($this->client, 1);
 						$this->client_id = $this->client_id->id;
 					}
 
