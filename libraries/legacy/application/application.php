@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\Registry\Registry;
 
 JLog::add('JApplication is deprecated.', JLog::WARNING, 'deprecated');
@@ -839,7 +840,7 @@ class JApplication extends JApplicationBase
 	 * @return  string  Processed string
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationHelper::stringURLSafe instead
+	 * @deprecated  4.0  Use \Joomla\CMS\Application\Helper::stringURLSafe instead
 	 */
 	public static function stringURLSafe($string)
 	{
@@ -914,7 +915,7 @@ class JApplication extends JApplicationBase
 	 * @return  string  A secure hash
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationHelper::getHash instead
+	 * @deprecated  4.0  Use \Joomla\CMS\Application\Helper::getHash instead
 	 */
 	public static function getHash($seed)
 	{

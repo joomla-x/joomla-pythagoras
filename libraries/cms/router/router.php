@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+
 /**
  * Mask for the raw routing mode
  *

@@ -7,14 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Application;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JFilterOutput;
+use JInstaller;
+use JLog;
+use JText;
+use stdClass;
 
 /**
  * Application helper functions
  *
  * @since  1.5
  */
-class JApplicationHelper
+class Helper
 {
 	/**
 	 * Client information array
@@ -209,7 +218,7 @@ class JApplicationHelper
 	 */
 	public static function parseXMLInstallFile($path)
 	{
-		JLog::add('JApplicationHelper::parseXMLInstallFile is deprecated. Use JInstaller::parseXMLInstallFile instead.', JLog::WARNING, 'deprecated');
+		JLog::add(sprintf('%s is deprecated. Use JInstaller::parseXMLInstallFile instead.', __METHOD__), JLog::WARNING, 'deprecated');
 
 		return JInstaller::parseXMLInstallFile($path);
 	}
@@ -228,7 +237,7 @@ class JApplicationHelper
 	 */
 	public static function parseXMLLangMetaFile($path)
 	{
-		JLog::add('JApplicationHelper::parseXMLLangMetaFile is deprecated. Use JInstaller::parseXMLInstallFile instead.', JLog::WARNING, 'deprecated');
+		JLog::add(sprintf('%s is deprecated. Use JInstaller::parseXMLInstallFile instead.', __METHOD__), JLog::WARNING, 'deprecated');
 
 		// Read the file to see if it's a valid component XML file
 		$xml = simplexml_load_file($path);
