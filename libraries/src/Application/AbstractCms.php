@@ -29,6 +29,7 @@ use \JMenu;
 use \JPathway;
 use \JPluginHelper;
 use \JSession;
+use \JUri;
 
 /**
  * Joomla! CMS Application class
