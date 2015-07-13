@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+
 /**
  * Class to create and parse routes for the site application
  *

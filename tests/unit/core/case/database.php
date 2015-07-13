@@ -6,6 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\AbstractCMS;
+
 if (!class_exists('PHPUnit_Extensions_Database_TestCase'))
 {
 	require_once 'PHPUnit/Extensions/Database/TestCase.php';
@@ -201,14 +203,14 @@ abstract class TestCaseDatabase extends PHPUnit_Extensions_Database_TestCase
 	 * @param   array  $options      A set of options to configure the mock.
 	 * @param   array  $constructor  An array containing constructor arguments to inject into the mock.
 	 *
-	 * @return  JApplicationCms
+	 * @return  AbstractCMS
 	 *
 	 * @since   3.2
 	 */
 	public function getMockCmsApp($options = array(), $constructor = array())
 	{
 		// Attempt to load the real class first.
-		class_exists('JApplicationCms');
+		class_exists('Joomla\\CMS\\Application\\AbstractCMS');
 
 		return TestMockApplicationCms::create($this, $options, $constructor);
 	}

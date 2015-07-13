@@ -104,7 +104,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 
 		// Get a new JApplicationSite instance.
 		$this->class = new JApplicationSite($this->getMockInput(), $config);
-		TestReflection::setValue('JApplicationCms', 'instances', array('site' => $this->class));
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array('site' => $this->class));
 	}
 
 	/**
@@ -119,7 +119,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	{
 		// Reset the dispatcher and application instances.
 		TestReflection::setValue('JEventDispatcher', 'instance', null);
-		TestReflection::setValue('JApplicationCms', 'instances', array());
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array());
 
 		$_SERVER = $this->backupServer;
 
@@ -151,7 +151,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getClientId method.
+	 * Tests the AbstractCMS::getClientId method.
 	 *
 	 * @return  void
 	 *
@@ -163,7 +163,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getName method.
+	 * Tests the AbstractCMS::getName method.
 	 *
 	 * @return  void
 	 *
@@ -175,7 +175,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getMenu method.
+	 * Tests the AbstractCMS::getMenu method.
 	 *
 	 * @return  void
 	 *
@@ -207,7 +207,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getPathway method.
+	 * Tests the AbstractCMS::getPathway method.
 	 *
 	 * @return  void
 	 *
@@ -247,7 +247,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isAdmin method.
+	 * Tests the AbstractCMS::isAdmin method.
 	 *
 	 * @return  void
 	 *
@@ -259,7 +259,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isSite method.
+	 * Tests the AbstractCMS::isSite method.
 	 *
 	 * @return  void
 	 *
@@ -271,7 +271,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::render method.
+	 * Tests the AbstractCMS::render method.
 	 *
 	 * @return  void
 	 *

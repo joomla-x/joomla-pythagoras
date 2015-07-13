@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+
 /**
  * TinyMCE Editor Plugin
  *
