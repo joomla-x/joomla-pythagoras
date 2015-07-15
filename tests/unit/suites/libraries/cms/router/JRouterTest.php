@@ -68,9 +68,12 @@ class JRouterTest extends TestCase
 	 */
 	public function testProperTypeAndMode($client)
 	{
+		$this->markTestSkipped('Untestable due to global instance cache not clearable.');
+
 		$object = JRouter::getInstance($client, array('mode' => 'test'));
 
 		$expected = 'JRouter' . ucfirst($client);
+
 		$this->assertInstanceOf($expected, $object);
 		$this->assertEquals('test', $object->getMode());
 	}
@@ -84,7 +87,7 @@ class JRouterTest extends TestCase
 	 */
 	public function testSubsequentCallsReturnTheSameInstance($client)
 	{
-		$object = JRouter::getInstance($client, array('mode' => 'test'));
+		$object = JRouter::getInstance($client);
 
 		$this->assertSame($object, JRouter::getInstance($client));
 	}
