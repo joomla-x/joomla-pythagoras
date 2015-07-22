@@ -1074,7 +1074,7 @@ class JModelListTest extends TestCaseDatabase
 	 */
 	public function testGetuserstateUsesDefault()
 	{
-		// Set up a Mock for JApplicationCms
+		// Set up a Mock for AbstractCMS
 		$applicationMock = $this->getMockCmsApp();
 		$applicationMock->method('getUserState')
 			->with(
@@ -1106,7 +1106,7 @@ class JModelListTest extends TestCaseDatabase
 	 */
 	public function testGetuserstateUsesRequestData()
 	{
-		// Set up a Mock for JApplicationCms
+		// Set up a Mock for AbstractCMS
 		$applicationMock = $this->getMockCmsApp();
 		$applicationMock->method('getUserState')
 			->with(
@@ -1140,7 +1140,7 @@ class JModelListTest extends TestCaseDatabase
 	 */
 	public function testGetuserstateSupportsResetPage()
 	{
-		// Set up a Mock for JApplicationCms
+		// Set up a Mock for AbstractCMS
 		$applicationMock = $this->getMockCmsApp();
 		$applicationMock->method('getUserState')
 			->with(

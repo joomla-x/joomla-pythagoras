@@ -7,8 +7,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+
 /**
- * Inspector for the JApplicationCms class.
+ * Inspector for the Joomla\CMS\Application\AbstractCMS class.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application

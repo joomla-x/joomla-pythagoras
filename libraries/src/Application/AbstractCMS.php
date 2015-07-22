@@ -7,16 +7,41 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Application;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+
+use Exception;
+use JApplicationWeb;
+use JApplicationWebClient;
+use JAuthentication;
+use JDocument;
+use JError;
+use JFactory;
+use JInput;
+use JLanguage;
+use JLog;
+use JMenu;
+use JPathway;
+use JPluginHelper;
+use JProfiler;
+use JRoute;
+use JRouter;
+use JSession;
+use JText;
+use JUri;
+use JUser;
+use RuntimeException;
+use stdClass;
 
 /**
  * Joomla! CMS Application class
  *
  * @since  3.2
  */
-class JApplicationCms extends JApplicationWeb
+class AbstractCMS extends JApplicationWeb
 {
 	/**
 	 * Array of options for the JDocument object
@@ -373,13 +398,13 @@ class JApplicationCms extends JApplicationWeb
 	}
 
 	/**
-	 * Returns a reference to the global JApplicationCms object, only creating it if it doesn't already exist.
+	 * Returns a reference to the global application object, only creating it if it doesn't already exist.
 	 *
-	 * This method must be invoked as: $web = JApplicationCms::getInstance();
+	 * This method must be invoked as: $web = \Joomla\CMS\Application\AbstractCMS::getInstance();
 	 *
-	 * @param   string  $name  The name (optional) of the JApplicationCms class to instantiate.
+	 * @param   string  $name  The name (optional) of the application class to instantiate.
 	 *
-	 * @return  JApplicationCms
+	 * @return  $this
 	 *
 	 * @since   3.2
 	 * @throws  RuntimeException
@@ -388,8 +413,8 @@ class JApplicationCms extends JApplicationWeb
 	{
 		if (empty(static::$instances[$name]))
 		{
-			// Create a JApplicationCms object.
-			$classname = 'JApplication' . ucfirst($name);
+			// Create an application object.
+			$classname = 'Joomla\\CMS\\Application\\' . ucfirst($name);
 
 			if (!class_exists($classname))
 			{
@@ -687,7 +712,7 @@ class JApplicationCms extends JApplicationWeb
 	 *
 	 * @param   JSession  $session  An optional session object. If omitted, the session is created.
 	 *
-	 * @return  JApplicationCms  This method is chainable.
+	 * @return  $this
 	 *
 	 * @since   3.2
 	 */
@@ -701,7 +726,7 @@ class JApplicationCms extends JApplicationWeb
 		}
 
 		// Generate a session name.
-		$name = JApplicationHelper::getHash($this->get('session_name', get_class($this)));
+		$name = Helper::getHash($this->get('session_name', get_class($this)));
 
 		// Calculate the session lifetime.
 		$lifetime = (($this->get('lifetime')) ? $this->get('lifetime') * 60 : 900);

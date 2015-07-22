@@ -7,7 +7,7 @@
  */
 
 /**
- * Class to mock JApplicationCms.
+ * Class to mock Joomla\CMS\Application\AbstractCMS.
  *
  * @package  Joomla.Test
  * @since    3.2
@@ -15,7 +15,7 @@
 class TestMockApplicationCms extends TestMockApplicationWeb
 {
 	/**
-	 * Gets the methods of the JApplicationCms object.
+	 * Gets the methods of the AbstractCMS object.
 	 *
 	 * @return  array
 	 *
@@ -23,7 +23,7 @@ class TestMockApplicationCms extends TestMockApplicationWeb
 	 */
 	public static function getMethods()
 	{
-		// Collect all the relevant methods in JApplicationCms (work in progress).
+		// Collect all the relevant methods in AbstractCMS (work in progress).
 		$methods = array(
 			'getMenu',
 			'getPathway',
@@ -52,14 +52,14 @@ class TestMockApplicationCms extends TestMockApplicationWeb
 	 */
 	public static function addBehaviours($test, $mockObject, $options)
 	{
-		// Mock calls to JApplicationCms::getMenu();
+		// Mock calls to AbstractCMS::getMenu();
 		$mockObject->expects($test->any())->method('getMenu')->will($test->returnValue(TestMockMenu::create($test)));
 
 		return parent::addBehaviours($test, $mockObject, $options);
 	}
 
 	/**
-	 * Creates and instance of the mock JApplicationCms object.
+	 * Creates an instance of the mock AbstractCMS object.
 	 *
 	 * The test can implement the following overrides:
 	 * - mockAppendBody
@@ -90,7 +90,7 @@ class TestMockApplicationCms extends TestMockApplicationWeb
 		if (isset($options))
 		// Create the mock.
 		$mockObject = $test->getMock(
-			'JApplicationCms',
+			'\\Joomla\\CMS\\Application\\AbstractCMS',
 			$methods,
 			// Constructor arguments.
 			$constructor,
