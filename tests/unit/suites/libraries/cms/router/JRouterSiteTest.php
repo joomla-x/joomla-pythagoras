@@ -1333,7 +1333,7 @@ class JRouterSiteTest extends TestCase
 		 * Check if an instance of JComponentRouterLegacy
 		 * is returned for non-existing routers
 		 */
-		$this->assertInstanceOf('JComponentRouterLegacy', $object->getComponentRouter('com_legacy'));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\Legacy', $object->getComponentRouter('com_legacy'));
 	}
 
 	/**
