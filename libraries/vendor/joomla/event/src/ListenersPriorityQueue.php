@@ -8,81 +8,40 @@
 
 namespace Joomla\Event;
 
-use SplPriorityQueue;
-use SplObjectStorage;
-use IteratorAggregate;
-use Countable;
-
 /**
  * A class containing an inner listeners priority queue that can be iterated multiple times.
  * One instance of ListenersPriorityQueue is used per Event in the Dispatcher.
  *
  * @since  1.0
  */
-class ListenersPriorityQueue implements IteratorAggregate, Countable
+class ListenersPriorityQueue extends \SplPriorityQueue
 {
 	/**
-	 * The inner priority queue.
-	 *
-	 * @var    SplPriorityQueue
-	 *
-	 * @since  1.0
-	 */
-	protected $queue;
-
-	/**
-	 * A copy of the listeners contained in the queue
-	 * that is used when detaching them to
-	 * recreate the queue or to see if the queue contains
-	 * a given listener.
-	 *
-	 * @var    SplObjectStorage
-	 *
-	 * @since  1.0
-	 */
-	protected $storage;
-
-	/**
-	 * A decreasing counter used to compute
-	 * the internal priority as an array because
-	 * SplPriorityQueue dequeues elements with the same priority.
+	 * A decreasing counter used to compute the internal priority as an array because SplPriorityQueue dequeues elements with the same priority.
 	 *
 	 * @var    integer
-	 *
 	 * @since  1.0
 	 */
 	private $counter = PHP_INT_MAX;
 
 	/**
-	 * Constructor.
-	 *
-	 * @since  1.0
-	 */
-	public function __construct()
-	{
-		$this->queue = new SplPriorityQueue;
-		$this->storage = new SplObjectStorage;
-	}
-
-	/**
 	 * Add a listener with the given priority only if not already present.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
-	 * @param   integer          $priority  The listener priority.
+	 * @param   callable  $callback   A callable function acting as an event listener.
+	 * @param   integer   $priority   The listener priority.
 	 *
-	 * @return  ListenersPriorityQueue  This method is chainable.
+	 * @return  $this
 	 *
 	 * @since   1.0
 	 */
-	public function add($listener, $priority)
+	public function add(callable $callback, $priority)
 	{
-		if (!$this->storage->contains($listener))
+		if (!$this->has($callback))
 		{
 			// Compute the internal priority as an array.
 			$priority = array($priority, $this->counter--);
 
-			$this->storage->attach($listener, $priority);
-			$this->queue->insert($listener, $priority);
+			$this->insert($callback, $priority);
 		}
 
 		return $this;
@@ -91,25 +50,29 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	/**
 	 * Remove a listener from the queue.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
+	 * @param   callable  $callback  A callable function acting as an event listener.
 	 *
-	 * @return  ListenersPriorityQueue  This method is chainable.
+	 * @return  $this
 	 *
 	 * @since   1.0
 	 */
-	public function remove($listener)
+	public function remove(callable $callback)
 	{
-		if ($this->storage->contains($listener))
+		if ($this->has($callback))
 		{
-			$this->storage->detach($listener);
-			$this->storage->rewind();
+			// Clone ourselves to retain the existing queue data
+			$self = clone $this;
+			$self->setExtractFlags(self::EXTR_BOTH);
 
-			$this->queue = new SplPriorityQueue;
+			// And now clear our queue
+			$this->extract();
 
-			foreach ($this->storage as $listener)
+			foreach ($self as $listener)
 			{
-				$priority = $this->storage->getInfo();
-				$this->queue->insert($listener, $priority);
+				if ($listener['data'] !== $callback)
+				{
+					$this->insert($listener['data'], $listener['priority']);
+				}
 			}
 		}
 
@@ -119,32 +82,48 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	/**
 	 * Tell if the listener exists in the queue.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
+	 * @param   callable  $callback  A callable function acting as an event listener.
 	 *
 	 * @return  boolean  True if it exists, false otherwise.
 	 *
 	 * @since   1.0
 	 */
-	public function has($listener)
+	public function has(callable $callback)
 	{
-		return $this->storage->contains($listener);
+		$self = clone $this;
+
+		foreach ($self as $item)
+		{
+			if ($item === $callback)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
 	 * Get the priority of the given listener.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
-	 * @param   mixed            $default   The default value to return if the listener doesn't exist.
+	 * @param   callable  $callback  A callable function acting as an event listener.
+	 * @param   mixed     $default   The default value to return if the listener doesn't exist.
 	 *
-	 * @return  mixed  The listener priority if it exists, null otherwise.
+	 * @return  mixed  The listener priority if it exists or the specified default value
 	 *
 	 * @since   1.0
 	 */
-	public function getPriority($listener, $default = null)
+	public function getPriority(callable $callback, $default = null)
 	{
-		if ($this->storage->contains($listener))
+		$self = clone $this;
+		$self->setExtractFlags(self::EXTR_BOTH);
+
+		foreach ($self as $item)
 		{
-			return $this->storage[$listener][0];
+			if ($item['data'] === $callback)
+			{
+				return $item['priority'][0];
+			}
 		}
 
 		return $default;
@@ -173,16 +152,16 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	}
 
 	/**
-	 * Get the inner queue with its cursor on top of the heap.
+	 * Get the priority queue with its cursor on top of the heap.
 	 *
-	 * @return  SplPriorityQueue  The inner queue.
+	 * @return  $this
 	 *
 	 * @since   1.0
 	 */
 	public function getIterator()
 	{
 		// SplPriorityQueue queue is a heap.
-		$queue = clone $this->queue;
+		$queue = clone $this;
 
 		if (!$queue->isEmpty())
 		{
@@ -190,17 +169,5 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 		}
 
 		return $queue;
-	}
-
-	/**
-	 * Count the number of listeners in the queue.
-	 *
-	 * @return  integer  The number of listeners in the queue.
-	 *
-	 * @since   1.0
-	 */
-	public function count()
-	{
-		return count($this->queue);
 	}
 }
