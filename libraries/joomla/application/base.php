@@ -92,14 +92,19 @@ abstract class JApplicationBase extends AbstractApplication
 	/**
 	 * Calls all handlers associated with an event group.
 	 *
+	 * This is a legacy method, implementing old-style (Joomla! 3.x) plugin calls. It's best to go directly through the
+	 * Dispatcher and handle the returned EventInterface object instead of going through this method. This method is
+	 * deprecated and will be removed in Joomla! 5.x.
+	 *
+	 * This method will only return the 'result' argument of the event
+	 *
 	 * @param   string        $eventName  The event name.
 	 * @param   array|Event   $args       An array of arguments or an Event object (optional).
-	 *
-	 * TODO Force $args to be an Event object
 	 *
 	 * @return  array   An array of results from each function call, or null if no dispatcher is defined.
 	 *
 	 * @since   12.1
+	 * @deprecated
 	 */
 	public function triggerEvent($eventName, $args = null)
 	{
@@ -110,17 +115,21 @@ abstract class JApplicationBase extends AbstractApplication
 		{
 			if ($args instanceof Event)
 			{
-				return $dispatcher->dispatch($eventName, $args);
+				$event = $args;
 			}
-
-			if (is_null($args))
+			else
 			{
-				$args = [];
+				if (is_null($args))
+				{
+					$args = [];
+				}
+
+				$event = new Event($eventName, $args);
 			}
 
-			$event = new Event($eventName, $args);
+			$result = $dispatcher->dispatch($eventName, $event);
 
-			return $dispatcher->dispatch($eventName, $event);
+			return $result['result'];
 		}
 
 		return null;
