@@ -232,7 +232,7 @@ class UsersModelRegistration extends JModelForm
 			unset($this->data->password2);
 
 			// Get the dispatcher and load the users plugins.
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JFactory::getApplication()->getDispatcher();
 			JPluginHelper::importPlugin('user');
 
 			// Trigger the data preparation event.

@@ -61,7 +61,7 @@ class UsersModelNote extends JModelAdmin
 		$result = parent::getItem($pk);
 
 		// Get the dispatcher and load the content plugins.
-		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher	= JFactory::getApplication()->getDispatcher();
 		JPluginHelper::importPlugin('content');
 
 		// Load the user plugins for backward compatibility (v3.3.3 and earlier).

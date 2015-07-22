@@ -777,7 +777,7 @@ class JUser extends JObject
 
 			// Fire the onUserBeforeSave event.
 			JPluginHelper::importPlugin('user');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JFactory::getApplication()->getDispatcher();
 
 			$result = $dispatcher->trigger('onUserBeforeSave', array($oldUser->getProperties(), $isNew, $this->getProperties()));
 
@@ -834,7 +834,7 @@ class JUser extends JObject
 		JPluginHelper::importPlugin('user');
 
 		// Trigger the onUserBeforeDelete event
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$dispatcher->trigger('onUserBeforeDelete', array($this->getProperties()));
 
 		// Create the user table object

@@ -319,7 +319,7 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$pks        = (array) $pks;
 		$user       = JFactory::getUser();
 		$table      = $this->getTable();
@@ -888,7 +888,7 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$input      = JFactory::getApplication()->input;
 		$table      = $this->getTable();
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('module.id');

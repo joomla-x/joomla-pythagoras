@@ -215,7 +215,7 @@ abstract class ConfigModelCms extends JModelDatabase
 	protected function cleanCache($group = null, $client_id = 0)
 	{
 		$conf = JFactory::getConfig();
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		$options = array(
 			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : JFactory::getApplication()->input->get('option')),

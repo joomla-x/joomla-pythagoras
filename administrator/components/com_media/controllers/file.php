@@ -126,7 +126,7 @@ class MediaControllerFile extends JControllerLegacy
 		// Set FTP credentials, if given
 		JClientHelper::setCredentialsFromRequest('ftp');
 		JPluginHelper::importPlugin('content');
-		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher	= JFactory::getApplication()->getDispatcher();
 
 		foreach ($files as &$file)
 		{
@@ -232,7 +232,7 @@ class MediaControllerFile extends JControllerLegacy
 		JClientHelper::setCredentialsFromRequest('ftp');
 
 		JPluginHelper::importPlugin('content');
-		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher	= JFactory::getApplication()->getDispatcher();
 
 		$ret = true;
 

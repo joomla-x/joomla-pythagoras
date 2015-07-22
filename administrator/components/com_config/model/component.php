@@ -122,7 +122,7 @@ class ConfigModelComponent extends ConfigModelForm
 	public function save($data)
 	{
 		$table      = JTable::getInstance('extension');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$context    = $this->option . '.' . $this->name;
 		JPluginHelper::importPlugin('extension');
 

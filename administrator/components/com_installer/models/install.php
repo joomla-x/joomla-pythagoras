@@ -74,7 +74,7 @@ class InstallerModelInstall extends JModelLegacy
 
 		// Load installer plugins for assistance if required:
 		JPluginHelper::importPlugin('installer');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		$package = null;
 

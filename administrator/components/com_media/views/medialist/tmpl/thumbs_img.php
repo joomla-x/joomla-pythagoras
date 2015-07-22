@@ -13,7 +13,7 @@ use Joomla\Registry\Registry;
 
 $user = JFactory::getUser();
 $params = new Registry;
-$dispatcher	= JEventDispatcher::getInstance();
+$dispatcher	= JFactory::getApplication()->getDispatcher();
 $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">

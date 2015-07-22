@@ -463,7 +463,7 @@ class CategoriesModelCategory extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$table      = $this->getTable();
 		$input      = JFactory::getApplication()->input;
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
@@ -660,7 +660,7 @@ class CategoriesModelCategory extends JModelAdmin
 	{
 		if (parent::publish($pks, $value))
 		{
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JFactory::getApplication()->getDispatcher();
 			$extension = JFactory::getApplication()->input->get('extension');
 
 			// Include the content plugins for the change of category state event.

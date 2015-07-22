@@ -93,7 +93,7 @@ class TagsViewTag extends JViewLegacy
 				// For some plugins.
 				!empty($itemElement->core_body)? $itemElement->text = $itemElement->core_body : $itemElement->text = null;
 
-				$dispatcher = JEventDispatcher::getInstance();
+				$dispatcher = JFactory::getApplication()->getDispatcher();
 
 				JPluginHelper::importPlugin('content');
 				$dispatcher->trigger('onContentPrepare', array ('com_tags.tag', &$itemElement, &$itemElement->core_params, 0));

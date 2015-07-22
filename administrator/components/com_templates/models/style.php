@@ -99,7 +99,7 @@ class TemplatesModelStyle extends JModelAdmin
 		$pks        = (array) $pks;
 		$user       = JFactory::getUser();
 		$table      = $this->getTable();
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$context    = $this->option . '.' . $this->name;
 
 		JPluginHelper::importPlugin($this->events_map['delete']);
@@ -169,7 +169,7 @@ class TemplatesModelStyle extends JModelAdmin
 			throw new Exception(JText::_('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
 
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$context    = $this->option . '.' . $this->name;
 
 		// Include the plugins for the save events.
@@ -476,7 +476,7 @@ class TemplatesModelStyle extends JModelAdmin
 		}
 
 		$app        = JFactory::getApplication();
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$table      = $this->getTable();
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('style.id');
 		$isNew      = true;

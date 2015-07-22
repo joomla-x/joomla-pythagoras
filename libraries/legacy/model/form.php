@@ -236,7 +236,7 @@ abstract class JModelForm extends JModelLegacy
 	protected function preprocessData($context, &$data)
 	{
 		// Get the dispatcher and load the users plugins.
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		JPluginHelper::importPlugin('content');
 
 		// Trigger the data preparation event.
@@ -268,7 +268,7 @@ abstract class JModelForm extends JModelLegacy
 		JPluginHelper::importPlugin($group);
 
 		// Get the dispatcher.
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		// Trigger the form preparation event.
 		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));

@@ -618,7 +618,7 @@ class JModelList extends JModelLegacy
 		JPluginHelper::importPlugin($group);
 
 		// Get the dispatcher.
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		// Trigger the form preparation event.
 		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));

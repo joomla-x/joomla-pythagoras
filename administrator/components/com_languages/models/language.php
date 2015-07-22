@@ -173,7 +173,7 @@ class LanguagesModelLanguage extends JModelAdmin
 		$langId = (!empty($data['lang_id'])) ? $data['lang_id'] : (int) $this->getState('language.id');
 		$isNew	= true;
 
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		JPluginHelper::importPlugin($this->events_map['save']);
 
 		$table   = $this->getTable();

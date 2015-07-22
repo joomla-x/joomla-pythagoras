@@ -83,7 +83,7 @@ class UsersModelUser extends JModelAdmin
 		$result->tags->getTagIds($result->id, $context);
 
 		// Get the dispatcher and load the content plugins.
-		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher	= JFactory::getApplication()->getDispatcher();
 		JPluginHelper::importPlugin('content');
 
 		// Load the user plugins for backward compatibility (v3.3.3 and earlier).
@@ -320,7 +320,7 @@ class UsersModelUser extends JModelAdmin
 		$iAmSuperAdmin = $user->authorise('core.admin');
 
 		JPluginHelper::importPlugin($this->events_map['delete']);
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		if (in_array($user->id, $pks))
 		{
@@ -391,7 +391,7 @@ class UsersModelUser extends JModelAdmin
 	public function block(&$pks, $value = 1)
 	{
 		$app        = JFactory::getApplication();
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$user       = JFactory::getUser();
 
 		// Check if I am a Super Admin
@@ -506,7 +506,7 @@ class UsersModelUser extends JModelAdmin
 	 */
 	public function activate(&$pks)
 	{
-		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher	= JFactory::getApplication()->getDispatcher();
 		$user		= JFactory::getUser();
 
 		// Check if I am a Super Admin

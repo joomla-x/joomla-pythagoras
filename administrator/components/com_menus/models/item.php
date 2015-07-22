@@ -1163,7 +1163,7 @@ class MenusModelItem extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('item.id');
 		$isNew      = true;
 		$table      = $this->getTable();

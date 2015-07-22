@@ -94,7 +94,7 @@ class ContentViewCategory extends JViewCategory
 			$item->catslug = $item->category_alias ? ($item->catid . ':' . $item->category_alias) : $item->catid;
 			$item->event   = new stdClass;
 
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JFactory::getApplication()->getDispatcher();
 
 			// Old plugins: Ensure that text property is available
 			if (!isset($item->text))

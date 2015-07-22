@@ -237,7 +237,7 @@ class UsersModelGroup extends JModelAdmin
 
 		// Load plugins.
 		JPluginHelper::importPlugin($this->events_map['delete']);
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		// Check if I am a Super Admin
 		$iAmSuperAdmin	= $user->authorise('core.admin');

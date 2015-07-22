@@ -435,7 +435,7 @@ class FinderIndexerHelper
 	public static function getContentExtras(FinderIndexerResult &$item)
 	{
 		// Get the event dispatcher.
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		// Load the finder plugin group.
 		JPluginHelper::importPlugin('finder');
@@ -476,7 +476,7 @@ class FinderIndexerHelper
 		static $loaded;
 
 		// Get the dispatcher.
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		// Load the content plugins if necessary.
 		if (empty($loaded))

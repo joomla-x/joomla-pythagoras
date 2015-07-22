@@ -193,7 +193,7 @@ class MenusModelMenu extends JModelForm
 	 */
 	public function save($data)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$id         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('menu.id');
 		$isNew      = true;
 
@@ -259,7 +259,7 @@ class MenusModelMenu extends JModelForm
 	 */
 	public function delete($itemIds)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 
 		// Sanitize the ids.
 		$itemIds = (array) $itemIds;

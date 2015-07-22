@@ -210,7 +210,7 @@ abstract class JUserHelper
 		}
 
 		// Get the dispatcher and load the user's plugins.
-		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher	= JFactory::getApplication()->getDispatcher();
 		JPluginHelper::importPlugin('user');
 
 		$data = new JObject;

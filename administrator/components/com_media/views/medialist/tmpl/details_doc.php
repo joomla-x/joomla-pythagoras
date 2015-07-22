@@ -14,7 +14,7 @@ JHtml::_('bootstrap.tooltip');
 
 $user = JFactory::getUser();
 $params = new Registry;
-$dispatcher	= JEventDispatcher::getInstance();
+$dispatcher	= JFactory::getApplication()->getDispatcher();
 $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
 <tr>

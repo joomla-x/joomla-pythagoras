@@ -118,7 +118,7 @@ JHtml::_('bootstrap.tooltip');
 
 	<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'upload')); ?>
 
-			<?php JEventDispatcher::getInstance()->trigger('onInstallerViewBeforeFirstTab', array()); ?>
+			<?php JFactory::getApplication()->triggerEvent('onInstallerViewBeforeFirstTab', array()); ?>
 
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'upload', JText::_('COM_INSTALLER_UPLOAD_PACKAGE_FILE', true)); ?>
 			<fieldset class="uploadform">
@@ -166,7 +166,7 @@ JHtml::_('bootstrap.tooltip');
 
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php JEventDispatcher::getInstance()->trigger('onInstallerViewAfterLastTab', array()); ?>
+		<?php JFactory::getApplication()->triggerEvent('onInstallerViewAfterLastTab', array()); ?>
 
 		<?php if ($this->ftp) : ?>
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'ftp', JText::_('COM_INSTALLER_MSG_DESCFTPTITLE', true)); ?>

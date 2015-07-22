@@ -37,7 +37,7 @@ abstract class JHtmlContent
 		$article = new stdClass;
 		$article->text = $text;
 		JPluginHelper::importPlugin('content');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$dispatcher->trigger('onContentPrepare', array($context, &$article, &$params, 0));
 
 		return $article->text;
