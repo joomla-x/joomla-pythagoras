@@ -129,7 +129,7 @@ abstract class JApplicationBase extends AbstractApplication
 
 			$result = $dispatcher->dispatch($eventName, $event);
 
-			return $result['result'];
+			return is_null($result['result']) ? [] : $result['result'];
 		}
 
 		return null;

@@ -193,7 +193,6 @@ class MenusModelMenu extends JModelForm
 	 */
 	public function save($data)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$id         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('menu.id');
 		$isNew      = true;
 
@@ -227,7 +226,7 @@ class MenusModelMenu extends JModelForm
 		}
 
 		// Trigger the before event.
-		$result = $dispatcher->trigger('onContentBeforeSave', array($this->_context, &$table, $isNew));
+		$result = JFactory::getApplication()->triggerEvent('onContentBeforeSave', array($this->_context, &$table, $isNew));
 
 		// Store the data.
 		if (in_array(false, $result, true) || !$table->store())
@@ -238,7 +237,7 @@ class MenusModelMenu extends JModelForm
 		}
 
 		// Trigger the after save event.
-		$dispatcher->trigger('onContentAfterSave', array($this->_context, &$table, $isNew));
+		JFactory::getApplication()->triggerEvent('onContentAfterSave', array($this->_context, &$table, $isNew));
 
 		$this->setState('menu.id', $table->id);
 
@@ -259,8 +258,6 @@ class MenusModelMenu extends JModelForm
 	 */
 	public function delete($itemIds)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
-
 		// Sanitize the ids.
 		$itemIds = (array) $itemIds;
 		JArrayHelper::toInteger($itemIds);
@@ -277,7 +274,7 @@ class MenusModelMenu extends JModelForm
 			if ($table->load($itemId))
 			{
 				// Trigger the before delete event.
-				$result = $dispatcher->trigger('onContentBeforeDelete', array($this->_context, $table));
+				$result = JFactory::getApplication()->triggerEvent('onContentBeforeDelete', array($this->_context, $table));
 
 				if (in_array(false, $result, true) || !$table->delete($itemId))
 				{
@@ -287,7 +284,7 @@ class MenusModelMenu extends JModelForm
 				}
 
 				// Trigger the after delete event.
-				$dispatcher->trigger('onContentAfterDelete', array($this->_context, $table));
+				JFactory::getApplication()->triggerEvent('onContentAfterDelete', array($this->_context, $table));
 
 				// TODO: Delete the menu associations - Menu items and Modules
 			}

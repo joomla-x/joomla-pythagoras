@@ -746,7 +746,6 @@ abstract class JModelAdmin extends JModelForm
 	 */
 	public function delete(&$pks)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$pks = (array) $pks;
 		$table = $this->getTable();
 
@@ -763,7 +762,7 @@ abstract class JModelAdmin extends JModelForm
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the before delete event.
-					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+					$result = JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
 
 					if (in_array(false, $result, true))
 					{
@@ -780,7 +779,7 @@ abstract class JModelAdmin extends JModelForm
 					}
 
 					// Trigger the after event.
-					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+					JFactory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
 				}
 				else
 				{
@@ -944,7 +943,6 @@ abstract class JModelAdmin extends JModelForm
 	 */
 	public function publish(&$pks, $value = 1)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$pks = (array) $pks;
@@ -981,14 +979,7 @@ abstract class JModelAdmin extends JModelForm
 		$context = $this->option . '.' . $this->name;
 
 		// Trigger the change state event.
-		$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
-
-		if (in_array(false, $result, true))
-		{
-			$this->setError($table->getError());
-
-			return false;
-		}
+		$result = JFactory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
 
 		// Clear the component's cache
 		$this->cleanCache();
@@ -1078,7 +1069,6 @@ abstract class JModelAdmin extends JModelForm
 	 */
 	public function save($data)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$table      = $this->getTable();
 		$context    = $this->option . '.' . $this->name;
 
@@ -1124,7 +1114,7 @@ abstract class JModelAdmin extends JModelForm
 			}
 
 			// Trigger the before save event.
-			$result = $dispatcher->trigger($this->event_before_save, array($context, $table, $isNew));
+			$result = JFactory::getApplication()->triggerEvent($this->event_before_save, array($context, $table, $isNew));
 
 			if (in_array(false, $result, true))
 			{
@@ -1145,7 +1135,7 @@ abstract class JModelAdmin extends JModelForm
 			$this->cleanCache();
 
 			// Trigger the after save event.
-			$dispatcher->trigger($this->event_after_save, array($context, $table, $isNew));
+			JFactory::getApplication()->triggerEvent($this->event_after_save, array($context, $table, $isNew));
 		}
 		catch (Exception $e)
 		{

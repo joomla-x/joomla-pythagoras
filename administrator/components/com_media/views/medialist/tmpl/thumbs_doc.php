@@ -13,8 +13,7 @@ use Joomla\Registry\Registry;
 
 $user = JFactory::getUser();
 $params = new Registry;
-$dispatcher	= JFactory::getApplication()->getDispatcher();
-$dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
+JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">
 	<?php if ($user->authorise('core.delete', 'com_media')):?>
@@ -31,4 +30,4 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 	</div>
 </li>
 <?php
-	$dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
+JFactory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_media.file', &$this->_tmp_doc, &$params));

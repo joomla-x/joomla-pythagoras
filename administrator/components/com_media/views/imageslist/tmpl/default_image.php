@@ -12,8 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\Registry\Registry;
 
 $params = new Registry;
-$dispatcher	= JFactory::getApplication()->getDispatcher();
-$dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">
 	<a class="img-preview" href="javascript:ImageManager.populateFields('<?php echo $this->_tmp_img->path_relative; ?>')" title="<?php echo $this->_tmp_img->name; ?>" >
@@ -26,4 +25,4 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 	</a>
 </li>
 <?php
-$dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+JFactory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));

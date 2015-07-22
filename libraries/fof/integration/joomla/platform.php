@@ -538,9 +538,7 @@ class FOFIntegrationJoomlaPlatform extends FOFPlatform implements FOFPlatformInt
 	{
 		if (!$this->isCli())
 		{
-			$dispatcher = JFactory::getApplication()->getDispatcher();
-
-			return $dispatcher->trigger($event, $data);
+			return JFactory::getApplication()->triggerEvent($event, $data);
 		}
 		else
 		{

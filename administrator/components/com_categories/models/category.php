@@ -463,7 +463,6 @@ class CategoriesModelCategory extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$table      = $this->getTable();
 		$input      = JFactory::getApplication()->input;
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
@@ -537,7 +536,7 @@ class CategoriesModelCategory extends JModelAdmin
 		}
 
 		// Trigger the before save event.
-		$result = $dispatcher->trigger($this->event_before_save, array($context, &$table, $isNew));
+		$result = JFactory::getApplication()->triggerEvent($this->event_before_save, array($context, &$table, $isNew));
 
 		if (in_array(false, $result, true))
 		{
@@ -620,7 +619,7 @@ class CategoriesModelCategory extends JModelAdmin
 		}
 
 		// Trigger the after save event.
-		$dispatcher->trigger($this->event_after_save, array($context, &$table, $isNew));
+		JFactory::getApplication()->triggerEvent($this->event_after_save, array($context, &$table, $isNew));
 
 		// Rebuild the path for the category:
 		if (!$table->rebuildPath($table->id))
@@ -660,14 +659,13 @@ class CategoriesModelCategory extends JModelAdmin
 	{
 		if (parent::publish($pks, $value))
 		{
-			$dispatcher = JFactory::getApplication()->getDispatcher();
 			$extension = JFactory::getApplication()->input->get('extension');
 
 			// Include the content plugins for the change of category state event.
 			JPluginHelper::importPlugin('content');
 
 			// Trigger the onCategoryChangeState event.
-			$dispatcher->trigger('onCategoryChangeState', array($extension, $pks, $value));
+			JFactory::getApplication()->triggerEvent('onCategoryChangeState', array($extension, $pks, $value));
 
 			return true;
 		}

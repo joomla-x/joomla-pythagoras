@@ -80,7 +80,6 @@ class FinderModelMaps extends JModelList
 	 */
 	public function delete(&$pks)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$pks = (array) $pks;
 		$table = $this->getTable();
 
@@ -97,7 +96,7 @@ class FinderModelMaps extends JModelList
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->trigger('onContentBeforeDelete', array($context, $table));
+					$result = JFactory::getApplication()->triggerEvent('onContentBeforeDelete', array($context, $table));
 
 					if (in_array(false, $result, true))
 					{
@@ -114,7 +113,7 @@ class FinderModelMaps extends JModelList
 					}
 
 					// Trigger the onContentAfterDelete event.
-					$dispatcher->trigger('onContentAfterDelete', array($context, $table));
+					JFactory::getApplication()->triggerEvent('onContentAfterDelete', array($context, $table));
 				}
 				else
 				{
@@ -286,7 +285,6 @@ class FinderModelMaps extends JModelList
 	 */
 	public function publish(&$pks, $value = 1)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$pks = (array) $pks;
@@ -323,7 +321,7 @@ class FinderModelMaps extends JModelList
 		$context = $this->option . '.' . $this->name;
 
 		// Trigger the onContentChangeState event.
-		$result = $dispatcher->trigger('onContentChangeState', array($context, $pks, $value));
+		$result = JFactory::getApplication()->triggerEvent('onContentChangeState', array($context, $pks, $value));
 
 		if (in_array(false, $result, true))
 		{

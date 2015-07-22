@@ -15,8 +15,7 @@ JHtml::_('bootstrap.tooltip');
 
 $user = JFactory::getUser();
 $params = new Registry;
-$dispatcher	= JFactory::getApplication()->getDispatcher();
-$dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
 <tr>
 	<td>
@@ -39,4 +38,4 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 	<?php endif;?>
 </tr>
 <?php
-	$dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+JFactory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));

@@ -236,17 +236,10 @@ abstract class JModelForm extends JModelLegacy
 	protected function preprocessData($context, &$data)
 	{
 		// Get the dispatcher and load the users plugins.
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		JPluginHelper::importPlugin('content');
 
 		// Trigger the data preparation event.
-		$results = $dispatcher->trigger('onContentPrepareData', array($context, $data));
-
-		// Check for errors encountered while preparing the data.
-		if (count($results) > 0 && in_array(false, $results, true))
-		{
-			$this->setError($dispatcher->getError());
-		}
+		$results = JFactory::getApplication()->triggerEvent('onContentPrepareData', array($context, $data));
 	}
 
 	/**
@@ -267,23 +260,8 @@ abstract class JModelForm extends JModelLegacy
 		// Import the appropriate plugin group.
 		JPluginHelper::importPlugin($group);
 
-		// Get the dispatcher.
-		$dispatcher = JFactory::getApplication()->getDispatcher();
-
 		// Trigger the form preparation event.
-		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
-
-		// Check for errors encountered while preparing the form.
-		if (count($results) && in_array(false, $results, true))
-		{
-			// Get the last error.
-			$error = $dispatcher->getError();
-
-			if (!($error instanceof Exception))
-			{
-				throw new Exception($error);
-			}
-		}
+		$results = JFactory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
 	}
 
 	/**

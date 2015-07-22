@@ -777,9 +777,8 @@ class JUser extends JObject
 
 			// Fire the onUserBeforeSave event.
 			JPluginHelper::importPlugin('user');
-			$dispatcher = JFactory::getApplication()->getDispatcher();
 
-			$result = $dispatcher->trigger('onUserBeforeSave', array($oldUser->getProperties(), $isNew, $this->getProperties()));
+			$result = JFactory::getApplication()->triggerEvent('onUserBeforeSave', array($oldUser->getProperties(), $isNew, $this->getProperties()));
 
 			if (in_array(false, $result, true))
 			{
@@ -804,7 +803,7 @@ class JUser extends JObject
 			}
 
 			// Fire the onUserAfterSave event
-			$dispatcher->trigger('onUserAfterSave', array($this->getProperties(), $isNew, $result, $this->getError()));
+			JFactory::getApplication()->triggerEvent('onUserAfterSave', array($this->getProperties(), $isNew, $result, $this->getError()));
 		}
 		catch (Exception $e)
 		{
@@ -834,8 +833,7 @@ class JUser extends JObject
 		JPluginHelper::importPlugin('user');
 
 		// Trigger the onUserBeforeDelete event
-		$dispatcher = JFactory::getApplication()->getDispatcher();
-		$dispatcher->trigger('onUserBeforeDelete', array($this->getProperties()));
+		JFactory::getApplication()->triggerEvent('onUserBeforeDelete', array($this->getProperties()));
 
 		// Create the user table object
 		$table = $this->getTable();
@@ -846,7 +844,7 @@ class JUser extends JObject
 		}
 
 		// Trigger the onUserAfterDelete event
-		$dispatcher->trigger('onUserAfterDelete', array($this->getProperties(), $result, $this->getError()));
+		JFactory::getApplication()->triggerEvent('onUserAfterDelete', array($this->getProperties(), $result, $this->getError()));
 
 		return $result;
 	}

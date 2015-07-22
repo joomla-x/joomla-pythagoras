@@ -99,7 +99,6 @@ class FinderModelIndex extends JModelList
 	 */
 	public function delete(&$pks)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$pks = (array) $pks;
 		$table = $this->getTable();
 
@@ -116,7 +115,7 @@ class FinderModelIndex extends JModelList
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+					$result = JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
 
 					if (in_array(false, $result, true))
 					{
@@ -133,7 +132,7 @@ class FinderModelIndex extends JModelList
 					}
 
 					// Trigger the onContentAfterDelete event.
-					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+					JFactory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
 				}
 				else
 				{
@@ -399,7 +398,7 @@ class FinderModelIndex extends JModelList
 		$context = $this->option . '.' . $this->name;
 
 		// Trigger the onContentChangeState event.
-		$result = $dispatcher->trigger('onContentChangeState', array($context, $pks, $value));
+		$result = JFactory::getApplication()->triggerEvent('onContentChangeState', array($context, $pks, $value));
 
 		if (in_array(false, $result, true))
 		{

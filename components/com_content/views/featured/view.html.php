@@ -79,8 +79,6 @@ class ContentViewFeatured extends JViewLegacy
 
 			$item->event = new stdClass;
 
-			$dispatcher = JFactory::getApplication()->getDispatcher();
-
 			// Old plugins: Ensure that text property is available
 			if (!isset($item->text))
 			{
@@ -88,18 +86,18 @@ class ContentViewFeatured extends JViewLegacy
 			}
 
 			JPluginHelper::importPlugin('content');
-			$dispatcher->trigger('onContentPrepare', array ('com_content.featured', &$item, &$item->params, 0));
+			JFactory::getApplication()->triggerEvent('onContentPrepare', array ('com_content.featured', &$item, &$item->params, 0));
 
 			// Old plugins: Use processed text as introtext
 			$item->introtext = $item->text;
 
-			$results = $dispatcher->trigger('onContentAfterTitle', array('com_content.featured', &$item, &$item->params, 0));
+			$results = JFactory::getApplication()->triggerEvent('onContentAfterTitle', array('com_content.featured', &$item, &$item->params, 0));
 			$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_content.featured', &$item, &$item->params, 0));
+			$results = JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_content.featured', &$item, &$item->params, 0));
 			$item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onContentAfterDisplay', array('com_content.featured', &$item, &$item->params, 0));
+			$results = JFactory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_content.featured', &$item, &$item->params, 0));
 			$item->event->afterDisplayContent = trim(implode("\n", $results));
 		}
 

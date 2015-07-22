@@ -173,7 +173,6 @@ class LanguagesModelLanguage extends JModelAdmin
 		$langId = (!empty($data['lang_id'])) ? $data['lang_id'] : (int) $this->getState('language.id');
 		$isNew	= true;
 
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		JPluginHelper::importPlugin($this->events_map['save']);
 
 		$table   = $this->getTable();
@@ -219,7 +218,7 @@ class LanguagesModelLanguage extends JModelAdmin
 		}
 
 		// Trigger the before save event.
-		$result = $dispatcher->trigger($this->event_before_save, array($context, &$table, $isNew));
+		$result = JFactory::getApplication()->triggerEvent($this->event_before_save, array($context, &$table, $isNew));
 
 		// Check the event responses.
 		if (in_array(false, $result, true))
@@ -238,7 +237,7 @@ class LanguagesModelLanguage extends JModelAdmin
 		}
 
 		// Trigger the after save event.
-		$dispatcher->trigger($this->event_after_save, array($context, &$table, $isNew));
+		JFactory::getApplication()->triggerEvent($this->event_after_save, array($context, &$table, $isNew));
 
 		$this->setState('language.id', $table->lang_id);
 
