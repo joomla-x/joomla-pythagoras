@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 require_once JPATH_COMPONENT . '/helpers/debug.php';
 
 /**

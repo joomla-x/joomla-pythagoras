@@ -36,6 +36,8 @@ require_once JPATH_LIBRARIES . '/cms.php';
 // Load the configuration
 require_once JPATH_CONFIGURATION . '/configuration.php';
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 /**
  * This script will fetch the update information for all extensions and store
  * them in the database, speeding up your administrator.

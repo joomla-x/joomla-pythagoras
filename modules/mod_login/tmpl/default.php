@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 require_once JPATH_SITE . '/components/com_users/helpers/route.php';
 
 JHtml::_('behavior.keepalive');

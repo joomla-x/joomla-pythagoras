@@ -11,6 +11,8 @@ defined('JPATH_PLATFORM') or die;
 
 JFormHelper::loadFieldClass('list');
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 /**
  * Form Field class for the Joomla Framework.
  *

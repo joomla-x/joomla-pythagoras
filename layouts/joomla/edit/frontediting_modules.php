@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 // JLayout for standard handling of the edit modules:
 
 $moduleHtml   =& $displayData['moduleHtml'];

@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Component\Router\Legacy as JComponentRouterLegacy;
+use Joomla\CMS\Component\Router\RouterInterface as JComponentRouterInterface;
 
 /**
  * Class to create and parse routes for the site application

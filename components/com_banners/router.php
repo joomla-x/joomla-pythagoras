@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Router\Base as JComponentRouterBase;
+
 /**
  * Routing class from com_banners
  *

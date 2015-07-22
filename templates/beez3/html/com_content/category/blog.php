@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 $app = JFactory::getApplication();
 $templateparams = $app->getTemplate(true)->params;
 

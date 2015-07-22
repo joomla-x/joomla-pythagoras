@@ -7,16 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Component\Router;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+
+use JFactory;
+use JMenu;
 
 /**
  * Base component routing class
  *
  * @since  3.3
  */
-abstract class JComponentRouterBase implements JComponentRouterInterface
+abstract class Base implements RouterInterface
 {
 	/**
 	 * Application object to use in the router

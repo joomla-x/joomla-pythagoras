@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 JHtml::_('behavior.keepalive');
 ?>
 <?php if ($type == 'logout') : ?>

@@ -17,7 +17,7 @@ use Exception;
 use InvalidArgumentException;
 use JAdministratorHelper;
 use JApplicationWebClient;
-use JComponentHelper;
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use JFactory;
 use JFilterInput;
 use JInput;

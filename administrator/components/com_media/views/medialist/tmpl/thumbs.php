@@ -8,6 +8,9 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 $params = JComponentHelper::getParams('com_media');
 $path = 'file_path';
 ?>

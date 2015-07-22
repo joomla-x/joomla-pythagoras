@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 /**
  * Form Field class for the Joomla CMS.
  * Provides a modal media selector including upload mechanism
