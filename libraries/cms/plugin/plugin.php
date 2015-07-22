@@ -12,6 +12,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\AbstractEvent;
 use Joomla\Registry\Registry;
 
 /**
@@ -74,6 +75,20 @@ abstract class JPlugin implements DispatcherAwareInterface
 	 * @since  3.1
 	 */
 	protected $autoloadLanguage = false;
+
+	/**
+	 * Should I try to detect and register legacy event listeners, i.e. methods which accept unwrapped arguments? While
+	 * this maintains a great degree of backwards compatibility to Joomla! 3.x-style plugins it is much slower. You are
+	 * advised to implement your plugins using proper Listeners, methods accepting an AbstractEvent as their sole
+	 * parameter, for best performance. Also bear in mind that Joomla! 5.x onwards will only allow proper listeners,
+	 * removing support for legacy Listeners.
+	 *
+	 * @var    boolean
+	 * @since  4.0
+	 *
+	 * @deprecated
+	 */
+	protected $allowLegacyListeners = true;
 
 	/**
 	 * Constructor
@@ -162,12 +177,12 @@ abstract class JPlugin implements DispatcherAwareInterface
 	}
 
 	/**
-	 * Registers the Listeners to the Dispatcher.
+	 * Registers legacy Listeners to the Dispatcher, emulating how plugins worked under Joomla! 3.x and below.
 	 *
-	 * By default, this method will look for all public methods whose name starts with "on" and register
-	 * them as listeners to an event by the same name. This is pretty much how plugins worked under Joomla!
-	 * 1.x, 2.x and 3.x. If you want to customise the Listeners you attach to the Dispatcher you must
-	 * override this method.
+	 * By default, this method will look for all public methods whose name starts with "on". It will register
+	 * lambda functions (closures) which try to unwrap the arguments of the dispatched Event into method call
+	 * arguments and call your on<Something> method. The result will be passed back to the Event into its 'result'
+	 * argument.
 	 *
 	 * @return  void
 	 */
@@ -184,7 +199,112 @@ abstract class JPlugin implements DispatcherAwareInterface
 				continue;
 			}
 
-			$this->getDispatcher()->addListener($method->name, [$this, $method->name]);
+			// Save time if I'm not to detect legacy listeners
+			if (!$this->allowLegacyListeners)
+			{
+				$this->registerListener($method->name);
+
+				continue;
+			}
+
+			/** @var ReflectionParameter[] $parameters */
+			$parameters = $method->getParameters();
+
+			// If the parameter count is not 1 it is by definition a legacy listener
+			if (count($parameters) != 1)
+			{
+				$this->registerLegacyListener($method->name);
+
+				continue;
+			}
+
+			/** @var ReflectionParameter $param */
+			$param = array_shift($parameters);
+			$typeHint = $param->getClass();
+			$paramName = $param->getName();
+
+			// No type hint / type hint class not an event and parameter name is not "event"? It's a legacy listener.
+			if ((empty($typeHint) || !$typeHint->implementsInterface('Joomla\\Event\\EventInterface')) && ($paramName != 'event'))
+			{
+				$this->registerLegacyListener($method->name);
+
+				continue;
+			}
+
+			// Everything checks out, this is a proper listener.
+			$this->registerListener($method->name);
 		}
+	}
+
+	/**
+	 * Registers a legacy event listener, i.e. a method which accepts individual arguments instead of an AbstractEvent
+	 * in its arguments. This provides backwards compatibility to Joomla! 3.x-style plugins.
+	 *
+	 * This method will register lambda functions (closures) which try to unwrap the arguments of the dispatched Event
+	 * into old style method arguments and call your on<Something> method with them. The result will be passed back to
+	 * the Event, as an element into an array argument called 'result'.
+	 *
+	 * @param   string  $methodName  The method name to register
+	 */
+	protected final function registerLegacyListener($methodName)
+	{
+		$this->getDispatcher()->addListener($methodName, function(AbstractEvent $event) use ($methodName) {
+			// Get the event arguments
+			$arguments = $event->getArguments();
+
+			// Extract any old results; they must not be part of the method call.
+			$allResults = [];
+
+			if (isset($arguments['result']))
+			{
+				$allResults = $arguments['result'];
+
+				unset($arguments['result']);
+			}
+
+			/**
+			 * Calling the method directly is up to 8x faster than using call_user_func_array, hence this argument
+			 * unpacking switch statement. Please do not wrap it back to a single line, it will hurt performance.
+			 */
+			switch (count($arguments))
+			{
+				case 0:
+					$result = $this->{$methodName}();
+					break;
+				case 1:
+					$result = $this->{$methodName}($arguments[0]);
+					break;
+				case 2:
+					$result = $this->{$methodName}($arguments[0], $arguments[1]);
+					break;
+				case 3:
+					$result = $this->{$methodName}($arguments[0], $arguments[1], $arguments[2]);
+					break;
+				case 4:
+					$result = $this->{$methodName}($arguments[0], $arguments[1], $arguments[2], $arguments[3]);
+					break;
+				case 5:
+					$result = $this->{$methodName}($arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4]);
+					break;
+				default:
+					$result = call_user_func_array(array($this, $methodName), $arguments);
+					break;
+			}
+
+			// Restore the old results and add the new result from our method call
+			array_push($allResults, $result);
+			$event['result'] = $allResults;
+		});
+	}
+
+	/**
+	 * Registers a proper event listener, i.e. a method which accepts an AbstractEvent as its sole argument. This is the
+	 * preferred way to implement plugins in Joomla! 4.x and will be the only possible method with Joomla! 5.x onwards.
+	 *
+	 * @param   string  $methodName  The method name to register
+	 */
+	protected final function registerListener($methodName)
+	{
+		$this->getDispatcher()->addListener($methodName, [$this, $methodName]);
 	}
 }
