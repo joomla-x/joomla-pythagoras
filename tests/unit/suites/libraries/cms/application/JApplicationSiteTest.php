@@ -7,10 +7,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\Site;
 use Joomla\Registry\Registry;
 
 /**
- * Test class for JApplicationSite.
+ * Test class for Joomla\CMS\Application\Site.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application
@@ -45,7 +46,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    JApplicationSite
+	 * @var    Site
 	 * @since  3.2
 	 */
 	protected $class;
@@ -102,9 +103,9 @@ class JApplicationSiteTest extends TestCaseDatabase
 		$config = new Registry;
 		$config->set('session', false);
 
-		// Get a new JApplicationSite instance.
-		$this->class = new JApplicationSite($this->getMockInput(), $config);
-		TestReflection::setValue('JApplicationCms', 'instances', array('site' => $this->class));
+		// Get a new Site instance.
+		$this->class = new Site($this->getMockInput(), $config);
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array('site' => $this->class));
 	}
 
 	/**
@@ -119,7 +120,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	{
 		// Reset the dispatcher and application instances.
 		TestReflection::setValue('JEventDispatcher', 'instance', null);
-		TestReflection::setValue('JApplicationCms', 'instances', array());
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array());
 
 		$_SERVER = $this->backupServer;
 
@@ -151,7 +152,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getClientId method.
+	 * Tests the AbstractCMS::getClientId method.
 	 *
 	 * @return  void
 	 *
@@ -163,7 +164,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getName method.
+	 * Tests the AbstractCMS::getName method.
 	 *
 	 * @return  void
 	 *
@@ -175,7 +176,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getMenu method.
+	 * Tests the AbstractCMS::getMenu method.
 	 *
 	 * @return  void
 	 *
@@ -187,7 +188,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationSite::getParams method.
+	 * Tests the Site::getParams method.
 	 *
 	 * @return  void
 	 *
@@ -207,7 +208,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getPathway method.
+	 * Tests the AbstractCMS::getPathway method.
 	 *
 	 * @return  void
 	 *
@@ -219,7 +220,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationSite::getRouter method.
+	 * Tests the Site::getRouter method.
 	 *
 	 * @return  void
 	 *
@@ -231,7 +232,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationSite::getTemplate method.
+	 * Tests the Site::getTemplate method.
 	 *
 	 * @return  void
 	 *
@@ -247,7 +248,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isAdmin method.
+	 * Tests the AbstractCMS::isAdmin method.
 	 *
 	 * @return  void
 	 *
@@ -259,7 +260,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isSite method.
+	 * Tests the AbstractCMS::isSite method.
 	 *
 	 * @return  void
 	 *
@@ -271,7 +272,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::render method.
+	 * Tests the AbstractCMS::render method.
 	 *
 	 * @return  void
 	 *
@@ -294,7 +295,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationSite::setDetectBrowser and getDetectBrowser methods.
+	 * Tests the Site::setDetectBrowser and getDetectBrowser methods.
 	 *
 	 * @return  void
 	 *
@@ -308,7 +309,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationSite::setLanguageFilter and getLanguageFilter methods.
+	 * Tests the Site::setLanguageFilter and getLanguageFilter methods.
 	 *
 	 * @return  void
 	 *
@@ -322,7 +323,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationSite::setTemplate method.
+	 * Tests the Site::setTemplate method.
 	 *
 	 * @return  void
 	 *

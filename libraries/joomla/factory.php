@@ -8,6 +8,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use Joomla\Registry\Registry;
 
 /**

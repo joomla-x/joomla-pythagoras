@@ -7,10 +7,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\Administrator;
 use Joomla\Registry\Registry;
 
 /**
- * Test class for JApplicationAdministrator.
+ * Test class for Joomla\CMS\Application\Administrator.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application
@@ -45,7 +46,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    JApplicationAdministrator
+	 * @var    Administrator
 	 * @since  3.2
 	 */
 	protected $class;
@@ -102,9 +103,9 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 		$config = new Registry;
 		$config->set('session', false);
 
-		// Get a new JApplicationAdministrator instance.
-		$this->class = new JApplicationAdministrator($this->getMockInput(), $config);
-		TestReflection::setValue('JApplicationCms', 'instances', array('administrator' => $this->class));
+		// Get a new Administrator instance.
+		$this->class = new Administrator($this->getMockInput(), $config);
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array('administrator' => $this->class));
 	}
 
 	/**
@@ -119,7 +120,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	{
 		// Reset the dispatcher and application instances.
 		TestReflection::setValue('JEventDispatcher', 'instance', null);
-		TestReflection::setValue('JApplicationCms', 'instances', array());
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array());
 
 		$_SERVER = $this->backupServer;
 
@@ -151,7 +152,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getClientId method.
+	 * Tests the AbstractCMS::getClientId method.
 	 *
 	 * @return  void
 	 *
@@ -163,7 +164,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getName method.
+	 * Tests the AbstractCMS::getName method.
 	 *
 	 * @return  void
 	 *
@@ -175,7 +176,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getMenu method.
+	 * Tests the AbstractCMS::getMenu method.
 	 *
 	 * @return  void
 	 *
@@ -187,7 +188,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getPathway method.
+	 * Tests the AbstractCMS::getPathway method.
 	 *
 	 * @return  void
 	 *
@@ -199,7 +200,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationAdministrator::getRouter method.
+	 * Tests the Administrator::getRouter method.
 	 *
 	 * @return  void
 	 *
@@ -211,7 +212,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationAdministrator::getTemplate method.
+	 * Tests the Administrator::getTemplate method.
 	 *
 	 * @return  void
 	 *
@@ -229,7 +230,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isAdmin method.
+	 * Tests the AbstractCMS::isAdmin method.
 	 *
 	 * @return  void
 	 *
@@ -241,7 +242,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isSite method.
+	 * Tests the AbstractCMS::isSite method.
 	 *
 	 * @return  void
 	 *
@@ -253,7 +254,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::render method.
+	 * Tests the AbstractCMS::render method.
 	 *
 	 * @return  void
 	 *

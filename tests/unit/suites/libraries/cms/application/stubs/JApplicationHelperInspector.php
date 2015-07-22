@@ -7,8 +7,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+
 /**
- * Test class for JApplicationHelper
+ * Inspector class for Joomla\CMS\Application\Helper
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application

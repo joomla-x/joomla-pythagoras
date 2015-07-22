@@ -7,12 +7,13 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\AbstractCMS;
 use Joomla\Registry\Registry;
 
 include_once __DIR__ . '/stubs/JApplicationCmsInspector.php';
 
 /**
- * Test class for JApplicationCms.
+ * Test class for Joomla\CMS\Application\AbstractCMS.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Application
@@ -151,7 +152,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::__construct method.
+	 * Tests the AbstractCMS::__construct method.
 	 *
 	 * @return  void
 	 *
@@ -167,7 +168,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::__construct method with dependancy injection.
+	 * Tests the AbstractCMS::__construct method with dependancy injection.
 	 *
 	 * @return  void
 	 *
@@ -195,7 +196,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::Execute method without a document.
+	 * Tests the AbstractCMS::Execute method without a document.
 	 *
 	 * @return  void
 	 *
@@ -216,7 +217,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::Execute method with a document.
+	 * Tests the AbstractCMS::Execute method with a document.
 	 *
 	 * @return  void
 	 *
@@ -253,7 +254,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getCfg method.
+	 * Tests the AbstractCMS::getCfg method.
 	 *
 	 * @return  void
 	 *
@@ -270,7 +271,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getInstance method.
+	 * Tests the AbstractCMS::getInstance method.
 	 *
 	 * @return  void
 	 *
@@ -278,17 +279,17 @@ class JApplicationCmsTest extends TestCaseDatabase
 	 */
 	public function testGetInstance()
 	{
-		TestReflection::setValue('JApplicationCms', 'instances', array('CmsInspector' => $this->class));
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array('CmsInspector' => $this->class));
 
-		$this->assertInstanceOf('JApplicationCmsInspector', JApplicationCms::getInstance('CmsInspector'));
+		$this->assertInstanceOf('JApplicationCmsInspector', AbstractCMS::getInstance('CmsInspector'));
 
-		TestReflection::setValue('JApplicationCms', 'instances', array('CmsInspector' => 'foo'));
+		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array('CmsInspector' => 'foo'));
 
-		$this->assertEquals('foo', JApplicationCms::getInstance('CmsInspector'));
+		$this->assertEquals('foo', AbstractCMS::getInstance('CmsInspector'));
 	}
 
 	/**
-	 * Tests the JApplicationCms::getMenu method.
+	 * Tests the AbstractCMS::getMenu method.
 	 *
 	 * @return  void
 	 *
@@ -300,7 +301,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getPathway method.
+	 * Tests the AbstractCMS::getPathway method.
 	 *
 	 * @return  void
 	 *
@@ -312,7 +313,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getRouter method.
+	 * Tests the AbstractCMS::getRouter method.
 	 *
 	 * @return  void
 	 *
@@ -324,7 +325,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getTemplate method.
+	 * Tests the AbstractCMS::getTemplate method.
 	 *
 	 * @return  void
 	 *
@@ -340,7 +341,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isAdmin method.
+	 * Tests the AbstractCMS::isAdmin method.
 	 *
 	 * @return  void
 	 *
@@ -352,7 +353,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::isSite method.
+	 * Tests the AbstractCMS::isSite method.
 	 *
 	 * @return  void
 	 *
@@ -364,7 +365,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::redirect method.
+	 * Tests the AbstractCMS::redirect method.
 	 *
 	 * @return  void
 	 *
@@ -403,7 +404,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::redirect method.
+	 * Tests the AbstractCMS::redirect method.
 	 *
 	 * @return  void
 	 *
@@ -452,7 +453,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::redirect method.
+	 * Tests the AbstractCMS::redirect method.
 	 *
 	 * @return  void
 	 *
@@ -497,7 +498,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::redirect method with headers already sent.
+	 * Tests the AbstractCMS::redirect method with headers already sent.
 	 *
 	 * @return  void
 	 *
@@ -527,7 +528,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::redirect method with headers already sent.
+	 * Tests the AbstractCMS::redirect method with headers already sent.
 	 *
 	 * @return  void
 	 *
@@ -560,7 +561,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::redirect method with moved option.
+	 * Tests the AbstractCMS::redirect method with moved option.
 	 *
 	 * @return  void
 	 *
@@ -592,7 +593,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::redirect method with assorted URL's.
+	 * Tests the AbstractCMS::redirect method with assorted URL's.
 	 *
 	 * @param   string  $url       @todo
 	 * @param   string  $base      @todo
@@ -628,7 +629,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::render method.
+	 * Tests the AbstractCMS::render method.
 	 *
 	 * @return  void
 	 *
