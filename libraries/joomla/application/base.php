@@ -113,6 +113,11 @@ abstract class JApplicationBase extends AbstractApplication
 				return $dispatcher->dispatch($eventName, $args);
 			}
 
+			if (is_null($args))
+			{
+				$args = [];
+			}
+
 			$event = new Event($eventName, $args);
 
 			return $dispatcher->dispatch($eventName, $event);
