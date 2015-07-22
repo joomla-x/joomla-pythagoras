@@ -67,6 +67,26 @@ abstract class JApplicationBase extends AbstractApplication
 	}
 
 	/**
+	 * Returns the event dispatcher of the application. This is a temporary method added during the Event package
+	 * refactoring.
+	 *
+	 * @deprecated
+	 *
+	 * TODO REFACTOR ME! Remove this and go through a Container.
+	 *
+	 * @return JEventDispatcher
+	 */
+	public function getDispatcher()
+	{
+		if (!($this->dispatcher instanceof JEventDispatcher))
+		{
+			$this->loadDispatcher();
+		}
+
+		return $this->dispatcher;
+	}
+
+	/**
 	 * Calls all handlers associated with an event group.
 	 *
 	 * @param   string  $event  The event name.
@@ -78,9 +98,12 @@ abstract class JApplicationBase extends AbstractApplication
 	 */
 	public function triggerEvent($event, array $args = null)
 	{
-		if ($this->dispatcher instanceof JEventDispatcher)
+		// @todo REFACTOR ME! Get the Dispatcher through a Container
+		$dispatcher = $this->getDispatcher();
+
+		if ($dispatcher instanceof JEventDispatcher)
 		{
-			return $this->dispatcher->trigger($event, $args);
+			return $dispatcher->trigger($event, $args);
 		}
 
 		return null;
