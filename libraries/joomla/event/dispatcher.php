@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Event\Dispatcher;
+
 /**
  * Class to handle dispatching of events.
  *
@@ -19,7 +21,7 @@ defined('JPATH_PLATFORM') or die;
  * @see    JPlugin
  * @since  12.1
  */
-class JEventDispatcher extends JObject
+class JEventDispatcher extends Dispatcher
 {
 	/**
 	 * An array of Observer objects to notify

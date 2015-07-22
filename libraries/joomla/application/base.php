@@ -10,6 +10,9 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Application\AbstractApplication;
+use Joomla\Event\Dispatcher;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Event;
 
 /**
  * Joomla Platform Base Application Class
@@ -21,7 +24,7 @@ abstract class JApplicationBase extends AbstractApplication
 	/**
 	 * The application dispatcher object.
 	 *
-	 * @var    JEventDispatcher
+	 * @var    DispatcherInterface
 	 * @since  12.1
 	 */
 	protected $dispatcher;
@@ -56,11 +59,11 @@ abstract class JApplicationBase extends AbstractApplication
 	 *
 	 * @since   12.1
 	 */
-	public function registerEvent($event, $handler)
+	public function registerEvent($event, callable $handler)
 	{
-		if ($this->dispatcher instanceof JEventDispatcher)
+		if ($this->dispatcher instanceof DispatcherInterface)
 		{
-			$this->dispatcher->register($event, $handler);
+			$this->dispatcher->addListener($event, $handler);
 		}
 
 		return $this;
@@ -74,11 +77,11 @@ abstract class JApplicationBase extends AbstractApplication
 	 *
 	 * TODO REFACTOR ME! Remove this and go through a Container.
 	 *
-	 * @return JEventDispatcher
+	 * @return  DispatcherInterface
 	 */
 	public function getDispatcher()
 	{
-		if (!($this->dispatcher instanceof JEventDispatcher))
+		if (!($this->dispatcher instanceof DispatcherInterface))
 		{
 			$this->loadDispatcher();
 		}
@@ -89,21 +92,30 @@ abstract class JApplicationBase extends AbstractApplication
 	/**
 	 * Calls all handlers associated with an event group.
 	 *
-	 * @param   string  $event  The event name.
-	 * @param   array   $args   An array of arguments (optional).
+	 * @param   string        $eventName  The event name.
+	 * @param   array|Event   $args       An array of arguments or an Event object (optional).
+	 *
+	 * TODO Force $args to be an Event object
 	 *
 	 * @return  array   An array of results from each function call, or null if no dispatcher is defined.
 	 *
 	 * @since   12.1
 	 */
-	public function triggerEvent($event, array $args = null)
+	public function triggerEvent($eventName, $args = null)
 	{
 		// @todo REFACTOR ME! Get the Dispatcher through a Container
 		$dispatcher = $this->getDispatcher();
 
-		if ($dispatcher instanceof JEventDispatcher)
+		if ($dispatcher instanceof DispatcherInterface)
 		{
-			return $dispatcher->trigger($event, $args);
+			if ($args instanceof Event)
+			{
+				return $dispatcher->dispatch($eventName, $args);
+			}
+
+			$event = new Event($eventName, $args);
+
+			return $dispatcher->dispatch($eventName, $event);
 		}
 
 		return null;
@@ -116,15 +128,15 @@ abstract class JApplicationBase extends AbstractApplication
 	 * but for many applications it will make sense to override this method and create event
 	 * dispatchers, if required, based on more specific needs.
 	 *
-	 * @param   JEventDispatcher  $dispatcher  An optional dispatcher object. If omitted, the factory dispatcher is created.
+	 * @param   DispatcherInterface  $dispatcher  An optional dispatcher object. If omitted, the factory dispatcher is created.
 	 *
 	 * @return  JApplicationBase This method is chainable.
 	 *
 	 * @since   12.1
 	 */
-	public function loadDispatcher(JEventDispatcher $dispatcher = null)
+	public function loadDispatcher(DispatcherInterface $dispatcher = null)
 	{
-		$this->dispatcher = ($dispatcher === null) ? JEventDispatcher::getInstance() : $dispatcher;
+		$this->dispatcher = ($dispatcher === null) ? new Dispatcher() : $dispatcher;
 
 		return $this;
 	}

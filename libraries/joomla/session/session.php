@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Event\DispatcherInterface;
+
 /**
  * Class for managing HTTP sessions
  *
@@ -96,7 +98,7 @@ class JSession implements IteratorAggregate
 	/**
 	 * Holds the event dispatcher object
 	 *
-	 * @var    JEventDispatcher
+	 * @var    DispatcherInterface
 	 * @since  12.2
 	 */
 	private $_dispatcher = null;
@@ -449,14 +451,14 @@ class JSession implements IteratorAggregate
 	/**
 	 * Check whether this session is currently created
 	 *
-	 * @param   JInput            $input       JInput object for the session to use.
-	 * @param   JEventDispatcher  $dispatcher  Dispatcher object for the session to use.
+	 * @param   JInput               $input       JInput object for the session to use.
+	 * @param   DispatcherInterface  $dispatcher  Dispatcher object for the session to use.
 	 *
 	 * @return  void.
 	 *
 	 * @since   12.2
 	 */
-	public function initialise(JInput $input, JEventDispatcher $dispatcher = null)
+	public function initialise(JInput $input, DispatcherInterface $dispatcher = null)
 	{
 		$this->_input      = $input;
 		$this->_dispatcher = $dispatcher;
@@ -611,9 +613,9 @@ class JSession implements IteratorAggregate
 		// Perform security checks
 		$this->_validate();
 
-		if ($this->_dispatcher instanceof JEventDispatcher)
+		if ($this->_dispatcher instanceof DispatcherInterface)
 		{
-			$this->_dispatcher->trigger('onAfterSessionStart');
+			$this->_dispatcher->dispatch('onAfterSessionStart');
 		}
 	}
 

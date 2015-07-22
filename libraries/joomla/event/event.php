@@ -9,12 +9,14 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Event\Event;
+
 /**
  * JEvent Class
  *
  * @since  11.1
  */
-abstract class JEvent extends JObject
+abstract class JEvent extends Event
 {
 	/**
 	 * Event object to observe.
