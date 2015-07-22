@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Event\DispatcherInterface;
+use Joomla\Event\DispatcherAwareInterface;
+use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Registry\Registry;
 
 /**
@@ -17,8 +19,10 @@ use Joomla\Registry\Registry;
  *
  * @since  1.5
  */
-abstract class JPlugin extends JEvent
+abstract class JPlugin implements DispatcherAwareInterface
 {
+	use DispatcherAwareTrait;
+
 	/**
 	 * A Registry object holding the parameters for the plugin
 	 *
@@ -42,6 +46,26 @@ abstract class JPlugin extends JEvent
 	 * @since  1.5
 	 */
 	protected $_type = null;
+
+	/**
+	 * The application we are running in
+	 *
+	 * TODO REFACTOR ME! Use a Container, not the application itself
+	 *
+	 * @var    JApplicationBase
+	 * @since  2.5
+	 */
+	protected $app = null;
+
+	/**
+	 * The database driver we are talking to
+	 *
+	 * TODO REFACTOR ME! No need for it once we have a Container
+	 *
+	 * @var    JDatabaseDriver
+	 * @since  2.5
+	 */
+	protected $db = null;
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -95,29 +119,23 @@ abstract class JPlugin extends JEvent
 			$this->loadLanguage();
 		}
 
-		if (property_exists($this, 'app'))
+		// Ensure there is an application object attached
+		if (is_null($this->app))
 		{
-			$reflection = new ReflectionClass($this);
-			$appProperty = $reflection->getProperty('app');
-
-			if ($appProperty->isPrivate() === false && is_null($this->app))
-			{
-				$this->app = JFactory::getApplication();
-			}
+			$this->app = JFactory::getApplication();
 		}
 
-		if (property_exists($this, 'db'))
+		// Ensure there is a database object attached
+		if (is_null($this->db))
 		{
-			$reflection = new ReflectionClass($this);
-			$dbProperty = $reflection->getProperty('db');
-
-			if ($dbProperty->isPrivate() === false && is_null($this->db))
-			{
-				$this->db = JFactory::getDbo();
-			}
+			$this->db = JFactory::getDbo();
 		}
 
-		parent::__construct($subject);
+		// Set the dispatcher we are to register our listeners with
+		$this->setDispatcher($subject);
+
+		// Register the event listeners with the dispatcher. Override the registerListeners method to customise.
+		$this->registerListeners();
 	}
 
 	/**
@@ -141,5 +159,32 @@ abstract class JPlugin extends JEvent
 
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
 			|| $lang->load(strtolower($extension), JPATH_PLUGINS . '/' . $this->_type . '/' . $this->_name, null, false, true);
+	}
+
+	/**
+	 * Registers the Listeners to the Dispatcher.
+	 *
+	 * By default, this method will look for all public methods whose name starts with "on" and register
+	 * them as listeners to an event by the same name. This is pretty much how plugins worked under Joomla!
+	 * 1.x, 2.x and 3.x. If you want to customise the Listeners you attach to the Dispatcher you must
+	 * override this method.
+	 *
+	 * @return  void
+	 */
+	protected function registerListeners()
+	{
+		$reflectedObject = new ReflectionObject($this);
+		$methods = $reflectedObject->getMethods(ReflectionMethod::IS_PUBLIC);
+
+		/** @var ReflectionMethod $method */
+		foreach ($methods as $method)
+		{
+			if (substr($method->name, 0, 2) != 'on')
+			{
+				continue;
+			}
+
+			$this->getDispatcher()->addListener($method->name, [$this, $method->name]);
+		}
 	}
 }
