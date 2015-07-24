@@ -252,6 +252,9 @@ abstract class JPlugin implements DispatcherAwareInterface
 			// Get the event arguments
 			$arguments = $event->getArguments();
 
+			// Map the associative argument array to a numeric indexed array for efficiency (see the switch statement below).
+			$arguments = array_values($arguments);
+
 			// Extract any old results; they must not be part of the method call.
 			$allResults = [];
 
