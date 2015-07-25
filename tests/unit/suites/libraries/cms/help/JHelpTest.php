@@ -7,8 +7,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Help\Help;
+
 /**
- * Test class for JHelp.
+ * Test class for Joomla\CMS\Help\Help.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Help
@@ -73,32 +75,32 @@ class JHelpTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  JHelp::createURL
+	 * @covers  Help::createURL
 	 * @since   3.0
 	 */
 	public function testCreateURL()
 	{
 		$this->assertEquals(
 			'help/en-GB/Content_Article_Manager.html',
-			JHelp::createURL('JHELP_CONTENT_ARTICLE_MANAGER'),
+			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER'),
 			'Creates a local help URL for com_content Article Manager.'
 		);
 
 		$this->assertEquals(
 			'components/com_content/help/en-GB/Content_Article_Manager.html',
-			JHelp::createURL('JHELP_CONTENT_ARTICLE_MANAGER', true, null, 'com_content'),
+			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER', true, null, 'com_content'),
 			'Creates a local help URL for com_content Article Manager in the component.'
 		);
 
 		$this->assertEquals(
 			'http://domain.tld/help',
-			JHelp::createURL('JHELP_CONTENT_ARTICLE_MANAGER', true, 'http://domain.tld/help', 'com_content'),
+			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER', true, 'http://domain.tld/help', 'com_content'),
 			'Creates a remote help URL via an override for com_content Article Manager.'
 		);
-		
+
 		$this->assertEquals(
 			'help/en-GB/Content_Article_Manager.html',
-			JHelp::createURL('JHELP_CONTENT_ARTICLE_MANAGER', false, null, 'com_content'),
+			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER', false, null, 'com_content'),
 			'Creates a local help URL for com_content Article Manager.'
 		);
 	}
@@ -108,7 +110,7 @@ class JHelpTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  JHelp::createSiteList
+	 * @covers  Help::createSiteList
 	 * @since   3.0
 	 */
 	public function testCreateSiteList()
@@ -117,8 +119,8 @@ class JHelpTest extends TestCase
 			'text' => 'English (GB) help.joomla.org',
 			'value' => 'http://help.joomla.org'
 		);
-		$this->assertEquals(array($helpsite), JHelp::createSiteList(null), 'Returns the default help site list');
-		
-		$this->assertInternalType('array', JHelp::createSiteList(JPATH_ADMINISTRATOR . '/help/helpsites.xml'), 'Returns the help site list defined in the XML file');
+		$this->assertEquals(array($helpsite), Help::createSiteList(null), 'Returns the default help site list');
+
+		$this->assertInternalType('array', Help::createSiteList(JPATH_ADMINISTRATOR . '/help/helpsites.xml'), 'Returns the help site list defined in the XML file');
 	}
 }

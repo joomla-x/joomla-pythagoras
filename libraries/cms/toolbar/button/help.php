@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Help\Help as JHelp;
+
 /**
  * Renders a help popup window button
  *
