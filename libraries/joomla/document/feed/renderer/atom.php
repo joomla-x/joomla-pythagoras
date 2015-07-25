@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 /**
  * JDocumentRenderer_Atom is a feed that implements the atom specification
  *

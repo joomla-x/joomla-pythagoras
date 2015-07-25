@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Version as JVersion;
 use Joomla\Registry\Registry;
 
 /**

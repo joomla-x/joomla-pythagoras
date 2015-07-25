@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 /**
  * Helper for mod_version
  *

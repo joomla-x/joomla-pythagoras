@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.path');

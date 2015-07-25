@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 /* @var InstallationViewLanguagesHtml $this */
 
 // Get version of Joomla! to compare it with the version of the language package

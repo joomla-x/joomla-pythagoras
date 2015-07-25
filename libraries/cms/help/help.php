@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Version as JVersion;
 
 /**
  * Help system class

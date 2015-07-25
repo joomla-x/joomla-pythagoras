@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('bootstrap.tooltip');

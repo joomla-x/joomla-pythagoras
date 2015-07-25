@@ -7,6 +7,8 @@
  */
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 /**
  * Akeeba Strapper view renderer class.
  *

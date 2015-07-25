@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 /**
  * Update class. It is used by JUpdater::update() to install an update. Use JUpdater::findUpdates() to find updates for
  * an extension.

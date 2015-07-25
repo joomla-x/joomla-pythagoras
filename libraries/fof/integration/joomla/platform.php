@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 /**
  * Part of the FOF Platform Abstraction Layer.
  *

@@ -40,7 +40,7 @@ umask(022);
 // Import JVersion to set the version information
 define('JPATH_PLATFORM', 1);
 require_once dirname(__DIR__) . '/libraries/cms/version/version.php';
-$jversion = new JVersion;
+$jversion = new Joomla\CMS\Version;
 
 // Set version information for the build
 $version     = $jversion->RELEASE;

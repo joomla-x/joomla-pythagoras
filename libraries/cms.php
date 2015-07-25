@@ -51,7 +51,7 @@ set_exception_handler(array('JErrorPage', 'render'));
 // Define the Joomla version if not already defined.
 if (!defined('JVERSION'))
 {
-	$jversion = new JVersion;
+	$jversion = new Joomla\CMS\Version;
 	define('JVERSION', $jversion->getShortVersion());
 }
 

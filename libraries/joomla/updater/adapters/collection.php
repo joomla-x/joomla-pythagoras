@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Version as JVersion;
 
 jimport('joomla.updater.updateadapter');
 
