@@ -216,7 +216,7 @@ abstract class JModelAdmin extends JModelForm
 			$this->type = $type->getTypeByAlias($this->typeAlias);
 		}
 
-		$this->tagsObserver = $this->table->getObserverOfClass('JTableObserverTags');
+		$this->tagsObserver = JTableObserverTags::createObserver($this->table);
 
 		if ($this->batch_copymove && !empty($commands[$this->batch_copymove]))
 		{
@@ -617,7 +617,7 @@ abstract class JModelAdmin extends JModelForm
 				/**
 				 * @var  JTableObserverTags  $tagsObserver
 				 */
-				$tagsObserver = $table->getObserverOfClass('JTableObserverTags');
+				$tagsObserver = JTableObserverTags::createObserver($table);
 				$result = $tagsObserver->setNewTags($tags, false);
 
 				if (!$result)
@@ -1170,7 +1170,7 @@ abstract class JModelAdmin extends JModelForm
 		$tableClassName = get_class($table);
 		$contentType = new JUcmType;
 		$type = $contentType->getTypeByTable($tableClassName);
-		$tagsObserver = $table->getObserverOfClass('JTableObserverTags');
+		$tagsObserver = JTableObserverTags::createObserver($table);
 		$conditions = array();
 
 		if (empty($pks))

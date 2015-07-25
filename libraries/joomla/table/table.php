@@ -11,6 +11,12 @@ defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.filesystem.path');
 
+use Joomla\Event\DispatcherAwareInterface;
+use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Dispatcher;
+use Joomla\Event\Event;
+
 /**
  * Abstract Table class
  *
@@ -19,8 +25,10 @@ jimport('joomla.filesystem.path');
  * @since  11.1
  * @tutorial  Joomla.Platform/jtable.cls
  */
-abstract class JTable extends JObject implements JObservableInterface, JTableInterface
+abstract class JTable extends JObject implements JTableInterface, DispatcherAwareInterface
 {
+	use DispatcherAwareTrait;
+
 	/**
 	 * Include paths for searching for JTable classes.
 	 *
@@ -94,14 +102,6 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 	protected $_autoincrement = true;
 
 	/**
-	 * Generic observers for this JTable (Used e.g. for tags Processing)
-	 *
-	 * @var    JObserverUpdater
-	 * @since  3.1.2
-	 */
-	protected $_observers;
-
-	/**
 	 * Array with alias for "special" columns such as ordering, hits etc etc
 	 *
 	 * @var    array
@@ -121,14 +121,17 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 	 * be overridden by child classes to explicitly set the table and key fields
 	 * for a particular database table.
 	 *
-	 * @param   string           $table  Name of the table to model.
-	 * @param   mixed            $key    Name of the primary key field in the table or array of field names that compose the primary key.
-	 * @param   JDatabaseDriver  $db     JDatabaseDriver object.
+	 * @param   string               $table       Name of the table to model.
+	 * @param   mixed                $key         Name of the primary key field in the table or array of field names that compose the primary key.
+	 * @param   JDatabaseDriver      $db          JDatabaseDriver object.
+	 * @param   DispatcherInterface  $dispatcher  Event dispatcher for this table
 	 *
 	 * @since   11.1
 	 */
-	public function __construct($table, $key, $db)
+	public function __construct($table, $key, $db, DispatcherInterface $dispatcher = null)
 	{
+		parent::__construct();
+
 		// Set internal variables.
 		$this->_tbl = $table;
 
@@ -185,41 +188,13 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 			$this->access = (int) JFactory::getConfig()->get('access');
 		}
 
-		// Implement JObservableInterface:
-		// Create observer updater and attaches all observers interested by $this class:
-		$this->_observers = new JObserverUpdater($this);
-		JObserverMapper::attachAllObservers($this);
-	}
+		// Create or set a Dispatcher
+		if (!is_object($dispatcher) || !($dispatcher instanceof DispatcherInterface))
+		{
+			$dispatcher = new Dispatcher();
+		}
 
-	/**
-	 * Implement JObservableInterface:
-	 * Adds an observer to this instance.
-	 * This method will be called fron the constructor of classes implementing JObserverInterface
-	 * which is instanciated by the constructor of $this with JObserverMapper::attachAllObservers($this)
-	 *
-	 * @param   JObserverInterface|JTableObserver  $observer  The observer object
-	 *
-	 * @return  void
-	 *
-	 * @since   3.1.2
-	 */
-	public function attachObserver(JObserverInterface $observer)
-	{
-		$this->_observers->attachObserver($observer);
-	}
-
-	/**
-	 * Gets the instance of the observer of class $observerClass
-	 *
-	 * @param   string  $observerClass  The observer class-name to return the object of
-	 *
-	 * @return  JTableObserver|null
-	 *
-	 * @since   3.1.2
-	 */
-	public function getObserverOfClass($observerClass)
-	{
-		return $this->_observers->getObserverOfClass($observerClass);
+		$this->setDispatcher($dispatcher);
 	}
 
 	/**
@@ -660,8 +635,12 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 	 */
 	public function load($keys = null, $reset = true)
 	{
-		// Implement JObservableInterface: Pre-processing by observers
-		$this->_observers->update('onBeforeLoad', array($keys, $reset));
+		// Pre-processing by observers
+		$event = new Event('onBeforeLoad', [
+			'keys'		=> $keys,
+			'reset'		=> $reset,
+		]);
+		$this->getDispatcher()->dispatch('onBeforeLoad', $event);
 
 		if (empty($keys))
 		{
@@ -738,8 +717,12 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 			$result = $this->bind($row);
 		}
 
-		// Implement JObservableInterface: Post-processing by observers
-		$this->_observers->update('onAfterLoad', array(&$result, $row));
+		// Post-processing by observers
+		$event = new Event('onAfterLoad', [
+			'result'		=> &$result,
+			'row'			=> $row,
+		]);
+		$this->getDispatcher()->dispatch('onAfterLoad', $event);
 
 		return $result;
 	}
@@ -778,8 +761,13 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 	{
 		$k = $this->_tbl_keys;
 
-		// Implement JObservableInterface: Pre-processing by observers
-		$this->_observers->update('onBeforeStore', array($updateNulls, $k));
+		// Pre-processing by observers
+		$event = new Event('onBeforeStore', [
+			'updateNulls'	=> $updateNulls,
+			'k'				=> $k,
+		]);
+		$this->getDispatcher()->dispatch('onBeforeStore', $event);
+
 
 		$currentAssetId = 0;
 
@@ -876,8 +864,11 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 			}
 		}
 
-		// Implement JObservableInterface: Post-processing by observers
-		$this->_observers->update('onAfterStore', array(&$result));
+		// Post-processing by observers
+		$event = new Event('onAfterStore', [
+			'result'	=> &$result,
+		]);
+		$this->getDispatcher()->dispatch('onAfterStore', $event);
 
 		return $result;
 	}
@@ -978,8 +969,12 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 			$this->$key = $pk[$key];
 		}
 
-		// Implement JObservableInterface: Pre-processing by observers
-		$this->_observers->update('onBeforeDelete', array($pk));
+		// Pre-processing by observers
+		$event = new Event('onBeforeDelete', [
+			'pk'	=> $pk,
+		]);
+		$this->getDispatcher()->dispatch('onBeforeDelete', $event);
+
 
 		// If tracking assets, remove the asset first.
 		if ($this->_trackAssets)
@@ -1009,8 +1004,11 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 		// Check for a database error.
 		$this->_db->execute();
 
-		// Implement JObservableInterface: Post-processing by observers
-		$this->_observers->update('onAfterDelete', array($pk));
+		// Post-processing by observers
+		$event = new Event('onAfterDelete', [
+			'pk'	=> $pk,
+		]);
+		$this->getDispatcher()->dispatch('onAfterDelete', $event);
 
 		return true;
 	}

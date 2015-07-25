@@ -752,7 +752,7 @@ class CategoriesModelCategory extends JModelAdmin
 				/**
 				 * @var  JTableObserverTags  $tagsObserver
 				 */
-				$tagsObserver = $table->getObserverOfClass('JTableObserverTags');
+				$tagsObserver = JTableObserverTags::createObserver($table);
 				$result = $tagsObserver->setNewTags($tags, false);
 
 				if (!$result)

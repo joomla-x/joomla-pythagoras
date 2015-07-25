@@ -69,18 +69,18 @@ class JTableObserverTags extends JTableObserver
 	 * Creates the associated tags helper class instance
 	 * $typeAlias can be of the form "{variableName}.type", automatically replacing {variableName} with table-instance variables variableName
 	 *
-	 * @param   JObservableInterface  $observableObject  The subject object to be observed
-	 * @param   array                 $params            ( 'typeAlias' => $typeAlias )
+	 * @param   JTableInterface  $table   The table
+	 * @param   array            $params  ( 'typeAlias' => $typeAlias )
 	 *
-	 * @return  JTableObserverTags
+	 * @return  self
 	 *
 	 * @since   3.1.2
 	 */
-	public static function createObserver(JObservableInterface $observableObject, $params = array())
+	public static function createObserver(JTableInterface $table, $params = array())
 	{
 		$typeAlias = $params['typeAlias'];
 
-		$observer = new self($observableObject);
+		$observer = new self($table);
 
 		$observer->tagsHelper = new JHelperTags;
 		$observer->typeAliasPattern = $typeAlias;

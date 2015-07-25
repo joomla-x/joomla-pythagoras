@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Event\Dispatcher;
+use Joomla\Event\Event;
+
 /**
  * Table class supporting modified pre-order tree traversal behavior.
  *
@@ -524,8 +527,11 @@ class JTableNested extends JTable
 		$k = $this->_tbl_key;
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
-		// Implement JObservableInterface: Pre-processing by observers
-		$this->_observers->update('onBeforeDelete', array($pk));
+		// Pre-processing by observers
+		$event = new Event('onBeforeDelete', [
+			'pk'	=> $pk,
+		]);
+		$this->getDispatcher()->dispatch('onBeforeDelete', $event);
 
 		// Lock the table for writing.
 		if (!$this->_lock())
@@ -648,8 +654,11 @@ class JTableNested extends JTable
 		// Unlock the table for writing.
 		$this->_unlock();
 
-		// Implement JObservableInterface: Post-processing by observers
-		$this->_observers->update('onAfterDelete', array($pk));
+		// Post-processing by observers
+		$event = new Event('onAfterDelete', [
+			'pk'	=> $pk,
+		]);
+		$this->getDispatcher()->dispatch('onAfterDelete', $event);
 
 		return true;
 	}
@@ -722,12 +731,12 @@ class JTableNested extends JTable
 	{
 		$k = $this->_tbl_key;
 
-		// Implement JObservableInterface: Pre-processing by observers
-		// 2.5 upgrade issue - check if property_exists before executing
-		if (property_exists($this, '_observers'))
-		{
-			$this->_observers->update('onBeforeStore', array($updateNulls, $k));
-		}
+		// Pre-processing by observers
+		$event = new Event('onBeforeStore', [
+			'updateNulls'	=> $updateNulls,
+			'k'				=> $k,
+		]);
+		$this->getDispatcher()->dispatch('onBeforeStore', $event);
 
 		// @codeCoverageIgnoreStart
 		if ($this->_debug)
@@ -852,23 +861,16 @@ class JTableNested extends JTable
 			}
 		}
 
-		// Implement JObservableInterface: We do not want parent::store to update observers,
-		// since tables are locked and we are updating it from this level of store():
+		// We do not want parent::store to update observers since tables are locked and we are updating it from this
+		// level of store():
 
-		// 2.5 upgrade issue - check if property_exists before executing
-		if (property_exists($this, '_observers'))
-		{
-			$oldCallObservers = $this->_observers->doCallObservers(false);
-		}
+		$oldDispatcher = clone $this->getDispatcher();
+		$blankDispatcher = new Dispatcher;
+		$this->setDispatcher($blankDispatcher);
 
 		$result = parent::store($updateNulls);
 
-		// Implement JObservableInterface: Restore previous callable observers state:
-		// 2.5 upgrade issue - check if property_exists before executing
-		if (property_exists($this, '_observers'))
-		{
-			$this->_observers->doCallObservers($oldCallObservers);
-		}
+		$this->setDispatcher($oldDispatcher);
 
 		if ($result)
 		{
@@ -883,12 +885,11 @@ class JTableNested extends JTable
 		// Unlock the table for writing.
 		$this->_unlock();
 
-		// Implement JObservableInterface: Post-processing by observers
-		// 2.5 upgrade issue - check if property_exists before executing
-		if (property_exists($this, '_observers'))
-		{
-			$this->_observers->update('onAfterStore', array(&$result));
-		}
+		// Post-processing by observers
+		$event = new Event('onAfterStore', [
+			'result'	=> &$result,
+		]);
+		$this->getDispatcher()->dispatch('onAfterStore', $event);
 
 		return $result;
 	}
