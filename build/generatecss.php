@@ -28,6 +28,9 @@ require_once JPATH_LIBRARIES . '/import.php';
 
 require_once JPATH_LIBRARIES . '/cms.php';
 
+use Joomla\CMS\Less\Less;
+use Joomla\CMS\Less\Formatter\Joomla;
+
 /**
  * This script will recompile the CSS files for templates using Less to build their stylesheets.
  *
@@ -58,8 +61,8 @@ class GenerateCss extends JApplicationCli
 			__DIR__ . '/less/bootstrap-rtl.less' => JPATH_SITE . '/media/jui/css/bootstrap-rtl.css'
 		);
 
-		$less = new JLess;
-		$less->setFormatter(new JLessFormatterJoomla);
+		$less = new Less;
+		$less->setFormatter(new Joomla);
 
 		foreach ($templates as $source => $output)
 		{

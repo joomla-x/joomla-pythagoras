@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Less\Formatter;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -16,7 +18,7 @@ defined('JPATH_PLATFORM') or die;
  * @subpackage  Less
  * @since       3.4
  */
-class JLessFormatterJoomla extends lessc_formatter_classic
+class Joomla extends \lessc_formatter_classic
 {
 	public $disableSingle = true;
 

@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Less;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -16,7 +18,7 @@ defined('JPATH_PLATFORM') or die;
  * @subpackage  Less
  * @since       3.4
  */
-class JLess extends lessc
+class Less extends \lessc
 {
 	/**
 	 * Constructor
@@ -32,7 +34,7 @@ class JLess extends lessc
 
 		if ($formatter === null)
 		{
-			$formatter = new JLessFormatterJoomla;
+			$formatter = new Formatter\Joomla;
 		}
 
 		$this->setFormatter($formatter);
