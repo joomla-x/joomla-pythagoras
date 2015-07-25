@@ -156,7 +156,8 @@ class JAuthentication implements DispatcherAwareInterface
 
 			if (class_exists($className))
 			{
-				$plugin = new $className($this->getDispatcher(), (array) $plugin);
+				$dispatcher = $this->getDispatcher();
+				$plugin = new $className($dispatcher, (array) $plugin);
 			}
 			else
 			{
