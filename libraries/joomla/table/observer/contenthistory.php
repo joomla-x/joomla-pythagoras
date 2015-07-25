@@ -49,8 +49,8 @@ class JTableObserverContenthistory extends JTableObserver
 	 * Creates the associated content history helper class instance
 	 * $typeAlias can be of the form "{variableName}.type", automatically replacing {variableName} with table-instance variables variableName
 	 *
-	 * @param   JObservableInterface  $table   The table
-	 * @param   array                 $params  ( 'typeAlias' => $typeAlias )
+	 * @param   JTableInterface  $table   The table
+	 * @param   array            $params  ( 'typeAlias' => $typeAlias )
 	 *
 	 * @return  self
 	 *
