@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 $input  = JFactory::getApplication()->input;
 $user   = JFactory::getUser();
 $asset  = $input->get('asset');

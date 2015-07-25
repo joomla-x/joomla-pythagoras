@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
 
 /**

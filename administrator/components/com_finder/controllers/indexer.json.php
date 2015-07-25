@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 // Register dependent classes.
 JLoader::register('FinderIndexer', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/indexer/indexer.php');
 

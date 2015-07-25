@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 JHtml::_('formbehavior.chosen', 'select');
 
 // Load tooltip instance without HTML support because we have a HTML tag in the tip

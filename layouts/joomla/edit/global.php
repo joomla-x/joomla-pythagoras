@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 $app       = JFactory::getApplication();
 $form      = $displayData->getForm();
 $input     = $app->input;

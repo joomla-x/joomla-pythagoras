@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Component\Router;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -14,7 +16,7 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since  3.3
  */
-class JComponentRouterLegacy implements JComponentRouterInterface
+class Legacy implements RouterInterface
 {
 	/**
 	 * Name of the component

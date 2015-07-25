@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Component\Router\Legacy as JComponentRouterLegacy;
+use Joomla\CMS\Component\Router\RouterInterface as JComponentRouterInterface;
 
 /**
  * Class to create and parse routes for the site application
@@ -732,7 +734,7 @@ class JRouterSite extends JRouter
 			{
 				$reflection = new ReflectionClass($class);
 
-				if (in_array('JComponentRouterInterface', $reflection->getInterfaceNames()))
+				if (in_array('Joomla\\CMS\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames()))
 				{
 					$this->componentRouters[$component] = new $class($this->app, $this->menu);
 				}
@@ -761,7 +763,7 @@ class JRouterSite extends JRouter
 	{
 		$reflection = new ReflectionClass($router);
 
-		if (in_array('JComponentRouterInterface', $reflection->getInterfaceNames()))
+		if (in_array('Joomla\\CMS\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames()))
 		{
 			$this->componentRouters[$component] = $router;
 

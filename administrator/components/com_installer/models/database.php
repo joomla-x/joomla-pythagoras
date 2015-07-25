@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
 
 JLoader::register('InstallerModel', __DIR__ . '/extension.php');

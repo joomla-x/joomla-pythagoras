@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 JHtml::_('behavior.keepalive');
 ?>
 <div class="login<?php echo $this->pageclass_sfx?>">

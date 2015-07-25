@@ -1,5 +1,7 @@
 <?php
 
+use Joomla\CMS\Component\Router\RouterInterface as JComponentRouterInterface;
+
 /**
  * @package     Joomla.UnitTest
  * @subpackage  Router

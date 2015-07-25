@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
 
 JLoader::register('MenusHelper', JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 /**
  * Tags helper class, provides methods to perform various tasks relevant
  * tagging of content.

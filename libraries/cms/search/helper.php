@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 /**
  * Helper class for Joomla! Search components
  *

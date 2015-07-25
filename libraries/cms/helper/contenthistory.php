@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 /**
  * Versions helper class, provides methods to perform various tasks relevant
  * versioning of content.

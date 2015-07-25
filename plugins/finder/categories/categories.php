@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
 
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';

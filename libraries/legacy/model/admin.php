@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
 
 /**

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 $com_path = JPATH_SITE . '/components/com_content/';
 require_once $com_path . 'helpers/route.php';
 

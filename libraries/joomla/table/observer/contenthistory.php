@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+
 /**
  * Table class supporting modified pre-order tree traversal behavior.
  *
