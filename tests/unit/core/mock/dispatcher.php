@@ -48,14 +48,17 @@ class TestMockDispatcher
 
 		// Collect all the relevant methods in JEventDispatcher.
 		$methods = array(
+			'addListener',
+			'dispatch',
 			'register',
+			'removeListener',
 			'trigger',
 			'test',
 		);
 
 		// Create the mock.
 		$mockObject = $test->getMock(
-			'JEventDispatcher',
+			'\\Joomla\\Event\\DispatcherInterface',
 			$methods,
 			// Constructor arguments.
 			array(),
@@ -78,6 +81,7 @@ class TestMockDispatcher
 			$test->assignMockCallbacks(
 				$mockObject,
 				array(
+					'dispatch' => array(get_called_class(), 'mockDispatch'),
 					'register' => array(get_called_class(), 'mockRegister'),
 					'trigger' => array(get_called_class(), 'mockTrigger'),
 				)
@@ -86,6 +90,29 @@ class TestMockDispatcher
 		}
 
 		return $mockObject;
+	}
+
+	/**
+	 * Callback for the JEventDispatcher trigger method.
+	 *
+	 * @param   string  $event  The event to trigger.
+	 * @param   array   $args   An array of arguments.
+	 *
+	 * @return  array  An array of results from each function call.
+	 *
+	 * @since  11.3
+	 */
+	public function mockDispatch($event, $args = array())
+	{
+		if (isset(self::$handlers[$event]))
+		{
+			// Track the events that were triggered, in order.
+			self::$triggered[] = $event;
+
+			return self::$handlers[$event];
+		}
+
+		return array();
 	}
 
 	/**
@@ -131,5 +158,4 @@ class TestMockDispatcher
 
 		return array();
 	}
-
 }

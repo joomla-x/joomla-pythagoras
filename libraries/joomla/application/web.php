@@ -9,7 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\Event\Dispatcher;
+use Joomla\Event\DispatcherInterface;
 use Joomla\Registry\Registry;
 
 /**
