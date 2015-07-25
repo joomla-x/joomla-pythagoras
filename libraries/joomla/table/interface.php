@@ -125,14 +125,4 @@ interface JTableInterface
 	 * @since   3.2
 	 */
 	public function store($updateNulls = false);
-
-	/**
-	 * Get the event dispatcher.
-	 *
-	 * @return  DispatcherInterface
-	 *
-	 * @since   4.0
-	 * @throws  \UnexpectedValueException May be thrown if the dispatcher has not been set.
-	 */
-	public function getDispatcher();
 }
