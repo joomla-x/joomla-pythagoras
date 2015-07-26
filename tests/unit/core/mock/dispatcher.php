@@ -82,8 +82,8 @@ class TestMockDispatcher
 				$mockObject,
 				array(
 					'dispatch' => array(get_called_class(), 'mockDispatch'),
-					'register' => array(get_called_class(), 'mockRegister'),
-					'trigger' => array(get_called_class(), 'mockTrigger'),
+					'addListener' => array(get_called_class(), 'mockRegister'),
+					'triggerEvent' => array(get_called_class(), 'mockTrigger'),
 				)
 			);
 
