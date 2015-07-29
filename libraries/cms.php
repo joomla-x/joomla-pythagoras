@@ -30,11 +30,18 @@ if (!class_exists('JLoader'))
 JLoader::registerPrefix('J', JPATH_PLATFORM . '/cms', false, true);
 
 // Create the Composer autoloader
+/** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require JPATH_LIBRARIES . '/vendor/autoload.php';
 $loader->unregister();
 
 // Decorate Composer autoloader
 spl_autoload_register(array(new JClassLoader($loader), 'loadClass'), true, true);
+
+// Allow classes of the Joomla namespace to also be loaded off the libraries/joomla folder
+$loader->addPsr4('Joomla\\', JPATH_LIBRARIES . '/joomla');
+
+// Allow classes of the Joomla\Cms namespace to also be loaded from the libraries/cms folder
+$loader->addPsr4('Joomla\\Cms\\', JPATH_LIBRARIES . '/cms');
 
 // Register the class aliases for Framework classes that have replaced their Platform equivilents
 require_once JPATH_LIBRARIES . '/classmap.php';
