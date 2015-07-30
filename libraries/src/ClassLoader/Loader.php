@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Class;
+
 defined('_JEXEC') or die;
 
 use Composer\Autoload\ClassLoader;
