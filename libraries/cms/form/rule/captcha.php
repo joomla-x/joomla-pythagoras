@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Captcha\Captcha as JCaptcha;
 
 /**
  * Form Rule class for the Joomla Framework.

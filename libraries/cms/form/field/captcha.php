@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Captcha\Captcha as JCaptcha;
+
 /**
  * Form Field class for the Joomla Framework.
  *
