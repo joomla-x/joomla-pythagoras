@@ -7,9 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Captcha;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+
+use JObject;
+use JPlugin;
+use JFactory;
+use RuntimeException;
+use JText;
+use Exception;
+use JPluginHelper;
+use JFilterInput;
 
 /**
  * Joomla! Captcha base object
@@ -19,7 +30,7 @@ use Joomla\Registry\Registry;
  * @subpackage  Captcha
  * @since       2.5
  */
-class JCaptcha extends JObject
+class Captcha extends JObject
 {
 	/**
 	 * An array of Observer objects to notify
@@ -89,7 +100,7 @@ class JCaptcha extends JObject
 	 * @param   string  $captcha  The plugin to use.
 	 * @param   array   $options  Associative array of options.
 	 *
-	 * @return  JCaptcha  Instance of this class.
+	 * @return  Captcha  Instance of this class.
 	 *
 	 * @since 2.5
 	 */
@@ -101,7 +112,7 @@ class JCaptcha extends JObject
 		{
 			try
 			{
-				self::$_instances[$signature] = new JCaptcha($captcha, $options);
+				self::$_instances[$signature] = new Captcha($captcha, $options);
 			}
 			catch (RuntimeException $e)
 			{
