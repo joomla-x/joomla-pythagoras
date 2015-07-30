@@ -7,16 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Editor;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use JFactory;
+use JPluginHelper;
+use JFilterInput;
 
 /**
  * JEditor class to handle WYSIWYG editors
  *
  * @since  1.5
  */
-class JEditor extends JObject
+class Editor extends JObject
 {
 	/**
 	 * An array of Observer objects to notify
@@ -106,7 +111,7 @@ class JEditor extends JObject
 
 		if (empty(self::$instances[$signature]))
 		{
-			self::$instances[$signature] = new JEditor($editor);
+			self::$instances[$signature] = new Editor($editor);
 		}
 
 		return self::$instances[$signature];
@@ -157,7 +162,7 @@ class JEditor extends JObject
 		}
 		else
 		{
-			if (!($observer instanceof JEditor))
+			if (!($observer instanceof Editor))
 			{
 				return;
 			}

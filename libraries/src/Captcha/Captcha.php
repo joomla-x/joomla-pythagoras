@@ -12,7 +12,7 @@ namespace Joomla\CMS\Captcha;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
-
+use Joomla\CMS\Editor\Editor as JEditor;
 use JObject;
 use JPlugin;
 use JFactory;

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Editor\Editor as JEditor;
+
 JFormHelper::loadFieldClass('textarea');
 
 /**
