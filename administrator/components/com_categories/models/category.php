@@ -727,56 +727,6 @@ class CategoriesModelCategory extends JModelAdmin
 	}
 
 	/**
-	 * Batch tag a list of categories.
-	 *
-	 * @param   integer  $value     The value of the new tag.
-	 * @param   array    $pks       An array of row IDs.
-	 * @param   array    $contexts  An array of item contexts.
-	 *
-	 * @return  boolean true if successful; false otherwise.
-	 */
-	protected function batchTag($value, $pks, $contexts)
-	{
-		// Set the variables
-		$user = JFactory::getUser();
-		$table = $this->getTable();
-
-		foreach ($pks as $pk)
-		{
-			if ($user->authorise('core.edit', $contexts[$pk]))
-			{
-				$table->reset();
-				$table->load($pk);
-				$tags = array($value);
-
-				/**
-				 * @var  JTableObserverTags  $tagsObserver
-				 */
-				$tagsObserver = JTableObserverTags::createObserver($table);
-				$result = $tagsObserver->setNewTags($tags, false);
-
-				if (!$result)
-				{
-					$this->setError($table->getError());
-
-					return false;
-				}
-			}
-			else
-			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
-
-				return false;
-			}
-		}
-
-		// Clean the cache
-		$this->cleanCache();
-
-		return true;
-	}
-
-	/**
 	 * Batch copy categories to a new category.
 	 *
 	 * @param   integer  $value     The new category.
@@ -950,7 +900,7 @@ class CategoriesModelCategory extends JModelAdmin
 			// Unpublish because we are making a copy
 			$this->table->published = 0;
 
-			parent::createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
+			parent::createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
 
 			// Store the row.
 			if (!$this->table->store())
@@ -1112,7 +1062,7 @@ class CategoriesModelCategory extends JModelAdmin
 				}
 			}
 
-			parent::createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
+			parent::createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
 
 			// Store the row.
 			if (!$this->table->store())
