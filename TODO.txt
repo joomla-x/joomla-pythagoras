@@ -59,6 +59,8 @@ TableAfterPublishEvent extends TableBeforePublishEvent
     state
     userId
 
+Fix the Taggable plugin type hints once I implement these events
+
 Remove tags helper from JTable
     Create it automatically through Taggable on table creation by hooking onTableObjectCreate event
 

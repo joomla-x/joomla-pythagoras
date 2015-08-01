@@ -61,7 +61,8 @@ class PlgBehaviourTaggable extends JPlugin
 
 		$table->tagsHelper = new JHelperTags;
 		$table->tagsHelper->typeAlias = $table->typeAlias;
-		$table->tagsHelper->tags = explode(',', $table->tagsHelper->getTagIds($table->getId(), $typeAlias));
+		// This line causes the tags to not be saved. At all.
+		//$table->tagsHelper->tags = explode(',', $table->tagsHelper->getTagIds($table->getId(), $typeAlias));
 	}
 
 	/**
