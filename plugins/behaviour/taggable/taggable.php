@@ -41,13 +41,13 @@ class PlgBehaviourTaggable extends JPlugin
 	/**
 	 * Pre-processor for $table->store($updateNulls)
 	 *
-	 * @param   CmsEvent\TableBeforeStoreEvent  $event  The event to handle
+	 * @param   CmsEvent\Table\BeforeStoreEvent  $event  The event to handle
 	 *
 	 * @return  void
 	 *
 	 * @since   4.0.0
 	 */
-	public function onBeforeStore(CmsEvent\TableBeforeStoreEvent $event)
+	public function onTableBeforeStore(CmsEvent\Table\BeforeStoreEvent $event)
 	{
 		// Extract arguments
 		/** @var JTableInterface $table */
@@ -85,13 +85,13 @@ class PlgBehaviourTaggable extends JPlugin
 	/**
 	 * Post-processor for $table->store($updateNulls)
 	 *
-	 * @param   CmsEvent\TableAfterStoreEvent  $event  The event to handle
+	 * @param   CmsEvent\Table\AfterStoreEvent  $event  The event to handle
 	 *
 	 * @return  void
 	 *
 	 * @since   4.0.0
 	 */
-	public function onAfterStore(CmsEvent\TableAfterStoreEvent $event)
+	public function onTableAfterStore(CmsEvent\Table\AfterStoreEvent $event)
 	{
 		// Extract arguments
 		/** @var JTableInterface $table */
@@ -134,13 +134,13 @@ class PlgBehaviourTaggable extends JPlugin
 	/**
 	 * Pre-processor for $table->delete($pk)
 	 *
-	 * @param   CmsEvent\TableBeforeDeleteEvent  $event  The event to handle
+	 * @param   CmsEvent\Table\BeforeDeleteEvent  $event  The event to handle
 	 *
 	 * @return  void
 	 *
 	 * @since   4.0.0
 	 */
-	public function onBeforeDelete(CmsEvent\TableBeforeDeleteEvent $event)
+	public function onTableBeforeDelete(CmsEvent\Table\BeforeDeleteEvent $event)
 	{
 		// Extract arguments
 		/** @var JTableInterface $table */
@@ -172,13 +172,13 @@ class PlgBehaviourTaggable extends JPlugin
 	/**
 	 * Handles the tag setting in $table->batchTag($value, $pks, $contexts)
 	 *
-	 * @param   CmsEvent\TableSetNewTagsEvent  $event  The event to handle
+	 * @param   CmsEvent\Table\SetNewTagsEvent  $event  The event to handle
 	 *
 	 * @return  void
 	 *
 	 * @since   4.0.0
 	 */
-	public function onSetNewTags(CmsEvent\TableSetNewTagsEvent $event)
+	public function onTableSetNewTags(CmsEvent\Table\SetNewTagsEvent $event)
 	{
 		// Extract arguments
 		/** @var JTableInterface $table */

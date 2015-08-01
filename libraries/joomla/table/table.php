@@ -15,7 +15,6 @@ use Joomla\Cms\Event\AbstractEvent;
 use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Event\Event;
 
 /**
  * Abstract Table class
