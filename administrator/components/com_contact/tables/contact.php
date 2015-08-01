@@ -133,6 +133,17 @@ class ContactTableContact extends JTable
 	 */
 	public function check()
 	{
+		try
+		{
+			parent::check();
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
 		$this->default_con = (int) $this->default_con;
 
 		if (JFilterInput::checkAttribute(array ('href', $this->webpage)))

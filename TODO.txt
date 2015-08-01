@@ -59,19 +59,6 @@ TableAfterPublishEvent extends TableBeforePublishEvent
     state
     userId
 
-public function check()
-    Make sure we call parent::check() with
-    try
-    {
-        parent::check();
-    }
-    catch (\Exception $e)
-    {
-        $this->setError($e->getMessage());
-
-        return false;
-    }
-
 Remove tags helper from JTable
     Create it automatically through Taggable on table creation by hooking onTableObjectCreate event
 

@@ -43,6 +43,17 @@ class NewsfeedsTableNewsfeed extends JTable
 	 */
 	public function check()
 	{
+		try
+		{
+			parent::check();
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
 		// Check for valid name.
 		if (trim($this->name) == '')
 		{

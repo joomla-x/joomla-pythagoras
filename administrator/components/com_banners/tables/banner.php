@@ -61,6 +61,17 @@ class BannersTableBanner extends JTable
 	 */
 	public function check()
 	{
+		try
+		{
+			parent::check();
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
 		// Set name
 		$this->name = htmlspecialchars_decode($this->name, ENT_QUOTES);
 
