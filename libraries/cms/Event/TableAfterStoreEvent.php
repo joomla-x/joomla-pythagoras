@@ -17,7 +17,7 @@ use JTableInterface;
 /**
  * Event class for JTable's onAfterStore event
  */
-class TableAfterStoreEvent extends AbstractImmutableEvent
+class TableAfterStoreEvent extends AbstractTableEvent
 {
 	/**
 	 * Constructor.
@@ -39,25 +39,6 @@ class TableAfterStoreEvent extends AbstractImmutableEvent
 		}
 
 		parent::__construct($name, $arguments);
-	}
-
-	/**
-	 * Setter for the subject argument
-	 *
-	 * @param   JTableInterface  $value  The value to set
-	 *
-	 * @return  JTableInterface
-	 *
-	 * @throws  BadMethodCallException  if the argument is not of the expected type
-	 */
-	protected function setSubject($value)
-	{
-		if (!is_object($value) || !($value instanceof JTableInterface))
-		{
-			throw new BadMethodCallException("Argument 'subject' of event {$this->name} is not of the expected type");
-		}
-
-		return $value;
 	}
 
 	/**
