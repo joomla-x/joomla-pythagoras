@@ -95,17 +95,15 @@ class PlgBehaviourTaggable extends JPlugin
 			return;
 		}
 
-		// Get the Tags helper and assign the parsed alias
-		$tagsHelper = new JHelperTags();
-		$tagsHelper->typeAlias = $typeAlias;
+		$table->tagsHelper->typeAlias = $typeAlias;
 
 		if (empty($table->tagsHelper->tags))
 		{
-			$tagsHelper->preStoreProcess($table);
+			$table->tagsHelper->preStoreProcess($table);
 		}
 		else
 		{
-			$tagsHelper->preStoreProcess($table, (array) $table->tagsHelper->tags);
+			$table->tagsHelper->preStoreProcess($table, (array) $table->tagsHelper->tags);
 		}
 	}
 
@@ -151,16 +149,15 @@ class PlgBehaviourTaggable extends JPlugin
 		}
 
 		// Get the Tags helper and assign the parsed alias
-		$tagsHelper = new JHelperTags();
-		$tagsHelper->typeAlias = $typeAlias;
+		$table->tagsHelper->typeAlias = $typeAlias;
 
 		if (empty($table->tagsHelper->tags))
 		{
-			$result = $tagsHelper->postStoreProcess($table);
+			$result = $table->tagsHelper->postStoreProcess($table);
 		}
 		else
 		{
-			$result = $tagsHelper->postStoreProcess($table, $table->tagsHelper->tags);
+			$result = $table->tagsHelper->postStoreProcess($table, $table->tagsHelper->tags);
 		}
 	}
 
@@ -196,8 +193,7 @@ class PlgBehaviourTaggable extends JPlugin
 		}
 
 		// Get the Tags helper and assign the parsed alias
-		$tagsHelper = new JHelperTags();
-		$tagsHelper->typeAlias = $typeAlias;
+		$table->tagsHelper->typeAlias = $typeAlias;
 
 		$this->tagsHelper->deleteTagData($this->table, $pk);
 	}
@@ -235,8 +231,7 @@ class PlgBehaviourTaggable extends JPlugin
 		}
 
 		// Get the Tags helper and assign the parsed alias
-		$tagsHelper = new JHelperTags();
-		$tagsHelper->typeAlias = $typeAlias;
+		$table->tagsHelper->typeAlias = $typeAlias;
 
 		if (!$this->tagsHelper->postStoreProcess($table, $newTags, $replaceTags))
 		{
