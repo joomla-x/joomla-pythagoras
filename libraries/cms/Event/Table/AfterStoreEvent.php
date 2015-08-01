@@ -24,7 +24,7 @@ class AfterStoreEvent extends AbstractEvent
 	 *
 	 * Mandatory arguments:
 	 * subject		JTableInterface	The table we are operating on
-	 * result		JTableInterface	The table after storing it
+	 * result		boolean         Did the save succeed?
 	 *
 	 * @param   string  $name       The event name.
 	 * @param   array   $arguments  The event arguments.
@@ -44,20 +44,15 @@ class AfterStoreEvent extends AbstractEvent
 	/**
 	 * Setter for the result argument
 	 *
-	 * @param   JTableInterface  $value  The value to set
+	 * @param   boolean  $value  The value to set
 	 *
-	 * @return  JTableInterface
+	 * @return  boolean
 	 *
 	 * @throws  BadMethodCallException  if the argument is not of the expected type
 	 */
 	protected function setResult($value)
 	{
-		if (!is_object($value) || !($value instanceof JTableInterface))
-		{
-			throw new BadMethodCallException("Argument 'result' of event {$this->name} is not of the expected type");
-		}
-
-		return $value;
+		return $value ? true : false;
 	}
 
 }
