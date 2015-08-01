@@ -67,7 +67,7 @@ abstract class AbstractEvent extends BaseEvent
 		if (empty($eventClassName) || !class_exists($eventClassName, true))
 		{
 			$bareName = strpos($eventName, 'on') === 0 ? substr($eventName, 2) : $eventName;
-			$parts = Normalise::fromCamelCase($bareName);
+			$parts = Normalise::fromCamelCase($bareName, true);
 			$eventClassName = __NAMESPACE__ . '\\' . ucfirst(array_shift($parts)) . '\\';
 			$eventClassName .= implode('', $parts);
 			$eventClassName .= 'Event';
@@ -85,7 +85,7 @@ abstract class AbstractEvent extends BaseEvent
 			return new $eventClassName($eventName, $arguments);
 		}
 
-		return new static($eventName, $arguments);
+		return new GenericEvent($eventName, $arguments);
 	}
 
 	/**

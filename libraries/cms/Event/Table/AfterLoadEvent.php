@@ -24,7 +24,7 @@ class AfterLoadEvent extends AbstractEvent
 	 *
 	 * Mandatory arguments:
 	 * subject	JTableInterface	The table we are operating on
-	 * result	JTableInterface The loaded record
+	 * result	boolean			Did the table record load succeed?
 	 * row		null|array		The values loaded from the database, null if it failed
 	 *
 	 * @param   string $name      The event name.
@@ -50,20 +50,15 @@ class AfterLoadEvent extends AbstractEvent
 	/**
 	 * Setter for the result argument
 	 *
-	 * @param   JTableInterface  $value  The value to set
+	 * @param   boolean  $value  The value to set
 	 *
-	 * @return  JTableInterface
+	 * @return  boolean
 	 *
 	 * @throws  BadMethodCallException  if the argument is not of the expected type
 	 */
 	protected function setResult($value)
 	{
-		if (!is_object($value) || !($value instanceof JTableInterface))
-		{
-			throw new BadMethodCallException("Argument 'result' of event {$this->name} is not of the expected type");
-		}
-
-		return $value;
+		return $value ? true : false;
 	}
 
 	/**
