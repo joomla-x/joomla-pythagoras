@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event;
+namespace Joomla\Cms\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -15,20 +15,19 @@ use BadMethodCallException;
 use JTableInterface;
 
 /**
- * Event class for JTable's onAfterLoad event
+ * Event class for JTable's onAfterStore event
  */
-class TableAfterLoadEvent extends AbstractTableEvent
+class AfterStoreEvent extends AbstractEvent
 {
 	/**
 	 * Constructor.
 	 *
 	 * Mandatory arguments:
-	 * subject	JTableInterface	The table we are operating on
-	 * result	JTableInterface The loaded record
-	 * row		null|array		The values loaded from the database, null if it failed
+	 * subject		JTableInterface	The table we are operating on
+	 * result		JTableInterface	The table after storing it
 	 *
-	 * @param   string $name      The event name.
-	 * @param   array  $arguments The event arguments.
+	 * @param   string  $name       The event name.
+	 * @param   array   $arguments  The event arguments.
 	 *
 	 * @throws  BadMethodCallException
 	 */
@@ -37,11 +36,6 @@ class TableAfterLoadEvent extends AbstractTableEvent
 		if (!isset($arguments['result']))
 		{
 			throw new BadMethodCallException("Argument 'result' is required for event $name");
-		}
-
-		if (!isset($arguments['row']))
-		{
-			throw new BadMethodCallException("Argument 'row' is required for event $name");
 		}
 
 		parent::__construct($name, $arguments);
@@ -61,25 +55,6 @@ class TableAfterLoadEvent extends AbstractTableEvent
 		if (!is_object($value) || !($value instanceof JTableInterface))
 		{
 			throw new BadMethodCallException("Argument 'result' of event {$this->name} is not of the expected type");
-		}
-
-		return $value;
-	}
-
-	/**
-	 * Setter for the row argument
-	 *
-	 * @param   array|null  $value  The value to set
-	 *
-	 * @return  array|null
-	 *
-	 * @throws  BadMethodCallException  if the argument is not of the expected type
-	 */
-	protected function setRow($value)
-	{
-		if (!is_null($value) && !is_array($value))
-		{
-			throw new BadMethodCallException("Argument 'row' of event {$this->name} is not of the expected type");
 		}
 
 		return $value;

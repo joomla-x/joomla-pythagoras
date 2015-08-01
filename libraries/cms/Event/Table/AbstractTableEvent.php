@@ -7,42 +7,42 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event;
+namespace Joomla\Cms\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
 use BadMethodCallException;
+use Joomla\Cms\Event\AbstractImmutableEvent;
 use JTableInterface;
 
 /**
- * Event class for JTable's onAfterStore event
+ * Event class for JTable's events
  */
-class TableAfterStoreEvent extends AbstractTableEvent
+abstract class AbstractEvent extends AbstractImmutableEvent
 {
 	/**
 	 * Constructor.
 	 *
-	 * Mandatory arguments:
-	 * subject		JTableInterface	The table we are operating on
-	 * result		JTableInterface	The table after storing it
-	 *
-	 * @param   string  $name       The event name.
-	 * @param   array   $arguments  The event arguments.
+	 * @param   string $name      The event name.
+	 * @param   array  $arguments The event arguments.
 	 *
 	 * @throws  BadMethodCallException
+	 *
+	 * @since   1.0
 	 */
 	public function __construct($name, array $arguments = array())
 	{
-		if (!isset($arguments['result']))
+		if (!isset($arguments['subject']))
 		{
-			throw new BadMethodCallException("Argument 'result' is required for event $name");
+			throw new BadMethodCallException("Argument 'subject' of event {$this->name} is required but has not been provided");
 		}
 
 		parent::__construct($name, $arguments);
 	}
 
+
 	/**
-	 * Setter for the result argument
+	 * Setter for the subject argument
 	 *
 	 * @param   JTableInterface  $value  The value to set
 	 *
@@ -50,14 +50,13 @@ class TableAfterStoreEvent extends AbstractTableEvent
 	 *
 	 * @throws  BadMethodCallException  if the argument is not of the expected type
 	 */
-	protected function setResult($value)
+	protected function setSubject($value)
 	{
 		if (!is_object($value) || !($value instanceof JTableInterface))
 		{
-			throw new BadMethodCallException("Argument 'result' of event {$this->name} is not of the expected type");
+			throw new BadMethodCallException("Argument 'subject' of event {$this->name} is not of the expected type");
 		}
 
 		return $value;
 	}
-
 }

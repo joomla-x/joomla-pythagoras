@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event;
+namespace Joomla\Cms\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -17,7 +17,7 @@ use JTableInterface;
 /**
  * Event class for JTable's onAfterDelete event
  */
-class TableAfterDeleteEvent extends AbstractTableEvent
+class AfterDeleteEvent extends AbstractEvent
 {
 	/**
 	 * Constructor.

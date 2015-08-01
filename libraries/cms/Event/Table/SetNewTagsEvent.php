@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event;
+namespace Joomla\Cms\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
@@ -19,7 +19,7 @@ use JTableInterface;
  *
  * TODO This is only used in JModelAdmin::batchTag. We need to remove it but we can't use JTable::save as we don't want the table data to be saved. Maybe trigger the onBeforeStore event instead?
  */
-class TableSetNewTagsEvent extends AbstractTableEvent
+class SetNewTagsEvent extends TableEvent
 {
 	/**
 	 * Constructor.

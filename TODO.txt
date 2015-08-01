@@ -1,0 +1,89 @@
+TableBeforeResetEvent extends AbstractTableEvent
+TableAfterResetEvent extends AbstractTableEvent
+TableObjectCreate extends AbstractTableEvent
+    subject
+
+TableBeforeBindEvent extends AbstractTableEvent
+TableAfterBindEvent extends TableBeforeBindEvent
+    subject
+    src
+    ignore
+
+TableCheckEvent extends AbstractTableEvent
+    subject
+
+onTableBeforeCheckout extends AbstractTableEvent
+onTableAfterCheckout extends onTableBeforeCheckout
+    subject
+    userId
+    pk
+
+onTableBeforeCheckin extends AbstractTableEvent
+onTableAfterCheckin extends onTableBeforeCheckin
+onTableBeforeHit extends onTableBeforeCheckin
+onTableAfterHit extends onTableBeforeCheckin
+    subject
+    pk
+
+TableBeforeReorderEvent extends AbstractTableEvent
+    subject
+    query
+    where
+
+TableAfterReorderEvent extends AbstractTableEvent
+    subject
+    rows
+    where
+
+TableBeforeMove extends TableBeforeReorderEvent
+    subject
+    query
+    delta
+    where
+
+TableAfterMove extends AbstractTableEvent
+    subject
+    row
+    delta
+    where
+
+TableBeforePublishEvent extends AbstractTableEvent
+    subject
+    pks
+    state
+    userId
+
+TableAfterPublishEvent extends TableBeforePublishEvent
+    subject
+    pks
+    state
+    userId
+
+public function check()
+    Make sure we call parent::check() with
+    try
+    {
+        parent::check();
+    }
+    catch (\Exception $e)
+    {
+        $this->setError($e->getMessage());
+
+        return false;
+    }
+
+Remove tags helper from JTable
+    Create it automatically through Taggable on table creation by hooking onTableObjectCreate event
+
+Refactor onSetNewTags event
+    Go directly through the onBeforeStore event
+
+Maybe we should use a dedicated "behaviour" dispatcher for performance reasons and to prevent system plugins from butting in?
+    It should go into the JApplicationCms as getBehaviourDispatcher
+    Alos load the behaviour plugins into the dispatcher (might require JPluginHelper modification?)
+    Modify JTable line 203 with the new dispatcher
+
+Refactor content versioning
+
+What happens if I disable the behaviour plugins? Does the tag and versioning crash to flames?
+    Maybe I have to change how the respective JFormFields work?

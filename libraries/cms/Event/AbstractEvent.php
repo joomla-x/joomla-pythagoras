@@ -12,6 +12,7 @@ namespace Joomla\Cms\Event;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Event\Event as BaseEvent;
+use Joomla\String\Normalise;
 use BadMethodCallException;
 
 /**
@@ -56,7 +57,7 @@ abstract class AbstractEvent extends BaseEvent
 		{
 			$eventClassName = $arguments['eventClass'];
 
-			unset($arguments['eventNamespace']);
+			unset($arguments['eventClass']);
 		}
 
 		/**
@@ -65,9 +66,11 @@ abstract class AbstractEvent extends BaseEvent
 		 */
 		if (empty($eventClassName) || !class_exists($eventClassName, true))
 		{
-			$eventClassName = strpos($eventName, 'on') === 0 ? substr($eventName, 2) : $eventName;
-			$eventClassName = ucfirst($eventClassName) . 'Event';
-			$eventClassName = __NAMESPACE__ . '\\' . $eventClassName;
+			$bareName = strpos($eventName, 'on') === 0 ? substr($eventName, 2) : $eventName;
+			$parts = Normalise::fromCamelCase($bareName);
+			$eventClassName = __NAMESPACE__ . '\\' . ucfirst(array_shift($parts)) . '\\';
+			$eventClassName .= implode('', $parts);
+			$eventClassName .= 'Event';
 		}
 
 		// Make sure a non-empty subject argument exists and that it is an object
