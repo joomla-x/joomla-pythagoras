@@ -34,12 +34,12 @@ class BeforeStoreEvent extends AbstractEvent
 	 */
 	public function __construct($name, array $arguments = array())
 	{
-		if (!isset($arguments['updateNulls']))
+		if (!array_key_exists('updateNulls', $arguments))
 		{
 			throw new BadMethodCallException("Argument 'updateNulls' is required for event $name");
 		}
 
-		if (!isset($arguments['k']))
+		if (!array_key_exists('k', $arguments))
 		{
 			throw new BadMethodCallException("Argument 'k' is required for event $name");
 		}

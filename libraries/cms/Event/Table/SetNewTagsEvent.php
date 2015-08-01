@@ -36,12 +36,12 @@ class SetNewTagsEvent extends TableEvent
 	 */
 	public function __construct($name, array $arguments = array())
 	{
-		if (!isset($arguments['newTags']))
+		if (!array_key_exists('newTags', $arguments))
 		{
 			throw new BadMethodCallException("Argument 'newTags' is required for event $name");
 		}
 
-		if (!isset($arguments['replaceTags']))
+		if (!array_key_exists('replaceTags', $arguments))
 		{
 			throw new BadMethodCallException("Argument 'replaceTags' is required for event $name");
 		}

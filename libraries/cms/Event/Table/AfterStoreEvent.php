@@ -33,7 +33,7 @@ class AfterStoreEvent extends AbstractEvent
 	 */
 	public function __construct($name, array $arguments = array())
 	{
-		if (!isset($arguments['result']))
+		if (!array_key_exists('result', $arguments))
 		{
 			throw new BadMethodCallException("Argument 'result' is required for event $name");
 		}
