@@ -27,9 +27,9 @@ class JTableCategory extends JTableNested
 	 */
 	public function __construct(JDatabaseDriver $db)
 	{
-		parent::__construct('#__categories', 'id', $db);
-
 		$this->typeAlias = '{extension}.category';
+
+		parent::__construct('#__categories', 'id', $db);
 
 		JTableObserverContenthistory::createObserver($this, array('typeAlias' => '{extension}.category'));
 

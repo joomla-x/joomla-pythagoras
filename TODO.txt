@@ -62,6 +62,8 @@ TableAfterPublishEvent extends TableBeforePublishEvent
 Remove tags helper from JTable
     Create it automatically through Taggable on table creation by hooking onTableObjectCreate event
 
+Remove tags observer (completely!)
+
 Refactor onSetNewTags event
     Go directly through the onBeforeStore event
 

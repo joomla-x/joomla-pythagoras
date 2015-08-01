@@ -35,9 +35,9 @@ class ContactTableContact extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__contact_details', 'id', $db);
-
 		$this->typeAlias = 'com_contact.contact';
+
+		parent::__construct('#__contact_details', 'id', $db);
 
 		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_contact.contact'));
 	}

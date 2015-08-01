@@ -42,9 +42,10 @@ class CategoriesModelCategory extends JModelAdmin
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
 		$extension = JFactory::getApplication()->input->get('extension', 'com_content');
 		$this->typeAlias = $extension . '.category';
+
+		parent::__construct($config);
 	}
 
 	/**

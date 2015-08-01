@@ -28,9 +28,10 @@ class JTableContent extends JTable
 	 */
 	public function __construct(JDatabaseDriver $db)
 	{
+		$this->typeAlias = 'com_content.article';
+
 		parent::__construct('#__content', 'id', $db);
 
-		$this->typeAlias = 'com_content.article';
 		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_content.article'));
 
 		// Set the alias since the column is called state

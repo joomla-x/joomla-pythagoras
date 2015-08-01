@@ -38,6 +38,32 @@ class PlgBehaviourTaggable extends JPlugin
 		parent::__construct($subject, $config);
 	}
 
+	public function onTableObjectCreate(CmsEvent\AbstractEvent $event)
+	{
+		// Extract arguments
+		/** @var JTableInterface $table */
+		$table			= $event['subject'];
+
+		// Parse the type alias
+		$typeAlias = $this->parseTypeAlias($table);
+
+		// If the table doesn't support UCM we can't use the Taggable behaviour
+		if (is_null($typeAlias))
+		{
+			return;
+		}
+
+		// If the table already has a tags helper we have nothing to do
+		if (property_exists($table, 'tagsHelper'))
+		{
+			return;
+		}
+
+		$table->tagsHelper = new JHelperTags;
+		$table->tagsHelper->typeAlias = $table->typeAlias;
+		$table->tagsHelper->tags = explode(',', $table->tagsHelper->getTagIds($table->getId(), $typeAlias));
+	}
+
 	/**
 	 * Pre-processor for $table->store($updateNulls)
 	 *
@@ -95,7 +121,13 @@ class PlgBehaviourTaggable extends JPlugin
 	{
 		// Extract arguments
 		/** @var JTableInterface $table */
-		$table			= $event['result'];
+		$table	= $event['subject'];
+		$result = $event['result'];
+
+		if (!$result)
+		{
+			return;
+		}
 
 		if (!is_object($table) || !($table instanceof JTableInterface))
 		{

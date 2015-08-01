@@ -481,6 +481,18 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	}
 
 	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
 	 * Method to get the JDatabaseDriver object.
 	 *
 	 * @return  JDatabaseDriver  The internal database driver object.
@@ -830,15 +842,29 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 			unset($this->asset_id);
 		}
 
-		// If a primary key exists update the object, otherwise insert it.
-		if ($this->hasPrimaryKey())
+		// We have to remove the typeAlias property or updateObject/insertObject will be confused
+		$typeAlias = $this->typeAlias;
+		unset($this->typeAlias);
+
+		try
 		{
-			$result = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_keys, $updateNulls);
+			// If a primary key exists update the object, otherwise insert it.
+			if ($this->hasPrimaryKey())
+			{
+				$result = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_keys, $updateNulls);
+			}
+			else
+			{
+				$result = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_keys[0]);
+			}
 		}
-		else
+		catch (\Exception $e)
 		{
-			$result = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_keys[0]);
+			$this->setError($e->getMessage());
+			$result = false;
 		}
+
+		$this->typeAlias = $typeAlias;
 
 		// If the table is not set to track assets return true.
 		if ($this->_trackAssets)

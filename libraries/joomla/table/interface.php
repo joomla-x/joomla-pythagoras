@@ -81,6 +81,13 @@ interface JTableInterface
 	public function getKeyName();
 
 	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 */
+	public function getId();
+
+	/**
 	 * Method to load a row from the database by primary key and bind the fields
 	 * to the JTable instance properties.
 	 *
