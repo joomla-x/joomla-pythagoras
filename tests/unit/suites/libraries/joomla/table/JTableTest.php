@@ -36,6 +36,14 @@ class JTableTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
+		$this->saveFactoryState();
+
+		$mockApp = $this->getMockCmsApp();
+		$mockApp->expects($this->any())
+			->method('getDispatcher')
+			->willReturn($this->getMockDispatcher());
+		JFactory::$application = $mockApp;
+
 		$this->object = new TableDbTestComposite(TestCaseDatabase::$driver);
 	}
 
@@ -49,6 +57,7 @@ class JTableTest extends TestCaseDatabase
 	 */
 	protected function tearDown()
 	{
+		$this->restoreFactoryState();
 		parent::tearDown();
 	}
 
