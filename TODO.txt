@@ -1,65 +1,36 @@
-TableBeforeResetEvent extends AbstractTableEvent
-TableAfterResetEvent extends AbstractTableEvent
-TableObjectCreate extends AbstractTableEvent
-    subject
-
-TableBeforeBindEvent extends AbstractTableEvent
-TableAfterBindEvent extends TableBeforeBindEvent
-    subject
-    src
-    ignore
-
-TableCheckEvent extends AbstractTableEvent
-    subject
-
-onTableBeforeCheckout extends AbstractTableEvent
-onTableAfterCheckout extends onTableBeforeCheckout
-    subject
-    userId
-    pk
-
-onTableBeforeCheckin extends AbstractTableEvent
-onTableAfterCheckin extends onTableBeforeCheckin
-onTableBeforeHit extends onTableBeforeCheckin
-onTableAfterHit extends onTableBeforeCheckin
-    subject
-    pk
-
-TableBeforeReorderEvent extends AbstractTableEvent
+BeforeReorderEvent extends AbstractTableEvent
     subject
     query
     where
 
-TableAfterReorderEvent extends AbstractTableEvent
+AfterReorderEvent extends AbstractTableEvent
     subject
     rows
     where
 
-TableBeforeMove extends TableBeforeReorderEvent
+BeforeMove extends TableBeforeReorderEvent
     subject
     query
     delta
     where
 
-TableAfterMove extends AbstractTableEvent
+AfterMove extends AbstractTableEvent
     subject
     row
     delta
     where
 
-TableBeforePublishEvent extends AbstractTableEvent
+BeforePublishEvent extends AbstractTableEvent
     subject
     pks
     state
     userId
 
-TableAfterPublishEvent extends TableBeforePublishEvent
+AfterPublishEvent extends BeforePublishEvent
     subject
     pks
     state
     userId
-
-Fix the Taggable plugin type hints once I implement these events
 
 Remove tags helper from JTable
     Create it automatically through Taggable on table creation by hooking onTableObjectCreate event
@@ -68,11 +39,6 @@ Remove tags observer (completely!)
 
 Refactor onSetNewTags event
     Go directly through the onBeforeStore event
-
-Maybe we should use a dedicated "behaviour" dispatcher for performance reasons and to prevent system plugins from butting in?
-    It should go into the JApplicationCms as getBehaviourDispatcher
-    Alos load the behaviour plugins into the dispatcher (might require JPluginHelper modification?)
-    Modify JTable line 203 with the new dispatcher
 
 Refactor content versioning
 

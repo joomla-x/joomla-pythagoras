@@ -38,7 +38,12 @@ class PlgBehaviourTaggable extends JPlugin
 		parent::__construct($subject, $config);
 	}
 
-	public function onTableObjectCreate(CmsEvent\AbstractEvent $event)
+	/**
+	 * Runs when a new table object is being created
+	 *
+	 * @param   CmsEvent\Table\ObjectCreateEvent  $event  The event to handle
+	 */
+	public function onTableObjectCreate(CmsEvent\Table\ObjectCreateEvent $event)
 	{
 		// Extract arguments
 		/** @var JTableInterface $table */
