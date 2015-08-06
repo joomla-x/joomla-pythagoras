@@ -1,40 +1,4 @@
-BeforeReorderEvent extends AbstractTableEvent
-    subject
-    query
-    where
-
-AfterReorderEvent extends AbstractTableEvent
-    subject
-    rows
-    where
-
-BeforeMove extends TableBeforeReorderEvent
-    subject
-    query
-    delta
-    where
-
-AfterMove extends AbstractTableEvent
-    subject
-    row
-    delta
-    where
-
-BeforePublishEvent extends AbstractTableEvent
-    subject
-    pks
-    state
-    userId
-
-AfterPublishEvent extends BeforePublishEvent
-    subject
-    pks
-    state
-    userId
-
 Remove tags helper from all models
-
-Remove tags observer (completely!)
 
 Refactor onSetNewTags event
     Go directly through the onBeforeStore event
