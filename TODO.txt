@@ -32,8 +32,7 @@ AfterPublishEvent extends BeforePublishEvent
     state
     userId
 
-Remove tags helper from JTable
-    Create it automatically through Taggable on table creation by hooking onTableObjectCreate event
+Remove tags helper from all models
 
 Remove tags observer (completely!)
 
