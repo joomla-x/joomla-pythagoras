@@ -99,7 +99,7 @@ class BeforePublishEvent extends AbstractEvent
 	 */
 	protected function setUserId($value)
 	{
-		if (!is_numeric($value))
+		if (!is_numeric($value) || empty($value))
 		{
 			throw new BadMethodCallException("Argument 'userId' of event {$this->name} must be an integer");
 		}
