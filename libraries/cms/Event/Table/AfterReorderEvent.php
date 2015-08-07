@@ -56,7 +56,7 @@ class AfterReorderEvent extends AbstractEvent
 	 */
 	protected function setRows($value)
 	{
-		if (!is_array($value) || !empty($value))
+		if (!is_array($value) && !empty($value))
 		{
 			throw new BadMethodCallException("Argument 'rows' of event {$this->name} must be an array or null");
 		}

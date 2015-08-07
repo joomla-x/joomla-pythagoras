@@ -62,7 +62,7 @@ class AfterMoveEvent extends AbstractEvent
 	 */
 	protected function setRow($value)
 	{
-		if (!($value instanceof stdClass) || !empty($value))
+		if (!($value instanceof stdClass) && !empty($value))
 		{
 			throw new BadMethodCallException("Argument 'row' of event {$this->name} must be an stdClass object or null");
 		}
