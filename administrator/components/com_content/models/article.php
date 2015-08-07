@@ -112,8 +112,6 @@ class ContentModelArticle extends JModelAdmin
 				return false;
 			}
 
-			parent::createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
-
 			// Store the row.
 			if (!$this->table->store())
 			{

@@ -901,8 +901,6 @@ class CategoriesModelCategory extends JModelAdmin
 			// Unpublish because we are making a copy
 			$this->table->published = 0;
 
-			parent::createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
-
 			// Store the row.
 			if (!$this->table->store())
 			{
@@ -1062,8 +1060,6 @@ class CategoriesModelCategory extends JModelAdmin
 					return false;
 				}
 			}
-
-			parent::createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
 
 			// Store the row.
 			if (!$this->table->store())

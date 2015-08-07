@@ -1,5 +1,3 @@
-Remove tags helper from all models
-
 Refactor onSetNewTags event
     Go directly through the onBeforeStore event
 

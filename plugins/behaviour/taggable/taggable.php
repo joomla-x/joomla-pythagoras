@@ -66,8 +66,15 @@ class PlgBehaviourTaggable extends JPlugin
 
 		$table->tagsHelper = new JHelperTags;
 		$table->tagsHelper->typeAlias = $table->typeAlias;
-		// This line causes the tags to not be saved. At all.
-		//$table->tagsHelper->tags = explode(',', $table->tagsHelper->getTagIds($table->getId(), $typeAlias));
+
+		// This is required because getTagIds overrides the tags property of the Tags Helper.
+		$cloneHelper = clone $table->tagsHelper;
+		$tagIds = $cloneHelper->getTagIds($table->getId(), $typeAlias);
+
+		if (!empty($tagIds))
+		{
+			$table->tagsHelper->tags = explode(',', $tagIds);
+		}
 	}
 
 	/**
@@ -241,6 +248,67 @@ class PlgBehaviourTaggable extends JPlugin
 		if (!$this->tagsHelper->postStoreProcess($table, $newTags, $replaceTags))
 		{
 			throw new RuntimeException($table->getError());
+		}
+	}
+
+	/**
+	 * Runs when an existing table object is reset
+	 *
+	 * @param   CmsEvent\Table\AfterResetEvent  $event  The event to handle
+	 */
+	public function onTableAfterReset(CmsEvent\Table\AfterResetEvent $event)
+	{
+		// Extract arguments
+		/** @var JTableInterface $table */
+		$table			= $event['subject'];
+
+		// Parse the type alias
+		$typeAlias = $this->parseTypeAlias($table);
+
+		// If the table doesn't support UCM we can't use the Taggable behaviour
+		if (is_null($typeAlias))
+		{
+			return;
+		}
+
+		$table->tagsHelper = new JHelperTags;
+		$table->tagsHelper->typeAlias = $table->typeAlias;
+	}
+
+
+	/**
+	 * Runs when an existing table object is reset
+	 *
+	 * @param   CmsEvent\Table\AfterLoadEvent  $event  The event to handle
+	 */
+	public function onTableAfterLoad(CmsEvent\Table\AfterLoadEvent $event)
+	{
+		// Extract arguments
+		/** @var JTableInterface $table */
+		$table			= $event['subject'];
+
+		// Parse the type alias
+		$typeAlias = $this->parseTypeAlias($table);
+
+		// If the table doesn't support UCM we can't use the Taggable behaviour
+		if (is_null($typeAlias))
+		{
+			return;
+		}
+
+		// If the table doesn't have a tags helper we can't proceed
+		if (!property_exists($table, 'tagsHelper'))
+		{
+			return;
+		}
+
+		// This is required because getTagIds overrides the tags property of the Tags Helper.
+		$cloneHelper = clone $table->tagsHelper;
+		$tagIds = $cloneHelper->getTagIds($table->getId(), $typeAlias);
+
+		if (!empty($tagIds))
+		{
+			$table->tagsHelper->tags = explode(',', $tagIds);
 		}
 	}
 

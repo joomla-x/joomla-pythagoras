@@ -302,11 +302,6 @@ abstract class JModelAdmin extends JModelForm
 				$this->table->load($pk);
 				$this->table->access = (int) $value;
 
-				if (!empty($this->type))
-				{
-					$this->createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
-				}
-
 				if (!$this->table->store())
 				{
 					$this->setError($this->table->getError());
@@ -415,11 +410,6 @@ abstract class JModelAdmin extends JModelForm
 				return false;
 			}
 
-			if (!empty($this->type))
-			{
-				$this->createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
-			}
-
 			// Store the row.
 			if (!$this->table->store())
 			{
@@ -471,11 +461,6 @@ abstract class JModelAdmin extends JModelForm
 				$this->table->reset();
 				$this->table->load($pk);
 				$this->table->language = $value;
-
-				if (!empty($this->type))
-				{
-					$this->createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
-				}
 
 				if (!$this->table->store())
 				{
@@ -565,11 +550,6 @@ abstract class JModelAdmin extends JModelForm
 				$this->setError($this->table->getError());
 
 				return false;
-			}
-
-			if (!empty($this->type))
-			{
-				$this->createTagsHelper($this->type, $pk, $this->typeAlias, $this->table);
 			}
 
 			// Store the row.
@@ -1195,11 +1175,6 @@ abstract class JModelAdmin extends JModelForm
 			{
 				$table->ordering = $order[$i];
 
-				if ($type)
-				{
-					$this->createTagsHelper($type, $pk, $type->type_alias, $table);
-				}
-
 				if (!$table->store())
 				{
 					$this->setError($table->getError());
@@ -1239,28 +1214,6 @@ abstract class JModelAdmin extends JModelForm
 		$this->cleanCache();
 
 		return true;
-	}
-
-	/**
-	 * Method to create a tags helper to ensure proper management of tags
-	 *
-	 * @param   JUcmType            $type          The type for the table being processed
-	 * @param   integer             $pk            Primary key of the item bing processed
-	 * @param   string              $typeAlias     The type alias for this table
-	 * @param   JTable              $table         The JTable object
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function createTagsHelper($type, $pk, $typeAlias, $table)
-	{
-		if (!empty($type))
-		{
-			$table->tagsHelper = new JHelperTags;
-			$table->tagsHelper->typeAlias = $typeAlias;
-			$table->tagsHelper->tags = explode(',', $table->tagsHelper->getTagIds($pk, $typeAlias));
-		}
 	}
 
 	/**
