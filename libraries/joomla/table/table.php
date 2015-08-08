@@ -1674,6 +1674,10 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	 */
 	public function publish($pks = null, $state = 1, $userId = 0)
 	{
+		// Sanitize input
+		$userId = (int) $userId;
+		$state  = (int) $state;
+
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforePublish', [
 			'subject'	=> &$this,
@@ -1682,10 +1686,6 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 			'userId'	=> $userId,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforePublish', $event);
-
-		// Sanitize input
-		$userId = (int) $userId;
-		$state  = (int) $state;
 
 		if (!is_null($pks))
 		{
