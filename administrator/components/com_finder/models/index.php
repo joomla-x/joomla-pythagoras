@@ -361,7 +361,6 @@ class FinderModelIndex extends JModelList
 	 */
 	public function publish(&$pks, $value = 1)
 	{
-		$dispatcher = JFactory::getApplication()->getDispatcher();
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$pks = (array) $pks;
