@@ -118,9 +118,9 @@ class TestMockDispatcher
 	/**
 	 * Callback for the JEventDispatcher register method.
 	 *
-	 * @param   string  $event    Name of the event to register handler for.
-	 * @param   string  $handler  Name of the event handler.
-	 * @param   mixed   $return   The mock value to return for the given event handler.
+	 * @param   string    $event    Name of the event to register handler for.
+	 * @param   Callable  $handler  Callback
+	 * @param   mixed     $return   The mock value to return for the given event handler.
 	 *
 	 * @return  void
 	 *
@@ -133,7 +133,7 @@ class TestMockDispatcher
 			self::$handlers[$event] = array();
 		}
 
-		self::$handlers[$event][(string) $handler] = $return;
+		self::$handlers[$event][print_r($handler, true)] = $return;
 	}
 
 	/**
