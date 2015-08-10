@@ -205,7 +205,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 		$this->setDispatcher($dispatcher);
 
 		$event = AbstractEvent::create('onTableObjectCreate', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 		]);
 		$this->getDispatcher()->dispatch('onTableObjectCreate', $event);
 	}
@@ -568,7 +568,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	public function reset()
 	{
 		$event = AbstractEvent::create('onTableBeforeReset', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeReset', $event);
 
@@ -586,7 +586,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 		$this->_errors = array();
 
 		$event = AbstractEvent::create('onTableAfterReset', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 		]);
 		$this->getDispatcher()->dispatch('onTableAfterReset', $event);
 	}
@@ -607,7 +607,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	public function bind($src, $ignore = array())
 	{
 		$event = AbstractEvent::create('onTableBeforeBind', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'src'		=> $src,
 			'ignore'	=> $ignore
 		]);
@@ -658,7 +658,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 		}
 
 		$event = AbstractEvent::create('onTableAfterBind', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'src'		=> $src,
 			'ignore'	=> $ignore
 		]);
@@ -687,7 +687,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	{
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforeLoad', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'keys'		=> $keys,
 			'reset'		=> $reset,
 		]);
@@ -770,7 +770,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableAfterLoad', [
-			'subject'		=> &$this,
+			'subject'		=> $this,
 			'result'		=> &$result,
 			'row'			=> $row,
 		]);
@@ -795,7 +795,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	{
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableCheck', [
-			'subject'		=> &$this,
+			'subject'		=> $this,
 		]);
 		$this->getDispatcher()->dispatch('onTableCheck', $event);
 
@@ -822,7 +822,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforeStore', [
-			'subject'	=> &$this,
+			'subject'		=> $this,
 			'updateNulls'	=> $updateNulls,
 			'k'				=> $k,
 		]);
@@ -940,7 +940,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableAfterStore', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'result'	=> &$result,
 		]);
 		$this->getDispatcher()->dispatch('onTableAfterStore', $event);
@@ -1046,7 +1046,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Pre-processing by observers
 		$event = ABstractEvent::create('onTableBeforeDelete', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pk'		=> $pk,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeDelete', $event);
@@ -1082,7 +1082,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableAfterDelete', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pk'		=> $pk,
 		]);
 		$this->getDispatcher()->dispatch('onTableAfterDelete', $event);
@@ -1112,7 +1112,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	{
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforeCheckout', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'userId'	=> $userId,
 			'pk'		=> $pk,
 		]);
@@ -1166,7 +1166,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableAfterCheckout', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'userId'	=> $userId,
 			'pk'		=> $pk,
 		]);
@@ -1191,7 +1191,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	{
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforeCheckin', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pk'		=> $pk,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeCheckin', $event);
@@ -1243,7 +1243,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableAfterCheckin', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pk'		=> $pk,
 		]);
 		$this->getDispatcher()->dispatch('onTableAfterCheckin', $event);
@@ -1307,7 +1307,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	{
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforeHit', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pk'		=> $pk,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeHit', $event);
@@ -1355,7 +1355,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableAfterHit', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pk'		=> $pk,
 		]);
 		$this->getDispatcher()->dispatch('onTableAfterHit', $event);
@@ -1503,8 +1503,8 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforeReorder', [
-			'subject'	=> &$this,
-			'query'		=> &$query,
+			'subject'	=> $this,
+			'query'		=> $query,
 			'where'		=> $where,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeReorder', $event);
@@ -1534,7 +1534,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableAfterReorder', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'rows'		=> &$rows,
 			'where'		=> $where,
 		]);
@@ -1600,8 +1600,8 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforeMove', [
-			'subject'	=> &$this,
-			'query'		=> &$query,
+			'subject'	=> $this,
+			'query'		=> $query,
 			'delta'		=> $delta,
 			'where'		=> $where,
 		]);
@@ -1646,8 +1646,8 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Post-processing by observers
 		$event = AbstractEvent::create('onTableAfterMove', [
-			'subject'	=> &$this,
-			'row'		=> &$row,
+			'subject'	=> $this,
+			'row'		=> $row,
 			'delta'		=> $delta,
 			'where'		=> $where,
 		]);
@@ -1680,7 +1680,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableBeforePublish', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pks'		=> $pks,
 			'state'		=> $state,
 			'userId'	=> $userId,
@@ -1788,7 +1788,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 
 		// Pre-processing by observers
 		$event = AbstractEvent::create('onTableAfterPublish', [
-			'subject'	=> &$this,
+			'subject'	=> $this,
 			'pks'		=> $pks,
 			'state'		=> $state,
 			'userId'	=> $userId,
