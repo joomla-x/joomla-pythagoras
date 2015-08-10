@@ -102,12 +102,9 @@ abstract class AbstractEvent extends BaseEvent
 
 		$this->arguments = [];
 
-		if (count($arguments))
+		foreach ($arguments as $argumentName => $value)
 		{
-			foreach ($arguments as $argumentName => $value)
-			{
-				$this->setArgument($argumentName, $value);
-			}
+			$this->setArgument($argumentName, $value);
 		}
 	}
 
