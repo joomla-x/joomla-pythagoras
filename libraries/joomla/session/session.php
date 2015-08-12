@@ -102,6 +102,13 @@ class JSession implements IteratorAggregate
 	private $_dispatcher = null;
 
 	/**
+	 * CSRF Token Checker
+	 *
+	 * @var \Joomla\Cms\Session\CsrfToken
+	 */
+	private $token;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   string  $store    The type of storage for the session.
@@ -135,6 +142,8 @@ class JSession implements IteratorAggregate
 		$this->_setCookieParams();
 
 		$this->_state = 'inactive';
+
+		$this->token = new \Joomla\Cms\Session\CsrfToken($this);
 	}
 
 	/**
@@ -217,20 +226,11 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  string  The session token
 	 *
-	 * @since   11.1
+	 * @deprecated 4.0 Use Session\CsrfToken instead
 	 */
 	public function getToken($forceNew = false)
 	{
-		$token = $this->get('session.token');
-
-		// Create a token
-		if ($token === null || $forceNew)
-		{
-			$token = $this->_createToken(12);
-			$this->set('session.token', $token);
-		}
-
-		return $token;
+		return $this->token->get($forceNew);
 	}
 
 	/**
@@ -242,25 +242,11 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  boolean
 	 *
-	 * @since   11.1
+	 * @deprecated 4.0 Use Session\CsrfToken instead
 	 */
 	public function hasToken($tCheck, $forceExpire = true)
 	{
-		// Check if a token exists in the session
-		$tStored = $this->get('session.token');
-
-		// Check token
-		if (($tStored !== $tCheck))
-		{
-			if ($forceExpire)
-			{
-				$this->_state = 'expired';
-			}
-
-			return false;
-		}
-
-		return true;
+		return $this->token->has($tCheck, $forceExpire);
 	}
 
 	/**
@@ -270,24 +256,12 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  string  Hashed var name
 	 *
-	 * @since   11.1
+	 * @deprecated 4.0 Use Session\CsrfToken instead
 	 */
 	public static function getFormToken($forceNew = false)
 	{
-		$user    = JFactory::getUser();
-		$session = JFactory::getSession();
-
-		// TODO: Decouple from legacy JApplication class.
-		if (is_callable(array('JApplication', 'getHash')))
-		{
-			$hash = JApplication::getHash($user->get('id', 0) . $session->getToken($forceNew));
-		}
-		else
-		{
-			$hash = md5(JFactory::getApplication()->get('secret') . $user->get('id', 0) . $session->getToken($forceNew));
-		}
-
-		return $hash;
+		$token = new \Joomla\Cms\Session\CsrfToken(JFactory::getSession());
+		$token->getVarname($forceNew);
 	}
 
 	/**
@@ -311,31 +285,20 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
 	 *
-	 * @since   12.1
+	 * @deprecated 4.0 Use Session\CsrfToken instead
 	 */
 	public static function checkToken($method = 'post')
 	{
-		$token = self::getFormToken();
-		$app = JFactory::getApplication();
-
-		if (!$app->input->$method->get($token, '', 'alnum'))
+		try
 		{
-			$session = JFactory::getSession();
-
-			if ($session->isNew())
-			{
-				// Redirect to login screen.
-				$app->enqueueMessage(JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'warning');
-				$app->redirect(JRoute::_('index.php'));
-			}
-			else
-			{
-				return false;
-			}
+			$token = new \Joomla\Cms\Session\CsrfToken(JFactory::getSession());
+			$token->check($method);
 		}
-		else
+		catch (\Joomla\Cms\Session\NoTokenException $e)
 		{
-			return true;
+			$app = \JFactory::getApplication();
+			$app->enqueueMessage(\JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'warning');
+			$app->redirect(\JRoute::_('index.php'));
 		}
 	}
 
@@ -836,21 +799,11 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  string  Generated token
 	 *
-	 * @since   11.1
+	 * @deprecated 4.0 Use Session\CsrfToken instead
 	 */
 	protected function _createToken($length = 32)
 	{
-		static $chars = '0123456789abcdef';
-		$max = strlen($chars) - 1;
-		$token = '';
-		$name = session_name();
-
-		for ($i = 0; $i < $length; ++$i)
-		{
-			$token .= $chars[(rand(0, $max))];
-		}
-
-		return md5($token . $name);
+		return $this->token->create($length);
 	}
 
 	/**
