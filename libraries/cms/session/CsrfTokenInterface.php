@@ -11,16 +11,8 @@ namespace Joomla\Cms\Session;
 
 defined('JPATH_PLATFORM') or die;
 
-class CsrfToken implements CsrfTokenInterface
+interface CsrfTokenInterface
 {
-	/** @var \JSession  */
-	private $session;
-
-	public function __construct(\JSession $session)
-	{
-		$this->session = $session;
-	}
-
 	/**
 	 * Get a session token, if a token isn't set yet one will be generated.
 	 *
@@ -32,18 +24,7 @@ class CsrfToken implements CsrfTokenInterface
 	 *
 	 * @return  string  The session token
 	 */
-	public function get($forceNew = false)
-	{
-		$token = $this->session->get('session.token');
-
-		if ($token === null || $forceNew)
-		{
-			$token = $this->create(12);
-			$this->session->set('session.token', $token);
-		}
-
-		return $token;
-	}
+	public function get($forceNew = false);
 
 	/**
 	 * Method to determine if a token exists in the session. If not the
@@ -54,22 +35,7 @@ class CsrfToken implements CsrfTokenInterface
 	 *
 	 * @return  boolean
 	 */
-	public function has($tCheck, $forceExpire = true)
-	{
-		$tStored = $this->session->get('session.token');
-
-		if (($tStored !== $tCheck))
-		{
-			if ($forceExpire)
-			{
-				$this->_state = 'expired';
-			}
-
-			return false;
-		}
-
-		return true;
-	}
+	public function has($tCheck, $forceExpire = true);
 
 	/**
 	 * Checks for a form token in the request.
@@ -80,23 +46,7 @@ class CsrfToken implements CsrfTokenInterface
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
 	 */
-	public function check($method = 'post')
-	{
-		$token = self::getVarname();
-		$app   = \JFactory::getApplication();
-
-		if (!$app->input->$method->get($token, '', 'alnum'))
-		{
-			if ($this->session->isNew())
-			{
-				throw new NoTokenException;
-			}
-
-			return false;
-		}
-
-		return true;
-	}
+	public function check($method = 'post');
 
 	/**
 	 * Checks for a form token in the request, redirects on missing token, or bails out on invalid token.
@@ -107,21 +57,7 @@ class CsrfToken implements CsrfTokenInterface
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
 	 */
-	public function guard($method = 'post')
-	{
-		try
-		{
-			if (!$this->check($method))
-			{
-				\jexit(\JText::_('JINVALID_TOKEN'));
-			}
-		} catch (\Joomla\Cms\Session\NoTokenException $e)
-		{
-			$app = \JFactory::getApplication();
-			$app->enqueueMessage(\JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'warning');
-			$app->redirect(\JRoute::_('index.php'));
-		}
-	}
+	public function guard($method = 'post');
 
 	/**
 	 * Create a token-string
@@ -130,20 +66,7 @@ class CsrfToken implements CsrfTokenInterface
 	 *
 	 * @return  string  Generated token
 	 */
-	public function create($length = 32)
-	{
-		static $chars = '0123456789abcdef';
-		$max   = strlen($chars) - 1;
-		$token = '';
-		$name  = session_name();
-
-		for ($i = 0; $i < $length; ++$i)
-		{
-			$token .= $chars[(rand(0, $max))];
-		}
-
-		return md5($token . $name);
-	}
+	public function create($length = 32);
 
 	/**
 	 * Method to determine a hash for anti-spoofing variable names
@@ -152,14 +75,5 @@ class CsrfToken implements CsrfTokenInterface
 	 *
 	 * @return  string  Hashed var name
 	 */
-	public function getVarname($forceNew = false)
-	{
-		$user    = \JFactory::getUser();
-
-		return md5(
-			\JFactory::getApplication()->get('secret')
-			. $user->get('id', 0)
-			. $this->get($forceNew)
-		);
-	}
+	public function getVarname($forceNew = false);
 }
