@@ -34,7 +34,7 @@ class ConfigControllerCmsbase extends JControllerBase
 	public function execute()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		// Get the application
 		$this->app = $this->getApplication();

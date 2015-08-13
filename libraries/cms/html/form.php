@@ -23,11 +23,13 @@ abstract class JHtmlForm
 	 *
 	 * @return  string  A hidden input field with a token
 	 *
-	 * @see     JSession::checkToken()
+	 * @see     Joomla\Cms\Session\CsrfToken::check()
 	 * @since   1.5
 	 */
 	public static function token()
 	{
-		return '<input type="hidden" name="' . JSession::getFormToken() . '" value="1" />';
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+
+		return '<input type="hidden" name="' . $formToken . '" value="1" />';
 	}
 }

@@ -3347,56 +3347,15 @@ class FOFController extends FOFUtilsObject
 				break;
 		}
 
-		$hasToken = false;
-		$session  = JFactory::getSession();
+		$token = new \Joomla\Cms\Session\CsrfToken(JFactory::getSession());
 
-		// Joomla! 1.5/1.6/1.7/2.5 (classic Joomla! API) method
-		if (method_exists('JUtility', 'getToken'))
-		{
-			$token    = JUtility::getToken();
-			$hasToken = $this->input->get($token, false, 'none') == 1;
-
-			if (!$hasToken)
-			{
-				$hasToken = $this->input->get('_token', null, 'none') == $token;
-			}
-		}
-
-		// Joomla! 2.5+ (Platform 12.1+) method
-		if (!$hasToken)
-		{
-			if (method_exists($session, 'getToken'))
-			{
-				$token    = $session->getToken();
-				$hasToken = $this->input->get($token, false, 'none') == 1;
-
-				if (!$hasToken)
-				{
-					$hasToken = $this->input->get('_token', null, 'none') == $token;
-				}
-			}
-		}
-
-		// Joomla! 2.5+ formToken method
-		if (!$hasToken)
-		{
-			if (method_exists($session, 'getFormToken'))
-			{
-				$token    = $session->getFormToken();
-				$hasToken = $this->input->get($token, false, 'none') == 1;
-
-				if (!$hasToken)
-				{
-					$hasToken = $this->input->get('_token', null, 'none') == $token;
-				}
-			}
-		}
-
-		if (!$hasToken)
+		if (!$hasToken = $token->check())
 		{
             FOFPlatform::getInstance()->raiseError(403, JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 
 			return false;
 		}
+
+		return true;
 	}
 }

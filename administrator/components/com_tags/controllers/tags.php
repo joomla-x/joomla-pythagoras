@@ -43,7 +43,7 @@ class TagsControllerTags extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$this->setRedirect(JRoute::_('index.php?option=com_tags&view=tags', false));
 

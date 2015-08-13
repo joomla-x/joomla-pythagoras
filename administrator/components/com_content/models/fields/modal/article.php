@@ -133,7 +133,8 @@ class JFormFieldModal_Article extends JFormField
 			$value = (int) $this->value;
 		}
 
-		$url = $link . '&amp;' . JSession::getFormToken() . '=1';
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+		$url = $link . '&amp;' . $formToken . '=1';
 		// The current article display field.
 		$html[] = '<span class="input-append">';
 		$html[] = '<input type="text" class="input-medium" id="' . $this->id . '_name" value="' . $title . '" disabled="disabled" size="35" />';

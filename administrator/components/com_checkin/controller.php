@@ -42,7 +42,7 @@ class CheckinController extends JControllerLegacy
 	public function checkin()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$ids = $this->input->get('cid', array(), 'array');
 

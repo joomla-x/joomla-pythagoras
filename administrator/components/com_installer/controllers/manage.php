@@ -42,7 +42,7 @@ class InstallerControllerManage extends JControllerLegacy
 	public function publish()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$ids    = $this->input->get('cid', array(), 'array');
 		$values = array('publish' => 1, 'unpublish' => 0);
@@ -91,7 +91,7 @@ class InstallerControllerManage extends JControllerLegacy
 	public function remove()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$eid   = $this->input->get('cid', array(), 'array');
 		$model = $this->getModel('manage');
@@ -113,7 +113,7 @@ class InstallerControllerManage extends JControllerLegacy
 	public function refresh()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$uid   = $this->input->get('cid', array(), 'array');
 		$model = $this->getModel('manage');

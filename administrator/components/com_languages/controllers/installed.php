@@ -24,7 +24,7 @@ class LanguagesControllerInstalled extends JControllerLegacy
 	public function setDefault()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$cid = $this->input->get('cid', '');
 		$model = $this->getModel('installed');

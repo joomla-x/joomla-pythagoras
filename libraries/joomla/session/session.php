@@ -226,7 +226,7 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  string  The session token
 	 *
-	 * @deprecated 4.0 Use Session\CsrfToken instead
+	 * @deprecated 4.0 Use Joomla\Cms\Session\CsrfToken instead
 	 */
 	public function getToken($forceNew = false)
 	{
@@ -242,7 +242,7 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  boolean
 	 *
-	 * @deprecated 4.0 Use Session\CsrfToken instead
+	 * @deprecated 4.0 Use Joomla\Cms\Session\CsrfToken instead
 	 */
 	public function hasToken($tCheck, $forceExpire = true)
 	{
@@ -256,7 +256,7 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  string  Hashed var name
 	 *
-	 * @deprecated 4.0 Use Session\CsrfToken instead
+	 * @deprecated 4.0 Use Joomla\Cms\Session\CsrfToken instead
 	 */
 	public static function getFormToken($forceNew = false)
 	{
@@ -285,14 +285,17 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
 	 *
-	 * @deprecated 4.0 Use Session\CsrfToken instead
+	 * @deprecated 4.0 Use Joomla\Cms\Session\CsrfToken instead
 	 */
 	public static function checkToken($method = 'post')
 	{
 		try
 		{
 			$token = new \Joomla\Cms\Session\CsrfToken(JFactory::getSession());
-			$token->check($method);
+			if (!$token->check($method))
+			{
+				throw new RuntimeException(JText::_('JINVALID_TOKEN'));
+			}
 		}
 		catch (\Joomla\Cms\Session\NoTokenException $e)
 		{
@@ -443,10 +446,7 @@ class JSession implements IteratorAggregate
 
 		if ($this->_state === 'destroyed')
 		{
-			// @TODO :: generated error here
-			$error = null;
-
-			return $error;
+			throw new RuntimeException('Session was destroyed.');
 		}
 
 		if (isset($_SESSION[$namespace][$name]))
@@ -475,8 +475,7 @@ class JSession implements IteratorAggregate
 
 		if ($this->_state !== 'active')
 		{
-			// @TODO :: generated error here
-			return null;
+			throw new RuntimeException('Session is not active.');
 		}
 
 		$old = isset($_SESSION[$namespace][$name]) ? $_SESSION[$namespace][$name] : null;
@@ -510,8 +509,7 @@ class JSession implements IteratorAggregate
 
 		if ($this->_state !== 'active')
 		{
-			// @TODO :: generated error here
-			return null;
+			throw new RuntimeException('Session is not active.');
 		}
 
 		return isset($_SESSION[$namespace][$name]);
@@ -534,8 +532,7 @@ class JSession implements IteratorAggregate
 
 		if ($this->_state !== 'active')
 		{
-			// @TODO :: generated error here
-			return null;
+			throw new RuntimeException('Session is not active.');
 		}
 
 		$value = null;
@@ -686,8 +683,7 @@ class JSession implements IteratorAggregate
 
 		if ($this->_state !== 'destroyed')
 		{
-			// @TODO :: generated error here
-			return false;
+			throw new RuntimeException('Session is not destroyed.');
 		}
 
 		// Re-register the session handler after a session has been destroyed, to avoid PHP bug
@@ -717,8 +713,7 @@ class JSession implements IteratorAggregate
 	{
 		if ($this->_state !== 'active')
 		{
-			// @TODO :: generated error here
-			return false;
+			throw new RuntimeException('Session is not active.');
 		}
 
 		// Keep session config
@@ -799,9 +794,9 @@ class JSession implements IteratorAggregate
 	 *
 	 * @return  string  Generated token
 	 *
-	 * @deprecated 4.0 Use Session\CsrfToken instead
+	 * @deprecated 4.0 Use Joomla\Cms\Session\CsrfToken instead
 	 */
-	protected function _createToken($length = 32)
+	protected function createToken($length = 32)
 	{
 		return $this->token->create($length);
 	}

@@ -526,7 +526,7 @@ class JCache
 		// proper token.
 		if (isset($data['body']))
 		{
-			$token 			= JSession::getFormToken();
+			$token 			= (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 			$search 		= '#<input type="hidden" name="[0-9a-f]{32}" value="1" />#';
 			$replacement 	= '<input type="hidden" name="' . $token . '" value="1" />';
 

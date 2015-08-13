@@ -295,7 +295,7 @@ class PlgTwofactorauthYubikey extends JPlugin
 		$check       = false;
 
 		$http  = JHttpFactory::getHttp();
-		$token = JSession::getFormToken();
+		$token = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 		$nonce = md5($token . uniqid(rand()));
 
 		while (!$gotResponse && !empty($server_queue))

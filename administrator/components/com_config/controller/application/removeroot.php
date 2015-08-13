@@ -33,7 +33,7 @@ class ConfigControllerApplicationRemoveroot extends JControllerBase
 	public function execute()
 	{
 		// Check for request forgeries.
-		if (!JSession::checkToken('get'))
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check('get'))
 		{
 			$this->app->enqueueMessage(JText::_('JINVALID_TOKEN'));
 			$this->app->redirect('index.php');

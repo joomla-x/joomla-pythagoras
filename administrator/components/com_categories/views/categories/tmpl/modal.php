@@ -13,7 +13,7 @@ $app = JFactory::getApplication();
 
 if ($app->isSite())
 {
-	JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+	(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 }
 
 require_once JPATH_ROOT . '/components/com_content/helpers/route.php';
@@ -29,7 +29,9 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_categories&view=categories&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php
+$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+echo JRoute::_('index.php?option=com_categories&view=categories&layout=modal&tmpl=component&function=' . $function . '&' . $formToken . '=1'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="filter clearfix">
 		<div class="btn-toolbar">
 			<div class="btn-group pull-left">

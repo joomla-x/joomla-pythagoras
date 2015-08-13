@@ -146,11 +146,12 @@ class JFormFieldModal_Contact extends JFormField
 			. '<span class="icon-file"></span> ' . JText::_('JSELECT')
 			. '</a>';
 
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 		$html[] = JHtml::_(
 			'bootstrap.renderModal',
 			'modalContact' . $this->id,
 			array(
-				'url' => $link . '&amp;' . JSession::getFormToken() . '=1"',
+				'url' => $link . '&amp;' . $formToken . '=1"',
 				'title' => JText::_('COM_CONTACT_CHANGE_CONTACT'),
 				'width' => '800px',
 				'height' => '300px',

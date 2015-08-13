@@ -302,7 +302,9 @@ if($this->type == 'font')
 			<div class="span4">
 				<legend><?php echo JText::_('COM_TEMPLATES_OVERRIDES_MODULES');?></legend>
 				<ul class="nav nav-list">
-					<?php $token = JSession::getFormToken() . '=' . 1; ?>
+					<?php
+					$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+					$token = $formToken . '=' . 1; ?>
 					<?php foreach($this->overridesList['modules'] as $module): ?>
 						<li>
 							<?php
@@ -319,7 +321,7 @@ if($this->type == 'font')
 			<div class="span4">
 				<legend><?php echo JText::_('COM_TEMPLATES_OVERRIDES_COMPONENTS');?></legend>
 				<ul class="nav nav-list">
-					<?php $token = JSession::getFormToken() . '=' . 1; ?>
+					<?php $token = $formToken . '=' . 1; ?>
 					<?php foreach ($this->overridesList['components'] as $key => $value): ?>
 						<li class="component-folder">
 							<a href="#" class="component-folder-url">
@@ -345,7 +347,7 @@ if($this->type == 'font')
 			<div class="span4">
 				<legend><?php echo JText::_('COM_TEMPLATES_OVERRIDES_LAYOUTS');?></legend>
 				<ul class="nav nav-list">
-					<?php $token = JSession::getFormToken() . '=' . 1; ?>
+					<?php $token = $formToken . '=' . 1; ?>
 					<?php foreach($this->overridesList['layouts'] as $layout): ?>
 						<li>
 							<?php
@@ -429,7 +431,7 @@ if($this->type == 'font')
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal"><?php echo JText::_('COM_TEMPLATES_TEMPLATE_CLOSE'); ?></a>
 			<?php
-				$token = JSession::getFormToken() . '=1';
+				$token = $formToken . '=1';
 				$deleteLinkUrl = 'index.php?option=com_templates&task=template.delete'
 					. '&id=' . $input->getInt('id') . '&file=' . $this->file . '&' . $token;
 				$deleteLink = JRoute::_($deleteLinkUrl);

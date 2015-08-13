@@ -505,7 +505,7 @@ class JRequest
 			$method = 'request';
 		}
 
-		return JSession::checkToken($method);
+		return (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check($method);
 	}
 
 	/**

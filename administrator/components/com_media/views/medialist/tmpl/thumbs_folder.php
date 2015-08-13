@@ -9,10 +9,11 @@
 
 defined('_JEXEC') or die;
 $user = JFactory::getUser();
+$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">
 	<?php if ($user->authorise('core.delete', 'com_media')):?>
-		<a class="close delete-item" target="_top" href="index.php?option=com_media&amp;task=folder.delete&amp;tmpl=index&amp;<?php echo JSession::getFormToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_folder->name; ?>" rel="<?php echo $this->_tmp_folder->name; ?> :: <?php echo $this->_tmp_folder->files + $this->_tmp_folder->folders; ?>" title="<?php echo JText::_('JACTION_DELETE');?>">&#215;</a>
+		<a class="close delete-item" target="_top" href="index.php?option=com_media&amp;task=folder.delete&amp;tmpl=index&amp;<?php echo $formToken; ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_folder->name; ?>" rel="<?php echo $this->_tmp_folder->name; ?> :: <?php echo $this->_tmp_folder->files + $this->_tmp_folder->folders; ?>" title="<?php echo JText::_('JACTION_DELETE');?>">&#215;</a>
 		<input class="pull-left" type="checkbox" name="rm[]" value="<?php echo $this->_tmp_folder->name; ?>" />
 		<div class="clearfix"></div>
 	<?php endif;?>

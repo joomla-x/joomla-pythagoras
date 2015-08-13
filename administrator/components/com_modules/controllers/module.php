@@ -140,7 +140,7 @@ class ModulesControllerModule extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		// Set the model
 		$model	= $this->getModel('Module', '', array());
@@ -192,7 +192,7 @@ class ModulesControllerModule extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = null)
 	{
-		if (!JSession::checkToken())
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check())
 		{
 			JFactory::getApplication()->redirect('index.php', JText::_('JINVALID_TOKEN'));
 		}

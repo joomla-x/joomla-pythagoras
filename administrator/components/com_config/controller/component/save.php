@@ -34,7 +34,7 @@ class ConfigControllerComponentSave extends JControllerBase
 	public function execute()
 	{
 		// Check for request forgeries.
-		if (!JSession::checkToken())
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check())
 		{
 			$this->app->enqueueMessage(JText::_('JINVALID_TOKEN'));
 			$this->app->redirect('index.php');
