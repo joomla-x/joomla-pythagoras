@@ -11,10 +11,10 @@ defined('_JEXEC') or die;
 
 /* @var $menu JAdminCSSMenu */
 
-$shownew = (boolean) $params->get('shownew', 1);
+$shownew  = (boolean)$params->get('shownew', 1);
 $showhelp = $params->get('showhelp', 1);
-$user = JFactory::getUser();
-$lang = JFactory::getLanguage();
+$user     = JFactory::getUser();
+$lang     = JFactory::getLanguage();
 
 //
 // Site SubMenu
@@ -34,7 +34,7 @@ if ($user->authorise('core.manage', 'com_users'))
 		new JMenuNode(JText::_('MOD_MENU_COM_USERS_USERS'), '#'), true
 	);
 	$createUser = $shownew && $user->authorise('core.create', 'com_users');
-	$createGrp = $user->authorise('core.admin', 'com_users');
+	$createGrp  = $user->authorise('core.admin', 'com_users');
 
 	$menu->addChild(
 		new JMenuNode(JText::_('MOD_MENU_COM_USERS_USER_MANAGER'), 'index.php?option=com_users&view=users', 'class:user'), $createUser
@@ -135,7 +135,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 
 	foreach ($menuTypes as $menuType)
 	{
-		$alt = '*' .$menuType->sef. '*';
+		$alt = '*' . $menuType->sef . '*';
 		if ($menuType->home == 0)
 		{
 			$titleicon = '';
@@ -146,14 +146,14 @@ if ($user->authorise('core.manage', 'com_menus'))
 		}
 		elseif ($menuType->home > 1)
 		{
-			$titleicon = ' <span>'.JHtml::_('image', 'mod_languages/icon-16-language.png', $menuType->home, array('title' => JText::_('MOD_MENU_HOME_MULTIPLE')), true).'</span>';
+			$titleicon = ' <span>' . JHtml::_('image', 'mod_languages/icon-16-language.png', $menuType->home, array('title' => JText::_('MOD_MENU_HOME_MULTIPLE')), true) . '</span>';
 		}
 		else
 		{
-			$image = JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', null, null, true, true);
+			$image = JHtml::_('image', 'mod_languages/' . $menuType->image . '.gif', null, null, true, true);
 			if (!$image)
 			{
-				$titleicon = ' <span>'.JHtml::_('image', 'mod_languages/icon-16-language.png', $alt, array('title' => $menuType->title_native), true).'</span>';
+				$titleicon = ' <span>' . JHtml::_('image', 'mod_languages/icon-16-language.png', $alt, array('title' => $menuType->title_native), true) . '</span>';
 			}
 			else
 			{
@@ -161,12 +161,12 @@ if ($user->authorise('core.manage', 'com_menus'))
 			}
 		}
 		$menu->addChild(
-			new JMenuNode($menuType->title,	'index.php?option=com_menus&view=items&menutype='.$menuType->menutype, 'class:menu', null, null, $titleicon), $createMenu
+			new JMenuNode($menuType->title, 'index.php?option=com_menus&view=items&menutype=' . $menuType->menutype, 'class:menu', null, null, $titleicon), $createMenu
 		);
 		if ($createMenu)
 		{
 			$menu->addChild(
-				new JMenuNode(JText::_('MOD_MENU_MENU_MANAGER_NEW_MENU_ITEM'), 'index.php?option=com_menus&view=item&layout=edit&menutype='.$menuType->menutype, 'class:newarticle')
+				new JMenuNode(JText::_('MOD_MENU_MENU_MANAGER_NEW_MENU_ITEM'), 'index.php?option=com_menus&view=item&layout=edit&menutype=' . $menuType->menutype, 'class:newarticle')
 			);
 			$menu->getParent();
 		}
@@ -312,7 +312,7 @@ if ($showhelp == 1)
 	$debug = $lang->setDebug(false);
 	if ($lang->hasKey('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE') && JText::_('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE') != '')
 	{
-		$forum_url = 'http://forum.joomla.org/viewforum.php?f=' . (int) JText::_('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE');
+		$forum_url = 'http://forum.joomla.org/viewforum.php?f=' . (int)JText::_('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE');
 		$lang->setDebug($debug);
 		$menu->addChild(
 			new JMenuNode(JText::_('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM'), $forum_url, 'class:help-forum', false, '_blank')
@@ -353,38 +353,39 @@ if ($showhelp == 1)
 //
 // Admin Settingss Submenu
 //
-$su = $user->authorise('core.admin');
+$su  = $user->authorise('core.admin');
 $cam = $user->authorise('core.manage', 'com_cache');
 $cim = $user->authorise('core.manage', 'com_checkin');
 
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SETTINGS'), '#'), true);
+$menu->addChild(new JMenuNode(JText::_('MOD_MENU_SETTINGS'), '#'), true);
 
-	if ($su):
-		$menu->addChild(
+if ($su):
+	$menu->addChild(
 		new JMenuNode(JText::_('MOD_MENU_CONFIGURATION'), 'index.php?option=com_config', 'class:config')
-		);
-		$menu->addChild(
+	);
+	$menu->addChild(
 		new JMenuNode(JText::_('MOD_MENU_SYSTEM_INFORMATION'), 'index.php?option=com_admin&view=sysinfo', 'class:info')
 	);
-	endif;
-	if  ($cam):
-		$menu->addChild(
+endif;
+if ($cam):
+	$menu->addChild(
 		new JMenuNode(JText::_('MOD_MENU_CLEAR_CACHE'), 'index.php?option=com_cache', 'class:clear')
-		);
-		$menu->addChild(
+	);
+	$menu->addChild(
 		new JMenuNode(JText::_('MOD_MENU_PURGE_EXPIRED_CACHE'), 'index.php?option=com_cache&view=purge', 'class:purge')
-		);
-	endif;
-	if  ($cim):
-		$menu->addChild(
+	);
+endif;
+if ($cim):
+	$menu->addChild(
 		new JMenuNode(JText::_('MOD_MENU_GLOBAL_CHECKIN'), 'index.php?option=com_checkin', 'class:checkin')
-		);
-	endif;
-		$menu->addChild(
-		new JMenuNode(JText::_('MOD_MENU_USER_PROFILE'), 'index.php?option=com_admin&task=profile.edit&id='. $user->id, 'class:profile')
-		);
-		$menu->addChild(
-		new JMenuNode(JText::_('MOD_MENU_LOGOUT'), 'index.php?option=com_login&task=logout&'. JSession::getFormToken() .'=1', 'class:logout')
-		);
+	);
+endif;
+$menu->addChild(
+	new JMenuNode(JText::_('MOD_MENU_USER_PROFILE'), 'index.php?option=com_admin&task=profile.edit&id=' . $user->id, 'class:profile')
+);
+$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+$menu->addChild(
+	new JMenuNode(JText::_('MOD_MENU_LOGOUT'), 'index.php?option=com_login&task=logout&' . $formToken . '=1', 'class:logout')
+);
 
-	$menu->getParent();
+$menu->getParent();

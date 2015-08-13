@@ -63,7 +63,8 @@ if ($task == 'edit' || $task == 'editA' || $input->getInt('hidemainmenu'))
 }
 else
 {
-	$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JSession::getFormToken() . '=1');
+	$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+	$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . $formToken . '=1');
 }
 
 if ($params->get('show_logout', 1))

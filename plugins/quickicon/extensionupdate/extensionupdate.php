@@ -44,7 +44,8 @@ class PlgQuickiconExtensionupdate extends JPlugin
 
 		JHtml::_('jquery.framework');
 
-		$token    = JSession::getFormToken() . '=' . 1;
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+		$token    = $formToken . '=' . 1;
 		$url      = JUri::base() . 'index.php?option=com_installer&view=update&task=update.find&' . $token;
 		$ajax_url = JUri::base() . 'index.php?option=com_installer&view=update&task=update.ajax&' . $token;
 		$script   = array();

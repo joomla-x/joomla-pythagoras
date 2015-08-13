@@ -25,7 +25,7 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 	 */
 	public function delete()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		// Get items to remove from the request.
 		$cid = $this->input->get('cid', array(), 'array');
@@ -54,11 +54,12 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 			}
 		}
 
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 		$this->setRedirect(
 			JRoute::_(
 				'index.php?option=com_contenthistory&view=history&layout=modal&tmpl=component&item_id='
 				. $this->input->getInt('item_id') . '&type_id=' . $this->input->getInt('type_id')
-				. '&type_alias=' . $this->input->getCmd('type_alias') . '&' . JSession::getFormToken() . '=1', false
+				. '&type_alias=' . $this->input->getCmd('type_alias') . '&' . $formToken . '=1', false
 			)
 		);
 	}
@@ -88,7 +89,7 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 	 */
 	public function keep()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		// Get items to remove from the request.
 		$cid = $this->input->get('cid', array(), 'array');
@@ -117,11 +118,12 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 			}
 		}
 
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 		$this->setRedirect(
 			JRoute::_(
 				'index.php?option=com_contenthistory&view=history&layout=modal&tmpl=component&item_id='
 				. $this->input->getInt('item_id') . '&type_id=' . $this->input->getInt('type_id')
-				. '&type_alias=' . $this->input->getCmd('type_alias') . '&' . JSession::getFormToken() . '=1', false
+				. '&type_alias=' . $this->input->getCmd('type_alias') . '&' . $formToken . '=1', false
 			)
 		);
 	}

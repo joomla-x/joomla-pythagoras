@@ -43,7 +43,7 @@ class MailtoController extends JControllerLegacy
 	public function send()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$app     = JFactory::getApplication();
 		$session = JFactory::getSession();

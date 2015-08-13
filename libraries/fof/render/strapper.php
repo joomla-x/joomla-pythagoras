@@ -965,7 +965,8 @@ HTML;
 		$html .= "\t" . '<input type="hidden" name="filter_order" value="' . $filter_order . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="filter_order_Dir" value="' . $filter_order_Dir . '" />' . PHP_EOL;
 
-		$html .= "\t" . '<input type="hidden" name="' . JFactory::getSession()->getFormToken() . '" value="1" />' . PHP_EOL;
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+		$html .= "\t" . '<input type="hidden" name="' . $formToken . '" value="1" />' . PHP_EOL;
 
 		// End the form
 		$html .= '</form>' . PHP_EOL;
@@ -1079,7 +1080,8 @@ HTML;
 		$html .= "\t" . '<input type="hidden" name="task" value="' . $customTask . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="' . $key . '" value="' . $keyValue . '" />' . PHP_EOL;
 
-		$html .= "\t" . '<input type="hidden" name="' . JFactory::getSession()->getFormToken() . '" value="1" />' . PHP_EOL;
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+		$html .= "\t" . '<input type="hidden" name="' . $formToken . '" value="1" />' . PHP_EOL;
 
 		$html .= $this->renderFormRaw($form, $model, $input, 'edit');
 		$html .= '</form>';

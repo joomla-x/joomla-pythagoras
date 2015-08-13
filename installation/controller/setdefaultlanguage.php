@@ -45,7 +45,10 @@ class InstallationControllerSetdefaultlanguage extends JControllerBase
 		$app = $this->getApplication();
 
 		// Check for request forgeries.
-		JSession::checkToken() or $app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check())
+		{
+			$app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		}
 
 		// Get the languages model.
 		$model = new InstallationModelLanguages;

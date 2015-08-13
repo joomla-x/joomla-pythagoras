@@ -42,7 +42,7 @@ class ContactControllerContact extends JControllerForm
 	public function submit()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$app    = JFactory::getApplication();
 		$model  = $this->getModel('contact');

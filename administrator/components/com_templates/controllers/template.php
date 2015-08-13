@@ -72,7 +72,7 @@ class TemplatesControllerTemplate extends JControllerLegacy
 	public function copy()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$app = JFactory::getApplication();
 		$this->input->set('installtype', 'folder');
@@ -206,7 +206,7 @@ class TemplatesControllerTemplate extends JControllerLegacy
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$app          = JFactory::getApplication();
 		$data         = $this->input->post->get('jform', array(), 'array');

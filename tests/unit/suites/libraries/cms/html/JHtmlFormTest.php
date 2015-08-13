@@ -73,13 +73,14 @@ class JHtmlFormTest extends TestCase
 	 */
 	public function testToken()
 	{
-		JFactory::$application = $this->getMockWeb();
+		\JFactory::$session = new \JSession();
+		\TestReflection::setValue(\JFactory::$session, '_state', 'active');
+		\JFactory::$application = $this->getMockWeb();
 
-		$token = JSession::getFormToken();
-
+		$csrfToken = new \Joomla\Cms\Session\CsrfToken(\JFactory::$session);
 		$this->assertThat(
 			JHtml::_('form.token'),
-			$this->equalTo('<input type="hidden" name="' . $token . '" value="1" />')
+			$this->equalTo('<input type="hidden" name="' . $csrfToken->getVarname() . '" value="1" />')
 		);
 	}
 }

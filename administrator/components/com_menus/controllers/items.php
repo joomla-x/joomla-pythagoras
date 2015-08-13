@@ -54,7 +54,7 @@ class MenusControllerItems extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$this->setRedirect('index.php?option=com_menus&view=items');
 
@@ -86,7 +86,7 @@ class MenusControllerItems extends JControllerAdmin
 	 */
 	public function saveorder()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		JLog::add('MenusControllerItems::saveorder() is deprecated. Function will be removed in 4.0', JLog::WARNING, 'deprecated');
 
@@ -118,7 +118,7 @@ class MenusControllerItems extends JControllerAdmin
 	public function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or die(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('request');
 
 		// Get items to publish from the request.
 		$cid   = $this->input->get('cid', array(), 'array');

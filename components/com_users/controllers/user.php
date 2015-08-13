@@ -27,7 +27,7 @@ class UsersControllerUser extends UsersController
 	 */
 	public function login()
 	{
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$app    = JFactory::getApplication();
 		$input  = $app->input;
@@ -97,7 +97,7 @@ class UsersControllerUser extends UsersController
 	 */
 	public function logout()
 	{
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('request');
 
 		$app = JFactory::getApplication();
 
@@ -136,7 +136,7 @@ class UsersControllerUser extends UsersController
 	 */
 	public function register()
 	{
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		// Get the application
 		$app = JFactory::getApplication();
@@ -208,7 +208,7 @@ class UsersControllerUser extends UsersController
 	public function remind()
 	{
 		// Check the request token.
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$app   = JFactory::getApplication();
 		$model = $this->getModel('User', 'UsersModel');
@@ -280,6 +280,6 @@ class UsersControllerUser extends UsersController
 	public function resend()
 	{
 		// Check for request forgeries
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 	}
 }

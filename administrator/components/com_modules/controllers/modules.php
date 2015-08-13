@@ -26,7 +26,7 @@ class ModulesControllerModules extends JControllerAdmin
 	public function duplicate()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$pks = $this->input->post->get('cid', array(), 'array');
 		JArrayHelper::toInteger($pks);

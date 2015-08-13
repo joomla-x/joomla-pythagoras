@@ -37,9 +37,10 @@ class JFormFieldContenthistory extends JFormField
 		$itemId = $this->form->getValue('id');
 		$label = JText::_('JTOOLBAR_VERSIONS');
 		$html = array();
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 		$link = 'index.php?option=com_contenthistory&amp;view=history&amp;layout=modal&amp;tmpl=component&amp;field='
 			. $this->id . '&amp;item_id=' . $itemId . '&amp;type_id=' . $typeId . '&amp;type_alias='
-			. $this->element['data-typeAlias'] . '&amp;' . JSession::getFormToken() . '=1';
+			. $this->element['data-typeAlias'] . '&amp;' . $formToken . '=1';
 
 		// Load the modal behavior script.
 		JHtml::_('behavior.modal', 'button.modal_' . $this->id);

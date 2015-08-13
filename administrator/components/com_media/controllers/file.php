@@ -36,7 +36,7 @@ class MediaControllerFile extends JControllerLegacy
 	public function upload()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('request');
 		$params = JComponentHelper::getParams('com_media');
 
 		// Get some data from the request
@@ -199,7 +199,7 @@ class MediaControllerFile extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('request');
 
 		// Get some data from the request
 		$tmpl   = $this->input->get('tmpl');

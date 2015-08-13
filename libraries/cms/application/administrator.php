@@ -417,10 +417,11 @@ class JApplicationAdministrator extends JApplicationCms
 		if (property_exists('JConfig', 'root_user')
 			&& (JFactory::getUser()->get('username') == $rootUser || JFactory::getUser()->id === (string) $rootUser))
 		{
+			$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 			$this->enqueueMessage(
 				JText::sprintf(
 					'JWARNING_REMOVE_ROOT_USER',
-					'index.php?option=com_config&task=config.removeroot&' . JSession::getFormToken() . '=1'
+					'index.php?option=com_config&task=config.removeroot&' . $formToken . '=1'
 				),
 				'notice'
 			);

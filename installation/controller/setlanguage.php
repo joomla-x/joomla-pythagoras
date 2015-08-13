@@ -30,7 +30,10 @@ class InstallationControllerSetlanguage extends JControllerBase
 		$app = $this->getApplication();
 
 		// Check for request forgeries.
-		JSession::checkToken() or $app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check())
+		{
+			$app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		}
 
 		// Very crude workaround to give an error message when JSON is disabled
 		if (!function_exists('json_encode') || !function_exists('json_decode'))
@@ -38,7 +41,8 @@ class InstallationControllerSetlanguage extends JControllerBase
 			$app->setHeader('status', 500);
 			$app->setHeader('Content-Type', 'application/json; charset=utf-8');
 			$app->sendHeaders();
-			echo '{"token":"' . JSession::getFormToken(true) . '","lang":"' . JFactory::getLanguage()->getTag()
+			$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname(true);
+			echo '{"token":"' . $formToken . '","lang":"' . JFactory::getLanguage()->getTag()
 				. '","error":true,"header":"' . JText::_('INSTL_HEADER_ERROR') . '","message":"' . JText::_('INSTL_WARNJSON') . '"}';
 			$app->close();
 		}

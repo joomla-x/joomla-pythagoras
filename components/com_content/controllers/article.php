@@ -331,7 +331,7 @@ class ContentControllerArticle extends JControllerForm
 	public function vote()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$user_rating = $this->input->getInt('user_rating', -1);
 

@@ -8,7 +8,7 @@
  */
 
 defined('_JEXEC') or die;
-JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('get');
 $version2 = $this->items[0];
 $version1 = $this->items[1];
 $object1 = $version1->data;

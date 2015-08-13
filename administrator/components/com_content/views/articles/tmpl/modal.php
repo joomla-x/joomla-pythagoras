@@ -13,7 +13,7 @@ $app = JFactory::getApplication();
 
 if ($app->isSite())
 {
-	JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+	(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('get');
 }
 
 require_once JPATH_ROOT . '/components/com_content/helpers/route.php';
@@ -27,7 +27,9 @@ $function  = $app->input->getCmd('function', 'jSelectArticle');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_content&view=articles&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1');?>"
+<form action="<?php
+$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+echo JRoute::_('index.php?option=com_content&view=articles&layout=modal&tmpl=component&function=' . $function . '&' . $formToken . '=1');?>"
       method="post" name="adminForm" id="adminForm" class="form-inline">
 	<fieldset class="filter">
 		<div class="btn-toolbar">

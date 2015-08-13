@@ -26,7 +26,7 @@ class InstallationResponseJson
 	public function __construct($data)
 	{
 		// The old token is invalid so send a new one.
-		$this->token = JSession::getFormToken(true);
+		$this->token = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname(true);
 
 		// Get the language and send it's tag along
 		$this->lang = JFactory::getLanguage()->getTag();

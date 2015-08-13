@@ -98,6 +98,22 @@ class CsrfToken
 		return true;
 	}
 
+	public function guard($method = 'post')
+	{
+		try
+		{
+			if (!$this->check($method))
+			{
+				\jexit(\JText::_('JINVALID_TOKEN'));
+			}
+		} catch (\Joomla\Cms\Session\NoTokenException $e)
+		{
+			$app = \JFactory::getApplication();
+			$app->enqueueMessage(\JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'warning');
+			$app->redirect(\JRoute::_('index.php'));
+		}
+	}
+
 	/**
 	 * Create a token-string
 	 *
