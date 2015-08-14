@@ -2,13 +2,11 @@
 /**
  * Part of the Joomla Framework Filter Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
 namespace Joomla\Filter;
-
-use Joomla\String\StringHelper;
 
 /**
  * InputFilter is a class for filtering input from any data source
@@ -226,15 +224,15 @@ class InputFilter
 				break;
 
 			case 'PATH':
-				$pattern = '/^[A-Za-z0-9_\/-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+				$pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
 				preg_match($pattern, (string) $source, $matches);
 				$result = isset($matches[0]) ? (string) $matches[0] : '';
 				break;
 
 			case 'TRIM':
 				$result = (string) trim($source);
-				$result = StringHelper::trim($result, chr(0xE3) . chr(0x80) . chr(0x80));
-				$result = StringHelper::trim($result, chr(0xC2) . chr(0xA0));
+				$result = trim($result, chr(0xE3) . chr(0x80) . chr(0x80));
+				$result = trim($result, chr(0xC2) . chr(0xA0));
 				break;
 
 			case 'USERNAME':
