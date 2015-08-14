@@ -81,4 +81,5 @@ JLoader::registerAlias('JAdministrator',  'JApplicationAdministrator');
 JLoader::registerAlias('JSite',  'JApplicationSite');
 
 JLoader::register('Joomla\\Cms\\Session\\CsrfToken', JPATH_PLATFORM . '/cms/session/CsrfToken.php');
+JLoader::register('Joomla\\Cms\\Session\\CsrfTokenInterface', JPATH_PLATFORM . '/cms/session/CsrfTokenInterface.php');
 JLoader::register('Joomla\\Cms\\Session\\NoTokenException', JPATH_PLATFORM . '/cms/session/NoTokenException.php');
