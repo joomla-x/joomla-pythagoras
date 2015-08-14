@@ -11,11 +11,23 @@ namespace Joomla\Cms\Session;
 
 defined('JPATH_PLATFORM') or die;
 
+/**
+ * Class CsrfToken
+ *
+ * @package  Joomla\Cms\Session
+ *
+ * @since    4.0
+ */
 class CsrfToken implements CsrfTokenInterface
 {
-	/** @var \JSession  */
+	/** @var \JSession The session object */
 	private $session;
 
+	/**
+	 * Constructor
+	 *
+	 * @param   \JSession  $session  The session object
+	 */
 	public function __construct(\JSession $session)
 	{
 		$this->session = $session;
@@ -28,7 +40,7 @@ class CsrfToken implements CsrfTokenInterface
 	 * has been generated the system will check the post request to see if
 	 * it is present, if not it will invalidate the session.
 	 *
-	 * @param   boolean $forceNew If true, force a new token to be created
+	 * @param   boolean  $forceNew  If true, force a new token to be created
 	 *
 	 * @return  string  The session token
 	 */
@@ -49,8 +61,8 @@ class CsrfToken implements CsrfTokenInterface
 	 * Method to determine if a token exists in the session. If not the
 	 * session will be set to expired
 	 *
-	 * @param   string  $tCheck      Hashed token to be verified
-	 * @param   boolean $forceExpire If true, expires the session
+	 * @param   string   $tCheck       Hashed token to be verified
+	 * @param   boolean  $forceExpire  If true, expires the session
 	 *
 	 * @return  boolean
 	 */
@@ -76,7 +88,7 @@ class CsrfToken implements CsrfTokenInterface
 	 *
 	 * Use in conjunction with JHtml::_('form.token') or JSession::getFormToken.
 	 *
-	 * @param   string $method The request method in which to look for the token key.
+	 * @param   string  $method  The request method in which to look for the token key.
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
 	 */
@@ -101,11 +113,11 @@ class CsrfToken implements CsrfTokenInterface
 	/**
 	 * Checks for a form token in the request, redirects on missing token, or bails out on invalid token.
 	 *
-	 * @see     check()
-	 *
-	 * @param   string $method The request method in which to look for the token key.
+	 * @param   string  $method  The request method in which to look for the token key.
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
+	 *
+	 * @see     check()
 	 */
 	public function guard($method = 'post')
 	{
@@ -115,7 +127,8 @@ class CsrfToken implements CsrfTokenInterface
 			{
 				\jexit(\JText::_('JINVALID_TOKEN'));
 			}
-		} catch (\Joomla\Cms\Session\NoTokenException $e)
+		}
+		catch (\Joomla\Cms\Session\NoTokenException $e)
 		{
 			$app = \JFactory::getApplication();
 			$app->enqueueMessage(\JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'warning');
@@ -126,7 +139,7 @@ class CsrfToken implements CsrfTokenInterface
 	/**
 	 * Create a token-string
 	 *
-	 * @param   integer $length Length of string
+	 * @param   integer  $length  Length of string
 	 *
 	 * @return  string  Generated token
 	 */
@@ -148,13 +161,13 @@ class CsrfToken implements CsrfTokenInterface
 	/**
 	 * Method to determine a hash for anti-spoofing variable names
 	 *
-	 * @param   boolean $forceNew If true, force a new token to be created
+	 * @param   boolean  $forceNew  If true, force a new token to be created
 	 *
 	 * @return  string  Hashed var name
 	 */
 	public function getVarname($forceNew = false)
 	{
-		$user    = \JFactory::getUser();
+		$user = \JFactory::getUser();
 
 		return md5(
 			\JFactory::getApplication()->get('secret')
