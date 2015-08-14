@@ -20,7 +20,7 @@ interface CsrfTokenInterface
 	 * has been generated the system will check the post request to see if
 	 * it is present, if not it will invalidate the session.
 	 *
-	 * @param   boolean $forceNew If true, force a new token to be created
+	 * @param   boolean  $forceNew  If true, force a new token to be created
 	 *
 	 * @return  string  The session token
 	 */
@@ -30,8 +30,8 @@ interface CsrfTokenInterface
 	 * Method to determine if a token exists in the session. If not the
 	 * session will be set to expired
 	 *
-	 * @param   string  $tCheck      Hashed token to be verified
-	 * @param   boolean $forceExpire If true, expires the session
+	 * @param   string   $tCheck       Hashed token to be verified
+	 * @param   boolean  $forceExpire  If true, expires the session
 	 *
 	 * @return  boolean
 	 */
@@ -42,7 +42,7 @@ interface CsrfTokenInterface
 	 *
 	 * Use in conjunction with JHtml::_('form.token') or JSession::getFormToken.
 	 *
-	 * @param   string $method The request method in which to look for the token key.
+	 * @param   string  $method  The request method in which to look for the token key.
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
 	 */
@@ -51,18 +51,18 @@ interface CsrfTokenInterface
 	/**
 	 * Checks for a form token in the request, redirects on missing token, or bails out on invalid token.
 	 *
-	 * @see     check()
-	 *
-	 * @param   string $method The request method in which to look for the token key.
+	 * @param   string  $method  The request method in which to look for the token key.
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
+	 *
+	 * @see     check()
 	 */
 	public function guard($method = 'post');
 
 	/**
 	 * Create a token-string
 	 *
-	 * @param   integer $length Length of string
+	 * @param   integer  $length  Length of string
 	 *
 	 * @return  string  Generated token
 	 */
@@ -71,7 +71,7 @@ interface CsrfTokenInterface
 	/**
 	 * Method to determine a hash for anti-spoofing variable names
 	 *
-	 * @param   boolean $forceNew If true, force a new token to be created
+	 * @param   boolean  $forceNew  If true, force a new token to be created
 	 *
 	 * @return  string  Hashed var name
 	 */
