@@ -54,6 +54,7 @@ Desktop.ini
 !/build/.gitignore
 !/tests/unit/suites/libraries/joomla/archive/.gitignore
 !/tests/unit/tmp/.gitignore
+!/libraries/vendor
 
 # Extra files installed by Composer not needed in the CMS environment
 # This should only ignore files like unit testing or READMEs, production
