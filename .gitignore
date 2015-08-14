@@ -80,4 +80,10 @@ Desktop.ini
 /libraries/vendor/phpmailer/phpmailer/travis.phpunit.xml.dist
 /libraries/vendor/psr/log/Psr/Log/Test
 
-
+libraries/vendor/bin/dbunit
+libraries/vendor/bin/phpcs
+libraries/vendor/bin/phpunit
+libraries/vendor/pear/cache_lite
+libraries/vendor/phpunit
+libraries/vendor/sebastian
+libraries/vendor/squizlabs
