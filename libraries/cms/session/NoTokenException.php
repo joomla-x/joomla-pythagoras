@@ -12,9 +12,9 @@ namespace Joomla\Cms\Session;
 /**
  * Class NoTokenException
  *
- * @package Joomla\Cms\Session
+ * @package  Joomla\Cms\Session
  *
- * @since 4.0
+ * @since    4.0
  */
 class NoTokenException extends \RuntimeException
 {

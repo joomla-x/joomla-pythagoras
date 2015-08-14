@@ -11,6 +11,13 @@ namespace Joomla\Cms\Session;
 
 defined('JPATH_PLATFORM') or die;
 
+/**
+ * Interface CsrfTokenInterface
+ *
+ * @package  Joomla\Cms\Session
+ *
+ * @since    4.0
+ */
 interface CsrfTokenInterface
 {
 	/**
