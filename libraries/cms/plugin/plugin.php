@@ -266,8 +266,12 @@ abstract class JPlugin implements DispatcherAwareInterface
 			}
 
 			/**
-			 * Calling the method directly is up to 8x faster than using call_user_func_array, hence this argument
+			 * Calling the method directly is faster than using call_user_func_array, hence this argument
 			 * unpacking switch statement. Please do not wrap it back to a single line, it will hurt performance.
+			 *
+			 * If we raise minimum requirements to PHP 5.6 we can use array unpacking and remove the switch for
+			 * even better results, i.e. replace the switch with:
+			 * $result = $this->{$methodName}(...$arguments);
 			 */
 			switch (count($arguments))
 			{
