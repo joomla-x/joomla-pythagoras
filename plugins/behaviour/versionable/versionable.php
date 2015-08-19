@@ -69,20 +69,6 @@ class PlgBehaviourVersionable extends JPlugin
 	}
 
 	/**
-	 * Pre-processor for $table->store($updateNulls)
-	 *
-	 * @param   CmsEvent\Table\BeforeStoreEvent  $event  The event to handle
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0.0
-	 */
-	public function onTableBeforeStore(CmsEvent\Table\BeforeStoreEvent $event)
-	{
-
-	}
-
-	/**
 	 * Post-processor for $table->store($updateNulls)
 	 *
 	 * @param   CmsEvent\Table\AfterStoreEvent  $event  The event to handle
@@ -171,27 +157,6 @@ class PlgBehaviourVersionable extends JPlugin
 		{
 			$table->contenthistoryHelper->deleteHistory($table);
 		}
-	}
-
-	/**
-	 * Runs when an existing table object is reset
-	 *
-	 * @param   CmsEvent\Table\AfterResetEvent  $event  The event to handle
-	 */
-	public function onTableAfterReset(CmsEvent\Table\AfterResetEvent $event)
-	{
-
-	}
-
-
-	/**
-	 * Runs when an existing table object is reset
-	 *
-	 * @param   CmsEvent\Table\AfterLoadEvent  $event  The event to handle
-	 */
-	public function onTableAfterLoad(CmsEvent\Table\AfterLoadEvent $event)
-	{
-
 	}
 
 	/**
