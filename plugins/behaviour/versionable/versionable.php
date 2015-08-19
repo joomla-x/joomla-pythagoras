@@ -45,7 +45,27 @@ class PlgBehaviourVersionable extends JPlugin
 	 */
 	public function onTableObjectCreate(CmsEvent\Table\ObjectCreateEvent $event)
 	{
+		// Extract arguments
+		/** @var JTableInterface $table */
+		$table			= $event['subject'];
 
+		// Parse the type alias
+		$typeAlias = $this->parseTypeAlias($table);
+
+		// If the table doesn't support UCM we can't use the Taggable behaviour
+		if (is_null($typeAlias))
+		{
+			return;
+		}
+
+		// If the table already has a tags helper we have nothing to do
+		if (property_exists($table, 'contenthistoryHelper'))
+		{
+			return;
+		}
+
+		$table->contenthistoryHelper = new JHelperContenthistory($typeAlias);
+		$table->contenthistoryHelper->typeAlias = $table->typeAlias;
 	}
 
 	/**
@@ -123,5 +143,38 @@ class PlgBehaviourVersionable extends JPlugin
 	public function onTableAfterLoad(CmsEvent\Table\AfterLoadEvent $event)
 	{
 
+	}
+
+	/**
+	 * Internal method
+	 * Parses a TypeAlias of the form "{variableName}.type", replacing {variableName} with table-instance variables variableName
+	 *
+	 * @param   JTableInterface  $table  The table
+	 *
+	 * @return  string
+	 *
+	 * @since   4.0.0
+	 *
+	 * @internal
+	 */
+	protected function parseTypeAlias(JTableInterface &$table)
+	{
+		if (!isset($table->typeAlias))
+		{
+			return null;
+		}
+
+		if (empty($table->typeAlias))
+		{
+			return null;
+		}
+
+		return preg_replace_callback('/{([^}]+)}/',
+			function($matches) use ($table)
+			{
+				return $table->{$matches[1]};
+			},
+			$table->typeAlias
+		);
 	}
 }
