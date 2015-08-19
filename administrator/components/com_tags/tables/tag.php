@@ -25,9 +25,9 @@ class TagsTableTag extends JTableNested
 	 */
 	public function __construct($db)
 	{
-		parent::__construct('#__tags', 'id', $db);
+		$this->typeAlias = 'com_tags.tag';
 
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_tags.tag'));
+		parent::__construct('#__tags', 'id', $db);
 	}
 
 	/**
