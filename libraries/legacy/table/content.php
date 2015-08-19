@@ -32,8 +32,6 @@ class JTableContent extends JTable
 
 		parent::__construct('#__content', 'id', $db);
 
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_content.article'));
-
 		// Set the alias since the column is called state
 		$this->setColumnAlias('published', 'state');
 	}

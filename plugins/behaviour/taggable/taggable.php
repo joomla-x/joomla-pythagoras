@@ -207,7 +207,7 @@ class PlgBehaviourTaggable extends JPlugin
 		// Get the Tags helper and assign the parsed alias
 		$table->tagsHelper->typeAlias = $typeAlias;
 
-		$this->tagsHelper->deleteTagData($this->table, $pk);
+		$table->tagsHelper->deleteTagData($table, $pk);
 	}
 
 	/**
@@ -245,7 +245,7 @@ class PlgBehaviourTaggable extends JPlugin
 		// Get the Tags helper and assign the parsed alias
 		$table->tagsHelper->typeAlias = $typeAlias;
 
-		if (!$this->tagsHelper->postStoreProcess($table, $newTags, $replaceTags))
+		if (!$table->tagsHelper->postStoreProcess($table, $newTags, $replaceTags))
 		{
 			throw new RuntimeException($table->getError());
 		}
@@ -274,7 +274,6 @@ class PlgBehaviourTaggable extends JPlugin
 		$table->tagsHelper = new JHelperTags;
 		$table->tagsHelper->typeAlias = $table->typeAlias;
 	}
-
 
 	/**
 	 * Runs when an existing table object is reset

@@ -25,9 +25,9 @@ class UsersTableNote extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__user_notes', 'id', $db);
+		$this->typeAlias = 'com_users.note';
 
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_users.note'));
+		parent::__construct('#__user_notes', 'id', $db);
 	}
 
 	/**
