@@ -49,8 +49,8 @@ class PlgBehaviourVersionable extends JPlugin
 		/** @var JTableInterface $table */
 		$table			= $event['subject'];
 
-		// Parse the type alias
-		$typeAlias = $this->parseTypeAlias($table);
+		// When we create the object the table is empty, so we can't parse the typeAlias field
+		$typeAlias = $table->typeAlias;
 
 		// If the table doesn't support UCM we can't use the Taggable behaviour
 		if (is_null($typeAlias))
@@ -114,7 +114,7 @@ class PlgBehaviourVersionable extends JPlugin
 
 		$aliasParts = explode('.', $table->contenthistoryHelper->typeAlias);
 
-		if (JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
+		if ($aliasParts[0] && JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
 		{
 			$table->contenthistoryHelper->store($table);
 		}
@@ -153,7 +153,7 @@ class PlgBehaviourVersionable extends JPlugin
 		$table->contenthistoryHelper->typeAlias = $typeAlias;
 		$aliasParts = explode('.', $table->contenthistoryHelper->typeAlias);
 
-		if (JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
+		if ($aliasParts[0] && JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
 		{
 			$table->contenthistoryHelper->deleteHistory($table);
 		}
