@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\Event\Dispatcher;
 use Joomla\Event\Event;
+use Joomla\Cms\Event\AbstractEvent;
 
 /**
  * Table class supporting modified pre-order tree traversal behavior.
@@ -743,11 +744,12 @@ class JTableNested extends JTable
 		$k = $this->_tbl_key;
 
 		// Pre-processing by observers
-		$event = new Event('onBeforeStore', [
+		$event = AbstractEvent::create('onTableBeforeStore', [
+			'subject'		=> $this,
 			'updateNulls'	=> $updateNulls,
 			'k'				=> $k,
 		]);
-		$this->getDispatcher()->dispatch('onBeforeStore', $event);
+		$this->getDispatcher()->dispatch('onTableBeforeStore', $event);
 
 		// @codeCoverageIgnoreStart
 		if ($this->_debug)
@@ -897,10 +899,11 @@ class JTableNested extends JTable
 		$this->_unlock();
 
 		// Post-processing by observers
-		$event = new Event('onAfterStore', [
+		$event = AbstractEvent::create('onTableAfterStore', [
+			'subject'	=> $this,
 			'result'	=> &$result,
 		]);
-		$this->getDispatcher()->dispatch('onAfterStore', $event);
+		$this->getDispatcher()->dispatch('onTableAfterStore', $event);
 
 		return $result;
 	}
