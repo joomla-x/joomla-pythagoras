@@ -93,7 +93,45 @@ class PlgBehaviourVersionable extends JPlugin
 	 */
 	public function onTableAfterStore(CmsEvent\Table\AfterStoreEvent $event)
 	{
+		// Extract arguments
+		/** @var JTableInterface $table */
+		$table	= $event['subject'];
+		$result = $event['result'];
 
+		if (!$result)
+		{
+			return;
+		}
+
+		if (!is_object($table) || !($table instanceof JTableInterface))
+		{
+			return;
+		}
+
+		// Parse the type alias
+		$typeAlias = $this->parseTypeAlias($table);
+
+		// If the table doesn't support UCM we can't use the Versionable behaviour
+		if (is_null($typeAlias))
+		{
+			return;
+		}
+
+		// If the table doesn't have a tags helper we can't proceed
+		if (!property_exists($table, 'contenthistoryHelper'))
+		{
+			return;
+		}
+
+		// Get the Tags helper and assign the parsed alias
+		$table->contenthistoryHelper->typeAlias = $typeAlias;
+
+		$aliasParts = explode('.', $table->contenthistoryHelper->typeAlias);
+
+		if (JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
+		{
+			$table->contenthistoryHelper->store($table);
+		}
 	}
 
 	/**
@@ -107,21 +145,32 @@ class PlgBehaviourVersionable extends JPlugin
 	 */
 	public function onTableBeforeDelete(CmsEvent\Table\BeforeDeleteEvent $event)
 	{
+		// Extract arguments
+		/** @var JTableInterface $table */
+		$table			= $event['subject'];
 
-	}
+		// Parse the type alias
+		$typeAlias = $this->parseTypeAlias($table);
 
-	/**
-	 * Handles the tag setting in $table->batchTag($value, $pks, $contexts)
-	 *
-	 * @param   CmsEvent\Table\SetNewTagsEvent  $event  The event to handle
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0.0
-	 */
-	public function onTableSetNewTags(CmsEvent\Table\SetNewTagsEvent $event)
-	{
+		// If the table doesn't support UCM we can't use the Taggable behaviour
+		if (is_null($typeAlias))
+		{
+			return;
+		}
 
+		// If the table doesn't have a tags helper we can't proceed
+		if (!property_exists($table, 'contenthistoryHelper'))
+		{
+			return;
+		}
+
+		$table->contenthistoryHelper->typeAlias = $typeAlias;
+		$aliasParts = explode('.', $table->contenthistoryHelper->typeAlias);
+
+		if (JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
+		{
+			$table->contenthistoryHelper->deleteHistory($table);
+		}
 	}
 
 	/**
