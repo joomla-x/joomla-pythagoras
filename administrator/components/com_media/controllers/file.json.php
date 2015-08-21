@@ -171,7 +171,7 @@ class MediaControllerFile extends JControllerLegacy
 		}
 
 		// Trigger the onContentAfterSave event.
-		$dispatcher->dispatch('onContentAfterSave', array('com_media.file', &$object_file, true));
+		JFactory::getApplication()->triggerEvent('onContentAfterSave', array('com_media.file', &$object_file, true));
 		JLog::add($folder, JLog::INFO, 'upload');
 
 		$response = array(
