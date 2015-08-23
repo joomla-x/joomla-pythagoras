@@ -78,29 +78,29 @@ class JHelpTest extends TestCase
 	 * @covers  Help::createURL
 	 * @since   3.0
 	 */
-	public function testCreateURL()
+	public function testCreateUrl()
 	{
 		$this->assertEquals(
 			'help/en-GB/Content_Article_Manager.html',
-			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER'),
+			Help::createUrl('JHELP_CONTENT_ARTICLE_MANAGER'),
 			'Creates a local help URL for com_content Article Manager.'
 		);
 
 		$this->assertEquals(
 			'components/com_content/help/en-GB/Content_Article_Manager.html',
-			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER', true, null, 'com_content'),
+			Help::createUrl('JHELP_CONTENT_ARTICLE_MANAGER', true, null, 'com_content'),
 			'Creates a local help URL for com_content Article Manager in the component.'
 		);
 
 		$this->assertEquals(
 			'http://domain.tld/help',
-			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER', true, 'http://domain.tld/help', 'com_content'),
+			Help::createUrl('JHELP_CONTENT_ARTICLE_MANAGER', true, 'http://domain.tld/help', 'com_content'),
 			'Creates a remote help URL via an override for com_content Article Manager.'
 		);
 
 		$this->assertEquals(
 			'help/en-GB/Content_Article_Manager.html',
-			Help::createURL('JHELP_CONTENT_ARTICLE_MANAGER', false, null, 'com_content'),
+			Help::createUrl('JHELP_CONTENT_ARTICLE_MANAGER', false, null, 'com_content'),
 			'Creates a local help URL for com_content Article Manager.'
 		);
 	}
@@ -119,6 +119,7 @@ class JHelpTest extends TestCase
 			'text' => 'English (GB) help.joomla.org',
 			'value' => 'http://help.joomla.org'
 		);
+
 		$this->assertEquals(array($helpsite), Help::createSiteList(null), 'Returns the default help site list');
 
 		$this->assertInternalType('array', Help::createSiteList(JPATH_ADMINISTRATOR . '/help/helpsites.xml'), 'Returns the help site list defined in the XML file');

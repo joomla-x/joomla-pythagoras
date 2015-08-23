@@ -56,7 +56,7 @@ class ContactModelCategory extends JModelList
 	 * Constructor.
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
-
+	 *
 	 * @since   1.6
 	 */
 	public function __construct($config = array())
@@ -112,6 +112,7 @@ class ContactModelCategory extends JModelList
 	 * Method to build an SQL query to load the list data.
 	 *
 	 * @return  string    An SQL query
+	 *
 	 * @since   1.6
 	 */
 	protected function getListQuery()
@@ -169,6 +170,11 @@ class ContactModelCategory extends JModelList
 		{
 			$query->where('a.published = ' . (int) $state);
 		}
+		else
+		{
+			$query->where('(a.published IN (0,1,2))');
+		}
+
 		// Filter by start and end dates.
 		$nullDate = $db->quote($db->getNullDate());
 		$nowDate = $db->quote(JFactory::getDate()->toSql());
@@ -212,6 +218,11 @@ class ContactModelCategory extends JModelList
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
 	 *
 	 * @since   1.6
 	 */

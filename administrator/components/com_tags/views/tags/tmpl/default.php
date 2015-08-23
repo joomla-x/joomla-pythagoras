@@ -218,7 +218,7 @@ JFactory::getDocument()->addScriptDeclaration('
 								<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 							<?php endif;?>
 							</td>
-							<td class="center hidden-phone">
+							<td class="hidden-phone">
 								<span title="<?php echo sprintf('%d-%d', $item->lft, $item->rgt); ?>">
 									<?php echo (int) $item->id; ?></span>
 							</td>
@@ -227,7 +227,7 @@ JFactory::getDocument()->addScriptDeclaration('
 				<?php endforeach; ?>
 				</tbody>
 			</table>
-			<?php //Load the batch processing form if user is allowed ?>
+			<?php // Load the batch processing form if user is allowed ?>
 			<?php if ($user->authorise('core.create', 'com_tags')
 				&& $user->authorise('core.edit', 'com_tags')
 				&& $user->authorise('core.edit.state', 'com_tags')) : ?>
