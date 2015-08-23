@@ -34,7 +34,7 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$this->object = new JEditor;
+		$this->object = new Editor;
 	}
 
 	/**
@@ -47,8 +47,8 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	public function testGetInstance()
 	{
 		$this->assertThat(
-			JEditor::getInstance('none'),
-			$this->isInstanceOf('JEditor')
+			Editor::getInstance('none'),
+			$this->isInstanceOf('Editor')
 		);
 	}
 
@@ -66,7 +66,7 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 
 		$this->assertThat(
 			$this->object->getState(),
-			$this->equalTo('JEditor::getState()')
+			$this->equalTo('Editor::getState()')
 		);
 	}
 }

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Editor\Editor as JEditor;
+
 /**
  * HTML View class for the Modules component
  *
