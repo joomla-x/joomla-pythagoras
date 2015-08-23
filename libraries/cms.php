@@ -8,8 +8,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\ClassLoader\Loader as JClassLoader;
-
 // Set the platform root path as a constant if necessary.
 if (!defined('JPATH_PLATFORM'))
 {
@@ -35,8 +33,11 @@ JLoader::registerPrefix('J', JPATH_PLATFORM . '/cms', false, true);
 $loader = require JPATH_LIBRARIES . '/vendor/autoload.php';
 $loader->unregister();
 
+// TODO - Our autoloader is unregistered so we can't find the loader class right here
+require_once JPATH_LIBRARIES . '/src/ClassLoader/Loader.php';
+
 // Decorate Composer autoloader
-spl_autoload_register(array(new JClassLoader($loader), 'loadClass'), true, true);
+spl_autoload_register(array(new Joomla\CMS\ClassLoader\Loader($loader), 'loadClass'), true, true);
 
 // Register the class aliases for Framework classes that have replaced their Platform equivilents
 require_once JPATH_LIBRARIES . '/classmap.php';
