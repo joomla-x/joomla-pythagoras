@@ -13,6 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
 use JFactory;
+use JObject;
 use JPluginHelper;
 use JFilterInput;
 
