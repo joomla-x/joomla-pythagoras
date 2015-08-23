@@ -7,16 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Library;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use stdClass;
+use JFactory;
+use JText;
+use JLog;
+use RuntimeException;
 
 /**
  * Library helper class
  *
  * @since  3.2
  */
-class JLibraryHelper
+class Helper
 {
 	/**
 	 * The component list cache

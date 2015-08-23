@@ -7,7 +7,13 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Schema;
+
 defined('JPATH_PLATFORM') or die;
+
+use JDatabaseDriver;
+use RuntimeException;
+use JFactory;
 
 /**
  * Each object represents one query, which is one line from a DDL SQL query.
@@ -25,7 +31,7 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since  2.5
  */
-abstract class JSchemaChangeitem
+abstract class AbstractChangeItem
 {
 	/**
 	 * Update file: full path file name where query was found
@@ -125,13 +131,13 @@ abstract class JSchemaChangeitem
 	}
 
 	/**
-	 * Returns a reference to the JSchemaChangeitem object.
+	 * Returns a reference to the Changeitem object.
 	 *
 	 * @param   JDatabaseDriver  $db     Database connector object
 	 * @param   string           $file   Full path name of the sql file
 	 * @param   string           $query  Text of the sql query (one line of the file)
 	 *
-	 * @return  JSchemaChangeitem instance based on the database driver
+	 * @return  AbstractChangeItem instance based on the database driver
 	 *
 	 * @since   2.5
 	 * @throws  RuntimeException if class for database driver not found
@@ -150,7 +156,7 @@ abstract class JSchemaChangeitem
 			$dbname = 'sqlsrv';
 		}
 
-		$class = 'JSchemaChangeitem' . ucfirst($dbname);
+		$class = '\\Joomla\\CMS\\Schema\\ChangeItem\\' . ucfirst($dbname);
 
 		// If the class exists, return it.
 		if (class_exists($class))
@@ -158,7 +164,7 @@ abstract class JSchemaChangeitem
 			return new $class($db, $file, $query);
 		}
 
-		throw new RuntimeException(sprintf('JSchemaChangeitem child class not found for the %s database driver', $dbname), 500);
+		throw new RuntimeException(sprintf('ChangeItem child class not found for the %s database driver', $dbname), 500);
 	}
 
 	/**

@@ -46,7 +46,7 @@ if (!class_exists('FOFAutoloaderFof'))
 }
 
 // Register a handler for uncaught exceptions that shows a pretty error page when possible
-set_exception_handler(array('JErrorPage', 'render'));
+set_exception_handler(array('\\Joomla\\CMS\\Error\\Page', 'render'));
 
 // Define the Joomla version if not already defined.
 if (!defined('JVERSION'))

@@ -13,7 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use JDate;
 use JFactory;
-use JLibraryHelper;
+use Joomla\CMS\Library\Helper as JLibraryHelper;
 
 /**
  * Version information class for the Joomla CMS.

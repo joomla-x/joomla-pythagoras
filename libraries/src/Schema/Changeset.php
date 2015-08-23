@@ -7,24 +7,31 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Schema;
+
 defined('JPATH_PLATFORM') or die;
 
-jimport('joomla.filesystem.folder');
+\jimport('joomla.filesystem.folder');
+
+use JDatabaseDriver;
+use JFolder;
+use stdClass;
+use SplFileInfo;
 
 /**
- * Contains a set of JSchemaChange objects for a particular instance of Joomla.
+ * Contains a set of AbstractChangeItem objects for a particular instance of Joomla.
  * Each of these objects contains a DDL query that should have been run against
  * the database when this database was created or updated. This enables the
  * Installation Manager to check that the current database schema is up to date.
  *
  * @since  2.5
  */
-class JSchemaChangeset
+class Changeset
 {
 	/**
-	 * Array of JSchemaChangeitem objects
+	 * Array of Changeitem objects
 	 *
-	 * @var    array
+	 * @var    AbstractChangeItem[]
 	 * @since  2.5
 	 */
 	protected $changeItems = array();
@@ -62,7 +69,7 @@ class JSchemaChangeset
 
 		foreach ($updateQueries as $obj)
 		{
-			$this->changeItems[] = JSchemaChangeitem::getInstance($db, $obj->file, $obj->updateQuery);
+			$this->changeItems[] = AbstractChangeItem::getInstance($db, $obj->file, $obj->updateQuery);
 		}
 	}
 
@@ -82,7 +89,7 @@ class JSchemaChangeset
 
 		if (!is_object($instance))
 		{
-			$instance = new JSchemaChangeset($db, $folder);
+			$instance = new Changeset($db, $folder);
 		}
 
 		return $instance;
