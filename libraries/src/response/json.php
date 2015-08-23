@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Response;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -17,7 +19,7 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since  3.1
  */
-class JResponseJson
+class Json
 {
 	/**
 	 * Determines whether the request was successful

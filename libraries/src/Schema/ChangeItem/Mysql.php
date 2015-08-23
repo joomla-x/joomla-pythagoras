@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Schema\ChangeItem;
+
 defined('JPATH_PLATFORM') or die;
+
+use Joomla\CMS\Schema\AbstractChangeItem as JSchemaChangeitem;
 
 /**
  * Checks the database schema against one MySQL DDL query to see if it has been run.
  *
  * @since  2.5
  */
-class JSchemaChangeitemMysql extends JSchemaChangeitem
+class Mysql extends JSchemaChangeitem
 {
 	/**
 	 * Checks a DDL query to see if it is a known type
