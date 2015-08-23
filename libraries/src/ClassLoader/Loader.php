@@ -7,9 +7,12 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\ClassLoader;
+
 defined('_JEXEC') or die;
 
 use Composer\Autoload\ClassLoader;
+use JLoader;
 
 /**
  * Decorate Composer ClassLoader for Joomla!
@@ -19,7 +22,7 @@ use Composer\Autoload\ClassLoader;
  *
  * @since  3.4
  */
-class JClassLoader
+class Loader
 {
 	/**
 	 * The composer class loader
