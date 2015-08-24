@@ -255,21 +255,6 @@ class JCacheStorage
 	}
 
 	/**
-	 * Test to see if the storage handler is available.
-	 *
-	 * @return  boolean  True on success, false otherwise.
-	 *
-	 * @since   11.1
-	 * @deprecated  12.3 (Platform) & 4.0 (CMS)
-	 */
-	public static function test()
-	{
-		JLog::add('JCacheStorage::test() is deprecated. Use JCacheStorage::isSupported() instead.', JLog::WARNING, 'deprecated');
-
-		return static::isSupported();
-	}
-
-	/**
 	 * Lock cached item
 	 *
 	 * @param   string   $id        The cache data id
