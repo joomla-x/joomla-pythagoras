@@ -46,22 +46,6 @@ class ContentHelper extends JHelperContent
 	}
 
 	/**
-	 * Applies the content tag filters to arbitrary text as per settings for current user group
-	 *
-	 * @param   text  $text  The string to filter
-	 *
-	 * @return  string  The filtered string
-	 *
-	 * @deprecated  4.0  Use JComponentHelper::filterText() instead.
-	*/
-	public static function filterText($text)
-	{
-		JLog::add('ContentHelper::filterText() is deprecated. Use JComponentHelper::filterText() instead.', JLog::WARNING, 'deprecated');
-
-		return JComponentHelper::filterText($text);
-	}
-
-	/**
 	 * Adds Count Items for Category Manager.
 	 *
 	 * @param   JDatabaseQuery  &$query  The query object of com_categories
@@ -90,5 +74,4 @@ class ContentHelper extends JHelperContent
 
 		return $query;
 	}
-
 }

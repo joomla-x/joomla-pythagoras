@@ -132,7 +132,7 @@ class MediaControllerFile extends JControllerLegacy
 			// The request is valid
 			$err = null;
 
-			if (!MediaHelper::canUpload($file, $err))
+			if (!$mediaHelper->canUpload($file, 'com_media'))
 			{
 				// The file can't be uploaded
 

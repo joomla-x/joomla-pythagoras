@@ -90,7 +90,7 @@ class MediaControllerFile extends JControllerLegacy
 
 		$filepath = JPath::clean(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
 
-		if (!MediaHelper::canUpload($file, $err))
+		if (!$mediaHelper->canUpload($file, 'com_media'))
 		{
 			JLog::add('Invalid: ' . $filepath . ': ' . $err, JLog::INFO, 'upload');
 

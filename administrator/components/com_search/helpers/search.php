@@ -137,23 +137,6 @@ class SearchHelper
 	}
 
 	/**
-	 * Logs a search term.
-	 *
-	 * @param   string  $search_term  The term being searched.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use JSearchHelper::logSearch() instead.
-	 */
-	public static function logSearch($search_term)
-	{
-		JLog::add(__METHOD__ . '() is deprecated, use JSearchHelper::logSearch() instead.', JLog::WARNING, 'deprecated');
-
-		JSearchHelper::logSearch($search_term, 'com_search');
-	}
-
-	/**
 	 * Prepares results from search for display.
 	 *
 	 * @param   string  $text        The source string.
