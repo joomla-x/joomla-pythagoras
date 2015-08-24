@@ -84,5 +84,4 @@ JLoader::register('PasswordHash', JPATH_PLATFORM . '/phpass/PasswordHash.php');
 // @deprecated  4.0
 JLoader::register('JTree', JPATH_PLATFORM . '/legacy/base/tree.php');
 JLoader::register('JNode', JPATH_PLATFORM . '/legacy/base/node.php');
-JLoader::register('JXMLElement', JPATH_PLATFORM . '/legacy/utilities/xmlelement.php');
 JLoader::register('JApplication', JPATH_LIBRARIES . '/legacy/application/application.php');
