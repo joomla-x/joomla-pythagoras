@@ -189,63 +189,6 @@ class JApplicationWeb extends JApplicationBase
 	}
 
 	/**
-	 * Initialise the application.
-	 *
-	 * @param   mixed  $session     An optional argument to provide dependency injection for the application's
-	 *                              session object.  If the argument is a JSession object that object will become
-	 *                              the application's session object, if it is false then there will be no session
-	 *                              object, and if it is null then the default session object will be created based
-	 *                              on the application's loadSession() method.
-	 * @param   mixed  $document    An optional argument to provide dependency injection for the application's
-	 *                              document object.  If the argument is a JDocument object that object will become
-	 *                              the application's document object, if it is false then there will be no document
-	 *                              object, and if it is null then the default document object will be created based
-	 *                              on the application's loadDocument() method.
-	 * @param   mixed  $language    An optional argument to provide dependency injection for the application's
-	 *                              language object.  If the argument is a JLanguage object that object will become
-	 *                              the application's language object, if it is false then there will be no language
-	 *                              object, and if it is null then the default language object will be created based
-	 *                              on the application's loadLanguage() method.
-	 * @param   mixed  $dispatcher  An optional argument to provide dependency injection for the application's
-	 *                              event dispatcher.  If the argument is a DispatcherInterface object that object will become
-	 *                              the application's event dispatcher, if it is null then the default event dispatcher
-	 *                              will be created based on the application's loadDispatcher() method.
-	 *
-	 * @return  JApplicationWeb  Instance of $this to allow chaining.
-	 *
-	 * @deprecated  13.1 (Platform) & 4.0 (CMS)
-	 * @see     JApplicationWeb::loadSession()
-	 * @see     JApplicationWeb::loadDocument()
-	 * @see     JApplicationWeb::loadLanguage()
-	 * @see     JApplicationBase::loadDispatcher()
-	 * @since   11.3
-	 */
-	public function initialise($session = null, $document = null, $language = null, DispatcherInterface $dispatcher = null)
-	{
-		// Create the session based on the application logic.
-		if ($session !== false)
-		{
-			$this->loadSession($session);
-		}
-
-		// Create the document based on the application logic.
-		if ($document !== false)
-		{
-			$this->loadDocument($document);
-		}
-
-		// Create the language based on the application logic.
-		if ($language !== false)
-		{
-			$this->loadLanguage($language);
-		}
-
-		$this->loadDispatcher($dispatcher);
-
-		return $this;
-	}
-
-	/**
 	 * Execute the application.
 	 *
 	 * @return  void
@@ -476,6 +419,7 @@ class JApplicationWeb extends JApplicationBase
 	 * @return  void
 	 *
 	 * @since   11.3
+	 * @throws  InvalidArgumentException
 	 */
 	public function redirect($url, $status = 303)
 	{
@@ -540,18 +484,10 @@ class JApplicationWeb extends JApplicationBase
 			}
 			else
 			{
-				// Check if we have a boolean for the status variable for compatability with old $move parameter
-				// @deprecated 4.0
-				if (is_bool($status))
-				{
-					$status = $status ? 301 : 303;
-				}
-
-				// Now check if we have an integer status code that maps to a valid redirect. If we don't then set a 303
-				// @deprecated 4.0 From 4.0 if no valid status code is given a InvalidArgumentException will be thrown
+				// Check the status code is valid
 				if (!is_int($status) || is_int($status) && !isset($this->responseMap[$status]))
 				{
-					$status = 303;
+					throw new InvalidArgumentException(sprintf('Invalid status redirect code "%s"', $status));
 				}
 
 				// All other cases use the more efficient HTTP header for redirection.
