@@ -267,38 +267,3 @@ class UsersRouter extends JComponentRouterBase
 		return $vars;
 	}
 }
-
-/**
- * Users router functions
- *
- * These functions are proxys for the new router interface
- * for old SEF extensions.
- *
- * @param   array  &$query  REQUEST query
- *
- * @return  array  Segments of the SEF url
- *
- * @deprecated  4.0  Use Class based routers instead
- */
-function usersBuildRoute(&$query)
-{
-	$router = new UsersRouter;
-
-	return $router->build($query);
-}
-
-/**
- * Convert SEF URL segments into query variables
- *
- * @param   array  $segments  Segments in the current URL
- *
- * @return  array  Query variables
- *
- * @deprecated  4.0  Use Class based routers instead
- */
-function usersParseRoute($segments)
-{
-	$router = new UsersRouter;
-
-	return $router->parse($segments);
-}
