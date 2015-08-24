@@ -188,19 +188,4 @@ abstract class JSessionStorage
 	{
 		return true;
 	}
-
-	/**
-	 * Test to see if the SessionHandler is available.
-	 *
-	 * @return  boolean  True on success, false otherwise.
-	 *
-	 * @since   11.1
-	 * @deprecated  12.3 (Platform) & 4.0 (CMS) - Use JSessionStorage::isSupported() instead.
-	 */
-	public static function test()
-	{
-		JLog::add('JSessionStorage::test() is deprecated. Use JSessionStorage::isSupported() instead.', JLog::WARNING, 'deprecated');
-
-		return static::isSupported();
-	}
 }
