@@ -74,15 +74,6 @@ abstract class JFactory
 	public static $document = null;
 
 	/**
-	 * Global ACL object
-	 *
-	 * @var    JAccess
-	 * @since  11.1
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS)
-	 */
-	public static $acl = null;
-
-	/**
 	 * Global database object
 	 *
 	 * @var    JDatabaseDriver
@@ -291,28 +282,6 @@ abstract class JFactory
 	}
 
 	/**
-	 * Get an authorization object
-	 *
-	 * Returns the global {@link JAccess} object, only creating it
-	 * if it doesn't already exist.
-	 *
-	 * @return  JAccess object
-	 *
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use JAccess directly.
-	 */
-	public static function getAcl()
-	{
-		JLog::add(__METHOD__ . ' is deprecated. Use JAccess directly.', JLog::WARNING, 'deprecated');
-
-		if (!self::$acl)
-		{
-			self::$acl = new JAccess;
-		}
-
-		return self::$acl;
-	}
-
-	/**
 	 * Get a database object.
 	 *
 	 * Returns the global {@link JDatabaseDriver} object, only creating it if it doesn't already exist.
@@ -352,134 +321,6 @@ abstract class JFactory
 		$copy = clone self::$mailer;
 
 		return $copy;
-	}
-
-	/**
-	 * Get a parsed XML Feed Source
-	 *
-	 * @param   string   $url         Url for feed source.
-	 * @param   integer  $cache_time  Time to cache feed for (using internal cache mechanism).
-	 *
-	 * @return  mixed  SimplePie parsed object on success, false on failure.
-	 *
-	 * @since   11.1
-	 * @throws  BadMethodCallException
-	 * @deprecated  4.0  Use directly JFeedFactory or supply SimplePie instead. Mehod will be proxied to JFeedFactory beginning in 3.2
-	 */
-	public static function getFeedParser($url, $cache_time = 0)
-	{
-		if (!class_exists('JSimplepieFactory'))
-		{
-			throw new BadMethodCallException('JSimplepieFactory not found');
-		}
-
-		JLog::add(__METHOD__ . ' is deprecated.   Use JFeedFactory() or supply SimplePie instead.', JLog::WARNING, 'deprecated');
-
-		return JSimplepieFactory::getFeedParser($url, $cache_time);
-	}
-
-	/**
-	 * Reads a XML file.
-	 *
-	 * @param   string   $data    Full path and file name.
-	 * @param   boolean  $isFile  true to load a file or false to load a string.
-	 *
-	 * @return  mixed    JXMLElement or SimpleXMLElement on success or false on error.
-	 *
-	 * @see     JXMLElement
-	 * @since   11.1
-	 * @note    When JXMLElement is not present a SimpleXMLElement will be returned.
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use SimpleXML directly.
-	 */
-	public static function getXml($data, $isFile = true)
-	{
-		JLog::add(__METHOD__ . ' is deprecated. Use SimpleXML directly.', JLog::WARNING, 'deprecated');
-
-		$class = 'SimpleXMLElement';
-
-		if (class_exists('JXMLElement'))
-		{
-			$class = 'JXMLElement';
-		}
-
-		// Disable libxml errors and allow to fetch error information as needed
-		libxml_use_internal_errors(true);
-
-		if ($isFile)
-		{
-			// Try to load the XML file
-			$xml = simplexml_load_file($data, $class);
-		}
-		else
-		{
-			// Try to load the XML string
-			$xml = simplexml_load_string($data, $class);
-		}
-
-		if ($xml === false)
-		{
-			JLog::add(JText::_('JLIB_UTIL_ERROR_XML_LOAD'), JLog::WARNING, 'jerror');
-
-			if ($isFile)
-			{
-				JLog::add($data, JLog::WARNING, 'jerror');
-			}
-
-			foreach (libxml_get_errors() as $error)
-			{
-				JLog::add($error->message, JLog::WARNING, 'jerror');
-			}
-		}
-
-		return $xml;
-	}
-
-	/**
-	 * Get an editor object.
-	 *
-	 * @param   string  $editor  The editor to load, depends on the editor plugins that are installed
-	 *
-	 * @return  JEditor instance of JEditor
-	 *
-	 * @since   11.1
-	 * @throws  BadMethodCallException
-	 * @deprecated 12.3 (Platform) & 4.0 (CMS) - Use JEditor directly
-	 */
-	public static function getEditor($editor = null)
-	{
-		JLog::add(__METHOD__ . ' is deprecated. Use JEditor directly.', JLog::WARNING, 'deprecated');
-
-		if (!class_exists('JEditor'))
-		{
-			throw new BadMethodCallException('JEditor not found');
-		}
-
-		// Get the editor configuration setting
-		if (is_null($editor))
-		{
-			$conf = self::getConfig();
-			$editor = $conf->get('editor');
-		}
-
-		return JEditor::getInstance($editor);
-	}
-
-	/**
-	 * Return a reference to the {@link JUri} object
-	 *
-	 * @param   string  $uri  Uri name.
-	 *
-	 * @return  JUri object
-	 *
-	 * @see     JUri
-	 * @since   11.1
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use JUri directly.
-	 */
-	public static function getUri($uri = 'SERVER')
-	{
-		JLog::add(__METHOD__ . ' is deprecated. Use JUri directly.', JLog::WARNING, 'deprecated');
-
-		return JUri::getInstance($uri);
 	}
 
 	/**
