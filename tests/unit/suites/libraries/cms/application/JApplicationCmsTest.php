@@ -389,7 +389,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url, 303);
 
 		$this->assertEquals(
 			array(
@@ -578,7 +578,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 			)
 		);
 
-		$this->class->redirect($url, true);
+		$this->class->redirect($url, 301);
 
 		$this->assertEquals(
 			array(
@@ -621,7 +621,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url);
 
 		$this->assertEquals('Location: ' . $expected, $this->class->headers[1][0]);
 	}

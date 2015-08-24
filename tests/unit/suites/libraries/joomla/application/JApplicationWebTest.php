@@ -971,7 +971,7 @@ class JApplicationWebTest extends TestCase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url);
 
 		$this->assertEquals(
 			array(
@@ -1063,7 +1063,7 @@ class JApplicationWebTest extends TestCase
 			)
 		);
 
-		$this->class->redirect($url, true);
+		$this->class->redirect($url, 301);
 
 		$this->assertEquals(
 			array(
@@ -1106,7 +1106,7 @@ class JApplicationWebTest extends TestCase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url);
 
 		$this->assertEquals('Location: ' . $expected, $this->class->headers[1][0]);
 	}
