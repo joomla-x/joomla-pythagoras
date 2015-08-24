@@ -19,7 +19,7 @@ class JoomlaInstallerScript
 	/**
 	 * Method to update Joomla!
 	 *
-	 * @param   JInstallerFile $installer The class calling this method
+	 * @param   JInstallerFile  $installer  The class calling this method
 	 *
 	 * @return void
 	 */
@@ -49,7 +49,7 @@ class JoomlaInstallerScript
 
 		if (strpos($db->name, 'mysql') !== false)
 		{
-			$this->updateDatabaseMySQL();
+			$this->updateDatabaseMysql();
 		}
 
 		$this->uninstallEosPlugin();
@@ -60,7 +60,7 @@ class JoomlaInstallerScript
 	 *
 	 * @return void
 	 */
-	protected function updateDatabaseMySQL()
+	protected function updateDatabaseMysql()
 	{
 		$db = JFactory::getDbo();
 

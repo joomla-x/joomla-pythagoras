@@ -281,7 +281,7 @@ class JTableTest extends TestCaseDatabase
 	 *
 	 * @since   12.3
 	 */
-	public function testSetDBO()
+	public function testSetDbo()
 	{
 		$db = $this->getMockBuilder('JDatabaseDriver')
 			->disableOriginalConstructor()
