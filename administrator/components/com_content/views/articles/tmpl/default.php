@@ -203,17 +203,17 @@ $assoc		= JLanguageAssociations::isEnabled();
 						<td class="nowrap small hidden-phone">
 							<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
 						</td>
-						<td class="center hidden-phone">
+						<td class="hidden-phone">
 							<?php echo (int) $item->hits; ?>
 						</td>
-						<td class="center hidden-phone">
+						<td class="hidden-phone">
 							<?php echo (int) $item->id; ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-			<?php //Load the batch processing form. ?>
+			<?php // Load the batch processing form. ?>
 			<?php if ($user->authorise('core.create', 'com_content')
 				&& $user->authorise('core.edit', 'com_content')
 				&& $user->authorise('core.edit.state', 'com_content')) : ?>
