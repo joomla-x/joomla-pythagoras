@@ -108,7 +108,7 @@ class PlgUserJoomla extends JPlugin
 
 					if ($userLocale != $defaultLocale)
 					{
-						$lang->setLanguage($userLocale);
+						JFactory::$language = $lang = JLanguage::getInstance($userLocale);
 					}
 
 					$lang->load('plg_user_joomla', JPATH_ADMINISTRATOR);
@@ -145,7 +145,7 @@ class PlgUserJoomla extends JPlugin
 					// Set application language back to default if we changed it
 					if ($userLocale != $defaultLocale)
 					{
-						$lang->setLanguage($defaultLocale);
+						JFactory::$language = $lang = JLanguage::getInstance($defaultLocale);
 					}
 
 					if (!$mail->Send())
