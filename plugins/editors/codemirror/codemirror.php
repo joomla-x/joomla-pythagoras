@@ -121,7 +121,7 @@ class PlgEditorCodemirror extends JPlugin
 	{
 		// Get our custom styles from a css file
 		$filename = JFactory::getConfig()->get('debug') ? 'styles.css' : 'styles.min.css';
-		$styles = JFile::read(__DIR__ . '/' . $filename);
+		$styles = file_get_contents(__DIR__ . '/' . $filename);
 
 		// Set the active line color.
 		$color = $this->params->get('activeLineColor', '#a4c2eb');
@@ -433,7 +433,7 @@ class PlgEditorCodemirror extends JPlugin
 
 		if (!$fonts)
 		{
-			$fonts = json_decode(JFile::read(__DIR__ . '/fonts.json'), true);
+			$fonts = json_decode(file_get_contents(__DIR__ . '/fonts.json'), true);
 		}
 
 		return isset($fonts[$font]) ? (object) $fonts[$font] : null;

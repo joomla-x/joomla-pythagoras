@@ -2204,7 +2204,7 @@ class JInstaller extends JAdapter
 
 		if ($xml->files && count($xml->files->children()))
 		{
-			$filename = JFile::getName($path);
+			$filename = basename($path);
 			$data['filename'] = JFile::stripExt($filename);
 
 			foreach ($xml->files->children() as $oneFile)
