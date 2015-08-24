@@ -85,6 +85,5 @@ JLoader::register('PasswordHash', JPATH_PLATFORM . '/phpass/PasswordHash.php');
 JLoader::register('JSimpleCrypt', JPATH_PLATFORM . '/legacy/simplecrypt/simplecrypt.php');
 JLoader::register('JTree', JPATH_PLATFORM . '/legacy/base/tree.php');
 JLoader::register('JNode', JPATH_PLATFORM . '/legacy/base/node.php');
-JLoader::register('LogException', JPATH_PLATFORM . '/legacy/log/logexception.php');
 JLoader::register('JXMLElement', JPATH_PLATFORM . '/legacy/utilities/xmlelement.php');
 JLoader::register('JApplication', JPATH_LIBRARIES . '/legacy/application/application.php');
