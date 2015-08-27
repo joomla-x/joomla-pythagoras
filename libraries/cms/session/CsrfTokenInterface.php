@@ -67,15 +67,6 @@ interface CsrfTokenInterface
 	public function guard($method = 'post');
 
 	/**
-	 * Create a token-string
-	 *
-	 * @param   integer  $length  Length of string
-	 *
-	 * @return  string  Generated token
-	 */
-	public function create($length = 32);
-
-	/**
 	 * Method to determine a hash for anti-spoofing variable names
 	 *
 	 * @param   boolean  $forceNew  If true, force a new token to be created
