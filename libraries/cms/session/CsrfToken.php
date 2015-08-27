@@ -14,15 +14,9 @@ defined('JPATH_PLATFORM') or die;
 /**
  * Class CsrfToken
  *
-<<<<<<< HEAD
  * @package  Joomla\Cms\Session
  *
  * @since    4.0
-=======
- * @package Joomla\Cms\Session
- *
- * @since 4.0
->>>>>>> 40eca02... Fixed CS
  */
 class CsrfToken implements CsrfTokenInterface
 {
