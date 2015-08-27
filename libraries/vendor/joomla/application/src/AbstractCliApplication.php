@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Application Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -83,11 +83,12 @@ abstract class AbstractCliApplication extends AbstractApplication
 	 *
 	 * @return  AbstractCliApplication  Instance of $this to allow chaining.
 	 *
+	 * @codeCoverageIgnore
 	 * @since   1.0
 	 */
 	public function out($text = '', $nl = true)
 	{
-		$this->getOutput()->out($text, $nl);
+		$this->output->out($text, $nl);
 
 		return $this;
 	}

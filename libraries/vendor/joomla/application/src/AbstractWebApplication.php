@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Application Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -10,6 +10,7 @@ namespace Joomla\Application;
 
 use Joomla\Uri\Uri;
 use Joomla\Input\Input;
+use Joomla\String\String;
 use Joomla\Session\Session;
 use Joomla\Registry\Registry;
 
@@ -221,7 +222,7 @@ abstract class AbstractWebApplication extends AbstractApplication
 		$this->setHeader('Content-Type', $this->mimeType . '; charset=' . $this->charSet);
 
 		// If the response is set to uncachable, we need to set some appropriate headers so browsers don't cache the response.
-		if (!$this->allowCache())
+		if (!$this->response->cachable)
 		{
 			// Expires in the past.
 			$this->setHeader('Expires', 'Mon, 1 Jan 2001 00:00:00 GMT', true);
@@ -284,7 +285,7 @@ abstract class AbstractWebApplication extends AbstractApplication
 		 */
 		if (!preg_match('#^[a-z]+\://#i', $url))
 		{
-			// Get a Uri instance for the requested URI.
+			// Get a JURI instance for the requested URI.
 			$uri = new Uri($this->get('uri.request'));
 
 			// Get a base URL to prepend from the requested URI.
@@ -313,7 +314,7 @@ abstract class AbstractWebApplication extends AbstractApplication
 		else
 		{
 			// We have to use a JavaScript redirect here because MSIE doesn't play nice with utf-8 URLs.
-			if (($this->client->engine == Web\WebClient::TRIDENT) && !$this->isAscii($url))
+			if (($this->client->engine == Web\WebClient::TRIDENT) && !String::is_ascii($url))
 			{
 				$html = '<html><head>';
 				$html .= '<meta http-equiv="content-type" content="text/html; charset=' . $this->charSet . '" />';
@@ -525,11 +526,6 @@ abstract class AbstractWebApplication extends AbstractApplication
 	 */
 	public function getSession()
 	{
-		if ($this->session === null)
-		{
-			throw new \RuntimeException('A \Joomla\Session\Session object has not been set.');
-		}
-
 		return $this->session;
 	}
 
@@ -588,26 +584,22 @@ abstract class AbstractWebApplication extends AbstractApplication
 		 * information from Apache or IIS.
 		 */
 
-		$phpSelf = $this->input->server->getString('PHP_SELF', '');
-		$requestUri = $this->input->server->getString('REQUEST_URI', '');
-
 		// If PHP_SELF and REQUEST_URI are both populated then we will assume "Apache Mode".
-		if (!empty($phpSelf) && !empty($requestUri))
+		if (!empty($_SERVER['PHP_SELF']) && !empty($_SERVER['REQUEST_URI']))
 		{
 			// The URI is built from the HTTP_HOST and REQUEST_URI environment variables in an Apache environment.
-			$uri = $scheme . $this->input->server->getString('HTTP_HOST') . $requestUri;
+			$uri = $scheme . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		}
 		else
 		// If not in "Apache Mode" we will assume that we are in an IIS environment and proceed.
 		{
 			// IIS uses the SCRIPT_NAME variable instead of a REQUEST_URI variable... thanks, MS
-			$uri = $scheme . $this->input->server->getString('HTTP_HOST') . $this->input->server->getString('SCRIPT_NAME');
-			$queryHost = $this->input->server->getString('QUERY_STRING', '');
+			$uri = $scheme . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
 
 			// If the QUERY_STRING variable exists append it to the URI string.
-			if (!empty($queryHost))
+			if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']))
 			{
-				$uri .= '?' . $queryHost;
+				$uri .= '?' . $_SERVER['QUERY_STRING'];
 			}
 		}
 
@@ -644,9 +636,7 @@ abstract class AbstractWebApplication extends AbstractApplication
 	 */
 	public function isSSLConnection()
 	{
-		$serverSSLVar = $this->input->server->getString('HTTPS', '');
-
-		return (!empty($serverSSLVar) && strtolower($serverSSLVar) != 'off');
+		return (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off');
 	}
 
 	/**
@@ -705,18 +695,16 @@ abstract class AbstractWebApplication extends AbstractApplication
 			// Start with the requested URI.
 			$uri = new Uri($this->get('uri.request'));
 
-			$requestUri = $this->input->server->getString('REQUEST_URI', '');
-
 			// If we are working from a CGI SAPI with the 'cgi.fix_pathinfo' directive disabled we use PHP_SELF.
-			if (strpos(php_sapi_name(), 'cgi') !== false && !ini_get('cgi.fix_pathinfo') && !empty($requestUri))
+			if (strpos(php_sapi_name(), 'cgi') !== false && !ini_get('cgi.fix_pathinfo') && !empty($_SERVER['REQUEST_URI']))
 			{
 				// We aren't expecting PATH_INFO within PHP_SELF so this should work.
-				$path = dirname($this->input->server->getString('PHP_SELF', ''));
+				$path = dirname($_SERVER['PHP_SELF']);
 			}
 			else
 			// Pretty much everything else should be handled with SCRIPT_NAME.
 			{
-				$path = dirname($this->input->server->getString('SCRIPT_NAME', ''));
+				$path = dirname($_SERVER['SCRIPT_NAME']);
 			}
 		}
 
@@ -788,7 +776,7 @@ abstract class AbstractWebApplication extends AbstractApplication
 
 		if (!$this->input->$method->get($token, '', 'alnum'))
 		{
-			if ($this->getSession()->isNew())
+			if ($this->session->isNew())
 			{
 				// Redirect to login screen.
 				$this->redirect('index.php');
@@ -820,25 +808,6 @@ abstract class AbstractWebApplication extends AbstractApplication
 		// @todo we need the user id somehow here
 		$userId  = 0;
 
-		return md5($this->get('secret') . $userId . $this->getSession()->getToken($forceNew));
-	}
-
-	/**
-	 * Tests whether a string contains only 7bit ASCII bytes.
-	 *
-	 * You might use this to conditionally check whether a string
-	 * needs handling as UTF-8 or not, potentially offering performance
-	 * benefits by using the native PHP equivalent if it's just ASCII e.g.;
-	 *
-	 * @param   string  $str  The string to test.
-	 *
-	 * @return  boolean True if the string is all ASCII
-	 *
-	 * @since   1.4.0
-	 */
-	public static function isAscii($str)
-	{
-		// Search for any bytes which are outside the ASCII range...
-		return (preg_match('/(?:[^\x00-\x7F])/', $str) !== 1);
+		return md5($this->get('secret') . $userId . $this->session->getToken($forceNew));
 	}
 }
