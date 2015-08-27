@@ -19,7 +19,7 @@ services:
 
 before_script:
   # Make sure all dev dependencies are installed
-  - composer install
+  - composer install --prefer-source
   # Set up databases for testing
   - mysql -e 'create database joomla_ut;'
   - mysql joomla_ut < tests/unit/schema/mysql.sql
