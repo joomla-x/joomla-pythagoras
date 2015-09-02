@@ -16,6 +16,7 @@ $user = JFactory::getUser();
 $params = new Registry;
 JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
+
 <tr>
 	<td>
 		<a  title="<?php echo $this->_tmp_doc->name; ?>">

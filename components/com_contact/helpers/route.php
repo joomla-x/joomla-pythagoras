@@ -37,17 +37,18 @@ abstract class ContactHelperRoute
 		$needles = array(
 			'contact'  => array((int) $id)
 		);
-		//Create the link
+
+		// Create the link
 		$link = 'index.php?option=com_contact&view=contact&id=' . $id;
 
 		if ($catid > 1)
 		{
-			$categories	= JCategories::getInstance('Contact');
-			$category	= $categories->get($catid);
+			$categories = JCategories::getInstance('Contact');
+			$category   = $categories->get($catid);
 
 			if ($category)
 			{
-				$needles['category'] = array_reverse($category->getPath());
+				$needles['category']   = array_reverse($category->getPath());
 				$needles['categories'] = $needles['category'];
 				$link .= '&catid=' . $catid;
 			}

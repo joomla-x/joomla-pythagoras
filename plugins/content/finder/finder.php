@@ -27,7 +27,7 @@ class PlgContentFinder extends JPlugin
 	 *
 	 * @return  void
 	 *
-	 * @since	2.5
+	 * @since   2.5
 	 */
 	public function onContentAfterSave($context, $article, $isNew)
 	{
