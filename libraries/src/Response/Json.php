@@ -68,7 +68,7 @@ class Json
 		$this->message = $message;
 
 		// Get the message queue if requested and available
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		if (!$ignoreMessages && !is_null($app) && is_callable(array($app, 'getMessageQueue')))
 		{
@@ -94,7 +94,7 @@ class Json
 		}
 
 		// Check if we are dealing with an error
-		if ($response instanceof Exception)
+		if ($response instanceof \Exception)
 		{
 			// Prepare the error response
 			$this->success = false;
