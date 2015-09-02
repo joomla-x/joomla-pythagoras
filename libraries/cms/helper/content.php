@@ -51,8 +51,8 @@ class JHelperContent
 		JLog::add(__METHOD__ . '() is deprecated, use JHelperContent::getActions() with new arguments order instead.', JLog::WARNING, 'deprecated');
 
 		// Reverted a change for version 2.5.6
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user   = JFactory::getUser();
+		$result = new JObject;
 
 		$path = JPATH_ADMINISTRATOR . '/components/' . $assetName . '/access.xml';
 
@@ -103,8 +103,8 @@ class JHelperContent
 			return $result;
 		}
 
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user   = JFactory::getUser();
+		$result = new JObject;
 
 		$path = JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml';
 

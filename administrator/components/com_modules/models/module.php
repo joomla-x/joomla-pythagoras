@@ -114,7 +114,7 @@ class ModulesModelModule extends JModelAdmin
 		$this->setState('module.id', $pk);
 
 		// Load the parameters.
-		$params	= JComponentHelper::getParams('com_modules');
+		$params = JComponentHelper::getParams('com_modules');
 		$this->setState('params', $params);
 	}
 
@@ -180,7 +180,7 @@ class ModulesModelModule extends JModelAdmin
 				$newId = $table->get('id');
 
 				// Add the new ID to the array
-				$newIds[$pk]	= $newId;
+				$newIds[$pk] = $newId;
 
 				// Now we need to handle the module assignments
 				$db = $this->getDbo();
@@ -391,8 +391,8 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	public function duplicate(&$pks)
 	{
-		$user	= JFactory::getUser();
-		$db		= $this->getDbo();
+		$user = JFactory::getUser();
+		$db   = $this->getDbo();
 
 		// Access checks.
 		if (!$user->authorise('core.create', 'com_modules'))
@@ -428,7 +428,7 @@ class ModulesModelModule extends JModelAdmin
 					throw new Exception($table->getError());
 				}
 
-				$query	= $db->getQuery(true)
+				$query = $db->getQuery(true)
 					->select($db->quoteName('menuid'))
 					->from($db->quoteName('#__modules_menu'))
 					->where($db->quoteName('moduleid') . ' = ' . (int) $pk);
@@ -524,16 +524,16 @@ class ModulesModelModule extends JModelAdmin
 		// The folder and element vars are passed when saving the form.
 		if (empty($data))
 		{
-			$item		= $this->getItem();
-			$clientId	= $item->client_id;
-			$module		= $item->module;
-			$id			= $item->id;
+			$item     = $this->getItem();
+			$clientId = $item->client_id;
+			$module   = $item->module;
+			$id       = $item->id;
 		}
 		else
 		{
-			$clientId	= JArrayHelper::getValue($data, 'client_id');
-			$module		= JArrayHelper::getValue($data, 'module');
-			$id			= JArrayHelper::getValue($data, 'id');
+			$clientId = JArrayHelper::getValue($data, 'client_id');
+			$module   = JArrayHelper::getValue($data, 'module');
+			$id       = JArrayHelper::getValue($data, 'id');
 		}
 
 		// These variables are used to add data from the plugin XML files.
@@ -634,8 +634,6 @@ class ModulesModelModule extends JModelAdmin
 
 		if (!isset($this->_cache[$pk]))
 		{
-			$false = false;
-
 			// Get a row instance.
 			$table = $this->getTable();
 
@@ -647,7 +645,7 @@ class ModulesModelModule extends JModelAdmin
 			{
 				$this->setError($error);
 
-				return $false;
+				return false;
 			}
 
 			// Check if we are creating a new extension.
@@ -655,7 +653,7 @@ class ModulesModelModule extends JModelAdmin
 			{
 				if ($extensionId = (int) $this->getState('extension.id'))
 				{
-					$query	= $db->getQuery(true)
+					$query = $db->getQuery(true)
 						->select('element, client_id')
 						->from('#__extensions')
 						->where('extension_id = ' . $extensionId)
@@ -703,7 +701,7 @@ class ModulesModelModule extends JModelAdmin
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Determine the page assignment mode.
-			$query	= $db->getQuery(true)
+			$query = $db->getQuery(true)
 				->select($db->quoteName('menuid'))
 				->from($db->quoteName('#__modules_menu'))
 				->where($db->quoteName('moduleid') . ' = ' . (int) $pk);
@@ -795,8 +793,8 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	protected function prepareTable($table)
 	{
-		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->position	= trim($table->position);
+		$table->title    = htmlspecialchars_decode($table->title, ENT_QUOTES);
+		$table->position = trim($table->position);
 	}
 
 	/**
@@ -1047,7 +1045,7 @@ class ModulesModelModule extends JModelAdmin
 		$dispatcher->trigger($this->event_after_save, array($context, &$table, $isNew));
 
 		// Compute the extension id of this module in case the controller wants it.
-		$query	= $db->getQuery(true)
+		$query = $db->getQuery(true)
 			->select('extension_id')
 			->from('#__extensions AS e')
 			->join('LEFT', '#__modules AS m ON e.element = m.module')

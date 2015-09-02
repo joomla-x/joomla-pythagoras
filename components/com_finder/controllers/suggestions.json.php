@@ -14,7 +14,7 @@ use Joomla\CMS\Component\Helper as JComponentHelper;
 /**
  * Suggestions JSON controller for Finder.
  *
- * @since       2.5
+ * @since  2.5
  */
 class FinderControllerSuggestions extends JControllerLegacy
 {

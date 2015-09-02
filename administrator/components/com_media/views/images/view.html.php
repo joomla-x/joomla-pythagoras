@@ -30,7 +30,7 @@ class MediaViewImages extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$config = JComponentHelper::getParams('com_media');
-		$lang	= JFactory::getLanguage();
+		$lang   = JFactory::getLanguage();
 
 		// Include jQuery
 		JHtml::_('jquery.framework');

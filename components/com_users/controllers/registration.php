@@ -120,14 +120,14 @@ class UsersControllerRegistration extends UsersController
 			return false;
 		}
 
-		$app	= JFactory::getApplication();
-		$model	= $this->getModel('Registration', 'UsersModel');
+		$app   = JFactory::getApplication();
+		$model = $this->getModel('Registration', 'UsersModel');
 
 		// Get the user data.
 		$requestData = $this->input->post->get('jform', array(), 'array');
 
 		// Validate the posted data.
-		$form	= $model->getForm();
+		$form = $model->getForm();
 
 		if (!$form)
 		{
@@ -136,13 +136,13 @@ class UsersControllerRegistration extends UsersController
 			return false;
 		}
 
-		$data	= $model->validate($form, $requestData);
+		$data = $model->validate($form, $requestData);
 
 		// Check for validation errors.
 		if ($data === false)
 		{
 			// Get the validation messages.
-			$errors	= $model->getErrors();
+			$errors = $model->getErrors();
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
@@ -167,7 +167,7 @@ class UsersControllerRegistration extends UsersController
 		}
 
 		// Attempt to save the data.
-		$return	= $model->register($data);
+		$return = $model->register($data);
 
 		// Check for errors.
 		if ($return === false)

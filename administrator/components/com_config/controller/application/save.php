@@ -88,7 +88,7 @@ class ConfigControllerApplicationSave extends JControllerBase
 		}
 
 		// Attempt to save the configuration.
-		$data	= $return;
+		$data   = $return;
 		$return = $model->save($data);
 
 		// Check the return value.
