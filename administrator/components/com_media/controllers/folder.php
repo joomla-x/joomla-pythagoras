@@ -30,7 +30,7 @@ class MediaControllerFolder extends JControllerLegacy
 	{
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
-		$user	= JFactory::getUser();
+		$user = JFactory::getUser();
 
 		// Get some data from the request
 		$tmpl   = $this->input->get('tmpl');
@@ -164,7 +164,7 @@ class MediaControllerFolder extends JControllerLegacy
 			if (!$user->authorise('core.create', 'com_media'))
 			{
 				// User is not authorised to create
-				JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
+				JError::raiseWarning(403, JText::_('COM_MEDIA_ERROR_CREATE_NOT_PERMITTED'));
 
 				return false;
 			}

@@ -503,7 +503,7 @@ class UsersModelUser extends JModelAdmin
 	 */
 	public function activate(&$pks)
 	{
-		$user		= JFactory::getUser();
+		$user = JFactory::getUser();
 
 		// Check if I am a Super Admin
 		$iAmSuperAdmin = $user->authorise('core.admin');
@@ -517,8 +517,8 @@ class UsersModelUser extends JModelAdmin
 		{
 			if ($table->load($pk))
 			{
-				$old	= $table->getProperties();
-				$allow	= $user->authorise('core.edit.state', 'com_users');
+				$old   = $table->getProperties();
+				$allow = $user->authorise('core.edit.state', 'com_users');
 
 				// Don't allow non-super-admin to delete a super admin
 				$allow = (!$iAmSuperAdmin && JAccess::check($pk, 'core.admin')) ? false : $allow;
@@ -530,8 +530,8 @@ class UsersModelUser extends JModelAdmin
 				}
 				elseif ($allow)
 				{
-					$table->block		= 0;
-					$table->activation	= '';
+					$table->block      = 0;
+					$table->activation = '';
 
 					// Allow an exception to be thrown.
 					try

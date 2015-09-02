@@ -109,13 +109,18 @@ class PlgUserProfile extends JPlugin
 			{
 				JHtml::register('users.tos', array(__CLASS__, 'tos'));
 			}
+
+			if (!JHtml::isRegistered('users.dob'))
+			{
+				JHtml::register('users.dob', array(__CLASS__, 'dob'));
+			}
 		}
 
 		return true;
 	}
 
 	/**
-	 * returns a anchor tag generated from a given value
+	 * Returns a anchor tag generated from a given value
 	 *
 	 * @param   string  $value  url to use
 	 *
@@ -144,7 +149,7 @@ class PlgUserProfile extends JPlugin
 	}
 
 	/**
-	 * returns html markup showing a date picker
+	 * Returns html markup showing a date picker
 	 *
 	 * @param   string  $value  valid date string
 	 *
@@ -163,7 +168,24 @@ class PlgUserProfile extends JPlugin
 	}
 
 	/**
-	 * return the translated strings yes or no depending on the value
+	 * Returns the date of birth formatted and calculated using server timezone.
+	 *
+	 * @param   string  $value  valid date string
+	 *
+	 * @return  mixed
+	 */
+	public static function dob($value)
+	{
+		if (!$value)
+		{
+			return '';
+		}
+
+		return JHtml::_('date', $value, JText::_('DATE_FORMAT_LC1'), false);
+	}
+
+	/**
+	 * Return the translated strings yes or no depending on the value
 	 *
 	 * @param   boolean  $value  input value
 	 *
@@ -182,7 +204,7 @@ class PlgUserProfile extends JPlugin
 	}
 
 	/**
-	 * adds additional fields to the user editing form
+	 * Adds additional fields to the user editing form
 	 *
 	 * @param   JForm  $form  The form to be altered.
 	 * @param   mixed  $data  The associated data for the form.
@@ -335,7 +357,7 @@ class PlgUserProfile extends JPlugin
 	}
 
 	/**
-	 * saves user profile data
+	 * Saves user profile data
 	 *
 	 * @param   array    $data    entered user data
 	 * @param   boolean  $isNew   true if this is a new user
