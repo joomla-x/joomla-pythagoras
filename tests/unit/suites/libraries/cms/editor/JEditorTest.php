@@ -21,7 +21,7 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Object under test
 	 *
-	 * @var    JEditor
+	 * @var    Editor
 	 * @since  3.0
 	 */
 	protected $object;
@@ -50,7 +50,7 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertThat(
 			Editor::getInstance('none'),
-			$this->isInstanceOf('Editor')
+			$this->isInstanceOf('Joomla\CMS\Editor\Editor')
 		);
 	}
 
@@ -64,7 +64,7 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	public function testGetState()
 	{
 		// Preload the state to test it
-		TestReflection::setValue($this->object, '_state', 'JEditor::getState()');
+		TestReflection::setValue($this->object, '_state', 'Editor::getState()');
 
 		$this->assertThat(
 			$this->object->getState(),
