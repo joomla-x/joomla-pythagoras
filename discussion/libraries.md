@@ -92,4 +92,4 @@ Nicholas Dionysopoulos
 George Wilson
 > why are they using regex for validating emails instead of the built in php method  (filter_var has a FILTER_VALIDATE_EMAIL)
 
-@2015-09-02 20:50 UTC
+@2015-09-04 03:50 UTC

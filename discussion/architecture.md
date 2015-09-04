@@ -11,4 +11,4 @@ Andrew Eddie
 Marco Dings shared a link
 > [nibralab/joomla-architecture](https://github.com/nibralab/joomla-architecture)
 
-@2015-09-02 20:50 UTC
+@2015-09-04 03:50 UTC

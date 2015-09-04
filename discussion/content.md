@@ -27,4 +27,4 @@ does not worsen things, it is the way to go.
 
 *This is a collection of statements and comments on Glip regarding the Universal Content Model.*
 
-@2015-09-02 20:50 UTC
+@2015-09-04 03:50 UTC

@@ -82,4 +82,4 @@ Michael Babker
 George Wilson
 > yah i mean the first LTS symfony 3 is 3.3 in may 2017 - so it may be that that's enough - but as you say it's still a question we should ask
 
-@2015-09-02 20:50 UTC
+@2015-09-04 03:50 UTC

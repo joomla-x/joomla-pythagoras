@@ -20,4 +20,4 @@ George Wilson
 > not strictly related to this group - but adds psr-7 responses to the http framework component
 > [Pull Request #21 · joomla-framework/http](https://github.com/joomla-framework/http/pull/21)
 
-@2015-09-02 20:50 UTC
+@2015-09-04 03:50 UTC
