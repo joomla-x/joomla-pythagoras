@@ -17,4 +17,4 @@ increase performance on large sites.
 
 *This is a collection of statements and comments on Glip regarding CQRS.*
 
-@2015-09-04 03:50 UTC
+@2015-09-05 05:05

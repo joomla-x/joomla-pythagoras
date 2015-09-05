@@ -58,4 +58,10 @@ Herman Peeren
 Nicholas Dionysopoulos
 > I agree. Especially if you can write the adapter, that would be just GREAT!
 
-@2015-09-04 03:50 UTC
+Nicholas Dionysopoulos
+> Would it be a safer thing for me to start thinking of how DBAL can fit into Joomla! instead of messing with things I've not used before?
+
+Niels Braczek
+> We can start straight ahead with the DBAL; refactoring it the CQRS way isn't that hard.
+
+@2015-09-05 05:05

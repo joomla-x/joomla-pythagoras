@@ -311,4 +311,4 @@ Niels Braczek
 > When discussing the OCS, we said, that it should be configurable (enable/disable) for each combination of VCs and HCs,
 > and that components may deliver a reasonable preset. We just haven't discussed yet, how that will be done.
 
-@2015-09-04 03:50 UTC
+@2015-09-05 05:05

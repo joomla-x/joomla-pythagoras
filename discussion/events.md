@@ -186,4 +186,4 @@ Nicholas Dionysopoulos
 Herman Peeren
 > So please forget anything I said now about decoupling; I'll come back with examples and refactorings, but not now.
 
-@2015-09-04 03:50 UTC
+@2015-09-05 05:05

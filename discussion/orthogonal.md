@@ -68,4 +68,16 @@ George Wilson
 Nicholas Dionysopoulos
 > I agree, George. Cases like these are what I have in mind when I say I don't want ACL to be an HC.
 
-@2015-09-04 03:50 UTC
+Nicholas Dionysopoulos
+> If I understand things correctly the horizontal components would be middleware as far as Tactician is concerned?
+
+Herman Peeren
+> That is exactly what I said and have been working on. The same with Matthias Noback's SimpleBus instead of Tactician. The same concept of middleware. I switched to SimpleBus also because I was experimenting with async message handling: for eventual consistency not all events have to be handled immediately, on the spot. For instance sending a mail. But also updating read-models. I started doing that with the promises from ReactPhp, but Simplebus also has https://github.com/SimpleBus/Asynchronous (not yet fully explored). It is the concept of a messagequeue like RabbitMq or ZeroMq, that you would use in a bigger enterprise application, but then simpler and even usuable on a shared host.
+
+Niels Braczek
+> I can see at least some HCs work as middleware, but most of them will have to react on events.
+
+Herman Peeren
+> Disagree. Important point to get right. Still think you want to misuse events the way it is done in Joomla now: as hooks. Events are simply messages about things that have occurred in the past. Any listener can do things with that, but it should not be used to change state of an "emitter". Like you see now with "onBeforeSave" etc. That is not a proper event. Then you couple things to much. 
+
+@2015-09-05 05:05

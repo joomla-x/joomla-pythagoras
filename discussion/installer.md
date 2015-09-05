@@ -31,4 +31,4 @@ follow­ups. It is up to the site builder to decide ​which commenting system t
 
 *This is a collection of statements and comments on Glip regarding installation.*
 
-@2015-09-04 03:50 UTC
+@2015-09-05 05:05
