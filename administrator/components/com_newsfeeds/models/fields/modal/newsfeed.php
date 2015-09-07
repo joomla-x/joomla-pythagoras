@@ -147,11 +147,12 @@ class JFormFieldModal_Newsfeed extends JFormField
 			. '<span class="icon-file"></span> ' . JText::_('JSELECT')
 			. '</a>';
 
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 		$html[] = JHtml::_(
 			'bootstrap.renderModal',
 			'modalNewsfeed' . $this->id,
 			array(
-				'url' => $link . '&amp;' . JSession::getFormToken() . '=1"',
+				'url' => $link . '&amp;' . $formToken . '=1"',
 				'title' => JText::_('COM_NEWSFEEDS_CHANGE_FEED_BUTTON'),
 				'width' => '800px',
 				'height' => '300px',

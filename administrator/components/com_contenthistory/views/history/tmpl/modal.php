@@ -8,7 +8,7 @@
  */
 
 defined('_JEXEC') or die;
-JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('get');
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
@@ -30,8 +30,9 @@ $task = $filter->clean(end($aliasArray)) . '.loadhistory';
 $loadUrl = JRoute::_('index.php?option=' . $filter->clean($option) . '&amp;task=' . $task);
 $deleteUrl = JRoute::_('index.php?option=com_contenthistory&task=history.delete');
 $hash = $this->state->get('sha1_hash');
+$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 $formUrl = 'index.php?option=com_contenthistory&view=history&layout=modal&tmpl=component&item_id=' . $this->state->get('item_id') . '&type_id='
-	. $this->state->get('type_id') . '&type_alias=' . $this->state->get('type_alias') . '&' . JSession::getFormToken() . '=1';
+	. $this->state->get('type_id') . '&type_alias=' . $this->state->get('type_alias') . '&' . $formToken . '=1';
 
 JFactory::getDocument()->addScriptDeclaration("
 	(function ($){
@@ -93,10 +94,10 @@ JFactory::getDocument()->addScriptDeclaration("
 		data-url="<?php echo JRoute::_($loadUrl);?>" id="content-url">
 		<span class="icon-upload"></span><?php echo JText::_('COM_CONTENTHISTORY_BUTTON_LOAD'); ?></button>
 	<button id="toolbar-preview" type="button" class="btn hasTooltip" data-placement="bottom" title="<?php echo JText::_('COM_CONTENTHISTORY_BUTTON_PREVIEW_DESC'); ?>"
-		data-url="<?php echo JRoute::_('index.php?option=com_contenthistory&view=preview&layout=preview&tmpl=component&' . JSession::getFormToken() . '=1');?>">
+		data-url="<?php echo JRoute::_('index.php?option=com_contenthistory&view=preview&layout=preview&tmpl=component&' . $formToken . '=1');?>">
 		<span class="icon-search"></span><?php echo JText::_('COM_CONTENTHISTORY_BUTTON_PREVIEW'); ?></button>
 	<button id="toolbar-compare" type="button" class="btn hasTooltip" data-placement="bottom" title="<?php echo JText::_('COM_CONTENTHISTORY_BUTTON_COMPARE_DESC'); ?>"
-		data-url="<?php echo JRoute::_('index.php?option=com_contenthistory&view=compare&layout=compare&tmpl=component&' . JSession::getFormToken() . '=1');?>">
+		data-url="<?php echo JRoute::_('index.php?option=com_contenthistory&view=compare&layout=compare&tmpl=component&' . $formToken . '=1');?>">
 		<span class="icon-zoom-in"></span><?php echo JText::_('COM_CONTENTHISTORY_BUTTON_COMPARE'); ?></button>
     <button onclick="if (document.adminForm.boxchecked.value==0){alert('<?php echo $deleteMessage; ?>');}else{ Joomla.submitbutton('history.keep')}" class="btn hasTooltip"
     	title="<?php echo JText::_('COM_CONTENTHISTORY_BUTTON_KEEP_DESC'); ?>">
@@ -147,7 +148,7 @@ JFactory::getDocument()->addScriptDeclaration("
 				</td>
 				<td align="left">
 					<a class="save-date" onclick="window.open(this.href,'win2','width=800,height=600,resizable=yes,scrollbars=yes'); return false;"
-						href="<?php echo JRoute::_('index.php?option=com_contenthistory&view=preview&layout=preview&tmpl=component&' . JSession::getFormToken() . '=1&version_id=' . $item->version_id);?>">
+						href="<?php echo JRoute::_('index.php?option=com_contenthistory&view=preview&layout=preview&tmpl=component&' . $formToken . '=1&version_id=' . $item->version_id);?>">
 						<?php echo JHtml::_('date', $item->save_date, 'Y-m-d H:i:s'); ?>
 					</a>
 					<?php if ($item->sha1_hash == $hash) :?>

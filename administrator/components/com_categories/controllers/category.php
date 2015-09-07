@@ -130,7 +130,7 @@ class CategoriesControllerCategory extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		// Set the model
 		$model = $this->getModel('Category');

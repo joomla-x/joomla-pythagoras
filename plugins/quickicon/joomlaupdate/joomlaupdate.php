@@ -47,7 +47,8 @@ class PlgQuickiconJoomlaupdate extends JPlugin
 
 		$cur_template = JFactory::getApplication()->getTemplate();
 
-		$token    = JSession::getFormToken() . '=' . 1;
+		$formToken = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
+		$token    = $formToken . '=' . 1;
 		$url = JUri::base() . 'index.php?option=com_joomlaupdate';
 		$ajax_url = JUri::base() . 'index.php?option=com_installer&view=update&task=update.ajax&' . $token;
 		$script = array();

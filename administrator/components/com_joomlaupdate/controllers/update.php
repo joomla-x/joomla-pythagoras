@@ -137,7 +137,7 @@ class JoomlaupdateControllerUpdate extends JControllerLegacy
 	{
 		// Purge updates
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 		$model = $this->getModel('Default');
 		$model->purge();
 

@@ -51,7 +51,10 @@ class FinderControllerIndexer extends JControllerLegacy
 		header('Expires: -1');
 
 		// Check for a valid token. If invalid, send a 403 with the error message.
-		JSession::checkToken('request') or $this->sendResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check('request'))
+		{
+			$this->sendResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		}
 
 		// Put in a buffer to silence noise.
 		ob_start();
@@ -118,7 +121,10 @@ class FinderControllerIndexer extends JControllerLegacy
 		header('Expires: -1');
 
 		// Check for a valid token. If invalid, send a 403 with the error message.
-		JSession::checkToken('request') or $this->sendResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check('request'))
+		{
+			$this->sendResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		}
 
 		// Put in a buffer to silence noise.
 		ob_start();
@@ -221,7 +227,10 @@ class FinderControllerIndexer extends JControllerLegacy
 		header('Expires: -1');
 
 		// Check for a valid token. If invalid, send a 403 with the error message.
-		JSession::checkToken('request') or $this->sendResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check('request'))
+		{
+			$this->sendResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+		}
 
 		// Put in a buffer to silence noise.
 		ob_start();
@@ -330,7 +339,7 @@ class FinderIndexerResponse
 		}
 
 		// The old token is invalid so send a new one.
-		$this->token = JFactory::getSession()->getFormToken();
+		$this->token = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 
 		// Check if we are dealing with an error.
 		if ($state instanceof Exception)

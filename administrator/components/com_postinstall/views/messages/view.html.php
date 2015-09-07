@@ -37,7 +37,7 @@ class PostinstallViewMessages extends FOFViewHtml
 			$this->eid = 700;
 		}
 
-		$this->token = JFactory::getSession()->getFormToken();
+		$this->token = (new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->getVarname();
 		$this->extension_options = $model->getComponentOptions();
 
 		$extension_name = JText::_('COM_POSTINSTALL_TITLE_JOOMLA');

@@ -32,7 +32,7 @@ class UsersControllerMail extends JControllerLegacy
 		}
 
 		// Check for request forgeries.
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('request');
 
 		$model = $this->getModel('Mail');
 
@@ -59,7 +59,7 @@ class UsersControllerMail extends JControllerLegacy
 	public function cancel()
 	{
 		// Check for request forgeries.
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('request');
 		$this->setRedirect('index.php');
 	}
 }

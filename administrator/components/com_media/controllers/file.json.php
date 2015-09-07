@@ -31,7 +31,7 @@ class MediaControllerFile extends JControllerLegacy
 		$params = JComponentHelper::getParams('com_media');
 
 		// Check for request forgeries
-		if (!JSession::checkToken('request'))
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check('request'))
 		{
 			$response = array(
 				'status' => '0',

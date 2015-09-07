@@ -8,7 +8,7 @@
  */
 
 defined('_JEXEC') or die;
-JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard('get');
 
 ?>
 <h3>

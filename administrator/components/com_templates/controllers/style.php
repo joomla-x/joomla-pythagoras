@@ -36,7 +36,7 @@ class TemplatesControllerStyle extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = null)
 	{
-		if (!JSession::checkToken())
+		if (!(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->check())
 		{
 			JFactory::getApplication()->redirect('index.php', JText::_('JINVALID_TOKEN'));
 		}

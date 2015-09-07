@@ -108,7 +108,7 @@ class UsersControllerRegistration extends UsersController
 	public function register()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		// If registration is disabled - Redirect to login page.
 		if (JComponentHelper::getParams('com_users')->get('allowUserRegistration') == 0)

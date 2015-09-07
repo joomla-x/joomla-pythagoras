@@ -66,7 +66,7 @@ class BannersControllerBanners extends JControllerAdmin
 	public function sticky_publish()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		(new \Joomla\Cms\Session\CsrfToken(JFactory::getSession()))->guard();
 
 		$ids    = $this->input->get('cid', array(), 'array');
 		$values = array('sticky_publish' => 1, 'sticky_unpublish' => 0);
