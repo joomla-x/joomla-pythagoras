@@ -102,7 +102,7 @@ class TestMockDispatcher
 	 *
 	 * @since  11.3
 	 */
-	public function mockDispatch($event, $args = array())
+	public static function mockDispatch($event, $args = array())
 	{
 		if (isset(self::$handlers[$event]))
 		{
