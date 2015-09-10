@@ -114,19 +114,19 @@ class JApplicationCms extends JApplicationWeb
 		}
 
 		// Enable sessions by default.
-		if (is_null($this->config->get('session')))
+		if (is_null($this->getContainer()->get('config')->get('session')))
 		{
-			$this->config->set('session', true);
+			$this->getContainer()->get('config')->set('session', true);
 		}
 
 		// Set the session default name.
-		if (is_null($this->config->get('session_name')))
+		if (is_null($this->getContainer()->get('config')->get('session_name')))
 		{
-			$this->config->set('session_name', $this->getName());
+			$this->getContainer()->get('config')->set('session_name', $this->getName());
 		}
 
 		// Create the session if a session name is passed.
-		if ($this->config->get('session') !== false)
+		if ($this->getContainer()->get('config')->get('session') !== false)
 		{
 			$this->loadSession();
 		}
@@ -615,8 +615,32 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	protected function initialiseApp($options = array())
 	{
-		// Set the configuration in the API.
-		$this->config = JFactory::getConfig();
+		// Add the configuration from the platform
+		$file = JPATH_PLATFORM . '/config.php';
+		if (is_file($file))
+		{
+			include_once $file;
+		}
+
+		// Create the registry with a default namespace of config
+		$registry = new Registry();
+
+		// Sanitize the namespace.
+		$namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
+
+		// Build the config name.
+		$name = 'JConfig' . $namespace;
+
+		// Handle the PHP configuration type.
+		if (class_exists($name))
+		{
+			// Create the JConfig object
+			$config = new $name;
+
+			// Load the configuration values into the registry
+			$registry->loadObject($config);
+			$this->getContainer()->get('config')->merge($registry);
+		}
 
 		// Check that we were given a language in the array (since by default may be blank).
 		if (isset($options['language']))

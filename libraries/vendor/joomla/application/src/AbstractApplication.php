@@ -23,14 +23,6 @@ use Joomla\DI\Container;
 abstract class AbstractApplication implements LoggerAwareInterface
 {
 	/**
-	 * The application configuration object.
-	 *
-	 * @var    Registry
-	 * @since  1.0
-	 */
-	protected $config;
-
-	/**
 	 * The application input object.
 	 *
 	 * @var    Input
@@ -69,10 +61,10 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	public function __construct(Input $input = null, Registry $config = null)
 	{
 		$this->input = $input instanceof Input ? $input : new Input;
-		$this->config = $config instanceof Registry ? $config : new Registry;
+		$config = $config instanceof Registry ? $config : new Registry;
 
 		$this->getContainer()->set('input', $this->input, false, true);
-		$this->getContainer()->set('config', $this->config, false, true);
+		$this->getContainer()->set('config', $config, true, false);
 
 		$this->initialise();
 	}
@@ -131,7 +123,7 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	 */
 	public function get($key, $default = null)
 	{
-		return $this->config->get($key, $default);
+		return $this->getContainer()->get('config')->get($key, $default);
 	}
 
 	/**
@@ -197,8 +189,8 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	 */
 	public function set($key, $value = null)
 	{
-		$previous = $this->config->get($key);
-		$this->config->set($key, $value);
+		$previous = $this->getContainer()->get('config')->get($key);
+		$this->getContainer()->get('config')->set($key, $value);
 
 		return $previous;
 	}
@@ -214,7 +206,7 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	 */
 	public function setConfiguration(Registry $config)
 	{
-		$this->config = $config;
+		$this->getContainer()->set('config', $config);
 
 		return $this;
 	}

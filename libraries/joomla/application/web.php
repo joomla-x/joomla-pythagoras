@@ -485,11 +485,11 @@ class JApplicationWeb extends JApplicationBase
 		// Load the data into the configuration object.
 		if (is_array($data))
 		{
-			$this->config->loadArray($data);
+			$this->getContainer()->get('config')->loadArray($data);
 		}
 		elseif (is_object($data))
 		{
-			$this->config->loadObject($data);
+			$this->getContainer()->get('config')->loadObject($data);
 		}
 
 		return $this;

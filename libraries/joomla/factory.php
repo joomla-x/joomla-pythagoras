@@ -118,17 +118,7 @@ abstract class JFactory
 	 */
 	public static function getConfig($file = null, $type = 'PHP', $namespace = '')
 	{
-		if (!self::$config)
-		{
-			if ($file === null)
-			{
-				$file = JPATH_PLATFORM . '/config.php';
-			}
-
-			self::$config = self::createConfig($file, $type, $namespace);
-		}
-
-		return self::$config;
+		return self::$application->getContainer()->get('config');
 	}
 
 	/**

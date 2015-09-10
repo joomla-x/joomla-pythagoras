@@ -640,7 +640,7 @@ final class JApplicationSite extends JApplicationCms
 		// One last check to make sure we have something
 		if (!JLanguage::exists($options['language']))
 		{
-			$lang = $this->config->get('language', 'en-GB');
+			$lang = $this->getContainer()->get('config')->get('language', 'en-GB');
 
 			if (JLanguage::exists($lang))
 			{
