@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Registry\Registry;
 
 /**
  * The Web Service provider which loads the document, etc.
@@ -43,7 +44,7 @@ class JApplicationWebService implements ServiceProviderInterface
 	{
 		// Setting the callables for the keys which are needed in a web app
 		$container->set('document', array($this, 'getDocument'), false, true);
-		$container->set('session', array($this, 'getSession'), false, true);
+		$container->set('session', array($this, 'getSession'), true, false);
 		$container->set('language', array($this, 'getLanguage'), true, false);
 	}
 
@@ -75,8 +76,6 @@ class JApplicationWebService implements ServiceProviderInterface
 				'force_ssl' => $app->get('force_ssl')
 		);
 
-		$app->registerEvent('onAfterSessionStart', array($app, 'afterSessionStart'));
-
 		// Instantiate the session object.
 		$session = JSession::getInstance($handler, $options);
 		$session->initialise($container->get('input'), $app->dispatcher);
@@ -88,6 +87,12 @@ class JApplicationWebService implements ServiceProviderInterface
 		else
 		{
 			$session->start();
+		}
+
+		if ($session->isNew())
+		{
+			$session->set('registry', new Registry('session'));
+			$session->set('user', new JUser);
 		}
 
 		return $session;

@@ -213,7 +213,7 @@ class PlgUserJoomla extends JPlugin
 		$session->set('user', $instance);
 
 		// Check to see the the session already exists.
-		$this->app->checkSession();
+		$this->app->getContainer()->get('session');
 
 		// Update the user related fields for the Joomla sessions table.
 		$query = $this->db->getQuery(true)

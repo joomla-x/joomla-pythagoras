@@ -50,14 +50,6 @@ abstract class JFactory
 	public static $dates = array();
 
 	/**
-	 * Global session object
-	 *
-	 * @var    JSession
-	 * @since  11.1
-	 */
-	public static $session = null;
-
-	/**
 	 * Global ACL object
 	 *
 	 * @var    JAccess
@@ -135,12 +127,7 @@ abstract class JFactory
 	 */
 	public static function getSession(array $options = array())
 	{
-		if (!self::$session)
-		{
-			self::$session = self::createSession($options);
-		}
-
-		return self::$session;
+		return self::$application->getContainer()->get('session');
 	}
 
 	/**
@@ -489,76 +476,6 @@ abstract class JFactory
 		$date = clone self::$dates[$classname][$key];
 
 		return $date;
-	}
-
-	/**
-	 * Create a configuration object
-	 *
-	 * @param   string  $file       The path to the configuration file.
-	 * @param   string  $type       The type of the configuration file.
-	 * @param   string  $namespace  The namespace of the configuration file.
-	 *
-	 * @return  Registry
-	 *
-	 * @see     Registry
-	 * @since   11.1
-	 */
-	protected static function createConfig($file, $type = 'PHP', $namespace = '')
-	{
-		if (is_file($file))
-		{
-			include_once $file;
-		}
-
-		// Create the registry with a default namespace of config
-		$registry = new Registry;
-
-		// Sanitize the namespace.
-		$namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
-
-		// Build the config name.
-		$name = 'JConfig' . $namespace;
-
-		// Handle the PHP configuration type.
-		if ($type == 'PHP' && class_exists($name))
-		{
-			// Create the JConfig object
-			$config = new $name;
-
-			// Load the configuration values into the registry
-			$registry->loadObject($config);
-		}
-
-		return $registry;
-	}
-
-	/**
-	 * Create a session object
-	 *
-	 * @param   array  $options  An array containing session options
-	 *
-	 * @return  JSession object
-	 *
-	 * @since   11.1
-	 */
-	protected static function createSession(array $options = array())
-	{
-		// Get the Joomla configuration settings
-		$conf    = self::getConfig();
-		$handler = $conf->get('session_handler', 'none');
-
-		// Config time is in minutes
-		$options['expire'] = ($conf->get('lifetime')) ? $conf->get('lifetime') * 60 : 900;
-
-		$sessionHandler = new JSessionHandlerJoomla($options);
-		$session        = JSession::getInstance($handler, $options, $sessionHandler);
-
-		if ($session->getState() == 'expired')
-		{
-			$session->restart();
-		}
-
-		return $session;
 	}
 
 	/**

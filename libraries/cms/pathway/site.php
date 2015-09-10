@@ -27,7 +27,7 @@ class JPathwaySite extends JPathway
 	{
 		$this->_pathway = array();
 
-		$app  = JApplication::getInstance('site');
+		$app  = JFactory::getApplication();
 		$menu = $app->getMenu();
 		$lang = JFactory::getLanguage();
 
