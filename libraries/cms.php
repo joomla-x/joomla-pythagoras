@@ -30,11 +30,18 @@ if (!class_exists('JLoader'))
 JLoader::registerPrefix('J', JPATH_PLATFORM . '/cms', false, true);
 
 // Create the Composer autoloader
+/** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require JPATH_LIBRARIES . '/vendor/autoload.php';
 $loader->unregister();
 
 // Decorate Composer autoloader
 spl_autoload_register(array(new JClassLoader($loader), 'loadClass'), true, true);
+
+// Allow classes of the Joomla namespace to also be loaded off the libraries/joomla folder
+$loader->addPsr4('Joomla\\', JPATH_LIBRARIES . '/joomla');
+
+// Allow classes of the Joomla\Cms namespace to also be loaded from the libraries/cms folder
+$loader->addPsr4('Joomla\\Cms\\', JPATH_LIBRARIES . '/cms');
 
 // Register the class aliases for Framework classes that have replaced their Platform equivilents
 require_once JPATH_LIBRARIES . '/classmap.php';
@@ -66,8 +73,8 @@ JLoader::register('JArrayHelper', JPATH_PLATFORM . '/joomla/utilities/arrayhelpe
 
 // Register classes where the names have been changed to fit the autoloader rules
 // @deprecated  4.0
-JLoader::register('JToolBar', JPATH_PLATFORM . '/cms/toolbar/toolbar.php');
 JLoader::register('JButton',  JPATH_PLATFORM . '/cms/toolbar/button.php');
+JLoader::register('JExtension',  JPATH_PLATFORM . '/cms/installer/extension.php');
 JLoader::register('JInstallerComponent',  JPATH_PLATFORM . '/cms/installer/adapter/component.php');
 JLoader::register('JInstallerFile',  JPATH_PLATFORM . '/cms/installer/adapter/file.php');
 JLoader::register('JInstallerLanguage',  JPATH_PLATFORM . '/cms/installer/adapter/language.php');
@@ -76,6 +83,7 @@ JLoader::register('JInstallerModule',  JPATH_PLATFORM . '/cms/installer/adapter/
 JLoader::register('JInstallerPackage',  JPATH_PLATFORM . '/cms/installer/adapter/package.php');
 JLoader::register('JInstallerPlugin',  JPATH_PLATFORM . '/cms/installer/adapter/plugin.php');
 JLoader::register('JInstallerTemplate',  JPATH_PLATFORM . '/cms/installer/adapter/template.php');
-JLoader::register('JExtension',  JPATH_PLATFORM . '/cms/installer/extension.php');
+JLoader::register('JToolBar', JPATH_PLATFORM . '/cms/toolbar/toolbar.php');
+
 JLoader::registerAlias('JAdministrator',  'JApplicationAdministrator');
 JLoader::registerAlias('JSite',  'JApplicationSite');

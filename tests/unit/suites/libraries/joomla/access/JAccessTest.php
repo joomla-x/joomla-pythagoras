@@ -481,6 +481,14 @@ class JAccessTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
+		$this->saveFactoryState();
+
+		$mockApp = $this->getMockCmsApp();
+		$mockApp->expects($this->any())
+			->method('getDispatcher')
+			->willReturn($this->getMockDispatcher());
+		JFactory::$application = $mockApp;
+
 		// Clear the static caches.
 		JAccess::clearStatics();
 
@@ -503,6 +511,7 @@ class JAccessTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		$this->_cleanupTestFiles();
+		$this->restoreFactoryState();
 	}
 
 	/**

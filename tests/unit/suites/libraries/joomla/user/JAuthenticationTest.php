@@ -8,6 +8,7 @@
  */
 
 require_once JPATH_PLATFORM . '/joomla/user/authentication.php';
+require_once JPATH_PLATFORM . '/joomla/user/response.php';
 
 /**
  * Tests for the JAuthentication class.
@@ -46,6 +47,7 @@ class JAuthenticationTest extends TestCase
 	protected function setUp()
 	{
 		parent::setUp();
+		$this->saveFactoryState();
 
 		$this->backupServer = $_SERVER;
 
@@ -53,16 +55,10 @@ class JAuthenticationTest extends TestCase
 		$_SERVER['SCRIPT_NAME'] = '';
 
 		// Mock the event dispatcher.
-		$dispatcher = $this->getMockDispatcher(false);
-		$this->assignMockCallbacks(
-			$dispatcher,
-			array(
-				'trigger' => array(get_called_class(), 'mockTrigger'),
-			)
-		);
-
-		// Inject the mock dispatcher into the JEventDispatcher singleton.
-		TestReflection::setValue('JEventDispatcher', 'instance', $dispatcher);
+		$dispatcher = $this->getMockDispatcher();
+		$dispatcher->expects($this->any())
+			->method('triggerEvent')
+			->willReturnCallback(array($this, 'mockTrigger'));
 
 		// Mock the authentication plugin
 		require_once __DIR__ . '/stubs/FakeAuthenticationPlugin.php';
@@ -75,6 +71,13 @@ class JAuthenticationTest extends TestCase
 				)
 			)
 		);
+
+		JFactory::$application = $this->getMockCmsApp();
+		JFactory::$application->expects($this->any())
+			->method('triggerEvent')
+			->willReturnCallback(array($this, 'mockTrigger'));
+
+		$this->object = new JAuthentication($dispatcher);
 	}
 
 	/**
@@ -87,11 +90,9 @@ class JAuthenticationTest extends TestCase
 	 */
 	protected function tearDown()
 	{
-		// Reset the dispatcher instance.
-		TestReflection::setValue('JEventDispatcher', 'instance', null);
-
 		// Reset the loaded plugins.
 		TestReflection::setValue('JPluginHelper', 'plugins', null);
+		$this->restoreFactoryState();
 
 		$_SERVER = $this->backupServer;
 
@@ -210,10 +211,9 @@ class JAuthenticationTest extends TestCase
 	 */
 	public function testAuthentication($input, $expect, $message)
 	{
-		$authenticate = JAuthentication::getInstance();
 		$this->assertEquals(
 			$expect,
-			$authenticate->authenticate($input),
+			$this->object->authenticate($input),
 			$message
 		);
 	}
@@ -273,9 +273,9 @@ class JAuthenticationTest extends TestCase
 	/**
 	 * This checks for the correct response to authorising a user
 	 *
-	 * @param   string  $input    User name
-	 * @param   string  $expect   Expected user id
-	 * @param   string  $message  Expected error info
+	 * @param   JAuthenticationResponse    $input    User name
+	 * @param   JAuthenticationResponse[]  $expect   Expected user id
+	 * @param   string                     $message  Expected error info
 	 *
 	 * @return  void
 	 *
@@ -285,10 +285,9 @@ class JAuthenticationTest extends TestCase
 	 */
 	public function testAuthorise($input, $expect, $message)
 	{
-		$authentication = JAuthentication::getInstance();
 		$this->assertEquals(
 			$expect,
-			$authentication->authorise($input),
+			$this->object->authorise($input),
 			$message
 		);
 	}

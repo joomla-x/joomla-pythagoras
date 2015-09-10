@@ -131,7 +131,7 @@ JFactory::getDocument()->addScriptDeclaration(
 		<form enctype="multipart/form-data" action="<?php echo JRoute::_('index.php?option=com_installer&view=install');?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'upload')); ?>
 
-				<?php JEventDispatcher::getInstance()->trigger('onInstallerViewBeforeFirstTab', array()); ?>
+			<?php JFactory::getApplication()->triggerEvent('onInstallerViewBeforeFirstTab', array()); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'upload', JText::_('COM_INSTALLER_UPLOAD_PACKAGE_FILE', true)); ?>
 				<fieldset class="uploadform">
@@ -178,7 +178,7 @@ JFactory::getDocument()->addScriptDeclaration(
 				</fieldset>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-				<?php JEventDispatcher::getInstance()->trigger('onInstallerViewAfterLastTab', array()); ?>
+			<?php JFactory::getApplication()->triggerEvent('onInstallerViewAfterLastTab', array()); ?>
 
 				<?php if ($this->ftp) : ?>
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'ftp', JText::_('COM_INSTALLER_MSG_DESCFTPTITLE', true)); ?>

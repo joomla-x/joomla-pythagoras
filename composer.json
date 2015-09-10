@@ -8,6 +8,9 @@
     "config": {
         "vendor-dir": "libraries/vendor"
     },
+    "require-joomla_framework_packages_not_public_yet_remember_to_move_these_into_require_below": {
+        "joomla/event": "~2.0"
+    },
     "require": {
         "php": ">=5.3.10",
         "joomla/application": "~1.4",

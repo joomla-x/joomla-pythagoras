@@ -31,10 +31,9 @@ class NewsfeedsTableNewsfeed extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__newsfeeds', 'id', $db);
+		$this->typeAlias = 'com_newsfeeds.newsfeed';
 
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_newsfeeds.newsfeed'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_newsfeeds.newsfeed'));
+		parent::__construct('#__newsfeeds', 'id', $db);
 	}
 
 	/**
@@ -44,6 +43,17 @@ class NewsfeedsTableNewsfeed extends JTable
 	 */
 	public function check()
 	{
+		try
+		{
+			parent::check();
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
 		// Check for valid name.
 		if (trim($this->name) == '')
 		{

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Event\DispatcherInterface;
+
 /**
  * table class interface.
  *
@@ -77,6 +79,13 @@ interface JTableInterface
 	 * @since   3.2
 	 */
 	public function getKeyName();
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 */
+	public function getId();
 
 	/**
 	 * Method to load a row from the database by primary key and bind the fields

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Event\Dispatcher;
+
 /**
  * Plugin helper class
  *
@@ -137,13 +139,13 @@ abstract class JPluginHelper
 	 * @param   string            $type        The plugin type, relates to the sub-directory in the plugins directory.
 	 * @param   string            $plugin      The plugin name.
 	 * @param   boolean           $autocreate  Autocreate the plugin.
-	 * @param   JEventDispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
+	 * @param   Dispatcher        $dispatcher  Optionally allows the plugin to use a different dispatcher.
 	 *
 	 * @return  boolean  True on success.
 	 *
 	 * @since   1.5
 	 */
-	public static function importPlugin($type, $plugin = null, $autocreate = true, JEventDispatcher $dispatcher = null)
+	public static function importPlugin($type, $plugin = null, $autocreate = true, Dispatcher $dispatcher = null)
 	{
 		static $loaded = array();
 
@@ -187,32 +189,15 @@ abstract class JPluginHelper
 	/**
 	 * Loads the plugin file.
 	 *
-	 * @param   object            $plugin      The plugin.
-	 * @param   boolean           $autocreate  True to autocreate.
-	 * @param   JEventDispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use JPluginHelper::import() instead
-	 */
-	protected static function _import($plugin, $autocreate = true, JEventDispatcher $dispatcher = null)
-	{
-		static::import($plugin, $autocreate, $dispatcher);
-	}
-
-	/**
-	 * Loads the plugin file.
-	 *
-	 * @param   object            $plugin      The plugin.
-	 * @param   boolean           $autocreate  True to autocreate.
-	 * @param   JEventDispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
+	 * @param   object      $plugin      The plugin.
+	 * @param   boolean     $autocreate  True to autocreate.
+	 * @param   Dispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
 	 *
 	 * @return  void
 	 *
 	 * @since   3.2
 	 */
-	protected static function import($plugin, $autocreate = true, JEventDispatcher $dispatcher = null)
+	protected static function import($plugin, $autocreate = true, Dispatcher $dispatcher = null)
 	{
 		static $paths = array();
 
@@ -237,7 +222,7 @@ abstract class JPluginHelper
 					// Makes sure we have an event dispatcher
 					if (!is_object($dispatcher))
 					{
-						$dispatcher = JEventDispatcher::getInstance();
+						$dispatcher = JFactory::getApplication()->getDispatcher();
 					}
 
 					$className = 'Plg' . $plugin->type . $plugin->name;
@@ -261,19 +246,6 @@ abstract class JPluginHelper
 				$paths[$path] = false;
 			}
 		}
-	}
-
-	/**
-	 * Loads the published plugins.
-	 *
-	 * @return  array  An array of published plugins
-	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use JPluginHelper::load() instead
-	 */
-	protected static function _load()
-	{
-		return static::load();
 	}
 
 	/**
