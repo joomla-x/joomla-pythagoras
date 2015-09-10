@@ -84,7 +84,10 @@ class JApplicationCli extends JApplicationBase
 			$this->config = new Registry;
 		}
 
-		$this->loadDispatcher($dispatcher);
+		if ($dispatcher !== null)
+		{
+			$this->getContainer()->set('dispatcher', $dispatcher, true, false);
+		}
 
 		// Load the configuration object.
 		$this->loadConfiguration($this->fetchConfigurationData());

@@ -124,8 +124,6 @@ class JApplication extends JApplicationBase
 
 		$this->client = new JApplicationWebClient;
 
-		$this->loadDispatcher();
-
 		// Set the session default name.
 		if (!isset($config['session_name']))
 		{

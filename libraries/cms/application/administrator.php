@@ -61,7 +61,21 @@ class JApplicationAdministrator extends JApplicationCms
 	{
 		if ($component === null)
 		{
-			$component = JAdministratorHelper::findOption();
+			$component = strtolower($this->input->get('option'));
+
+			$user = JFactory::getUser();
+
+			if ($user->get('guest') || !$user->authorise('core.login.admin'))
+			{
+				$component = 'com_login';
+			}
+
+			if (empty($option))
+			{
+				$component = 'com_cpanel';
+			}
+
+			$this->input->set('option', $component);
 		}
 
 		// Set up the params

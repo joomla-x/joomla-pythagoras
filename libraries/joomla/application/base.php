@@ -19,20 +19,12 @@ use Joomla\Input\Input;
 /**
  * Joomla Platform Base Application Class
  *
- * @property-read  JInput  $input  The application input object
+ * @property-read  Input  $input  The application input object
  *
  * @since  12.1
  */
 abstract class JApplicationBase extends AbstractApplication
 {
-	/**
-	 * The application dispatcher object.
-	 *
-	 * @var    DispatcherInterface
-	 * @since  12.1
-	 */
-	protected $dispatcher;
-
 	/**
 	 * The application identity object.
 	 *
@@ -56,6 +48,9 @@ abstract class JApplicationBase extends AbstractApplication
 	public function __construct(Input $input = null, Registry $config = null)
 	{
 		parent::__construct($input, $config);
+
+		// Add the dispatcher to the container
+		$this->getContainer()->set('dispatcher', function() { return new Dispatcher(); }, true, false);
 	}
 
 	/**
@@ -82,32 +77,12 @@ abstract class JApplicationBase extends AbstractApplication
 	 */
 	public function registerEvent($event, callable $handler)
 	{
-		if ($this->dispatcher instanceof DispatcherInterface)
+		if ($this->getContainer()->get('dispatcher') instanceof DispatcherInterface)
 		{
-			$this->dispatcher->addListener($event, $handler);
+			$this->getContainer()->get('dispatcher')->addListener($event, $handler);
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Returns the event dispatcher of the application. This is a temporary method added during the Event package
-	 * refactoring.
-	 *
-	 * @deprecated
-	 *
-	 * TODO REFACTOR ME! Remove this and go through a Container.
-	 *
-	 * @return  DispatcherInterface
-	 */
-	public function getDispatcher()
-	{
-		if (!($this->dispatcher instanceof DispatcherInterface))
-		{
-			$this->loadDispatcher();
-		}
-
-		return $this->dispatcher;
 	}
 
 	/**
@@ -129,8 +104,7 @@ abstract class JApplicationBase extends AbstractApplication
 	 */
 	public function triggerEvent($eventName, $args = null)
 	{
-		// @todo REFACTOR ME! Get the Dispatcher through a Container
-		$dispatcher = $this->getDispatcher();
+		$dispatcher = $this->getContainer()->get('dispatcher');
 
 		if ($dispatcher instanceof DispatcherInterface)
 		{
@@ -155,26 +129,6 @@ abstract class JApplicationBase extends AbstractApplication
 		}
 
 		return null;
-	}
-
-	/**
-	 * Allows the application to load a custom or default dispatcher.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create event
-	 * dispatchers, if required, based on more specific needs.
-	 *
-	 * @param   DispatcherInterface  $dispatcher  An optional dispatcher object. If omitted, the factory dispatcher is created.
-	 *
-	 * @return  JApplicationBase This method is chainable.
-	 *
-	 * @since   12.1
-	 */
-	public function loadDispatcher(DispatcherInterface $dispatcher = null)
-	{
-		$this->dispatcher = ($dispatcher === null) ? new Dispatcher() : $dispatcher;
-
-		return $this;
 	}
 
 	/**

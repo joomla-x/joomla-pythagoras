@@ -444,24 +444,6 @@ final class InstallationApplicationWeb extends JApplicationCms
 	}
 
 	/**
-	 * Allows the application to load a custom or default document.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a document,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JDocument  $document  An optional document object. If omitted, the factory document is created.
-	 *
-	 * @return  InstallationApplicationWeb This method is chainable.
-	 *
-	 * @since   3.2
-	 */
-	public function loadDocument(JDocument $document = null)
-	{
-		return $this;
-	}
-
-	/**
 	 * Allows the application to load a custom or default session.
 	 *
 	 * The logic and options for creating this object are adequately generic for default cases

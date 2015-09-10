@@ -222,7 +222,7 @@ abstract class JPluginHelper
 					// Makes sure we have an event dispatcher
 					if (!is_object($dispatcher))
 					{
-						$dispatcher = JFactory::getApplication()->getDispatcher();
+						$dispatcher = JFactory::getApplication()->getContainer()->get('dispatcher');
 					}
 
 					$className = 'Plg' . $plugin->type . $plugin->name;

@@ -104,9 +104,6 @@ class JApplicationCms extends JApplicationWeb
 	{
 		parent::__construct($input, $config, $client);
 
-		// Load and set the dispatcher
-		$this->loadDispatcher();
-
 		// If JDEBUG is defined, load the profiler instance
 		if (defined('JDEBUG') && JDEBUG)
 		{
@@ -128,7 +125,8 @@ class JApplicationCms extends JApplicationWeb
 		// Create the session if a session name is passed.
 		if ($this->getContainer()->get('config')->get('session') !== false)
 		{
-			$this->loadSession();
+			// Session should be loaded when the first time used
+// 			$this->loadSession();
 		}
 	}
 
@@ -625,11 +623,8 @@ class JApplicationCms extends JApplicationWeb
 		// Create the registry with a default namespace of config
 		$registry = new Registry();
 
-		// Sanitize the namespace.
-		$namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
-
 		// Build the config name.
-		$name = 'JConfig' . $namespace;
+		$name = 'JConfig';
 
 		// Handle the PHP configuration type.
 		if (class_exists($name))
