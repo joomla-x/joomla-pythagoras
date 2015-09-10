@@ -509,12 +509,7 @@ class UsersModelUser extends JModelAdmin
 	 */
 	public function activate(&$pks)
 	{
-<<<<<<< HEAD
-		$dispatcher = JEventDispatcher::getInstance();
-		$user       = JFactory::getUser();
-=======
 		$user = JFactory::getUser();
->>>>>>> feature-orthogonal-BEFORE-REBASE
 
 		// Check if I am a Super Admin
 		$iAmSuperAdmin = $user->authorise('core.admin');
