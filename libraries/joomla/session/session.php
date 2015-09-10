@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Event\DispatcherInterface;
+use Joomla\Input\Input;
 
 /**
  * Class for managing HTTP sessions
@@ -436,14 +437,14 @@ class JSession implements IteratorAggregate
 	/**
 	 * Check whether this session is currently created
 	 *
-	 * @param   JInput               $input       JInput object for the session to use.
+	 * @param   Input                $input       JInput object for the session to use.
 	 * @param   DispatcherInterface  $dispatcher  Dispatcher object for the session to use.
 	 *
 	 * @return  void.
 	 *
 	 * @since   12.2
 	 */
-	public function initialise(JInput $input, DispatcherInterface $dispatcher = null)
+	public function initialise(Input $input, DispatcherInterface $dispatcher = null)
 	{
 		// With the introduction of the handler class this variable is no longer required
 		// however we keep setting it for b/c

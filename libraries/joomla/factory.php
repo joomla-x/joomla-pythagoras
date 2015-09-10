@@ -66,14 +66,6 @@ abstract class JFactory
 	public static $language = null;
 
 	/**
-	 * Global document object
-	 *
-	 * @var    JDocument
-	 * @since  11.1
-	 */
-	public static $document = null;
-
-	/**
 	 * Global ACL object
 	 *
 	 * @var    JAccess
@@ -115,16 +107,6 @@ abstract class JFactory
 	 */
 	public static function getApplication($id = null, array $config = array(), $prefix = 'J')
 	{
-		if (!self::$application)
-		{
-			if (!$id)
-			{
-				throw new Exception('Application Instantiation Error', 500);
-			}
-
-			self::$application = JApplicationCms::getInstance($id);
-		}
-
 		return self::$application;
 	}
 
@@ -208,15 +190,12 @@ abstract class JFactory
 	 *
 	 * @see     JDocument
 	 * @since   11.1
+	 *
+	 * @deprecated  4.0  Use the contianer in your context like $this->getApplication()->getContainer()->get('document');
 	 */
 	public static function getDocument()
 	{
-		if (!self::$document)
-		{
-			self::$document = self::createDocument();
-		}
-
-		return self::$document;
+		return self::$application->getContainer()->get('document');
 	}
 
 	/**
@@ -709,35 +688,6 @@ abstract class JFactory
 		$lang = JLanguage::getInstance($locale, $debug);
 
 		return $lang;
-	}
-
-	/**
-	 * Create a document object
-	 *
-	 * @return  JDocument object
-	 *
-	 * @see     JDocument
-	 * @since   11.1
-	 */
-	protected static function createDocument()
-	{
-		$lang = self::getLanguage();
-
-		$input = self::getApplication()->input;
-		$type = $input->get('format', 'html', 'word');
-
-		$version = new JVersion;
-
-		$attributes = array(
-			'charset' => 'utf-8',
-			'lineend' => 'unix',
-			'tab' => '  ',
-			'language' => $lang->getTag(),
-			'direction' => $lang->isRtl() ? 'rtl' : 'ltr',
-			'mediaversion' => $version->getMediaVersion()
-		);
-
-		return JDocument::getInstance($type, $attributes);
 	}
 
 	/**

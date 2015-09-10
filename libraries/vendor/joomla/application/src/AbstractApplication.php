@@ -13,6 +13,7 @@ use Joomla\Registry\Registry;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Joomla\DI\Container;
 
 /**
  * Joomla Framework Base Application Class
@@ -46,6 +47,14 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	private $logger;
 
 	/**
+	 * The DI container.
+	 *
+	 * @var    Container
+	 * @since  1.0
+	 */
+	private $container;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param   Input     $input   An optional argument to provide dependency injection for the application's
@@ -61,6 +70,9 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	{
 		$this->input = $input instanceof Input ? $input : new Input;
 		$this->config = $config instanceof Registry ? $config : new Registry;
+
+		$this->getContainer()->set('input', $this->input, false, true);
+		$this->getContainer()->set('config', $this->config, false, true);
 
 		$this->initialise();
 	}
@@ -138,6 +150,24 @@ abstract class AbstractApplication implements LoggerAwareInterface
 		}
 
 		return $this->logger;
+	}
+
+	/**
+	 * Get the DI container of the application.
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 */
+	public function getContainer()
+	{
+		if ($this->container === null)
+		{
+			$this->container = new Container();
+			$this->container->set('app', $this, false, true);
+		}
+
+		return $this->container;
 	}
 
 	/**

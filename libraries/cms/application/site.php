@@ -126,16 +126,10 @@ final class JApplicationSite extends JApplicationCms
 			$component = $this->input->getCmd('option', null);
 		}
 
-		// Load the document to the API
-		$this->loadDocument();
-
 		// Set up the params
 		$document = $this->getDocument();
 		$router   = static::getRouter();
 		$params   = $this->getParams();
-
-		// Register the document object with JFactory
-		JFactory::$document = $document;
 
 		switch ($document->getType())
 		{
@@ -705,7 +699,7 @@ final class JApplicationSite extends JApplicationCms
 	 */
 	protected function render()
 	{
-		switch ($this->document->getType())
+		switch ($this->getDocument()->getType())
 		{
 			case 'feed':
 				// No special processing for feeds

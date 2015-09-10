@@ -252,7 +252,7 @@ class JApplicationCms extends JApplicationWeb
 		$this->doExecute();
 
 		// If we have an application document object, render it.
-		if ($this->document instanceof JDocument)
+		if ($this->getDocument() instanceof JDocument)
 		{
 			// Render the application output.
 			$this->render();
@@ -1045,7 +1045,7 @@ class JApplicationCms extends JApplicationWeb
 		}
 
 		// Parse the document.
-		$this->document->parse($this->docOptions);
+		$this->getDocument()->parse($this->docOptions);
 
 		// Trigger the onBeforeRender event.
 		JPluginHelper::importPlugin('system');
@@ -1059,7 +1059,7 @@ class JApplicationCms extends JApplicationWeb
 		}
 
 		// Render the document.
-		$data = $this->document->render($caching, $this->docOptions);
+		$data = $this->getDocument()->render($caching, $this->docOptions);
 
 		// Set the application output data.
 		$this->setBody($data);

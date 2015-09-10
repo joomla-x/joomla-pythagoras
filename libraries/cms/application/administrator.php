@@ -64,11 +64,8 @@ class JApplicationAdministrator extends JApplicationCms
 			$component = JAdministratorHelper::findOption();
 		}
 
-		// Load the document to the API
-		$this->loadDocument();
-
 		// Set up the params
-		$document = JFactory::getDocument();
+		$document = $this->getDocument();
 
 		// Register the document object with JFactory
 		JFactory::$document = $document;

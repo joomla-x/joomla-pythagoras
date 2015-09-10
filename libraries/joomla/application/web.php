@@ -44,12 +44,6 @@ class JApplicationWeb extends JApplicationBase
 	public $client;
 
 	/**
-	 * @var    JDocument  The application document object.
-	 * @since  11.3
-	 */
-	protected $document;
-
-	/**
 	 * @var    JLanguage  The application language object.
 	 * @since  11.3
 	 */
@@ -109,27 +103,8 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
-		// If a input object is given use it.
-		if ($input instanceof JInput)
-		{
-			$this->input = $input;
-		}
-		// Create the input based on the application logic.
-		else
-		{
-			$this->input = new JInput;
-		}
-
-		// If a config object is given use it.
-		if ($config instanceof Registry)
-		{
-			$this->config = $config;
-		}
-		// Instantiate a new configuration object.
-		else
-		{
-			$this->config = new Registry;
-		}
+		parent::__construct($input, $config);
+		$this->getContainer()->registerServiceProvider(new JApplicationWebService($this));
 
 		// If a client object is given use it.
 		if ($client instanceof JApplicationWebClient)
@@ -186,63 +161,6 @@ class JApplicationWeb extends JApplicationBase
 		}
 
 		return self::$instance;
-	}
-
-	/**
-	 * Initialise the application.
-	 *
-	 * @param   mixed  $session     An optional argument to provide dependency injection for the application's
-	 *                              session object.  If the argument is a JSession object that object will become
-	 *                              the application's session object, if it is false then there will be no session
-	 *                              object, and if it is null then the default session object will be created based
-	 *                              on the application's loadSession() method.
-	 * @param   mixed  $document    An optional argument to provide dependency injection for the application's
-	 *                              document object.  If the argument is a JDocument object that object will become
-	 *                              the application's document object, if it is false then there will be no document
-	 *                              object, and if it is null then the default document object will be created based
-	 *                              on the application's loadDocument() method.
-	 * @param   mixed  $language    An optional argument to provide dependency injection for the application's
-	 *                              language object.  If the argument is a JLanguage object that object will become
-	 *                              the application's language object, if it is false then there will be no language
-	 *                              object, and if it is null then the default language object will be created based
-	 *                              on the application's loadLanguage() method.
-	 * @param   mixed  $dispatcher  An optional argument to provide dependency injection for the application's
-	 *                              event dispatcher.  If the argument is a DispatcherInterface object that object will become
-	 *                              the application's event dispatcher, if it is null then the default event dispatcher
-	 *                              will be created based on the application's loadDispatcher() method.
-	 *
-	 * @return  JApplicationWeb  Instance of $this to allow chaining.
-	 *
-	 * @deprecated  13.1 (Platform) & 4.0 (CMS)
-	 * @see     JApplicationWeb::loadSession()
-	 * @see     JApplicationWeb::loadDocument()
-	 * @see     JApplicationWeb::loadLanguage()
-	 * @see     JApplicationBase::loadDispatcher()
-	 * @since   11.3
-	 */
-	public function initialise($session = null, $document = null, $language = null, DispatcherInterface $dispatcher = null)
-	{
-		// Create the session based on the application logic.
-		if ($session !== false)
-		{
-			$this->loadSession($session);
-		}
-
-		// Create the document based on the application logic.
-		if ($document !== false)
-		{
-			$this->loadDocument($document);
-		}
-
-		// Create the language based on the application logic.
-		if ($language !== false)
-		{
-			$this->loadLanguage($language);
-		}
-
-		$this->loadDispatcher($dispatcher);
-
-		return $this;
 	}
 
 	/**
@@ -775,7 +693,7 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function getDocument()
 	{
-		return $this->document;
+		return $this->getContainer()->get('document');
 	}
 
 	/**
@@ -971,26 +889,6 @@ class JApplicationWeb extends JApplicationBase
 	public function isSSLConnection()
 	{
 		return ((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION'));
-	}
-
-	/**
-	 * Allows the application to load a custom or default document.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a document,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JDocument  $document  An optional document object. If omitted, the factory document is created.
-	 *
-	 * @return  JApplicationWeb This method is chainable.
-	 *
-	 * @since   11.3
-	 */
-	public function loadDocument(JDocument $document = null)
-	{
-		$this->document = ($document === null) ? JFactory::getDocument() : $document;
-
-		return $this;
 	}
 
 	/**

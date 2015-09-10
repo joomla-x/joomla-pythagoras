@@ -134,9 +134,6 @@ final class InstallationApplicationWeb extends JApplicationCms
 	{
 		try
 		{
-			// Load the document to the API.
-			$this->loadDocument();
-
 			// Set up the params
 			$document = $this->getDocument();
 
@@ -461,28 +458,6 @@ final class InstallationApplicationWeb extends JApplicationCms
 	 */
 	public function loadDocument(JDocument $document = null)
 	{
-		if ($document === null)
-		{
-			$lang = JFactory::getLanguage();
-
-			$type = $this->input->get('format', 'html', 'word');
-
-			$attributes = array(
-				'charset' => 'utf-8',
-				'lineend' => 'unix',
-				'tab' => '  ',
-				'language' => $lang->getTag(),
-				'direction' => $lang->isRtl() ? 'rtl' : 'ltr'
-			);
-
-			$document = JDocument::getInstance($type, $attributes);
-
-			// Register the instance to JFactory.
-			JFactory::$document = $document;
-		}
-
-		$this->document = $document;
-
 		return $this;
 	}
 
