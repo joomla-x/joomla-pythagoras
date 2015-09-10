@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\Event\Event;
 
 /**
  * TinyMCE Editor Plugin
@@ -923,14 +924,15 @@ class PlgEditorTinymce extends JPlugin
 
 		$args = array(
 			'name'  => $name,
-			'event' => 'onGetInsertMethod'
 		);
 
-		$results = (array) $this->update($args);
+		$event = new Event('onGetInsertMethod', $args);
 
-		if ($results)
+		$results = $this->getDispatcher()->dispatch('onGetInsertMethod', $event);
+
+		if ($results['result'])
 		{
-			foreach ($results as $result)
+			foreach ($results['result'] as $result)
 			{
 				if (is_string($result) && trim($result))
 				{
@@ -941,9 +943,16 @@ class PlgEditorTinymce extends JPlugin
 
 		if (is_array($buttons) || (is_bool($buttons) && $buttons))
 		{
-			$buttons = $this->_subject->getButtons($name, $buttons, $asset, $author);
+			$buttonsEvent = new Event('getButtons', [
+				'name'		=> $name,
+				'buttons'	=> $buttons,
+				'asset'		=> $asset,
+				'author'	=> $author
+			]);
 
-			$return .= JLayoutHelper::render('joomla.editors.buttons', $buttons);
+			$buttonsResult = $this->getDispatcher()->dispatch('getButtons', $buttonsEvent);
+
+			$return .= JLayoutHelper::render('joomla.editors.buttons', $buttonsResult['result']);
 		}
 
 		return $return;

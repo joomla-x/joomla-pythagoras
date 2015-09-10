@@ -225,8 +225,6 @@ abstract class JModelAdmin extends JModelForm
 			$this->type = $type->getTypeByAlias($this->typeAlias);
 		}
 
-		$this->tagsObserver = $this->table->getObserverOfClass('JTableObserverTags');
-
 		if ($this->batch_copymove && !empty($commands[$this->batch_copymove]))
 		{
 			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
@@ -312,11 +310,6 @@ abstract class JModelAdmin extends JModelForm
 				$this->table->reset();
 				$this->table->load($pk);
 				$this->table->access = (int) $value;
-
-				if (!empty($this->type))
-				{
-					$this->createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
-				}
 
 				if (!$this->table->store())
 				{
@@ -426,11 +419,6 @@ abstract class JModelAdmin extends JModelForm
 				return false;
 			}
 
-			if (!empty($this->type))
-			{
-				$this->createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
-			}
-
 			// Store the row.
 			if (!$this->table->store())
 			{
@@ -482,11 +470,6 @@ abstract class JModelAdmin extends JModelForm
 				$this->table->reset();
 				$this->table->load($pk);
 				$this->table->language = $value;
-
-				if (!empty($this->type))
-				{
-					$this->createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
-				}
 
 				if (!$this->table->store())
 				{
@@ -578,11 +561,6 @@ abstract class JModelAdmin extends JModelForm
 				return false;
 			}
 
-			if (!empty($this->type))
-			{
-				$this->createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
-			}
-
 			// Store the row.
 			if (!$this->table->store())
 			{
@@ -623,15 +601,19 @@ abstract class JModelAdmin extends JModelForm
 				$table->load($pk);
 				$tags = array($value);
 
-				/**
-				 * @var  JTableObserverTags  $tagsObserver
-				 */
-				$tagsObserver = $table->getObserverOfClass('JTableObserverTags');
-				$result = $tagsObserver->setNewTags($tags, false);
+				$setTagsEvent = Joomla\Cms\Event\AbstractEvent::create('TableSetNewTags', array(
+					'subject'		=> $this,
+					'newTags'		=> $tags,
+					'replaceTags'	=> false
+				));
 
-				if (!$result)
+				try
 				{
-					$this->setError($table->getError());
+					$table->getDispatcher()->dispatch($setTagsEvent);
+				}
+				catch (RuntimeException $e)
+				{
+					$this->setError($e->getMessage());
 
 					return false;
 				}
@@ -755,7 +737,6 @@ abstract class JModelAdmin extends JModelForm
 	 */
 	public function delete(&$pks)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
 		$pks = (array) $pks;
 		$table = $this->getTable();
 
@@ -772,7 +753,7 @@ abstract class JModelAdmin extends JModelForm
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the before delete event.
-					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+					$result = JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
 
 					if (in_array(false, $result, true))
 					{
@@ -821,7 +802,7 @@ abstract class JModelAdmin extends JModelForm
 					}
 
 					// Trigger the after event.
-					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+					JFactory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
 				}
 				else
 				{
@@ -985,7 +966,6 @@ abstract class JModelAdmin extends JModelForm
 	 */
 	public function publish(&$pks, $value = 1)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$pks = (array) $pks;
@@ -1022,14 +1002,7 @@ abstract class JModelAdmin extends JModelForm
 		$context = $this->option . '.' . $this->name;
 
 		// Trigger the change state event.
-		$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
-
-		if (in_array(false, $result, true))
-		{
-			$this->setError($table->getError());
-
-			return false;
-		}
+		$result = JFactory::getApplication()->triggerEvent($this->event_change_state, array($context, $pks, $value));
 
 		// Clear the component's cache
 		$this->cleanCache();
@@ -1119,7 +1092,6 @@ abstract class JModelAdmin extends JModelForm
 	 */
 	public function save($data)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
 		$table      = $this->getTable();
 		$context    = $this->option . '.' . $this->name;
 
@@ -1165,7 +1137,7 @@ abstract class JModelAdmin extends JModelForm
 			}
 
 			// Trigger the before save event.
-			$result = $dispatcher->trigger($this->event_before_save, array($context, $table, $isNew));
+			$result = JFactory::getApplication()->triggerEvent($this->event_before_save, array($context, $table, $isNew));
 
 			if (in_array(false, $result, true))
 			{
@@ -1186,7 +1158,7 @@ abstract class JModelAdmin extends JModelForm
 			$this->cleanCache();
 
 			// Trigger the after save event.
-			$dispatcher->trigger($this->event_after_save, array($context, $table, $isNew));
+			JFactory::getApplication()->triggerEvent($this->event_after_save, array($context, $table, $isNew));
 		}
 		catch (Exception $e)
 		{
@@ -1272,7 +1244,6 @@ abstract class JModelAdmin extends JModelForm
 		$tableClassName = get_class($table);
 		$contentType = new JUcmType;
 		$type = $contentType->getTypeByTable($tableClassName);
-		$tagsObserver = $table->getObserverOfClass('JTableObserverTags');
 		$conditions = array();
 
 		if (empty($pks))
@@ -1295,11 +1266,6 @@ abstract class JModelAdmin extends JModelForm
 			elseif ($table->ordering != $order[$i])
 			{
 				$table->ordering = $order[$i];
-
-				if ($type)
-				{
-					$this->createTagsHelper($tagsObserver, $type, $pk, $type->type_alias, $table);
-				}
 
 				if (!$table->store())
 				{
@@ -1340,29 +1306,6 @@ abstract class JModelAdmin extends JModelForm
 		$this->cleanCache();
 
 		return true;
-	}
-
-	/**
-	 * Method to create a tags helper to ensure proper management of tags
-	 *
-	 * @param   JTableObserverTags  $tagsObserver  The tags observer for this table
-	 * @param   JUcmType            $type          The type for the table being processed
-	 * @param   integer             $pk            Primary key of the item bing processed
-	 * @param   string              $typeAlias     The type alias for this table
-	 * @param   JTable              $table         The JTable object
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function createTagsHelper($tagsObserver, $type, $pk, $typeAlias, $table)
-	{
-		if (!empty($tagsObserver) && !empty($type))
-		{
-			$table->tagsHelper = new JHelperTags;
-			$table->tagsHelper->typeAlias = $typeAlias;
-			$table->tagsHelper->tags = explode(',', $table->tagsHelper->getTagIds($pk, $typeAlias));
-		}
 	}
 
 	/**

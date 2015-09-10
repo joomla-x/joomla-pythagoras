@@ -27,10 +27,9 @@ class JTableCategory extends JTableNested
 	 */
 	public function __construct(JDatabaseDriver $db)
 	{
-		parent::__construct('#__categories', 'id', $db);
+		$this->typeAlias = '{extension}.category';
 
-		JTableObserverTags::createObserver($this, array('typeAlias' => '{extension}.category'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => '{extension}.category'));
+		parent::__construct('#__categories', 'id', $db);
 
 		$this->access = (int) JFactory::getConfig()->get('access');
 	}
@@ -133,6 +132,17 @@ class JTableCategory extends JTableNested
 	 */
 	public function check()
 	{
+		try
+		{
+			parent::check();
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
 		// Check for a title.
 		if (trim($this->title) == '')
 		{
@@ -227,7 +237,7 @@ class JTableCategory extends JTableNested
 		// Verify that the alias is unique
 		$table = JTable::getInstance('Category', 'JTable', array('dbo' => $this->getDbo()));
 
-		if ($table->load(array('alias' => $this->alias, 'parent_id' => $this->parent_id, 'extension' => $this->extension))
+		if ($table->load(array('alias' => $this->alias, 'parent_id' => (int) $this->parent_id, 'extension' => $this->extension))
 			&& ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(JText::_('JLIB_DATABASE_ERROR_CATEGORY_UNIQUE_ALIAS'));

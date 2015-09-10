@@ -234,6 +234,19 @@ class JAccessTest extends TestCaseDatabase
 	}
 
 	/**
+	 * Tests the JAccess::getGroupTitle method.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	public function testGetGroupTitle()
+	{
+		$access = new JAccess;
+		$this->assertThat($access->getGroupTitle(1), $this->equalTo('Public'), 'Get group title. Line: ' . __LINE__);
+	}
+
+	/**
 	 * Tests the JAccess::getUsersByGroup method.
 	 *
 	 * @return  void
@@ -468,6 +481,14 @@ class JAccessTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
+		$this->saveFactoryState();
+
+		$mockApp = $this->getMockCmsApp();
+		$mockApp->expects($this->any())
+			->method('getDispatcher')
+			->willReturn($this->getMockDispatcher());
+		JFactory::$application = $mockApp;
+
 		// Clear the static caches.
 		JAccess::clearStatics();
 
@@ -490,6 +511,7 @@ class JAccessTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		$this->_cleanupTestFiles();
+		$this->restoreFactoryState();
 	}
 
 	/**

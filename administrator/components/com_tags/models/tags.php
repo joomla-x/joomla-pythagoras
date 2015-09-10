@@ -240,6 +240,17 @@ class TagsModelTags extends JModelList
 	 */
 	public function checkin($pks = array())
 	{
+		try
+		{
+			parent::check();
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
 		$pks = (array) $pks;
 		$table = $this->getTable();
 		$count = 0;

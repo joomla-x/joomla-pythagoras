@@ -90,6 +90,17 @@ class JTableMenu extends JTableNested
 	 */
 	public function check()
 	{
+		try
+		{
+			parent::check();
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
 		// Check for a title.
 		if (trim($this->title) == '')
 		{
@@ -109,6 +120,22 @@ class JTableMenu extends JTableNested
 		if ((empty($this->alias)) && ($this->type != 'alias' && $this->type != 'url'))
 		{
 			$this->alias = $this->title;
+		}
+
+		// Check for a path.
+		if (trim($this->path) == '')
+		{
+			$this->path = $this->alias;
+		}
+		// Check for params.
+		if (trim($this->params) == '')
+		{
+			$this->params = '{}';
+		}
+		// Check for img.
+		if (trim($this->img) == '')
+		{
+			$this->img = ' ';
 		}
 
 		// Make the alias URL safe.

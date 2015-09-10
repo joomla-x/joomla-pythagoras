@@ -55,7 +55,7 @@ abstract class Base implements RouterInterface
 		}
 		else
 		{
-			$this->app = JFactory::getApplication();
+			$this->app = JFactory::getApplication('site');
 		}
 
 		if ($menu)

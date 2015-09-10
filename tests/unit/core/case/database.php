@@ -252,14 +252,14 @@ abstract class TestCaseDatabase extends PHPUnit_Extensions_Database_TestCase
 	 *
 	 * @param   boolean  $defaults  Add default register and trigger methods for testing.
 	 *
-	 * @return  JEventDispatcher
+	 * @return  \Joomla\Event\DispatcherInterface
 	 *
 	 * @since   12.1
 	 */
 	public function getMockDispatcher($defaults = true)
 	{
-		// Attempt to load the real class first.
-		class_exists('JEventDispatcher');
+		// Attempt to load the interface first.
+		class_exists('Joomla\\Event\\DispatcherInterface');
 
 		return TestMockDispatcher::create($this, $defaults);
 	}

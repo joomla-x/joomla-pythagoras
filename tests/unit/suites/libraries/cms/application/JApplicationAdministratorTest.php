@@ -118,8 +118,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	protected function tearDown()
 	{
-		// Reset the dispatcher and application instances.
-		TestReflection::setValue('JEventDispatcher', 'instance', null);
+		// Reset the application instance.
 		TestReflection::setValue('Joomla\\CMS\\Application\\AbstractCMS', 'instances', array());
 
 		$_SERVER = $this->backupServer;

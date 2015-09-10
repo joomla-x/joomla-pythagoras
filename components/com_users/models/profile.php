@@ -153,18 +153,10 @@ class UsersModelProfile extends JModelForm
 			$this->data->params = $registry->toArray();
 
 			// Get the dispatcher and load the users plugins.
-			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('user');
 
 			// Trigger the data preparation event.
-			$results = $dispatcher->trigger('onContentPrepareData', array('com_users.profile', $this->data));
-
-			// Check for errors encountered while preparing the data.
-			if (count($results) && in_array(false, $results, true))
-			{
-				$this->setError($dispatcher->getError());
-				$this->data = false;
-			}
+			JFactory::getApplication()->triggerEvent('onContentPrepareData', array('com_users.profile', $this->data));
 		}
 
 		return $this->data;
@@ -214,6 +206,12 @@ class UsersModelProfile extends JModelForm
 			$form->setFieldAttribute('username', 'message', '');
 			$form->setFieldAttribute('username', 'readonly', 'true');
 			$form->setFieldAttribute('username', 'required', 'false');
+		}
+
+		// When multilanguage is set, a user's default site language should also be a Content Language
+		if (JLanguageMultilang::isEnabled())
+		{
+			$form->setFieldAttribute('language', 'type', 'frontend_language', 'params');
 		}
 
 		// If the user needs to change their password, mark the password fields as required

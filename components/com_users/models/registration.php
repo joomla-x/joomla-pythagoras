@@ -235,18 +235,10 @@ class UsersModelRegistration extends JModelForm
 			unset($this->data->password2);
 
 			// Get the dispatcher and load the users plugins.
-			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('user');
 
 			// Trigger the data preparation event.
-			$results = $dispatcher->trigger('onContentPrepareData', array('com_users.registration', $this->data));
-
-			// Check for errors encountered while preparing the data.
-			if (count($results) && in_array(false, $results, true))
-			{
-				$this->setError($dispatcher->getError());
-				$this->data = false;
-			}
+			JFactory::getApplication()->triggerEvent('onContentPrepareData', array('com_users.registration', $this->data));
 		}
 
 		return $this->data;
@@ -269,6 +261,12 @@ class UsersModelRegistration extends JModelForm
 	{
 		// Get the form.
 		$form = $this->loadForm('com_users.registration', 'registration', array('control' => 'jform', 'load_data' => $loadData));
+
+		// When multilanguage is set, a user's default site language should also be a Content Language
+		if (JLanguageMultilang::isEnabled())
+		{
+			$form->setFieldAttribute('language', 'type', 'frontend_language', 'params');
+		}
 
 		if (empty($form))
 		{

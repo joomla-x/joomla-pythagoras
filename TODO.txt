@@ -1,0 +1,7 @@
+Refactor onSetNewTags event
+    Go directly through the onBeforeStore event
+
+Refactor content versioning
+
+What happens if I disable the behaviour plugins? Does the tag and versioning crash to flames?
+    Maybe I have to change how the respective JFormFields work?

@@ -53,22 +53,4 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 			$this->isInstanceOf('Joomla\CMS\Editor\Editor')
 		);
 	}
-
-	/**
-	 * Tests the getState method
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public function testGetState()
-	{
-		// Preload the state to test it
-		TestReflection::setValue($this->object, '_state', 'Editor::getState()');
-
-		$this->assertThat(
-			$this->object->getState(),
-			$this->equalTo('Editor::getState()')
-		);
-	}
 }

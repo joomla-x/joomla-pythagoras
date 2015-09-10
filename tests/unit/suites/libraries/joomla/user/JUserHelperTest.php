@@ -35,7 +35,16 @@ class JUserHelperTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
+		$mockApp = $this->getMockCmsApp();
+		$mockApp->expects($this->any())
+			->method('getDispatcher')
+			->willReturn($this->getMockDispatcher());
+		JFactory::$application = $mockApp;
+
 		$this->saveFactoryState();
+
+		// Set the session object for JUserHelper::addUserToGroup()
+		JFactory::$session = $this->getMockSession();
 	}
 
 	/**

@@ -11,9 +11,14 @@ namespace Joomla\CMS\Editor;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Event\DispatcherAwareInterface;
+use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Dispatcher;
+use Joomla\Event\Event;
+use Joomla\Event\AbstractEvent;
 use Joomla\Registry\Registry;
 use JFactory;
-use JObject;
 use JPluginHelper;
 use JFilterInput;
 
@@ -22,31 +27,9 @@ use JFilterInput;
  *
  * @since  1.5
  */
-class Editor extends JObject
+class Editor implements DispatcherAwareInterface
 {
-	/**
-	 * An array of Observer objects to notify
-	 *
-	 * @var    array
-	 * @since  1.5
-	 */
-	protected $_observers = array();
-
-	/**
-	 * The state of the observable object
-	 *
-	 * @var    mixed
-	 * @since  1.5
-	 */
-	protected $_state = null;
-
-	/**
-	 * A multi dimensional array of [function][] = key for observers
-	 *
-	 * @var    array
-	 * @since  1.5
-	 */
-	protected $_methods = array();
+	use DispatcherAwareTrait;
 
 	/**
 	 * Editor Plugin object
@@ -89,11 +72,63 @@ class Editor extends JObject
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $editor  The editor name
+	 * @param   string               $editor      The editor name
+	 * @param   DispatcherInterface  $dispatcher  The event dispatcher we're going to use
 	 */
-	public function __construct($editor = 'none')
+	public function __construct($editor = 'none', DispatcherInterface $dispatcher = null)
 	{
 		$this->_name = $editor;
+
+		// Set the dispatcher
+		if (!is_object($dispatcher))
+		{
+			$dispatcher = new Dispatcher();
+		}
+
+		$this->setDispatcher($dispatcher);
+
+		// Register the getButtons event
+		$this->getDispatcher()->addListener('getButtons', function(AbstractEvent $event) {
+			$editor = $event->getArgument('editor', null);
+			$buttons = $event->getArgument('buttons', null);
+			$result = $event->getArgument('result', []);
+
+			$newResult = $this->getButtons($editor, $buttons);
+			$newResult = (array) $newResult;
+
+			$event['result'] = array_merge($result, $newResult);
+		});
+
+		// Register the getContent event
+		$this->getDispatcher()->addListener('getContent', function(AbstractEvent $event) {
+			$editor = $event->getArgument('editor', null);
+			$result = $event->getArgument('result', []);
+
+			$result[] = $this->getContent($editor);
+
+			$event['result'] = $result;
+		});
+
+		// Register the setContent event
+		$this->getDispatcher()->addListener('getContent', function(AbstractEvent $event) {
+			$editor = $event->getArgument('editor', null);
+			$html = $event->getArgument('html', null);
+			$result = $event->getArgument('result', []);
+
+			$result[] = $this->setContent($editor, $html);
+
+			$event['result'] = $result;
+		});
+
+		// Register the save event
+		$this->getDispatcher()->addListener('save', function(AbstractEvent $event) {
+			$editor = $event->getArgument('editor', null);
+			$result = $event->getArgument('result', []);
+
+			$result[] = $this->save($editor);
+
+			$event['result'] = $result;
+		});
 	}
 
 	/**
@@ -112,124 +147,10 @@ class Editor extends JObject
 
 		if (empty(self::$instances[$signature]))
 		{
-			self::$instances[$signature] = new Editor($editor);
+			self::$instances[$signature] = new JEditor($editor);
 		}
 
 		return self::$instances[$signature];
-	}
-
-	/**
-	 * Get the state of the JEditor object
-	 *
-	 * @return  mixed    The state of the object.
-	 *
-	 * @since   1.5
-	 */
-	public function getState()
-	{
-		return $this->_state;
-	}
-
-	/**
-	 * Attach an observer object
-	 *
-	 * @param   object  $observer  An observer object to attach
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 */
-	public function attach($observer)
-	{
-		if (is_array($observer))
-		{
-			if (!isset($observer['handler']) || !isset($observer['event']) || !is_callable($observer['handler']))
-			{
-				return;
-			}
-
-			// Make sure we haven't already attached this array as an observer
-			foreach ($this->_observers as $check)
-			{
-				if (is_array($check) && $check['event'] == $observer['event'] && $check['handler'] == $observer['handler'])
-				{
-					return;
-				}
-			}
-
-			$this->_observers[] = $observer;
-			end($this->_observers);
-			$methods = array($observer['event']);
-		}
-		else
-		{
-			if (!($observer instanceof Editor))
-			{
-				return;
-			}
-
-			// Make sure we haven't already attached this object as an observer
-			$class = get_class($observer);
-
-			foreach ($this->_observers as $check)
-			{
-				if ($check instanceof $class)
-				{
-					return;
-				}
-			}
-
-			$this->_observers[] = $observer;
-			$methods = array_diff(get_class_methods($observer), get_class_methods('JPlugin'));
-		}
-
-		$key = key($this->_observers);
-
-		foreach ($methods as $method)
-		{
-			$method = strtolower($method);
-
-			if (!isset($this->_methods[$method]))
-			{
-				$this->_methods[$method] = array();
-			}
-
-			$this->_methods[$method][] = $key;
-		}
-	}
-
-	/**
-	 * Detach an observer object
-	 *
-	 * @param   object  $observer  An observer object to detach.
-	 *
-	 * @return  boolean  True if the observer object was detached.
-	 *
-	 * @since   1.5
-	 */
-	public function detach($observer)
-	{
-		$retval = false;
-
-		$key = array_search($observer, $this->_observers);
-
-		if ($key !== false)
-		{
-			unset($this->_observers[$key]);
-			$retval = true;
-
-			foreach ($this->_methods as &$method)
-			{
-				$k = array_search($key, $method);
-
-				if ($k !== false)
-				{
-					unset($method[$k]);
-				}
-			}
-		}
-
-		return $retval;
 	}
 
 	/**
@@ -247,16 +168,15 @@ class Editor extends JObject
 			return;
 		}
 
-		$args['event'] = 'onInit';
+		$event = new Event('onInit');
 
 		$return    = '';
-		$results[] = $this->_editor->update($args);
+		$results   = $this->getDispatcher()->dispatch('onInit', $event);
 
-		foreach ($results as $result)
+		foreach ($results['result'] as $result)
 		{
 			if (trim($result))
 			{
-				// @todo remove code: $return .= $result;
 				$return = $result;
 			}
 		}
@@ -297,7 +217,7 @@ class Editor extends JObject
 		// Check whether editor is already loaded
 		if (is_null(($this->_editor)))
 		{
-			return;
+			return '';
 		}
 
 		// Backwards compatibility. Width and height should be passed without a semicolon from now on.
@@ -315,11 +235,12 @@ class Editor extends JObject
 		$args['row'] = $row;
 		$args['buttons'] = $buttons;
 		$args['id'] = $id ? $id : $name;
-		$args['event'] = 'onDisplay';
 
-		$results[] = $this->_editor->update($args);
+		$event = new Event('onDisplay', $args);
 
-		foreach ($results as $result)
+		$results = $this->getDispatcher()->dispatch('onDisplay', $event);
+
+		foreach ($results['result'] as $result)
 		{
 			if (trim($result))
 			{
@@ -346,16 +267,17 @@ class Editor extends JObject
 		// Check whether editor is already loaded
 		if (is_null(($this->_editor)))
 		{
-			return;
+			return '';
 		}
 
 		$args[] = $editor;
-		$args['event'] = 'onSave';
+
+		$event = new Event('onSave', $args);
 
 		$return = '';
-		$results[] = $this->_editor->update($args);
+		$results = $this->getDispatcher()->dispatch('onSave', $event);
 
-		foreach ($results as $result)
+		foreach ($results['result'] as $result)
 		{
 			if (trim($result))
 			{
@@ -380,12 +302,13 @@ class Editor extends JObject
 		$this->_loadEditor();
 
 		$args['name'] = $editor;
-		$args['event'] = 'onGetContent';
+
+		$event = new Event('onGetContent', $args);
 
 		$return = '';
-		$results[] = $this->_editor->update($args);
+		$results = $this->getDispatcher()->dispatch('onGetContent', $event);
 
-		foreach ($results as $result)
+		foreach ($results['result'] as $result)
 		{
 			if (trim($result))
 			{
@@ -412,12 +335,13 @@ class Editor extends JObject
 
 		$args['name'] = $editor;
 		$args['html'] = $html;
-		$args['event'] = 'onSetContent';
+
+		$event = new Event('onSetContent', $args);
 
 		$return = '';
-		$results[] = $this->_editor->update($args);
+		$results = $this->getDispatcher()->dispatch('onSetContent', $event);
 
-		foreach ($results as $result)
+		foreach ($results['result'] as $result)
 		{
 			if (trim($result))
 			{
@@ -463,7 +387,8 @@ class Editor extends JObject
 
 			if (class_exists($className))
 			{
-				$plugin = new $className($this, (array) $plugin);
+				$dispatcher = $this->getDispatcher();
+				$plugin = new $className($dispatcher, (array) $plugin);
 			}
 
 			// Try to authenticate
@@ -479,7 +404,7 @@ class Editor extends JObject
 	/**
 	 * Load the editor
 	 *
-	 * @param   array  $config  Associative array of editor config paramaters
+	 * @param   array  $config  Associative array of editor config parameters
 	 *
 	 * @return  mixed
 	 *
@@ -490,7 +415,7 @@ class Editor extends JObject
 		// Check whether editor is already loaded
 		if (!is_null(($this->_editor)))
 		{
-			return;
+			return false;
 		}
 
 		// Build the path to the needed editor plugin
@@ -517,7 +442,9 @@ class Editor extends JObject
 		// Build editor plugin classname
 		$name = 'plgEditor' . $this->_name;
 
-		if ($this->_editor = new $name($this, (array) $plugin))
+		$dispatcher = $this->getDispatcher();
+
+		if ($this->_editor = new $name($dispatcher, (array) $plugin))
 		{
 			// Load plugin parameters
 			$this->initialise();
