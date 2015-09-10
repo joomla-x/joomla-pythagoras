@@ -44,18 +44,6 @@ class JApplicationWeb extends JApplicationBase
 	public $client;
 
 	/**
-	 * @var    JLanguage  The application language object.
-	 * @since  11.3
-	 */
-	protected $language;
-
-	/**
-	 * @var    JSession  The application session object.
-	 * @since  11.3
-	 */
-	protected $session;
-
-	/**
 	 * @var    object  The application response object.
 	 * @since  11.3
 	 */
@@ -705,7 +693,7 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function getLanguage()
 	{
-		return $this->language;
+		return $this->getContainer()->get('language');
 	}
 
 	/**
@@ -889,26 +877,6 @@ class JApplicationWeb extends JApplicationBase
 	public function isSSLConnection()
 	{
 		return ((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION'));
-	}
-
-	/**
-	 * Allows the application to load a custom or default language.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a language,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JLanguage  $language  An optional language object. If omitted, the factory language is created.
-	 *
-	 * @return  JApplicationWeb This method is chainable.
-	 *
-	 * @since   11.3
-	 */
-	public function loadLanguage(JLanguage $language = null)
-	{
-		$this->language = ($language === null) ? JFactory::getLanguage() : $language;
-
-		return $this;
 	}
 
 	/**

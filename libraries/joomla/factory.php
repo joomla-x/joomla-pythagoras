@@ -58,14 +58,6 @@ abstract class JFactory
 	public static $session = null;
 
 	/**
-	 * Global language object
-	 *
-	 * @var    JLanguage
-	 * @since  11.1
-	 */
-	public static $language = null;
-
-	/**
 	 * Global ACL object
 	 *
 	 * @var    JAccess
@@ -173,12 +165,7 @@ abstract class JFactory
 	 */
 	public static function getLanguage()
 	{
-		if (!self::$language)
-		{
-			self::$language = self::createLanguage();
-		}
-
-		return self::$language;
+		return self::$application->getContainer()->get('language');
 	}
 
 	/**
@@ -670,24 +657,6 @@ abstract class JFactory
 		}
 
 		return $mail;
-	}
-
-	/**
-	 * Create a language object
-	 *
-	 * @return  JLanguage object
-	 *
-	 * @see     JLanguage
-	 * @since   11.1
-	 */
-	protected static function createLanguage()
-	{
-		$conf = self::getConfig();
-		$locale = $conf->get('language');
-		$debug = $conf->get('debug_lang');
-		$lang = JLanguage::getInstance($locale, $debug);
-
-		return $lang;
 	}
 
 	/**

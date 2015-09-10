@@ -44,7 +44,7 @@ class JApplicationWebService implements ServiceProviderInterface
 		// Setting the callables for the keys which are needed in a web app
 		$container->set('document', array($this, 'getDocument'), false, true);
 		$container->set('session', array($this, 'getSession'), false, true);
-		$container->set('language', array($this, 'getLanguage'), false, true);
+		$container->set('language', array($this, 'getLanguage'), true, false);
 	}
 
 	public function getLanguage(Container $container)
