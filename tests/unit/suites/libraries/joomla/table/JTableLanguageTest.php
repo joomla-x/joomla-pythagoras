@@ -37,6 +37,12 @@ class JTableLanguageTest extends TestCaseDatabase
 		// Get the mocks
 		$this->saveFactoryState();
 
+		$mockApp = $this->getMockCmsApp();
+		$mockApp->expects($this->any())
+			->method('getDispatcher')
+			->willReturn($this->getMockDispatcher());
+		JFactory::$application = $mockApp;
+
 		JFactory::$session = $this->getMockSession();
 
 		$this->object = new JTableLanguage(self::$driver);

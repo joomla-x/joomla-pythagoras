@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Application\Cli\CliOutput;
+use Joomla\Event\DispatcherInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -40,15 +41,15 @@ class JApplicationCli extends JApplicationBase
 	 * @param   Registry          $config      An optional argument to provide dependency injection for the application's
 	 *                                         config object.  If the argument is a Registry object that object will become
 	 *                                         the application's config object, otherwise a default config object is created.
-	 * @param   JEventDispatcher  $dispatcher  An optional argument to provide dependency injection for the application's
-	 *                                         event dispatcher.  If the argument is a JEventDispatcher object that object will become
+	 * @param   DispatcherInterface  $dispatcher  An optional argument to provide dependency injection for the application's
+	 *                                         event dispatcher.  If the argument is a DispatcherInterface object that object will become
 	 *                                         the application's event dispatcher, if it is null then the default event dispatcher
 	 *                                         will be created based on the application's loadDispatcher() method.
 	 *
 	 * @see     JApplicationBase::loadDispatcher()
 	 * @since   11.1
 	 */
-	public function __construct(JInputCli $input = null, Registry $config = null, JEventDispatcher $dispatcher = null)
+	public function __construct(JInputCli $input = null, Registry $config = null, DispatcherInterface $dispatcher = null)
 	{
 		// Close the application if we are not executed from the command line.
 		// @codeCoverageIgnoreStart

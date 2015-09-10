@@ -210,14 +210,13 @@ abstract class JUserHelper
 		}
 
 		// Get the dispatcher and load the user's plugins.
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('user');
 
 		$data = new JObject;
 		$data->id = $userId;
 
 		// Trigger the data preparation event.
-		$dispatcher->trigger('onContentPrepareData', array('com_users.profile', &$data));
+		JFactory::getApplication()->triggerEvent('onContentPrepareData', array('com_users.profile', &$data));
 
 		return $data;
 	}

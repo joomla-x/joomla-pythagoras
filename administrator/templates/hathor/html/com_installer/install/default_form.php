@@ -92,7 +92,7 @@ JFactory::getDocument()->addScriptDeclaration("
 	<?php endif; ?>
 	<div class="width-70 fltlft">
 
-		<?php JEventDispatcher::getInstance()->trigger('onInstallerViewBeforeFirstTab', array()); ?>
+		<?php JFactory::getApplication()->triggerEvent('onInstallerViewBeforeFirstTab', array()); ?>
 
 		<fieldset class="uploadform">
 			<legend><?php echo JText::_('COM_INSTALLER_UPLOAD_PACKAGE_FILE'); ?></legend>
@@ -114,7 +114,7 @@ JFactory::getDocument()->addScriptDeclaration("
 			<input type="button" class="button" value="<?php echo JText::_('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton4()" />
 		</fieldset>
 
-		<?php JEventDispatcher::getInstance()->trigger('onInstallerViewAfterLastTab', array()); ?>
+		<?php JFactory::getApplication()->triggerEvent('onInstallerViewAfterLastTab', array()); ?>
 
 		<input type="hidden" name="type" value="" />
 		<input type="hidden" name="installtype" value="upload" />
