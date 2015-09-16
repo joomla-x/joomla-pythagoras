@@ -34,14 +34,6 @@ abstract class JFactory
 	public static $cache = null;
 
 	/**
-	 * Global configuraiton object
-	 *
-	 * @var    JConfig
-	 * @since  11.1
-	 */
-	public static $config = null;
-
-	/**
 	 * Container for JDate instances
 	 *
 	 * @var    array
@@ -57,14 +49,6 @@ abstract class JFactory
 	 * @deprecated  13.3 (Platform) & 4.0 (CMS)
 	 */
 	public static $acl = null;
-
-	/**
-	 * Global database object
-	 *
-	 * @var    JDatabaseDriver
-	 * @since  11.1
-	 */
-	public static $database = null;
 
 	/**
 	 * Global mailer object
@@ -282,14 +266,7 @@ abstract class JFactory
 	 */
 	public static function getMailer()
 	{
-		if (!self::$mailer)
-		{
-			self::$mailer = self::createMailer();
-		}
-
-		$copy = clone self::$mailer;
-
-		return $copy;
+		return self::$application->getContainer()->get('mailer');
 	}
 
 	/**
@@ -471,53 +448,6 @@ abstract class JFactory
 		$date = clone self::$dates[$classname][$key];
 
 		return $date;
-	}
-
-	/**
-	 * Create a mailer object
-	 *
-	 * @return  JMail object
-	 *
-	 * @see     JMail
-	 * @since   11.1
-	 */
-	protected static function createMailer()
-	{
-		$conf = self::getConfig();
-
-		$smtpauth = ($conf->get('smtpauth') == 0) ? null : 1;
-		$smtpuser = $conf->get('smtpuser');
-		$smtppass = $conf->get('smtppass');
-		$smtphost = $conf->get('smtphost');
-		$smtpsecure = $conf->get('smtpsecure');
-		$smtpport = $conf->get('smtpport');
-		$mailfrom = $conf->get('mailfrom');
-		$fromname = $conf->get('fromname');
-		$mailer = $conf->get('mailer');
-
-		// Create a JMail object
-		$mail = JMail::getInstance();
-
-		// Set default sender without Reply-to
-		$mail->SetFrom(JMailHelper::cleanLine($mailfrom), JMailHelper::cleanLine($fromname), 0);
-
-		// Default mailer is to use PHP's mail function
-		switch ($mailer)
-		{
-			case 'smtp':
-				$mail->useSmtp($smtpauth, $smtphost, $smtpuser, $smtppass, $smtpsecure, $smtpport);
-				break;
-
-			case 'sendmail':
-				$mail->IsSendmail();
-				break;
-
-			default:
-				$mail->IsMail();
-				break;
-		}
-
-		return $mail;
 	}
 
 	/**

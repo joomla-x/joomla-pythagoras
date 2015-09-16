@@ -97,6 +97,7 @@ class JApplicationWeb extends JApplicationBase
 		$this->getContainer()->registerServiceProvider(new JApplicationWebDocumentprovider($this));
 		$this->getContainer()->registerServiceProvider(new JApplicationWebLanguageprovider($this));
 		$this->getContainer()->registerServiceProvider(new JApplicationWebSessionprovider($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebMailerprovider($this));
 
 		// If a client object is given use it.
 		if ($client instanceof JApplicationWebClient)
