@@ -33,14 +33,24 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 	protected $force_ssl = false;
 
 	/**
+	 * The application the session handler belongs to
+	 *
+	 * @var    JApplicationCms
+	 * @since  4.0
+	 */
+	private $application = null;
+
+	/**
 	 * Public constructor
 	 *
 	 * @param   array  $options  An array of configuration options
 	 *
 	 * @since   3.5
 	 */
-	public function __construct($options = array())
+	public function __construct($options = array(), JApplicationCms $application)
 	{
+		$this->application = $application;
+
 		// Disable transparent sid support
 		ini_set('session.use_trans_sid', '0');
 
@@ -99,7 +109,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 		 */
 		if (isset($_COOKIE[$session_name]))
 		{
-			$config        = JFactory::getConfig();
+			$config        = $this->application->getContainer()->get('config');
 			$cookie_domain = $config->get('cookie_domain', '');
 			$cookie_path   = $config->get('cookie_path', '/');
 			setcookie($session_name, '', time() - 42000, $cookie_path, $cookie_domain);
@@ -124,7 +134,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 			$cookie['secure'] = true;
 		}
 
-		$config = JFactory::getConfig();
+		$config = $this->application->getContainer()->get('config');
 
 		if ($config->get('cookie_domain', '') != '')
 		{

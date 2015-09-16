@@ -13,6 +13,7 @@ use Joomla\Registry\Registry;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Joomla\DI\Container;
 
 /**
  * Joomla Framework Base Application Class
@@ -21,14 +22,6 @@ use Psr\Log\NullLogger;
  */
 abstract class AbstractApplication implements LoggerAwareInterface
 {
-	/**
-	 * The application configuration object.
-	 *
-	 * @var    Registry
-	 * @since  1.0
-	 */
-	protected $config;
-
 	/**
 	 * The application input object.
 	 *
@@ -46,6 +39,14 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	private $logger;
 
 	/**
+	 * The DI container.
+	 *
+	 * @var    Container
+	 * @since  1.0
+	 */
+	private $container;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param   Input     $input   An optional argument to provide dependency injection for the application's
@@ -60,7 +61,10 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	public function __construct(Input $input = null, Registry $config = null)
 	{
 		$this->input = $input instanceof Input ? $input : new Input;
-		$this->config = $config instanceof Registry ? $config : new Registry;
+		$config = $config instanceof Registry ? $config : new Registry;
+
+		$this->getContainer()->set('input', $this->input, false, true);
+		$this->getContainer()->set('config', $config, true, false);
 
 		$this->initialise();
 	}
@@ -119,7 +123,7 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	 */
 	public function get($key, $default = null)
 	{
-		return $this->config->get($key, $default);
+		return $this->getContainer()->get('config')->get($key, $default);
 	}
 
 	/**
@@ -138,6 +142,24 @@ abstract class AbstractApplication implements LoggerAwareInterface
 		}
 
 		return $this->logger;
+	}
+
+	/**
+	 * Get the DI container of the application.
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 */
+	public function getContainer()
+	{
+		if ($this->container === null)
+		{
+			$this->container = new Container();
+			$this->container->set('app', $this, false, true);
+		}
+
+		return $this->container;
 	}
 
 	/**
@@ -167,8 +189,8 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	 */
 	public function set($key, $value = null)
 	{
-		$previous = $this->config->get($key);
-		$this->config->set($key, $value);
+		$previous = $this->getContainer()->get('config')->get($key);
+		$this->getContainer()->get('config')->set($key, $value);
 
 		return $previous;
 	}
@@ -184,7 +206,7 @@ abstract class AbstractApplication implements LoggerAwareInterface
 	 */
 	public function setConfiguration(Registry $config)
 	{
-		$this->config = $config;
+		$this->getContainer()->set('config', $config);
 
 		return $this;
 	}

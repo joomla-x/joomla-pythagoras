@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\Event\DispatcherInterface;
 use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 /**
  * Base class for a Joomla! Web application.
@@ -42,24 +43,6 @@ class JApplicationWeb extends JApplicationBase
 	 * @since  11.3
 	 */
 	public $client;
-
-	/**
-	 * @var    JDocument  The application document object.
-	 * @since  11.3
-	 */
-	protected $document;
-
-	/**
-	 * @var    JLanguage  The application language object.
-	 * @since  11.3
-	 */
-	protected $language;
-
-	/**
-	 * @var    JSession  The application session object.
-	 * @since  11.3
-	 */
-	protected $session;
 
 	/**
 	 * @var    object  The application response object.
@@ -95,8 +78,8 @@ class JApplicationWeb extends JApplicationBase
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JInput                 $input   An optional argument to provide dependency injection for the application's
-	 *                                          input object.  If the argument is a JInput object that object will become
+	 * @param   Input                  $input   An optional argument to provide dependency injection for the application's
+	 *                                          input object.  If the argument is a Input object that object will become
 	 *                                          the application's input object, otherwise a default input object is created.
 	 * @param   Registry               $config  An optional argument to provide dependency injection for the application's
 	 *                                          config object.  If the argument is a Registry object that object will become
@@ -107,29 +90,14 @@ class JApplicationWeb extends JApplicationBase
 	 *
 	 * @since   11.3
 	 */
-	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
+	public function __construct(Input $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
-		// If a input object is given use it.
-		if ($input instanceof JInput)
-		{
-			$this->input = $input;
-		}
-		// Create the input based on the application logic.
-		else
-		{
-			$this->input = new JInput;
-		}
-
-		// If a config object is given use it.
-		if ($config instanceof Registry)
-		{
-			$this->config = $config;
-		}
-		// Instantiate a new configuration object.
-		else
-		{
-			$this->config = new Registry;
-		}
+		parent::__construct($input, $config);
+		$this->getContainer()->registerServiceProvider(new JApplicationWebDatabaseprovider($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebDocumentprovider($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebLanguageprovider($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebSessionprovider($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebMailerprovider($this));
 
 		// If a client object is given use it.
 		if ($client instanceof JApplicationWebClient)
@@ -186,63 +154,6 @@ class JApplicationWeb extends JApplicationBase
 		}
 
 		return self::$instance;
-	}
-
-	/**
-	 * Initialise the application.
-	 *
-	 * @param   mixed  $session     An optional argument to provide dependency injection for the application's
-	 *                              session object.  If the argument is a JSession object that object will become
-	 *                              the application's session object, if it is false then there will be no session
-	 *                              object, and if it is null then the default session object will be created based
-	 *                              on the application's loadSession() method.
-	 * @param   mixed  $document    An optional argument to provide dependency injection for the application's
-	 *                              document object.  If the argument is a JDocument object that object will become
-	 *                              the application's document object, if it is false then there will be no document
-	 *                              object, and if it is null then the default document object will be created based
-	 *                              on the application's loadDocument() method.
-	 * @param   mixed  $language    An optional argument to provide dependency injection for the application's
-	 *                              language object.  If the argument is a JLanguage object that object will become
-	 *                              the application's language object, if it is false then there will be no language
-	 *                              object, and if it is null then the default language object will be created based
-	 *                              on the application's loadLanguage() method.
-	 * @param   mixed  $dispatcher  An optional argument to provide dependency injection for the application's
-	 *                              event dispatcher.  If the argument is a DispatcherInterface object that object will become
-	 *                              the application's event dispatcher, if it is null then the default event dispatcher
-	 *                              will be created based on the application's loadDispatcher() method.
-	 *
-	 * @return  JApplicationWeb  Instance of $this to allow chaining.
-	 *
-	 * @deprecated  13.1 (Platform) & 4.0 (CMS)
-	 * @see     JApplicationWeb::loadSession()
-	 * @see     JApplicationWeb::loadDocument()
-	 * @see     JApplicationWeb::loadLanguage()
-	 * @see     JApplicationBase::loadDispatcher()
-	 * @since   11.3
-	 */
-	public function initialise($session = null, $document = null, $language = null, DispatcherInterface $dispatcher = null)
-	{
-		// Create the session based on the application logic.
-		if ($session !== false)
-		{
-			$this->loadSession($session);
-		}
-
-		// Create the document based on the application logic.
-		if ($document !== false)
-		{
-			$this->loadDocument($document);
-		}
-
-		// Create the language based on the application logic.
-		if ($language !== false)
-		{
-			$this->loadLanguage($language);
-		}
-
-		$this->loadDispatcher($dispatcher);
-
-		return $this;
 	}
 
 	/**
@@ -579,11 +490,11 @@ class JApplicationWeb extends JApplicationBase
 		// Load the data into the configuration object.
 		if (is_array($data))
 		{
-			$this->config->loadArray($data);
+			$this->getContainer()->get('config')->loadArray($data);
 		}
 		elseif (is_object($data))
 		{
-			$this->config->loadObject($data);
+			$this->getContainer()->get('config')->loadObject($data);
 		}
 
 		return $this;
@@ -775,7 +686,7 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function getDocument()
 	{
-		return $this->document;
+		return $this->getContainer()->get('document');
 	}
 
 	/**
@@ -787,7 +698,7 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function getLanguage()
 	{
-		return $this->language;
+		return $this->getContainer()->get('language');
 	}
 
 	/**
@@ -799,7 +710,7 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function getSession()
 	{
-		return $this->session;
+		return $this->getContainer()->get('session');
 	}
 
 	/**
@@ -971,123 +882,6 @@ class JApplicationWeb extends JApplicationBase
 	public function isSSLConnection()
 	{
 		return ((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION'));
-	}
-
-	/**
-	 * Allows the application to load a custom or default document.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a document,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JDocument  $document  An optional document object. If omitted, the factory document is created.
-	 *
-	 * @return  JApplicationWeb This method is chainable.
-	 *
-	 * @since   11.3
-	 */
-	public function loadDocument(JDocument $document = null)
-	{
-		$this->document = ($document === null) ? JFactory::getDocument() : $document;
-
-		return $this;
-	}
-
-	/**
-	 * Allows the application to load a custom or default language.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a language,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JLanguage  $language  An optional language object. If omitted, the factory language is created.
-	 *
-	 * @return  JApplicationWeb This method is chainable.
-	 *
-	 * @since   11.3
-	 */
-	public function loadLanguage(JLanguage $language = null)
-	{
-		$this->language = ($language === null) ? JFactory::getLanguage() : $language;
-
-		return $this;
-	}
-
-	/**
-	 * Allows the application to load a custom or default session.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a session,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JSession  $session  An optional session object. If omitted, the session is created.
-	 *
-	 * @return  JApplicationWeb This method is chainable.
-	 *
-	 * @since   11.3
-	 */
-	public function loadSession(JSession $session = null)
-	{
-		if ($session !== null)
-		{
-			$this->session = $session;
-
-			return $this;
-		}
-
-		// Generate a session name.
-		$name = md5($this->get('secret') . $this->get('session_name', get_class($this)));
-
-		// Calculate the session lifetime.
-		$lifetime = (($this->get('sess_lifetime')) ? $this->get('sess_lifetime') * 60 : 900);
-
-		// Get the session handler from the configuration.
-		$handler = $this->get('sess_handler', 'none');
-
-		// Initialize the options for JSession.
-		$options = array(
-			'name' => $name,
-			'expire' => $lifetime,
-			'force_ssl' => $this->get('force_ssl')
-		);
-
-		$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart'));
-
-		// Instantiate the session object.
-		$session = JSession::getInstance($handler, $options);
-		$session->initialise($this->input, $this->dispatcher);
-
-		if ($session->getState() == 'expired')
-		{
-			$session->restart();
-		}
-		else
-		{
-			$session->start();
-		}
-
-		// Set the session object.
-		$this->session = $session;
-
-		return $this;
-	}
-
-	/**
-	 * After the session has been started we need to populate it with some default values.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.2
-	 */
-	public function afterSessionStart()
-	{
-		$session = JFactory::getSession();
-
-		if ($session->isNew())
-		{
-			$session->set('registry', new Registry('session'));
-			$session->set('user', new JUser);
-		}
 	}
 
 	/**

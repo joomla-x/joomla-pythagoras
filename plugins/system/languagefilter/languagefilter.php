@@ -424,8 +424,7 @@ class PlgSystemLanguageFilter extends JPlugin
 				$newLang->load($extension);
 			}
 
-			JFactory::$language = $newLang;
-			$this->app->loadLanguage($newLang);
+			$this->app->getContainer()->set('language', $newLang);
 		}
 
 		// Create a cookie.

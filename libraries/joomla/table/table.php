@@ -199,7 +199,7 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 		if (!is_object($dispatcher) || !($dispatcher instanceof DispatcherInterface))
 		{
 			// TODO Maybe we should use a dedicated "behaviour" dispatcher for performance reasons and to prevent system plugins from butting in?
-			$dispatcher = JFactory::getApplication()->getDispatcher();
+			$dispatcher = JFactory::getApplication()->getContainer()->get('dispatcher');
 		}
 
 		$this->setDispatcher($dispatcher);

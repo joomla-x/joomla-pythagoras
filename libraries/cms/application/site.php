@@ -126,16 +126,10 @@ final class JApplicationSite extends JApplicationCms
 			$component = $this->input->getCmd('option', null);
 		}
 
-		// Load the document to the API
-		$this->loadDocument();
-
 		// Set up the params
 		$document = $this->getDocument();
 		$router   = static::getRouter();
 		$params   = $this->getParams();
-
-		// Register the document object with JFactory
-		JFactory::$document = $document;
 
 		switch ($document->getType())
 		{
@@ -646,7 +640,7 @@ final class JApplicationSite extends JApplicationCms
 		// One last check to make sure we have something
 		if (!JLanguage::exists($options['language']))
 		{
-			$lang = $this->config->get('language', 'en-GB');
+			$lang = $this->getContainer()->get('config')->get('language', 'en-GB');
 
 			if (JLanguage::exists($lang))
 			{
@@ -705,7 +699,7 @@ final class JApplicationSite extends JApplicationCms
 	 */
 	protected function render()
 	{
-		switch ($this->document->getType())
+		switch ($this->getDocument()->getType())
 		{
 			case 'feed':
 				// No special processing for feeds
