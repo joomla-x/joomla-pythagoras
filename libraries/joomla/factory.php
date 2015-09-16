@@ -42,23 +42,6 @@ abstract class JFactory
 	public static $dates = array();
 
 	/**
-	 * Global ACL object
-	 *
-	 * @var    JAccess
-	 * @since  11.1
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS)
-	 */
-	public static $acl = null;
-
-	/**
-	 * Global mailer object
-	 *
-	 * @var    JMail
-	 * @since  11.1
-	 */
-	public static $mailer = null;
-
-	/**
 	 * Get a application object.
 	 *
 	 * Returns the global {@link JApplicationCms} object, only creating it if it doesn't already exist.
@@ -91,6 +74,8 @@ abstract class JFactory
 	 *
 	 * @see     Registry
 	 * @since   11.1
+	 *
+	 * @deprecated  4.0  Use the contianer in your context like $this->getApplication()->getContainer()->get('config');
 	 */
 	public static function getConfig($file = null, $type = 'PHP', $namespace = '')
 	{
@@ -108,6 +93,8 @@ abstract class JFactory
 	 *
 	 * @see     JSession
 	 * @since   11.1
+	 *
+	 * @deprecated  4.0  Use the contianer in your context like $this->getApplication()->getContainer()->get('session');
 	 */
 	public static function getSession(array $options = array())
 	{
@@ -123,6 +110,8 @@ abstract class JFactory
 	 *
 	 * @see     JLanguage
 	 * @since   11.1
+	 *
+	 * @deprecated  4.0  Use the contianer in your context like $this->getApplication()->getContainer()->get('language');
 	 */
 	public static function getLanguage()
 	{
@@ -225,18 +214,11 @@ abstract class JFactory
 	 *
 	 * @return  JAccess object
 	 *
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use JAccess directly.
+	 * @deprecated  4.0  Use the contianer in your context like $this->getApplication()->getContainer()->get('acl');
 	 */
 	public static function getAcl()
 	{
-		JLog::add(__METHOD__ . ' is deprecated. Use JAccess directly.', JLog::WARNING, 'deprecated');
-
-		if (!self::$acl)
-		{
-			self::$acl = new JAccess;
-		}
-
-		return self::$acl;
+		return self::$application->getContainer()->get('acl');
 	}
 
 	/**
@@ -248,6 +230,8 @@ abstract class JFactory
 	 *
 	 * @see     JDatabaseDriver
 	 * @since   11.1
+	 *
+	 * @deprecated  4.0  Use the contianer in your context like $this->getApplication()->getContainer()->get('dbo');
 	 */
 	public static function getDbo()
 	{
@@ -263,6 +247,8 @@ abstract class JFactory
 	 *
 	 * @see     JMail
 	 * @since   11.1
+	 *
+	 * @deprecated  4.0  Use the contianer in your context like $this->getApplication()->getContainer()->get('mailer');
 	 */
 	public static function getMailer()
 	{
