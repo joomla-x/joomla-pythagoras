@@ -87,9 +87,9 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 
 		$this->saveFactoryState();
 
-		JFactory::$application->getContainer()->set('document', $this->getMockDocument());
-		JFactory::$application->getContainer()->set('language', $this->getMockLanguage());
-		JFactory::$application->getContainer()->set('session', $this->getMockSession());
+		JFactory::$document = $this->getMockDocument();
+		JFactory::$language = $this->getMockLanguage();
+		JFactory::$session  = $this->getMockSession();
 
 		$this->backupServer = $_SERVER;
 
@@ -158,8 +158,6 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetClientId()
 	{
-		JFactory::$application->getContainer()->set('session', $this->getMockSession());
-
 		$this->assertSame(1, $this->class->getClientId());
 	}
 
@@ -265,10 +263,11 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 		JFactory::$application = $this->class;
 
 		$document = $this->getMockDocument();
-		JFactory::$application->getContainer()->set('document', $document);
-		JFactory::$application->getContainer()->set('session', $this->getMockSession());
 
 		$this->assignMockReturns($document, array('render' => 'JWeb Body'));
+
+		// Manually inject the document.
+		TestReflection::setValue($this->class, 'document', $document);
 
 		TestReflection::invoke($this->class, 'render');
 
