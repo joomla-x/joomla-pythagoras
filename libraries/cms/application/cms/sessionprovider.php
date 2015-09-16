@@ -18,7 +18,7 @@ use Joomla\Registry\Registry;
  *
  * @since  4.0
  */
-class JApplicationService implements ServiceProviderInterface
+class JApplicationCmsSessionprovider implements ServiceProviderInterface
 {
 	/**
 	 * The application object.

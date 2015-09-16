@@ -104,7 +104,7 @@ class JApplicationCms extends JApplicationWeb
 	{
 		parent::__construct($input, $config, $client);
 
-		$this->getContainer()->registerServiceProvider(new JApplicationService($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationCmsSessionprovider($this));
 
 		// If JDEBUG is defined, load the profiler instance
 		if (defined('JDEBUG') && JDEBUG)

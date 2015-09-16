@@ -18,7 +18,7 @@ use Joomla\Registry\Registry;
  *
  * @since  4.0
  */
-class JApplicationWebService implements ServiceProviderInterface
+class JApplicationWebSessionprovider implements ServiceProviderInterface
 {
 	/**
 	 * The application object.
@@ -42,18 +42,8 @@ class JApplicationWebService implements ServiceProviderInterface
 
 	public function register(Container $container)
 	{
-		// Setting the callables for the keys which are needed in a web app
-		$container->set('document', array($this, 'getDocument'), false, true);
+		// Setting the callables for the session
 		$container->set('session', array($this, 'getSession'), true, false);
-		$container->set('language', array($this, 'getLanguage'), true, false);
-	}
-
-	public function getLanguage(Container $container)
-	{
-		$conf = $container->get('config');
-		$locale = $conf->get('language');
-		$debug = $conf->get('debug_lang');
-		return JLanguage::getInstance($locale, $debug);
 	}
 
 	public function getSession(Container $container)
@@ -96,24 +86,5 @@ class JApplicationWebService implements ServiceProviderInterface
 		}
 
 		return $session;
-	}
-	public function getDocument(Container $container)
-	{
-		$lang = $container->get('language');
-
-		$input = $container->get('input');
-		$type = $input->get('format', 'html', 'word');
-
-		$version = new JVersion;
-
-		$attributes = array(
-				'charset' => 'utf-8',
-				'lineend' => 'unix',
-				'tab' => '  ',
-				'language' => $lang->getTag(),
-				'direction' => $lang->isRtl() ? 'rtl' : 'ltr',
-				'mediaversion' => $version->getMediaVersion()
-		);
-		return JDocument::getInstance($type, $attributes);
 	}
 }

@@ -92,7 +92,9 @@ class JApplicationWeb extends JApplicationBase
 	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
 		parent::__construct($input, $config);
-		$this->getContainer()->registerServiceProvider(new JApplicationWebService($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebDocumentprovider($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebLanguageprovider($this));
+		$this->getContainer()->registerServiceProvider(new JApplicationWebSessionprovider($this));
 
 		// If a client object is given use it.
 		if ($client instanceof JApplicationWebClient)
