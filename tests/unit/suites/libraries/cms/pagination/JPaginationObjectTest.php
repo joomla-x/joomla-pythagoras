@@ -25,6 +25,9 @@ class JPaginationObjectTest extends TestCase
 	 */
 	public function dataTestConstructor()
 	{
+		// Needs to be called here because this function is executed before setUp
+		JFactory::$application = $this->getMockCmsApp();
+
 		return array(
 			array(JText::_('JPREV'), '', null, null, false,
 				array(

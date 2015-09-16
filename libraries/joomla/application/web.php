@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\Event\DispatcherInterface;
 use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 /**
  * Base class for a Joomla! Web application.
@@ -77,8 +78,8 @@ class JApplicationWeb extends JApplicationBase
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JInput                 $input   An optional argument to provide dependency injection for the application's
-	 *                                          input object.  If the argument is a JInput object that object will become
+	 * @param   Input                  $input   An optional argument to provide dependency injection for the application's
+	 *                                          input object.  If the argument is a Input object that object will become
 	 *                                          the application's input object, otherwise a default input object is created.
 	 * @param   Registry               $config  An optional argument to provide dependency injection for the application's
 	 *                                          config object.  If the argument is a Registry object that object will become
@@ -89,9 +90,10 @@ class JApplicationWeb extends JApplicationBase
 	 *
 	 * @since   11.3
 	 */
-	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
+	public function __construct(Input $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
 		parent::__construct($input, $config);
+		$this->getContainer()->registerServiceProvider(new JApplicationWebDatabaseprovider($this));
 		$this->getContainer()->registerServiceProvider(new JApplicationWebDocumentprovider($this));
 		$this->getContainer()->registerServiceProvider(new JApplicationWebLanguageprovider($this));
 		$this->getContainer()->registerServiceProvider(new JApplicationWebSessionprovider($this));

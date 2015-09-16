@@ -6,6 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\Input\Input;
+
 if (!class_exists('PHPUnit_Extensions_Database_TestCase'))
 {
 	require_once 'PHPUnit/Extensions/Database/TestCase.php';
@@ -290,7 +292,7 @@ abstract class TestCaseDatabase extends PHPUnit_Extensions_Database_TestCase
 	public function getMockInput(array $options = null)
 	{
 		// Attempt to load the real class first.
-		class_exists('JInput');
+		class_exists('Input');
 
 		$mocker = new TestMockInput($this);
 
@@ -422,11 +424,11 @@ abstract class TestCaseDatabase extends PHPUnit_Extensions_Database_TestCase
 	protected function restoreFactoryState()
 	{
 		JFactory::$application = $this->_stashedFactoryState['application'];
-		JFactory::$config = $this->_stashedFactoryState['config'];
+		JFactory::$application->getContainer()->set('config', $this->_stashedFactoryState['config']);
 		JFactory::$dates = $this->_stashedFactoryState['dates'];
-		JFactory::$session = $this->_stashedFactoryState['session'];
-		JFactory::$language = $this->_stashedFactoryState['language'];
-		JFactory::$document = $this->_stashedFactoryState['document'];
+		JFactory::$application->getContainer()->set('session', $this->_stashedFactoryState['session']);
+		JFactory::$application->getContainer()->set('language', $this->_stashedFactoryState['language']);
+		JFactory::$application->getContainer()->set('document', $this->_stashedFactoryState['document']);
 		JFactory::$acl = $this->_stashedFactoryState['acl'];
 		JFactory::$mailer = $this->_stashedFactoryState['mailer'];
 	}
@@ -462,11 +464,11 @@ abstract class TestCaseDatabase extends PHPUnit_Extensions_Database_TestCase
 	protected function saveFactoryState()
 	{
 		$this->_stashedFactoryState['application'] = JFactory::$application;
-		$this->_stashedFactoryState['config'] = JFactory::$config;
+		$this->_stashedFactoryState['config'] = JFactory::$application->getContainer()->get('config');
 		$this->_stashedFactoryState['dates'] = JFactory::$dates;
-		$this->_stashedFactoryState['session'] = JFactory::$session;
-		$this->_stashedFactoryState['language'] = JFactory::$language;
-		$this->_stashedFactoryState['document'] = JFactory::$document;
+		$this->_stashedFactoryState['session'] = JFactory::$application->getContainer()->get('session');
+		$this->_stashedFactoryState['language'] = JFactory::$application->getContainer()->get('language');
+		$this->_stashedFactoryState['document'] = JFactory::$application->getContainer()->get('document');
 		$this->_stashedFactoryState['acl'] = JFactory::$acl;
 		$this->_stashedFactoryState['mailer'] = JFactory::$mailer;
 	}

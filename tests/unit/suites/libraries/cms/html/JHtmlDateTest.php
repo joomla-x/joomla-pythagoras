@@ -23,8 +23,11 @@ class JHtmlDateTest extends TestCase
 	 *
 	 * @since   3.1
 	 */
-	public function dataTestRelative()
+	public function testDataRelative()
 	{
+		// Needs to be called here because this function is executed before setUp
+		JFactory::$application = $this->getMockCmsApp();
+
 		return array(
 			// Element order: result, date, unit, time
 			// result - 1 hour ago

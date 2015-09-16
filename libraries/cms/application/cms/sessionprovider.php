@@ -87,7 +87,7 @@ class JApplicationCmsSessionprovider implements ServiceProviderInterface
 		// Config time is in minutes
 		$options['expire'] = ($app->get('lifetime')) ? $app->get('lifetime') * 60 : 900;
 
-		$sessionHandler = new JSessionHandlerJoomla($options);
+		$sessionHandler = new JSessionHandlerJoomla($options, $app);
 		$session = JSession::getInstance($handler, $options, $sessionHandler);
 
 		if ($session->getState() == 'expired')

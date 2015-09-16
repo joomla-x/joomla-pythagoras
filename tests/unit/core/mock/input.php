@@ -7,7 +7,7 @@
  */
 
 /**
- * Class to mock JInput.
+ * Class to mock Input.
  *
  * @package  Joomla.Test
  * @since    3.4
@@ -74,7 +74,7 @@ class TestMockInput
 
 		// Create the mock.
 		$mockObject = self::$test->getMock(
-			'JInput',
+			'Joomla\Input\Input',
 			$methods,
 			// Constructor arguments.
 			array(),

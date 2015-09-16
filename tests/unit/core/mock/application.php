@@ -38,7 +38,7 @@ class TestMockApplication
 
 		// Create the mock.
 		$mockObject = $test->getMock(
-			'JApplication',
+			'JApplicationCms',
 			$methods,
 			// Constructor arguments.
 			array(),

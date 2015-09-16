@@ -87,9 +87,9 @@ class JApplicationSiteTest extends TestCaseDatabase
 
 		$this->saveFactoryState();
 
-		JFactory::$document = $this->getMockDocument();
-		JFactory::$language = $this->getMockLanguage();
-		JFactory::$session  = $this->getMockSession();
+		JFactory::$application->getContainer()->set('document', $this->getMockDocument());
+		JFactory::$application->getContainer()->set('language', $this->getMockLanguage());
+		JFactory::$application->getContainer()->set('session', $this->getMockSession());
 
 		$this->backupServer = $_SERVER;
 

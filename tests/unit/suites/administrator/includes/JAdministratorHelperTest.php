@@ -6,8 +6,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once JPATH_ADMINISTRATOR . '/includes/helper.php';
-
 /**
  * Test class for JAdministratorHelper.
  */

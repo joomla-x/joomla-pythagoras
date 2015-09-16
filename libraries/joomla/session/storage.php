@@ -50,6 +50,11 @@ abstract class JSessionStorage
 	{
 		$name = strtolower(JFilterInput::getInstance()->clean($name, 'word'));
 
+		if ($name === '')
+		{
+			$name = 'none';
+		}
+
 		if (empty(self::$instances[$name]))
 		{
 			$class = 'JSessionStorage' . ucfirst($name);

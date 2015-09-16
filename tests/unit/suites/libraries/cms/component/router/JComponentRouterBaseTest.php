@@ -69,7 +69,7 @@ class JComponentRouterBaseTest extends TestCase
 		$this->assertEquals($app, $object->app);
 		$this->assertEquals($menu, $object->menu);
 
-		JFactory::$language = $app_bkp;
+		$app->getContainer()->set('document', $app_bkp);
 	}
 
 	/**

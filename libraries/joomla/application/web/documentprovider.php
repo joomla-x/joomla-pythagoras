@@ -14,7 +14,7 @@ use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
 
 /**
- * The Web Service provider which loads the document, etc.
+ * The Web Service provider which loads the document.
  *
  * @since  4.0
  */
@@ -43,7 +43,7 @@ class JApplicationWebDocumentprovider implements ServiceProviderInterface
 	public function register(Container $container)
 	{
 		// Setting the callables for the session
-		$container->set('document', array($this, 'getDocument'), false, true);
+		$container->set('document', array($this, 'getDocument'), true, false);
 	}
 
 	public function getDocument(Container $container)

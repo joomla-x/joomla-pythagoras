@@ -14,7 +14,7 @@ use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
 
 /**
- * The Web Service provider which loads the document, etc.
+ * The Web Service provider which loads the language.
  *
  * @since  4.0
  */
