@@ -416,7 +416,6 @@ abstract class JDatabaseDriver implements JDatabaseInterface
 
 		$this->tablePrefix = (isset($options['prefix'])) ? $options['prefix'] : 'jos_';
 		$this->count = 0;
-		$this->errorNum = 0;
 		$this->log = array();
 
 		// Set class options.
