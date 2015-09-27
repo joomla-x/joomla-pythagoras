@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\Normalise as JStringNormalise;
+
 /**
  * Prototype admin view.
  *

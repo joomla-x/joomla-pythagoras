@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 // Get the mime type class.
 $mime = !empty($this->result->mime) ? 'mime-' . $this->result->mime : null;
 

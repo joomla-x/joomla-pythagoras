@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Uri\UriHelper;
+use Joomla\String\StringHelper as JString;
 
 /**
  * Form Rule class for the Joomla Platform.
@@ -45,7 +47,7 @@ class JFormRuleUrl extends JFormRule
 			return true;
 		}
 
-		$urlParts = JString::parse_url($value);
+		$urlParts = UriHelper::parse_url($value);
 
 		// See http://www.w3.org/Addressing/URL/url-spec.txt
 		// Use the full list or optionally specify a list of permitted schemes.

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * Utility class for creating different select lists
  *

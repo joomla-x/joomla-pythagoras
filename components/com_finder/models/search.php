@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 // Register dependent classes.
 define('FINDER_PATH_INDEXER', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer');
 JLoader::register('FinderIndexerHelper', FINDER_PATH_INDEXER . '/helper.php');

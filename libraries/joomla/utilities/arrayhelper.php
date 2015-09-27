@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper as JString;
 
 /**
  * JArrayHelper is an array utility class for doing all sorts of odds and ends with arrays.

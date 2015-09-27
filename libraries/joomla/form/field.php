@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\String\Normalise as JStringNormalise;
+use Joomla\String\StringHelper as JString;
+
 /**
  * Abstract Form Field class for the Joomla Platform.
  *
