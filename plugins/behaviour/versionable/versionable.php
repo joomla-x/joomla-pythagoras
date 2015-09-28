@@ -17,7 +17,7 @@ use Joomla\Cms\Event as CmsEvent;
  *
  * This plugin supersedes JTableObserverContenthistory.
  *
- * @since   4.0.0
+ * @since  4.0.0
  */
 class PlgBehaviourVersionable extends JPlugin
 {
