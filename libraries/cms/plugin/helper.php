@@ -136,10 +136,10 @@ abstract class JPluginHelper
 	 * Loads all the plugin files for a particular type if no specific plugin is specified
 	 * otherwise only the specific plugin is loaded.
 	 *
-	 * @param   string            $type        The plugin type, relates to the sub-directory in the plugins directory.
-	 * @param   string            $plugin      The plugin name.
-	 * @param   boolean           $autocreate  Autocreate the plugin.
-	 * @param   Dispatcher        $dispatcher  Optionally allows the plugin to use a different dispatcher.
+	 * @param   string      $type        The plugin type, relates to the sub-directory in the plugins directory.
+	 * @param   string      $plugin      The plugin name.
+	 * @param   boolean     $autocreate  Autocreate the plugin.
+	 * @param   Dispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
 	 *
 	 * @return  boolean  True on success.
 	 *

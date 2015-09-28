@@ -77,7 +77,7 @@ class JEditor implements DispatcherAwareInterface
 		// Set the dispatcher
 		if (!is_object($dispatcher))
 		{
-			$dispatcher = new Dispatcher();
+			$dispatcher = new Dispatcher;
 		}
 
 		$this->setDispatcher($dispatcher);
@@ -92,7 +92,8 @@ class JEditor implements DispatcherAwareInterface
 			$newResult = (array) $newResult;
 
 			$event['result'] = array_merge($result, $newResult);
-		});
+		}
+		);
 
 		// Register the getContent event
 		$this->getDispatcher()->addListener('getContent', function(AbstractEvent $event) {
@@ -102,7 +103,8 @@ class JEditor implements DispatcherAwareInterface
 			$result[] = $this->getContent($editor);
 
 			$event['result'] = $result;
-		});
+		}
+		);
 
 		// Register the setContent event
 		$this->getDispatcher()->addListener('getContent', function(AbstractEvent $event) {
@@ -113,7 +115,8 @@ class JEditor implements DispatcherAwareInterface
 			$result[] = $this->setContent($editor, $html);
 
 			$event['result'] = $result;
-		});
+		}
+		);
 
 		// Register the save event
 		$this->getDispatcher()->addListener('save', function(AbstractEvent $event) {
@@ -123,7 +126,8 @@ class JEditor implements DispatcherAwareInterface
 			$result[] = $this->save($editor);
 
 			$event['result'] = $result;
-		});
+		}
+		);
 	}
 
 	/**

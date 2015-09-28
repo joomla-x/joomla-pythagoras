@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Libraries
- * @subpackage  Error
+ * @subpackage  Event
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -32,6 +32,8 @@ use BadMethodCallException;
  * This AbstractEvent class implements a mutable event which is allowed to change its arguments at runtime. This is
  * generally unadvisable. It's best to use AbstractImmutableEvent instead and constrict all your interaction to the
  * subject class.
+ *
+ * @since  4.0
  */
 abstract class AbstractEvent extends BaseEvent
 {
@@ -118,8 +120,8 @@ abstract class AbstractEvent extends BaseEvent
 	 * $value  is the value currently stored in the $arguments array of the event
 	 * It returns the value to return to the caller.
 	 *
-	 * @param   string $name    The argument name.
-	 * @param   mixed  $default The default value if not found.
+	 * @param   string  $name     The argument name.
+	 * @param   mixed   $default  The default value if not found.
 	 *
 	 * @return  mixed  The argument value or the default value.
 	 *
@@ -149,8 +151,8 @@ abstract class AbstractEvent extends BaseEvent
 	 * $value  is the value being set by the user
 	 * It returns the value to return to set in the $arguments array of the event.
 	 *
-	 * @param   string $key   Argument name.
-	 * @param   mixed  $value Value.
+	 * @param   string  $name   Argument name.
+	 * @param   mixed   $value  Value.
 	 *
 	 * @return  $this
 	 *

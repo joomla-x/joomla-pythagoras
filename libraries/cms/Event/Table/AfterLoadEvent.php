@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Libraries
- * @subpackage  Error
+ * @subpackage  Event
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,6 +16,8 @@ use JTableInterface;
 
 /**
  * Event class for JTable's onAfterLoad event
+ *
+ * @since  4.0
  */
 class AfterLoadEvent extends AbstractEvent
 {
@@ -27,8 +29,8 @@ class AfterLoadEvent extends AbstractEvent
 	 * result	boolean			Did the table record load succeed?
 	 * row		null|array		The values loaded from the database, null if it failed
 	 *
-	 * @param   string $name      The event name.
-	 * @param   array  $arguments The event arguments.
+	 * @param   string  $name       The event name.
+	 * @param   array   $arguments  The event arguments.
 	 *
 	 * @throws  BadMethodCallException
 	 */
