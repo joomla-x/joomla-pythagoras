@@ -664,7 +664,10 @@ class JInstaller extends JAdapter
 
 		// Fire the onExtensionBeforeUpdate event.
 		JPluginHelper::importPlugin('extension');
-		JFactory::getApplication()->triggerEvent('onExtensionBeforeUpdate', array('type' => $this->manifest->attributes()->type, 'manifest' => $this->manifest));
+		JFactory::getApplication()->triggerEvent(
+			'onExtensionBeforeUpdate',
+			array('type' => $this->manifest->attributes()->type, 'manifest' => $this->manifest)
+		);
 
 		// Run the update
 		$result = $adapter->update();

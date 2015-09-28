@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Libraries
- * @subpackage  Error
+ * @subpackage  Event
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,14 +17,16 @@ use JTableInterface;
 
 /**
  * Event class for JTable's events
+ *
+ * @since  4.0
  */
 abstract class AbstractEvent extends AbstractImmutableEvent
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param   string $name      The event name.
-	 * @param   array  $arguments The event arguments.
+	 * @param   string  $name       The event name.
+	 * @param   array   $arguments  The event arguments.
 	 *
 	 * @throws  BadMethodCallException
 	 *
@@ -39,7 +41,6 @@ abstract class AbstractEvent extends AbstractImmutableEvent
 
 		parent::__construct($name, $arguments);
 	}
-
 
 	/**
 	 * Setter for the subject argument
