@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Libraries
- * @subpackage  Error
+ * @subpackage  Event
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,9 +17,13 @@ use JTableInterface;
 /**
  * Event class for JTable's onSetNewTags event
  *
- * TODO This is only used in JModelAdmin::batchTag. We need to remove it but we can't use JTable::save as we don't want the table data to be saved. Maybe trigger the onBeforeStore event instead?
+ * TODO This is only used in JModelAdmin::batchTag. We need to remove it but we can't use
+ * JTable::save as we don't want the table data to be saved. Maybe trigger the onBeforeStore
+ * event instead?
+ *
+ * @since  4.0
  */
-class SetNewTagsEvent extends TableEvent
+class SetNewTagsEvent extends AbstractEvent
 {
 	/**
 	 * Constructor.

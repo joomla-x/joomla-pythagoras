@@ -24,12 +24,12 @@ class PlgBehaviourVersionable extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   DispatcherInterface &$subject   The object to observe
-	 * @param   array               $config     An optional associative array of configuration settings.
+	 * @param   DispatcherInterface  &$subject  The object to observe
+	 * @param   array                $config    An optional associative array of configuration settings.
 	 *                                          Recognized key values include 'name', 'group', 'params', 'language'
 	 *                                          (this list is not meant to be comprehensive).
 	 *
-	 * @since   1.5
+	 * @since   4.0
 	 */
 	public function __construct(&$subject, $config = array())
 	{
@@ -42,12 +42,16 @@ class PlgBehaviourVersionable extends JPlugin
 	 * Runs when a new table object is being created
 	 *
 	 * @param   CmsEvent\Table\ObjectCreateEvent  $event  The event to handle
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
 	 */
 	public function onTableObjectCreate(CmsEvent\Table\ObjectCreateEvent $event)
 	{
 		// Extract arguments
 		/** @var JTableInterface $table */
-		$table			= $event['subject'];
+		$table = $event['subject'];
 
 		// When we create the object the table is empty, so we can't parse the typeAlias field
 		$typeAlias = $table->typeAlias;
@@ -163,7 +167,7 @@ class PlgBehaviourVersionable extends JPlugin
 	 * Internal method
 	 * Parses a TypeAlias of the form "{variableName}.type", replacing {variableName} with table-instance variables variableName
 	 *
-	 * @param   JTableInterface  $table  The table
+	 * @param   JTableInterface  &$table  The table
 	 *
 	 * @return  string
 	 *

@@ -99,7 +99,10 @@ class TagsViewTag extends JViewLegacy
 				$results = JFactory::getApplication()->triggerEvent('onContentAfterTitle', array('com_tags.tag', &$itemElement, &$itemElement->core_params, 0));
 				$itemElement->event->afterDisplayTitle = trim(implode("\n", $results));
 
-				$results = JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_tags.tag', &$itemElement, &$itemElement->core_params, 0));
+				$results = JFactory::getApplication()->triggerEvent(
+					'onContentBeforeDisplay',
+					array('com_tags.tag', &$itemElement, &$itemElement->core_params, 0)
+				);
 				$itemElement->event->beforeDisplayContent = trim(implode("\n", $results));
 
 				$results = JFactory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_tags.tag', &$itemElement, &$itemElement->core_params, 0));
