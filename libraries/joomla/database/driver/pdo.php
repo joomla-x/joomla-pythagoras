@@ -476,7 +476,7 @@ abstract class JDatabaseDriverPdo extends JDatabaseDriver
 			}
 		}
 
-		return $this->executed;
+		return $this->prepared;
 	}
 
 	/**
