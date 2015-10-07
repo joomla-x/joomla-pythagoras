@@ -1,0 +1,33 @@
+<?php
+/**
+ * @package     Joomla.Libraries
+ * @subpackage  Service
+ *
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+namespace Joomla\Cms\Provider;
+
+defined('JPATH_PLATFORM') or die;
+
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
+
+/**
+ * The CMS Service provider which loads the application.
+ *
+ * @since  4.0
+ */
+class ApplicationProvider implements ServiceProviderInterface
+{
+	public function register(Container $container)
+	{
+		$container->set('app', array($this, 'getApplication'), false, true);
+	}
+
+	public function getApplication(Container $container)
+	{
+		return new \JApplicationSite();
+	}
+}

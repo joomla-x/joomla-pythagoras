@@ -517,7 +517,7 @@ class JApplicationCms extends JApplicationWeb
 
 		try
 		{
-			$router = JRouter::getInstance($name, $options);
+			$router = JRouter::getInstance($name, $options, JFactory::getApplication());
 		}
 		catch (Exception $e)
 		{
