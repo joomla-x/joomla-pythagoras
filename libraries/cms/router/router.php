@@ -166,7 +166,7 @@ class JRouter
 	 * @since   1.5
 	 * @throws  RuntimeException
 	 */
-	public static function getInstance($client, $options = array())
+	public static function getInstance($client, $options = array(), JApplicationCms $app = null)
 	{
 		if (empty(self::$instances[$client]))
 		{
@@ -193,7 +193,7 @@ class JRouter
 
 			if (class_exists($classname))
 			{
-				self::$instances[$client] = new $classname($options);
+				self::$instances[$client] = new $classname($options, $app);
 			}
 			else
 			{
