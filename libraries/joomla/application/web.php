@@ -197,18 +197,6 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function initialise($document = null, $language = null, DispatcherInterface $dispatcher = null)
 	{
-		// Create the document based on the application logic.
-		if ($document !== false)
-		{
-			$this->loadDocument($document);
-		}
-
-		// Create the language based on the application logic.
-		if ($language !== false)
-		{
-			$this->loadLanguage($language);
-		}
-
 		$this->loadDispatcher($dispatcher);
 
 		return $this;
@@ -949,15 +937,15 @@ class JApplicationWeb extends JApplicationBase
 	 * but for many applications it will make sense to override this method and create a document,
 	 * if required, based on more specific needs.
 	 *
-	 * @param   JDocument  $document  An optional document object. If omitted, the factory document is created.
+	 * @param   JDocument  $document
 	 *
 	 * @return  JApplicationWeb This method is chainable.
 	 *
 	 * @since   11.3
 	 */
-	public function loadDocument(JDocument $document = null)
+	public function setDocument(JDocument $document)
 	{
-		$this->document = ($document === null) ? JFactory::getDocument() : $document;
+		$this->document = $document;
 
 		return $this;
 	}
@@ -969,15 +957,15 @@ class JApplicationWeb extends JApplicationBase
 	 * but for many applications it will make sense to override this method and create a language,
 	 * if required, based on more specific needs.
 	 *
-	 * @param   JLanguage  $language  An optional language object. If omitted, the factory language is created.
+	 * @param   JLanguage  $language
 	 *
 	 * @return  JApplicationWeb This method is chainable.
 	 *
 	 * @since   11.3
 	 */
-	public function loadLanguage(JLanguage $language = null)
+	public function setLanguage(JLanguage $language)
 	{
-		$this->language = ($language === null) ? JFactory::getLanguage() : $language;
+		$this->language = $language;
 
 		return $this;
 	}
@@ -997,7 +985,21 @@ class JApplicationWeb extends JApplicationBase
 	 */
 	public function setSession(JSession $session)
 	{
+		// Set the session object.
 		$this->session = $session;
+
+		$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart'));
+
+		$session->initialise($this->input, $this->dispatcher);
+
+		if ($session->getState() == 'expired')
+		{
+			$session->restart();
+		}
+		else
+		{
+			$session->start();
+		}
 
 		return $this;
 	}

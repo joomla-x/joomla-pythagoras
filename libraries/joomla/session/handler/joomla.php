@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * Interface for managing HTTP sessions
  *
@@ -39,7 +41,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 	 *
 	 * @since   3.5
 	 */
-	public function __construct($options = array())
+	public function __construct($options = array(), Registry $config)
 	{
 		// Disable transparent sid support
 		ini_set('session.use_trans_sid', '0');
@@ -49,7 +51,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 
 		// Set options
 		$this->setOptions($options);
-		$this->setCookieParams();
+		$this->setCookieParams($config);
 	}
 
 	/**
@@ -115,7 +117,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 	 *
 	 * @since   3.5
 	 */
-	protected function setCookieParams()
+	protected function setCookieParams(Registry $config)
 	{
 		$cookie = session_get_cookie_params();
 
@@ -123,8 +125,6 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 		{
 			$cookie['secure'] = true;
 		}
-
-		$config = JFactory::getConfig();
 
 		if ($config->get('cookie_domain', '') != '')
 		{

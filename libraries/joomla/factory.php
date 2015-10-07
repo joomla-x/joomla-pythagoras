@@ -144,7 +144,7 @@ abstract class JFactory
 	 */
 	public static function getConfig($file = null, $type = 'PHP', $namespace = '')
 	{
-		self::$application->getContainer()->get('config');
+		return self::$application->getConfiguration();
 	}
 
 	/**
@@ -163,7 +163,7 @@ abstract class JFactory
 	{
 		return self::$application->getSession();
 	}
-
+	
 	/**
 	 * Get a language object.
 	 *
@@ -176,12 +176,7 @@ abstract class JFactory
 	 */
 	public static function getLanguage()
 	{
-		if (!self::$language)
-		{
-			self::$language = self::createLanguage();
-		}
-
-		return self::$language;
+		return self::$application->getLanguage();
 	}
 
 	/**
@@ -521,35 +516,6 @@ abstract class JFactory
 	}
 
 	/**
-	 * Create a session object
-	 *
-	 * @param   array  $options  An array containing session options
-	 *
-	 * @return  JSession object
-	 *
-	 * @since   11.1
-	 */
-	protected static function createSession(array $options = array())
-	{
-		// Get the Joomla configuration settings
-		$conf    = self::getConfig();
-		$handler = $conf->get('session_handler', 'none');
-
-		// Config time is in minutes
-		$options['expire'] = ($conf->get('lifetime')) ? $conf->get('lifetime') * 60 : 900;
-
-		$sessionHandler = new JSessionHandlerJoomla($options);
-		$session        = JSession::getInstance($handler, $options, $sessionHandler);
-
-		if ($session->getState() == 'expired')
-		{
-			$session->restart();
-		}
-
-		return $session;
-	}
-
-	/**
 	 * Create an database object
 	 *
 	 * @return  JDatabaseDriver
@@ -635,24 +601,6 @@ abstract class JFactory
 		}
 
 		return $mail;
-	}
-
-	/**
-	 * Create a language object
-	 *
-	 * @return  JLanguage object
-	 *
-	 * @see     JLanguage
-	 * @since   11.1
-	 */
-	protected static function createLanguage()
-	{
-		$conf = self::getConfig();
-		$locale = $conf->get('language');
-		$debug = $conf->get('debug_lang');
-		$lang = JLanguage::getInstance($locale, $debug);
-
-		return $lang;
 	}
 
 	/**
