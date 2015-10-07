@@ -38,6 +38,7 @@ require_once JPATH_BASE . '/includes/framework.php';
 $container = new Joomla\DI\Container();
 $container->registerServiceProvider(new Joomla\Provider\InputProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\SessionProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\ApplicationProvider());
 
 // Mark afterLoad in the profiler.

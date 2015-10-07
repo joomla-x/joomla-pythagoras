@@ -487,65 +487,6 @@ final class InstallationApplicationWeb extends JApplicationCms
 	}
 
 	/**
-	 * Allows the application to load a custom or default session.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a session,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JSession  $session  An optional session object. If omitted, the session is created.
-	 *
-	 * @return  InstallationApplicationWeb  This method is chainable.
-	 *
-	 * @since   3.1
-	 */
-	public function loadSession(JSession $session = null)
-	{
-		// Generate a session name.
-		$name = md5($this->get('secret') . $this->get('session_name', get_class($this)));
-
-		// Calculate the session lifetime.
-		$lifetime = (($this->get('lifetime')) ? $this->get('lifetime') * 60 : 900);
-
-		// Get the session handler from the configuration.
-		$handler = $this->get('session_handler', 'none');
-
-		// Initialize the options for JSession.
-		$options = array(
-			'name' => $name,
-			'expire' => $lifetime,
-			'force_ssl' => $this->get('force_ssl')
-		);
-
-		// Instantiate the session object.
-		$session = JSession::getInstance($handler, $options);
-		$session->initialise($this->input, $this->dispatcher);
-
-		if ($session->getState() == 'expired')
-		{
-			$session->restart();
-		}
-		else
-		{
-			$session->start();
-		}
-
-		if (!$session->get('registry') instanceof Registry)
-		{
-			// Registry has been corrupted somehow.
-			$session->set('registry', new Registry('session'));
-		}
-
-		// Set the session object.
-		$this->session = $session;
-
-		// Register the session with JFactory.
-		JFactory::$session = $session;
-
-		return $this;
-	}
-
-	/**
 	 * Rendering is the process of pushing the document buffers into the template
 	 * placeholders, retrieving data from the document and pushing it into
 	 * the application response buffer.

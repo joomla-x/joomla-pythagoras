@@ -161,12 +161,7 @@ abstract class JFactory
 	 */
 	public static function getSession(array $options = array())
 	{
-		if (!self::$session)
-		{
-			self::$session = self::createSession($options);
-		}
-
-		return self::$session;
+		return self::$application->getSession();
 	}
 
 	/**
