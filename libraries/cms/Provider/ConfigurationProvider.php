@@ -24,10 +24,11 @@ class ConfigurationProvider implements ServiceProviderInterface
 {
 	public function register(Container $container)
 	{
-		$container->set('Joomla\Registry\Registry', array($this, 'getRegistry'));
-		$container->alias('Registry', 'Joomla\Registry\Registry');
+		// Getting a registry object
+		$container->set('Registry', array($this, 'getRegistry'));
 
-		$container->set('config', array($this, 'getConfig'), false, true);
+		// The config from the config file which is protected
+		$container->set('config', array($this, 'getConfig'), true, false);
 	}
 
 	/**
@@ -42,6 +43,13 @@ class ConfigurationProvider implements ServiceProviderInterface
 		return new Registry();
 	}
 
+	/**
+	 * The registry filled with the configuration.
+	 *
+	 * @param Container $container
+	 *
+	 * @return Joomla\Registry\Registry
+	 */
 	public function getConfig(Container $container)
 	{
 		$file = JPATH_PLATFORM . '/config.php';

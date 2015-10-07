@@ -37,6 +37,7 @@ require_once JPATH_BASE . '/includes/framework.php';
 
 $container = new Joomla\DI\Container();
 $container->registerServiceProvider(new Joomla\Provider\InputProvider());
+$container->registerServiceProvider(new Joomla\Provider\LanguageProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\SessionProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\ApplicationProvider());
@@ -48,6 +49,8 @@ JDEBUG ? $_PROFILER->mark('afterLoad') : null;
 $app = $container->get('JApplicationSite');
 $container->share('app', $app);
 JFactory::$application = $app;
+
+$app->setSession($container->get('JSession'));
 
 // Execute the application.
 $app->execute();

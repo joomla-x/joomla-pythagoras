@@ -38,7 +38,7 @@ class ApplicationProvider implements ServiceProviderInterface
 	{
 		$app = new \JApplicationSite($container->get('Input'), $container->get('config'));
 		$app->setContainer($container);
-		$app->setSession($container->get('session'));
+		$app->setLanguage($container->get('JLanguage'));
 
 		return $app;
 	}
@@ -54,7 +54,7 @@ class ApplicationProvider implements ServiceProviderInterface
 	{
 		$app = new \JApplicationAdministrator($container->get('Input'), $container->get('config'));
 		$app->setContainer($container);
-		$app->setSession($container->get('session'));
+		$app->setLanguage($container->get('JLanguage'));
 
 		return $app;
 	}

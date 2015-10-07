@@ -136,12 +136,10 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function afterSessionStart()
 	{
-		$session = JFactory::getSession();
-
-		if ($session->isNew())
+		if ($this->session->isNew())
 		{
-			$session->set('registry', new Registry('session'));
-			$session->set('user', new JUser);
+			$this->session->set('registry', new Registry('session'));
+			$this->session->set('user', new JUser);
 		}
 	}
 
@@ -159,7 +157,7 @@ class JApplicationCms extends JApplicationWeb
 	public function checkSession()
 	{
 		$db = JFactory::getDbo();
-		$session = JFactory::getSession();
+		$session = $this->session;
 		$user = JFactory::getUser();
 
 		$query = $db->getQuery(true)
@@ -616,15 +614,6 @@ class JApplicationCms extends JApplicationWeb
 			$this->set('language', $options['language']);
 		}
 
-		// Build our language object
-		$lang = JLanguage::getInstance($this->get('language'), $this->get('debug_lang'));
-
-		// Load the language to the API
-		$this->loadLanguage($lang);
-
-		// Register the language object with JFactory
-		JFactory::$language = $this->getLanguage();
-
 		// Set user specific editor.
 		$user = JFactory::getUser();
 		$editor = $user->getParam('editor', $this->get('editor'));
@@ -671,6 +660,40 @@ class JApplicationCms extends JApplicationWeb
 	public function isSite()
 	{
 		return ($this->getClientId() === 0);
+	}
+
+	public function setSession(JSession $session)
+	{
+		parent::setSession($session);
+
+		// TODO: At some point we need to get away from having session data always in the db.
+		$db = JFactory::getDbo();
+
+		// Remove expired sessions from the database.
+		$time = time();
+
+		if ($time % 2)
+		{
+			// The modulus introduces a little entropy, making the flushing less accurate
+			// but fires the query less than half the time.
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__session'))
+				->where($db->quoteName('time') . ' < ' . $db->quote((int) ($time - $session->getExpire())));
+
+			$db->setQuery($query);
+			$db->execute();
+		}
+
+		// Get the session handler from the configuration.
+		$handler = $this->get('session_handler', 'none');
+
+		if (($handler != 'database' && ($time % 2 || $session->isNew()))
+			|| ($handler == 'database' && $session->isNew()))
+		{
+			$this->checkSession();
+		}
+
+		return $this;
 	}
 
 	/**
