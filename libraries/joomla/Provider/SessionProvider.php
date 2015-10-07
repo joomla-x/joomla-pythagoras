@@ -13,31 +13,60 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Input\Input;
+use Joomla\Registry\Registry;
 
 /**
- * The Joomla session provider which serves sessions.
+ * The Joomla session provider which serves inputs.
  *
  * @since  4.0
  */
-class InputProvider implements ServiceProviderInterface
+class SessionProvider implements ServiceProviderInterface
 {
 	public function register(Container $container)
 	{
-		$container->set('Joomla\Input\Input', array($this, 'getInput'));
-		$container->alias('Input', 'Joomla\Input\Input');
+		// Setting the callables for the session
+		$container->set('session', array($this, 'getSession'), true, false);
 	}
 
-	/**
-	 * Creates an Input object;
-	 *
-	 * @param Container $container
-	 *
-	 * @return Joomla\Input\Input
-	 */
 	public function getSession(Container $container)
 	{
-		return new Input();
-	}
+		$app = $this->app;
 
+		// Generate a session name.
+		$name = md5($app->get('secret') . $app->get('session_name', get_class($app)));
+
+		// Calculate the session lifetime.
+		$lifetime = (($app->get('sess_lifetime')) ? $app->get('sess_lifetime') * 60 : 900);
+
+		// Get the session handler from the configuration.
+		$handler = $app->get('sess_handler', 'none');
+
+		// Initialize the options for JSession.
+		$options = array(
+				'name' => $name,
+				'expire' => $lifetime,
+				'force_ssl' => $app->get('force_ssl')
+		);
+
+		// Instantiate the session object.
+		$session = JSession::getInstance($handler, $options);
+		$session->initialise($container->get('input'), $app->dispatcher);
+
+		if ($session->getState() == 'expired')
+		{
+			$session->restart();
+		}
+		else
+		{
+			$session->start();
+		}
+
+		if ($session->isNew())
+		{
+			$session->set('registry', new Registry('session'));
+			$session->set('user', new JUser);
+		}
+
+		return $session;
+	}
 }

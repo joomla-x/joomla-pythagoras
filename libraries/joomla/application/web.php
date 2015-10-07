@@ -172,11 +172,6 @@ class JApplicationWeb extends JApplicationBase
 	/**
 	 * Initialise the application.
 	 *
-	 * @param   mixed  $session     An optional argument to provide dependency injection for the application's
-	 *                              session object.  If the argument is a JSession object that object will become
-	 *                              the application's session object, if it is false then there will be no session
-	 *                              object, and if it is null then the default session object will be created based
-	 *                              on the application's loadSession() method.
 	 * @param   mixed  $document    An optional argument to provide dependency injection for the application's
 	 *                              document object.  If the argument is a JDocument object that object will become
 	 *                              the application's document object, if it is false then there will be no document
@@ -195,20 +190,13 @@ class JApplicationWeb extends JApplicationBase
 	 * @return  JApplicationWeb  Instance of $this to allow chaining.
 	 *
 	 * @deprecated  13.1 (Platform) & 4.0 (CMS)
-	 * @see     JApplicationWeb::loadSession()
 	 * @see     JApplicationWeb::loadDocument()
 	 * @see     JApplicationWeb::loadLanguage()
 	 * @see     JApplicationBase::loadDispatcher()
 	 * @since   11.3
 	 */
-	public function initialise($session = null, $document = null, $language = null, DispatcherInterface $dispatcher = null)
+	public function initialise($document = null, $language = null, DispatcherInterface $dispatcher = null)
 	{
-		// Create the session based on the application logic.
-		if ($session !== false)
-		{
-			$this->loadSession($session);
-		}
-
 		// Create the document based on the application logic.
 		if ($document !== false)
 		{
@@ -1007,47 +995,8 @@ class JApplicationWeb extends JApplicationBase
 	 *
 	 * @since   11.3
 	 */
-	public function loadSession(JSession $session = null)
+	public function setSession(JSession $session)
 	{
-		if ($session !== null)
-		{
-			$this->session = $session;
-
-			return $this;
-		}
-
-		// Generate a session name.
-		$name = md5($this->get('secret') . $this->get('session_name', get_class($this)));
-
-		// Calculate the session lifetime.
-		$lifetime = (($this->get('sess_lifetime')) ? $this->get('sess_lifetime') * 60 : 900);
-
-		// Get the session handler from the configuration.
-		$handler = $this->get('sess_handler', 'none');
-
-		// Initialize the options for JSession.
-		$options = array(
-			'name' => $name,
-			'expire' => $lifetime,
-			'force_ssl' => $this->get('force_ssl')
-		);
-
-		$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart'));
-
-		// Instantiate the session object.
-		$session = JSession::getInstance($handler, $options);
-		$session->initialise($this->input, $this->dispatcher);
-
-		if ($session->getState() == 'expired')
-		{
-			$session->restart();
-		}
-		else
-		{
-			$session->start();
-		}
-
-		// Set the session object.
 		$this->session = $session;
 
 		return $this;
