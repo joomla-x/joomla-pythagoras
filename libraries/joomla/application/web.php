@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\Event\DispatcherInterface;
 use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 /**
  * Base class for a Joomla! Web application.
@@ -95,8 +96,8 @@ class JApplicationWeb extends JApplicationBase
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JInput                 $input   An optional argument to provide dependency injection for the application's
-	 *                                          input object.  If the argument is a JInput object that object will become
+	 * @param   Input                  $input   An optional argument to provide dependency injection for the application's
+	 *                                          input object.  If the argument is a Input object that object will become
 	 *                                          the application's input object, otherwise a default input object is created.
 	 * @param   Registry               $config  An optional argument to provide dependency injection for the application's
 	 *                                          config object.  If the argument is a Registry object that object will become
@@ -107,29 +108,9 @@ class JApplicationWeb extends JApplicationBase
 	 *
 	 * @since   11.3
 	 */
-	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
+	public function __construct(Input $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
-		// If a input object is given use it.
-		if ($input instanceof JInput)
-		{
-			$this->input = $input;
-		}
-		// Create the input based on the application logic.
-		else
-		{
-			$this->input = new JInput;
-		}
-
-		// If a config object is given use it.
-		if ($config instanceof Registry)
-		{
-			$this->config = $config;
-		}
-		// Instantiate a new configuration object.
-		else
-		{
-			$this->config = new Registry;
-		}
+		parent::__construct($input, $config);
 
 		// If a client object is given use it.
 		if ($client instanceof JApplicationWebClient)

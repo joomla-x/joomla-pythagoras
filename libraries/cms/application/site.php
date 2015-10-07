@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 /**
  * Joomla! Site Application class
@@ -39,8 +40,8 @@ final class JApplicationSite extends JApplicationCms
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JInput                 $input   An optional argument to provide dependency injection for the application's
-	 *                                          input object.  If the argument is a JInput object that object will become
+	 * @param   Input                  $input   An optional argument to provide dependency injection for the application's
+	 *                                          input object.  If the argument is a Input object that object will become
 	 *                                          the application's input object, otherwise a default input object is created.
 	 * @param   Registry               $config  An optional argument to provide dependency injection for the application's
 	 *                                          config object.  If the argument is a Registry object that object will become
@@ -51,7 +52,7 @@ final class JApplicationSite extends JApplicationCms
 	 *
 	 * @since   3.2
 	 */
-	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
+	public function __construct(Input $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
 		// Register the application name
 		$this->_name = 'site';
