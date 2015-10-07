@@ -144,17 +144,7 @@ abstract class JFactory
 	 */
 	public static function getConfig($file = null, $type = 'PHP', $namespace = '')
 	{
-		if (!self::$config)
-		{
-			if ($file === null)
-			{
-				$file = JPATH_PLATFORM . '/config.php';
-			}
-
-			self::$config = self::createConfig($file, $type, $namespace);
-		}
-
-		return self::$config;
+		self::$application->getContainer()->get('config');
 	}
 
 	/**
@@ -533,47 +523,6 @@ abstract class JFactory
 		$date = clone self::$dates[$classname][$key];
 
 		return $date;
-	}
-
-	/**
-	 * Create a configuration object
-	 *
-	 * @param   string  $file       The path to the configuration file.
-	 * @param   string  $type       The type of the configuration file.
-	 * @param   string  $namespace  The namespace of the configuration file.
-	 *
-	 * @return  Registry
-	 *
-	 * @see     Registry
-	 * @since   11.1
-	 */
-	protected static function createConfig($file, $type = 'PHP', $namespace = '')
-	{
-		if (is_file($file))
-		{
-			include_once $file;
-		}
-
-		// Create the registry with a default namespace of config
-		$registry = new Registry;
-
-		// Sanitize the namespace.
-		$namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
-
-		// Build the config name.
-		$name = 'JConfig' . $namespace;
-
-		// Handle the PHP configuration type.
-		if ($type == 'PHP' && class_exists($name))
-		{
-			// Create the JConfig object
-			$config = new $name;
-
-			// Load the configuration values into the registry
-			$registry->loadObject($config);
-		}
-
-		return $registry;
 	}
 
 	/**

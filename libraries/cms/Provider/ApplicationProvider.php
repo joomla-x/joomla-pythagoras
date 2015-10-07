@@ -23,11 +23,37 @@ class ApplicationProvider implements ServiceProviderInterface
 {
 	public function register(Container $container)
 	{
-		$container->set('app', array($this, 'getApplication'), false, true);
+		$container->set('JApplicationSite', array($this, 'getApplicationSite'));
+		$container->set('JApplicationAdministrator', array($this, 'getApplicationAdministrator'));
 	}
 
-	public function getApplication(Container $container)
+	/**
+	 * Creates a JApplicationSite object;
+	 *
+	 * @param Container $container
+	 *
+	 * @return JApplicationSite
+	 */
+	public function getApplicationSite(Container $container)
 	{
-		return new \JApplicationSite();
+		$app = new \JApplicationSite($container->get('Input'), $container->get('config'));
+		$app->setContainer($container);
+
+		return $app;
+	}
+
+	/**
+	 * Creates a JApplicationAdministrator object;
+	 *
+	 * @param Container $container
+	 *
+	 * @return JApplicationAdministrator
+	 */
+	public function getApplicationAdministrator(Container $container)
+	{
+		$app = new \JApplicationAdministrator($container->get('Input'), $container->get('config'));
+		$app->setContainer($container);
+
+		return $app;
 	}
 }

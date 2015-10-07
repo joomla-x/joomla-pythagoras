@@ -36,13 +36,16 @@ if (!defined('_JDEFINES'))
 require_once JPATH_BASE . '/includes/framework.php';
 
 $container = new Joomla\DI\Container();
+$container->registerServiceProvider(new Joomla\Provider\InputProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\ApplicationProvider());
 
 // Mark afterLoad in the profiler.
 JDEBUG ? $_PROFILER->mark('afterLoad') : null;
 
 // Instantiate the application.
-$app = $container->get('app');
+$app = $container->get('JApplicationSite');
+$container->share('app', $app);
 JFactory::$application = $app;
 
 // Execute the application.
