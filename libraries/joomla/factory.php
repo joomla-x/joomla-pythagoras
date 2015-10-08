@@ -299,8 +299,12 @@ abstract class JFactory
 	 */
 	public static function getDbo()
 	{
-		// TODO where should the database exactly being attached to?
-		return self::$application->getContainer()->get('dbo');
+		if (!self::$database)
+		{
+			// TODO where should the database exactly being attached to?
+			self::$database = self::$application->getContainer()->get('JDatabaseDriver');
+		}
+		return self::$database;
 	}
 
 	/**
