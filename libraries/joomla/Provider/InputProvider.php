@@ -16,7 +16,7 @@ use Joomla\DI\ServiceProviderInterface;
 use Joomla\Input\Input;
 
 /**
- * The Joomla input provider which serves inputs.
+ * The Joomla input provider which registers inputs.
  *
  * @since  4.0
  */
@@ -24,12 +24,14 @@ class InputProvider implements ServiceProviderInterface
 {
 	public function register(Container $container)
 	{
-		$container->set('Joomla\Input\Input', array($this, 'getInput'));
-		$container->alias('Input', 'Joomla\Input\Input');
+		$container->set('Input', array($this, 'getInput'));
+
+		// Registering the protected database object
+		$container->set('input', array($this, 'getInput'), true, true);
 	}
 
 	/**
-	 * Creates an Input object;
+	 * Creates an Input object.
 	 *
 	 * @param Container $container
 	 *

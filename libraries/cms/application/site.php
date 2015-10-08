@@ -127,16 +127,10 @@ final class JApplicationSite extends JApplicationCms
 			$component = $this->input->getCmd('option', null);
 		}
 
-		// Load the document to the API
-		$this->loadDocument();
-
 		// Set up the params
 		$document = $this->getDocument();
 		$router   = static::getRouter();
 		$params   = $this->getParams();
-
-		// Register the document object with JFactory
-		JFactory::$document = $document;
 
 		switch ($document->getType())
 		{

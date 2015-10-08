@@ -25,8 +25,19 @@ class LanguageProvider implements ServiceProviderInterface
 	{
 		// Setting the callables for the language
 		$container->set('JLanguage', array($this, 'getLanguage'));
+
+		// Registering the protected language object
+		$container->set('language', array($this, 'getLanguage'), true, false);
+		$container->alias('lang', 'language');
 	}
 
+	/**
+	 * Returns the language based on the config in the container.
+	 *
+	 * @param Container $container
+	 *
+	 * @return JDatabaseDriver
+	 */
 	public function getLanguage(Container $container)
 	{
 		$conf = $container->get('config');
