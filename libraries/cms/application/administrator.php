@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 /**
  * Joomla! Administrator Application class
@@ -21,8 +22,8 @@ class JApplicationAdministrator extends JApplicationCms
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JInput                 $input   An optional argument to provide dependency injection for the application's
-	 *                                          input object.  If the argument is a JInput object that object will become
+	 * @param   Input                  $input   An optional argument to provide dependency injection for the application's
+	 *                                          input object.  If the argument is a Input object that object will become
 	 *                                          the application's input object, otherwise a default input object is created.
 	 * @param   Registry               $config  An optional argument to provide dependency injection for the application's
 	 *                                          config object.  If the argument is a Registry object that object will become
@@ -33,7 +34,7 @@ class JApplicationAdministrator extends JApplicationCms
 	 *
 	 * @since   3.2
 	 */
-	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
+	public function __construct(Input $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
 		// Register the application name
 		$this->_name = 'administrator';
@@ -43,9 +44,6 @@ class JApplicationAdministrator extends JApplicationCms
 
 		// Execute the parent constructor
 		parent::__construct($input, $config, $client);
-
-		// Set the root in the URI based on the application name
-		JUri::root(null, str_ireplace('/' . $this->getName(), '', JUri::base(true)));
 	}
 
 	/**
@@ -64,14 +62,8 @@ class JApplicationAdministrator extends JApplicationCms
 			$component = JAdministratorHelper::findOption();
 		}
 
-		// Load the document to the API
-		$this->loadDocument();
-
 		// Set up the params
-		$document = JFactory::getDocument();
-
-		// Register the document object with JFactory
-		JFactory::$document = $document;
+		$document = $this->getDocument();
 
 		switch ($document->getType())
 		{
@@ -295,6 +287,9 @@ class JApplicationAdministrator extends JApplicationCms
 
 		// Load Library language
 		$this->getLanguage()->load('lib_joomla', JPATH_ADMINISTRATOR);
+
+		// Set the root in the URI based on the application name
+		JUri::root(null, str_ireplace('/' . $this->getName(), '', JUri::base(true)));
 	}
 
 	/**
