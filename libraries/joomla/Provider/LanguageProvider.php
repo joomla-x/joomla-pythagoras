@@ -15,7 +15,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The Joomla language provider which serves languages.
+ * The Joomla language service provider.
  *
  * @since  4.0
  */
@@ -36,7 +36,7 @@ class LanguageProvider implements ServiceProviderInterface
 	 *
 	 * @param Container $container
 	 *
-	 * @return JDatabaseDriver
+	 * @return JLanguage
 	 */
 	public function getLanguage(Container $container)
 	{

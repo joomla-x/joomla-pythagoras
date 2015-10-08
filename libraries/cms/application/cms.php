@@ -105,9 +105,6 @@ class JApplicationCms extends JApplicationWeb
 	{
 		parent::__construct($input, $config, $client);
 
-		// Load and set the dispatcher
-		$this->loadDispatcher();
-
 		// If JDEBUG is defined, load the profiler instance
 		if (defined('JDEBUG') && JDEBUG)
 		{

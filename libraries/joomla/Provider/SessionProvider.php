@@ -15,7 +15,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The Joomla session provider which serves inputs.
+ * The Joomla session service provider.
  *
  * @since  4.0
  */
@@ -32,7 +32,7 @@ class SessionProvider implements ServiceProviderInterface
 	 *
 	 * @param Container $container
 	 *
-	 * @return JDatabaseDriver
+	 * @return JSession
 	 */
 	public function getSession(Container $container)
 	{

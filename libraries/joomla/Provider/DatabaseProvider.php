@@ -15,7 +15,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The Joomla database provider which registers databases.
+ * The Joomla database service provider, a global protected database object is set.
  *
  * @since  4.0
  */
@@ -23,7 +23,7 @@ class DatabaseProvider implements ServiceProviderInterface
 {
 	public function register(Container $container)
 	{
-		// Setting the callables for the language
+		// Setting the callables for the database
 		$container->set('JDatabaseDriver', array($this, 'getDatabase'));
 
 		// Registering the protected database object

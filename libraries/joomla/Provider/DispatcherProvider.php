@@ -13,33 +13,30 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Input\Input;
+use Joomla\Event\Dispatcher;
 
 /**
- * The Joomla input service provider.
+ * The Joomla dispatcher service provider.
  *
  * @since  4.0
  */
-class InputProvider implements ServiceProviderInterface
+class DispatcherProvider implements ServiceProviderInterface
 {
 	public function register(Container $container)
 	{
-		$container->set('Input', array($this, 'getInput'));
-
-		// Registering the protected database object
-		$container->set('input', array($this, 'getInput'), true, true);
+		$container->set('Dispatcher', array($this, 'getDispatcher'));
 	}
 
 	/**
-	 * Creates an Input object.
+	 * Creates a Dispatcher object.
 	 *
 	 * @param Container $container
 	 *
-	 * @return Joomla\Input\Input
+	 * @return Joomla\Event\Dispatcher
 	 */
-	public function getInput(Container $container)
+	public function getDispatcher(Container $container)
 	{
-		return new Input();
+		return new Dispatcher();
 	}
 
 }

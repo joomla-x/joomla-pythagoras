@@ -15,7 +15,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The Joomla document provider which registers documents.
+ * The Joomla document service provider.
  *
  * @since  4.0
  */
@@ -23,16 +23,17 @@ class DocumentProvider implements ServiceProviderInterface
 {
 	public function register(Container $container)
 	{
-		// Setting the callables for the language
+		// Setting the callables for the document
 		$container->set('JDocument', array($this, 'getDocument'));
 	}
 
 	/**
-	 * Returns a document from the language in the container.
+	 * Returns a document from the language and the requested format
+	 * in the container.
 	 *
 	 * @param Container $container
 	 *
-	 * @return JDatabaseDriver
+	 * @return JDocument
 	 */
 	public function getDocument(Container $container)
 	{
