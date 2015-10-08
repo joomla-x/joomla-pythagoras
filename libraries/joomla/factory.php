@@ -163,7 +163,7 @@ abstract class JFactory
 	{
 		return self::$application->getSession();
 	}
-	
+
 	/**
 	 * Get a language object.
 	 *
@@ -191,12 +191,7 @@ abstract class JFactory
 	 */
 	public static function getDocument()
 	{
-		if (!self::$document)
-		{
-			self::$document = self::createDocument();
-		}
-
-		return self::$document;
+		return self::$application->getDocument();
 	}
 
 	/**
@@ -304,12 +299,8 @@ abstract class JFactory
 	 */
 	public static function getDbo()
 	{
-		if (!self::$database)
-		{
-			self::$database = self::createDbo();
-		}
-
-		return self::$database;
+		// TODO where should the database exactly being attached to?
+		return self::$application->getContainer()->get('dbo');
 	}
 
 	/**
@@ -516,47 +507,6 @@ abstract class JFactory
 	}
 
 	/**
-	 * Create an database object
-	 *
-	 * @return  JDatabaseDriver
-	 *
-	 * @see     JDatabaseDriver
-	 * @since   11.1
-	 */
-	protected static function createDbo()
-	{
-		$conf = self::getConfig();
-
-		$host = $conf->get('host');
-		$user = $conf->get('user');
-		$password = $conf->get('password');
-		$database = $conf->get('db');
-		$prefix = $conf->get('dbprefix');
-		$driver = $conf->get('dbtype');
-		$debug = $conf->get('debug');
-
-		$options = array('driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database, 'prefix' => $prefix);
-
-		try
-		{
-			$db = JDatabaseDriver::getInstance($options);
-		}
-		catch (RuntimeException $e)
-		{
-			if (!headers_sent())
-			{
-				header('HTTP/1.1 500 Internal Server Error');
-			}
-
-			jexit('Database Error: ' . $e->getMessage());
-		}
-
-		$db->setDebug($debug);
-
-		return $db;
-	}
-
-	/**
 	 * Create a mailer object
 	 *
 	 * @return  JMail object
@@ -601,35 +551,6 @@ abstract class JFactory
 		}
 
 		return $mail;
-	}
-
-	/**
-	 * Create a document object
-	 *
-	 * @return  JDocument object
-	 *
-	 * @see     JDocument
-	 * @since   11.1
-	 */
-	protected static function createDocument()
-	{
-		$lang = self::getLanguage();
-
-		$input = self::getApplication()->input;
-		$type = $input->get('format', 'html', 'word');
-
-		$version = new JVersion;
-
-		$attributes = array(
-			'charset' => 'utf-8',
-			'lineend' => 'unix',
-			'tab' => '  ',
-			'language' => $lang->getTag(),
-			'direction' => $lang->isRtl() ? 'rtl' : 'ltr',
-			'mediaversion' => $version->getMediaVersion()
-		);
-
-		return JDocument::getInstance($type, $attributes);
 	}
 
 	/**

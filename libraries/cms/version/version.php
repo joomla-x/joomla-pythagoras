@@ -1,4 +1,5 @@
 <?php
+use Joomla\Registry\Registry;
 /**
  * @package     Joomla.Libraries
  * @subpackage  Version
@@ -260,14 +261,18 @@ final class JVersion
 	 *
 	 * @since   3.2
 	 */
-	public function getMediaVersion()
+	public function getMediaVersion(Registry $config = null)
 	{
 		// Load the media version and cache it for future use
 		static $mediaVersion = null;
 
 		if ($mediaVersion === null)
 		{
-			$config = JFactory::getConfig();
+			if ($config == null)
+			{
+				$config = JFactory::getConfig();
+			}
+
 			$debugEnabled = $config->get('debug', 0);
 
 			// Get the joomla library params

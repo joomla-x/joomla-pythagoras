@@ -36,11 +36,9 @@ class ApplicationProvider implements ServiceProviderInterface
 	 */
 	public function getApplicationSite(Container $container)
 	{
-		$app = new \JApplicationSite($container->get('Input'), $container->get('config'));
-		$app->setContainer($container);
-		$app->setLanguage($container->get('JLanguage'));
-
-		return $app;
+		return $this->loadApplication(
+				new \JApplicationSite($container->get('input'), $container->get('config')),
+				$container);
 	}
 
 	/**
@@ -52,9 +50,30 @@ class ApplicationProvider implements ServiceProviderInterface
 	 */
 	public function getApplicationAdministrator(Container $container)
 	{
-		$app = new \JApplicationAdministrator($container->get('Input'), $container->get('config'));
+		return $this->loadApplication(
+				new \JApplicationAdministrator($container->get('input'), $container->get('config')),
+				$container);
+	}
+
+	/**
+	 * Loads the given applications with objects from the given container.
+	 *
+	 * @param \JApplicationCms $app
+	 * @param Container $container
+	 *
+	 * @return \JApplicationCms
+	 */
+	private function loadApplication(\JApplicationCms $app, Container $container)
+	{
+		// TODO this needs to be moved as it is the wrong place to do it here, but
+		// JSession and others do need an app at this stage
+		\JFactory::$application = $app;
+		$container->share('app', $app);
+
 		$app->setContainer($container);
-		$app->setLanguage($container->get('JLanguage'));
+		$app->setLanguage($container->get('language'));
+		$app->setDocument($container->get('JDocument'));
+		$app->setSession($container->get('JSession'));
 
 		return $app;
 	}

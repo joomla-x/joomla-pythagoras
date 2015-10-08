@@ -27,6 +27,13 @@ class SessionProvider implements ServiceProviderInterface
 		$container->set('JSession', array($this, 'getSession'));
 	}
 
+	/**
+	 * Returns the session based on the config in the container.
+	 *
+	 * @param Container $container
+	 *
+	 * @return JDatabaseDriver
+	 */
 	public function getSession(Container $container)
 	{
 		$config = $container->get('config');
