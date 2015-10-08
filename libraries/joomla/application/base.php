@@ -13,7 +13,6 @@ use Joomla\Application\AbstractApplication;
 use Joomla\Event\Dispatcher;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
-use Joomla\Registry\Registry;
 
 /**
  * Joomla Platform Base Application Class

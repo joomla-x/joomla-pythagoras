@@ -54,6 +54,6 @@ class SessionProvider implements ServiceProviderInterface
 				'force_ssl' => $config->get('force_ssl')
 		);
 
-		return JSession::getInstance($handler, $options);
+		return \JSession::getInstance($handler, $options);
 	}
 }

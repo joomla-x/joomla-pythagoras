@@ -25,8 +25,32 @@ define('_JEXEC', 1);
 // Bootstrap the application
 require_once dirname(__FILE__) . '/application/bootstrap.php';
 
+$container = new Joomla\DI\Container();
+$container->registerServiceProvider(new Joomla\Provider\InputProvider());
+$container->registerServiceProvider(new Joomla\Provider\LanguageProvider());
+$container->registerServiceProvider(new Joomla\Provider\DatabaseProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
+$container->registerServiceProvider(new Joomla\Provider\SessionProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\ApplicationProvider());
+
+$container->set('JDocument',
+	function (Joomla\DI\Container $container)
+	{
+		$lang = $container->get('language');
+		$attributes = array(
+				'charset' => 'utf-8',
+				'lineend' => 'unix',
+				'tab' => '  ',
+				'language' => $lang->getTag(),
+				'direction' => $lang->isRtl() ? 'rtl' : 'ltr',
+		);
+
+		return \JDocument::getInstance($container->get('input')->getWord('format', 'html'), $attributes);
+	}
+);
+
 // Get the application
-$app = JApplicationWeb::getInstance('InstallationApplicationWeb');
+$app = $container->get('InstallationApplicationWeb');
 
 // Execute the application
 $app->execute();

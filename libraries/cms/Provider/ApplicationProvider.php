@@ -25,6 +25,7 @@ class ApplicationProvider implements ServiceProviderInterface
 	{
 		$container->set('JApplicationSite', array($this, 'getApplicationSite'));
 		$container->set('JApplicationAdministrator', array($this, 'getApplicationAdministrator'));
+		$container->set('InstallationApplicationWeb', array($this, 'getApplicationInstallation'));
 	}
 
 	/**
@@ -52,6 +53,20 @@ class ApplicationProvider implements ServiceProviderInterface
 	{
 		return $this->loadApplication(
 				new \JApplicationAdministrator($container->get('input'), $container->get('config')),
+				$container);
+	}
+
+	/**
+	 * Creates a InstallationApplicationWeb object;
+	 *
+	 * @param Container $container
+	 *
+	 * @return InstallationApplicationWeb
+	 */
+	public function getApplicationInstallation(Container $container)
+	{
+		return $this->loadApplication(
+				new \InstallationApplicationWeb($container->get('input'), $container->get('config')),
 				$container);
 	}
 

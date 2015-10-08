@@ -41,8 +41,13 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
 	 *
 	 * @since   3.5
 	 */
-	public function __construct($options = array(), Registry $config)
+	public function __construct($options = array(), Registry $config = null)
 	{
+		if ($config === null)
+		{
+			$config = new Registry();
+		}
+
 		// Disable transparent sid support
 		ini_set('session.use_trans_sid', '0');
 
