@@ -15,7 +15,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The CMS Service provider which loads the application.
+ * The CMS application service provider.
  *
  * @since  4.0
  */
@@ -71,7 +71,8 @@ class ApplicationProvider implements ServiceProviderInterface
 	}
 
 	/**
-	 * Loads the given applications with objects from the given container.
+	 * Injects objects like the language, document or session into the given application
+	 * from the given container.
 	 *
 	 * @param \JApplicationCms $app
 	 * @param Container $container
@@ -89,6 +90,7 @@ class ApplicationProvider implements ServiceProviderInterface
 		$app->setLanguage($container->get('language'));
 		$app->setDocument($container->get('JDocument'));
 		$app->setSession($container->get('JSession'));
+		$app->setDispatcher($container->get('Dispatcher'));
 
 		return $app;
 	}

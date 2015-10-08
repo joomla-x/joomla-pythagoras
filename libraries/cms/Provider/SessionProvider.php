@@ -15,7 +15,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The Cms session provider which serves inputs.
+ * The CMS session service provider.
  *
  * @since  4.0
  */
@@ -27,6 +27,13 @@ class SessionProvider implements ServiceProviderInterface
 		$container->set('JSession', array($this, 'getSession'));
 	}
 
+	/**
+	 * Creates a session based on the config and app of the container.
+	 *
+	 * @param Container $container
+	 *
+	 * @return JSession
+	 */
 	public function getSession(Container $container)
 	{
 		$config = $container->get('config');

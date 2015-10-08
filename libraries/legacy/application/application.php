@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Event\Dispatcher;
 
 JLog::add('JApplication is deprecated.', JLog::WARNING, 'deprecated');
 
@@ -124,7 +125,7 @@ class JApplication extends JApplicationBase
 
 		$this->client = new JApplicationWebClient;
 
-		$this->loadDispatcher();
+		$this->setDispatcher(new Dispatcher());
 
 		// Set the session default name.
 		if (!isset($config['session_name']))

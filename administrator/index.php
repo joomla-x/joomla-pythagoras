@@ -42,6 +42,7 @@ $container->registerServiceProvider(new Joomla\Provider\InputProvider());
 $container->registerServiceProvider(new Joomla\Provider\LanguageProvider());
 $container->registerServiceProvider(new Joomla\Provider\DatabaseProvider());
 $container->registerServiceProvider(new Joomla\Provider\DocumentProvider());
+$container->registerServiceProvider(new Joomla\Provider\DispatcherProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\SessionProvider());
 $container->registerServiceProvider(new Joomla\Cms\Provider\ApplicationProvider());

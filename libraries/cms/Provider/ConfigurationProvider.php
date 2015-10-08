@@ -16,7 +16,7 @@ use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
 
 /**
- * The CMS Service provider which serves Regsirty objects and the actual config.
+ * The CMS registry service provider which sets a global config object.
  *
  * @since  4.0
  */
@@ -32,7 +32,7 @@ class ConfigurationProvider implements ServiceProviderInterface
 	}
 
 	/**
-	 * Creates a Registry object;
+	 * Creates a Registry object.
 	 *
 	 * @param Container $container
 	 *

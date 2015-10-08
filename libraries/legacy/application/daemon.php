@@ -35,7 +35,7 @@ class JDaemon extends JApplicationDaemon
 	 * @param   DispatcherInterface  $dispatcher  An optional argument to provide dependency injection for the application's
 	 *                                            event dispatcher.  If the argument is a DispatcherInterface object that object will become
 	 *                                            the application's event dispatcher, if it is null then the default event dispatcher
-	 *                                            will be created based on the application's loadDispatcher() method.
+	 *                                            will be created based on the application's setDispatcher() method.
 	 *
 	 * @since   11.1
 	 * @deprecated  12.3 Use JApplicationDaemon instead.
