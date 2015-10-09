@@ -70,7 +70,7 @@ $assoc     = JLanguageAssociations::isEnabled();
 			</label>
 			<select name="filter_language" id="filter_language">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo JHtml::_('select.options', JHtml::_('contentLanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 
 			<label class="selectlabel" for="filter_tag">

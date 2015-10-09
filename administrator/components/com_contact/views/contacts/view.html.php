@@ -146,7 +146,7 @@ class ContactViewContacts extends JViewLegacy
 		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_LANGUAGE'),
 			'filter_language',
-			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+			JHtml::_('select.options', JHtml::_('contentLanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
 		);
 
 		JHtmlSidebar::addFilter(
