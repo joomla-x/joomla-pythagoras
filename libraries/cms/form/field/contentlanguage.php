@@ -37,6 +37,6 @@ class JFormFieldContentlanguage extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		return array_merge(parent::getOptions(), JHtml::_('contentlanguage.existing'));
+		return array_merge(parent::getOptions(), JHtml::_('contentLanguage.existing'));
 	}
 }

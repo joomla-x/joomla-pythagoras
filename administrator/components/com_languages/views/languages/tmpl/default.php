@@ -170,7 +170,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo JHtml::_('grid.id', $i, $item->lang_id); ?>
 						</td>
 						<td class="center">
-							<?php echo JHtml::_('jgrid.published', $item->published, $i, 'languages.', $canChange); ?>
+							<?php echo JHtml::_('jGrid.published', $item->published, $i, 'languages.', $canChange); ?>
 						</td>
 						<td>
 							<span class="editlinktip hasTooltip" title="<?php echo JHtml::tooltipText(JText::_('JGLOBAL_EDIT_ITEM'), $item->title, 0); ?>">

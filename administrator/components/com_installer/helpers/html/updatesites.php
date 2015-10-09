@@ -52,6 +52,6 @@ abstract class InstallerHtmlUpdatesites
 			),
 		);
 
-		return JHtml::_('jgrid.state', $states, $value, $i, 'updatesites.', $enabled, true, $checkbox);
+		return JHtml::_('jGrid.state', $states, $value, $i, 'updatesites.', $enabled, true, $checkbox);
 	}
 }

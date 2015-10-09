@@ -97,7 +97,7 @@ $clientId = $this->state->get('filter.client_id', 0);
 						<?php echo $client;?>
 					</td>
 					<td class="center">
-						<?php echo JHtml::_('jgrid.isdefault', $row->published, $i, 'installed.', !$row->published && $canChange);?>
+						<?php echo JHtml::_('jGrid.isdefault', $row->published, $i, 'installed.', !$row->published && $canChange);?>
 					</td>
 					<td class="hidden-phone">
 						<?php echo $this->escape($row->version); ?>

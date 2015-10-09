@@ -54,7 +54,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php
 				echo JHtml::_(
-					'select.options', JHtml::_('jgrid.publishedOptions'),
+					'select.options', JHtml::_('jGrid.publishedOptions'),
 					'value', 'text', $this->state->get('filter.state'), true
 				); ?>
 			</select>
@@ -99,7 +99,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
+						<?php echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_users&task=note.edit&id='.$item->id);?>">
@@ -122,7 +122,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 					<?php echo $this->escape($item->category_title); ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'notes.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+					<?php echo JHtml::_('jGrid.published', $item->state, $i, 'notes.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
 				<td class="center">
 					<?php if ($item->review_time !== JFactory::getDbo()->getNullDate()) : ?>

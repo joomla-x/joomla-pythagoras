@@ -769,7 +769,7 @@ JS;
 		FOFPlatform::getInstance()->loadTranslations('joomla');
 
 		$title	 = JFactory::getApplication()->get('JComponentTitle');
-		$bar	 = JToolBar::getInstance('toolbar');
+		$bar	 = JToolbar::getInstance('toolbar');
 
 		// Delete faux links, since if SEF is on, Joomla will follow the link instead of submitting the form
 		$bar_content = str_replace('href="#"', '', $bar->render());

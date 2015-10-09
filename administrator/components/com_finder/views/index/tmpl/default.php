@@ -124,7 +124,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<?php echo JHtml::_('grid.id', $i, $item->link_id); ?>
 					</td>
 					<td>
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'index.', $canChange, 'cb'); ?>
+						<?php echo JHtml::_('jGrid.published', $item->published, $i, 'index.', $canChange, 'cb'); ?>
 					</td>
 					<td>
 						<label for="cb<?php echo $i ?>">

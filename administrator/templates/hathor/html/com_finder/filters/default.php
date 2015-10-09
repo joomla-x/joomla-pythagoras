@@ -126,7 +126,7 @@ Joomla.submitbutton = function(pressbutton)
 				<td>
 					<?php if ($item->checked_out)
 					{
-						echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'filters.', $canCheckin);
+						echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time, 'filters.', $canCheckin);
 					} ?>
 					<?php if ($canEdit) { ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_finder&task=filter.edit&filter_id=' . (int) $item->filter_id); ?>">
@@ -136,7 +136,7 @@ Joomla.submitbutton = function(pressbutton)
 					} ?>
 				</td>
 				<td class="center nowrap">
-					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'filters.', $canChange); ?>
+					<?php echo JHtml::_('jGrid.published', $item->state, $i, 'filters.', $canChange); ?>
 				</td>
 				<td class="center nowrap">
 					<?php echo $item->created_by_alias ? $item->created_by_alias : $item->user_name; ?>

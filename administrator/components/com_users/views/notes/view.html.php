@@ -148,7 +148,7 @@ class UsersViewNotes extends JViewLegacy
 		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+			JHtml::_('select.options', JHtml::_('jGrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
 
 		JHtmlSidebar::addFilter(

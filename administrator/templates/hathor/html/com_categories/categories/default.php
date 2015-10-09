@@ -54,7 +54,7 @@ $component = $jinput->get('extension');
 					<label class="selectlabel" for="filter_published"><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></label>
 					<select name="filter_published" id="filter_published">
 						<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
-						<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true); ?>
+						<?php echo JHtml::_('select.options', JHtml::_('jGrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true); ?>
 					</select>
 
 					<label class="selectlabel" for="filter_access"><?php echo JText::_('JOPTION_SELECT_ACCESS'); ?></label>
@@ -152,7 +152,7 @@ $component = $jinput->get('extension');
 							<td>
 								<?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->level - 1) ?>
 								<?php if ($item->checked_out) : ?>
-									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'categories.', $canCheckin); ?>
+									<?php echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time, 'categories.', $canCheckin); ?>
 								<?php endif; ?>
 								<?php if ($canEdit || $canEditOwn) : ?>
 									<a href="<?php echo JRoute::_('index.php?option=com_categories&task=category.edit&id=' . $item->id . '&extension=' . $extension); ?>">
@@ -169,7 +169,7 @@ $component = $jinput->get('extension');
 									<?php endif; ?></p>
 							</td>
 							<td class="center">
-								<?php echo JHtml::_('jgrid.published', $item->published, $i, 'categories.', $canChange); ?>
+								<?php echo JHtml::_('jGrid.published', $item->published, $i, 'categories.', $canChange); ?>
 							</td>
 							<td class="order">
 								<?php if ($canChange) : ?>

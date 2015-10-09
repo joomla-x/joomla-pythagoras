@@ -71,7 +71,7 @@ class ContactViewContacts extends JViewLegacy
 		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
 		JToolbarHelper::title(JText::_('COM_CONTACT_MANAGER_CONTACTS'), 'address contact');
 
@@ -128,7 +128,7 @@ class ContactViewContacts extends JViewLegacy
 		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+			JHtml::_('select.options', JHtml::_('jGrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
 		);
 
 		JHtmlSidebar::addFilter(

@@ -129,7 +129,7 @@ JFactory::getDocument()->addScriptDeclaration("
 					<?php endif; ?>
 									</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'maps.', $canChange, 'cb'); ?>
+					<?php echo JHtml::_('jGrid.published', $item->state, $i, 'maps.', $canChange, 'cb'); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

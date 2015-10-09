@@ -137,7 +137,7 @@ JFactory::getDocument()->addScriptDeclaration("
 					<?php echo $this->escape($item->title); ?>
 				</td>
 				<td class="center nowrap">
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'index.', $canChange, 'cb'); ?>
+					<?php echo JHtml::_('jGrid.published', $item->published, $i, 'index.', $canChange, 'cb'); ?>
 				</td>
 				<td class="center nowrap">
 					<?php

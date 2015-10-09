@@ -119,7 +119,7 @@ abstract class JHtmlModules
 			),
 		);
 
-		return JHtml::_('jgrid.state', $states, $value, $i, 'modules.', $enabled, true, $checkbox);
+		return JHtml::_('jGrid.state', $states, $value, $i, 'modules.', $enabled, true, $checkbox);
 	}
 
 	/**

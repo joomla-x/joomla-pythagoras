@@ -113,7 +113,7 @@ JFactory::getDocument()->addScriptDeclaration('
 					</td>
 					<td>
 						<?php if ($item->checked_out) : ?>
-							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'filters.', $canCheckin); ?>
+							<?php echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time, 'filters.', $canCheckin); ?>
 						<?php endif; ?>
 						<?php if ($canEdit) : ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_finder&task=filter.edit&filter_id=' . (int) $item->filter_id); ?>">
@@ -123,7 +123,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<?php endif; ?>
 					</td>
 					<td class="center nowrap">
-						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'filters.', $canChange); ?>
+						<?php echo JHtml::_('jGrid.published', $item->state, $i, 'filters.', $canChange); ?>
 					</td>
 					<td class="nowrap hidden-phone">
 						<?php echo $item->created_by_alias ? $item->created_by_alias : $item->user_name; ?>

@@ -105,7 +105,7 @@ $saveOrder = $listOrder == 'fp.ordering';
 						</td>
 						<td class="center">
 							<div class="btn-group">
-								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+								<?php echo JHtml::_('jGrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 								<?php echo JHtml::_('contentadministrator.featured', $item->featured, $i, $canChange); ?>
 								<?php
 								// Create dropdown items
@@ -123,7 +123,7 @@ $saveOrder = $listOrder == 'fp.ordering';
 						<td class="nowrap has-context">
 							<div class="pull-left">
 								<?php if ($item->checked_out) : ?>
-									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
+									<?php echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
 								<?php endif; ?>
 								<?php if ($item->language == '*') : ?>
 									<?php $language = JText::alt('JALL', 'language'); ?>

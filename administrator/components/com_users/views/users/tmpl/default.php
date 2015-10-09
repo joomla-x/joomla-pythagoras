@@ -125,7 +125,7 @@ $loggeduser = JFactory::getUser();
 							<?php if ($canChange) : ?>
 								<?php
 								$self = $loggeduser->id == $item->id;
-								echo JHtml::_('jgrid.state', JHtmlUsers::blockStates($self), $item->block, $i, 'users.', !$self);
+								echo JHtml::_('jGrid.state', JHtmlUsers::blockStates($self), $item->block, $i, 'users.', !$self);
 								?>
 							<?php else : ?>
 								<?php echo JText::_($item->block ? 'JNO' : 'JYES'); ?>
@@ -134,7 +134,7 @@ $loggeduser = JFactory::getUser();
 						<td class="center hidden-phone">
 							<?php
 							$activated = empty( $item->activation) ? 0 : 1;
-							echo JHtml::_('jgrid.state', JHtmlUsers::activateStates(), $activated, $i, 'users.', (boolean) $activated);
+							echo JHtml::_('jGrid.state', JHtmlUsers::activateStates(), $activated, $i, 'users.', (boolean) $activated);
 							?>
 						</td>
 						<td>

@@ -170,12 +170,12 @@ if ($saveOrder)
 								<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 							</td>
 							<td class="center">
-								<?php echo JHtml::_('jgrid.published', $item->published, $i, 'categories.', $canChange); ?>
+								<?php echo JHtml::_('jGrid.published', $item->published, $i, 'categories.', $canChange); ?>
 							</td>
 							<td>
 								<?php echo str_repeat('<span class="gi">&mdash;</span>', $item->level - 1) ?>
 								<?php if ($item->checked_out) : ?>
-									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'categories.', $canCheckin); ?>
+									<?php echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time, 'categories.', $canCheckin); ?>
 								<?php endif; ?>
 								<?php if ($canEdit || $canEditOwn) : ?>
 									<a href="<?php echo JRoute::_('index.php?option=com_categories&task=category.edit&id=' . $item->id . '&extension=' . $extension); ?>">

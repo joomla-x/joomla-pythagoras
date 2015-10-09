@@ -58,7 +58,7 @@ class FOFFormHeaderPublished extends FOFFormHeaderFieldselectable
 			$config['all'] = 1;
 		}
 
-		$options = JHtml::_('jgrid.publishedOptions', $config);
+		$options = JHtml::_('jGrid.publishedOptions', $config);
 
 		reset($options);
 

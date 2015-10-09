@@ -168,7 +168,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						</td>
 						<td class="center">
 							<div class="btn-group">
-								<?php echo JHtml::_('jgrid.published', $item->published, $i, 'modules.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+								<?php echo JHtml::_('jGrid.published', $item->published, $i, 'modules.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 								<?php
 									// Create dropdown items
 									JHtml::_('actionsdropdown.duplicate', 'cb' . $i, 'modules');
@@ -184,7 +184,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<td class="has-context">
 							<div class="pull-left">
 								<?php if ($item->checked_out) : ?>
-									<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'modules.', $canCheckin); ?>
+									<?php echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time, 'modules.', $canCheckin); ?>
 								<?php endif; ?>
 								<?php if ($canEdit) : ?>
 									<a href="<?php echo JRoute::_('index.php?option=com_modules&task=module.edit&id=' . (int) $item->id); ?>">

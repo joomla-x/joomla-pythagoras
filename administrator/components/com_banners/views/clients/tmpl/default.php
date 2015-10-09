@@ -84,7 +84,7 @@ $trashed    = $this->state->get('filter.state') == -2 ? true : false;
 							</td>
 							<td class="center">
 								<div class="btn-group">
-									<?php echo JHtml::_('jgrid.published', $item->state, $i, 'clients.', $canChange); ?>
+									<?php echo JHtml::_('jGrid.published', $item->state, $i, 'clients.', $canChange); ?>
 									<?php
 									// Create dropdown items
 									$action = $archived ? 'unarchive' : 'archive';
@@ -101,7 +101,7 @@ $trashed    = $this->state->get('filter.state') == -2 ? true : false;
 							<td class="nowrap has-context">
 								<div class="pull-left">
 									<?php if ($item->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'clients.', $canCheckin); ?>
+										<?php echo JHtml::_('jGrid.checkedout', $i, $item->editor, $item->checked_out_time, 'clients.', $canCheckin); ?>
 									<?php endif; ?>
 									<?php if ($canEdit) : ?>
 										<a href="<?php echo JRoute::_('index.php?option=com_banners&task=client.edit&id=' . (int) $item->id); ?>">

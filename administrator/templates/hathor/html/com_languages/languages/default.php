@@ -129,7 +129,7 @@ $saveOrder = $listOrder == 'a.ordering';
 					<?php echo $this->escape($item->image); ?>&nbsp;<?php echo JHtml::_('image', 'mod_languages/'.$item->image.'.gif', $item->image, array('title' => $item->image), true); ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'languages.', $canChange);?>
+					<?php echo JHtml::_('jGrid.published', $item->published, $i, 'languages.', $canChange);?>
 				</td>
 				<td class="order">
 					<?php if ($canChange) : ?>
