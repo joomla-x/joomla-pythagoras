@@ -176,7 +176,6 @@ class JoomlaInstallerScript
 
 			// Libraries
 			array('library', 'phpmailer', '', 0),
-			array('library', 'simplepie', '', 0),
 			array('library', 'phputf8', '', 0),
 			array('library', 'joomla', '', 0),
 			array('library', 'idna_convert', '', 0),
