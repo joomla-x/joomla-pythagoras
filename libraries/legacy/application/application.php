@@ -807,7 +807,7 @@ class JApplication extends JApplicationBase
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JRouter  A JRouter object
+	 * @return  JRouter|null  A JRouter object
 	 *
 	 * @since   11.1
 	 * @deprecated  4.0
@@ -855,7 +855,7 @@ class JApplication extends JApplicationBase
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JPathway  A JPathway object
+	 * @return  JPathway|null  A JPathway object
 	 *
 	 * @since   11.1
 	 * @deprecated  4.0
@@ -885,7 +885,7 @@ class JApplication extends JApplicationBase
 	 * @param   string  $name     The name of the application/client.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JMenu  JMenu object.
+	 * @return  JMenu|null  JMenu object.
 	 *
 	 * @since   11.1
 	 * @deprecated  4.0
