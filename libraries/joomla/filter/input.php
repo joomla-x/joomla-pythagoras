@@ -282,11 +282,11 @@ class JFilterInput
 				break;
 
 			case 'STRING':
-				$result = (string) $this->_remove($this->_decode((string) $source));
+				$result = (string) $this->remove($this->decode((string) $source));
 				break;
 
 			case 'HTML':
-				$result = (string) $this->_remove((string) $source);
+				$result = (string) $this->remove((string) $source);
 				break;
 
 			case 'ARRAY':
@@ -322,7 +322,7 @@ class JFilterInput
 						// Filter element for XSS and other 'bad' code etc.
 						if (is_string($value))
 						{
-							$source[$key] = $this->_remove($this->_decode($value));
+							$source[$key] = $this->remove($this->decode($value));
 						}
 					}
 
@@ -334,7 +334,7 @@ class JFilterInput
 					if (is_string($source) && !empty($source))
 					{
 						// Filter source for XSS and other 'bad' code etc.
-						$result = $this->_remove($this->_decode($source));
+						$result = $this->remove($this->decode($source));
 					}
 					else
 					{
@@ -651,14 +651,14 @@ class JFilterInput
 	 *
 	 * @since   11.1
 	 */
-	protected function _remove($source)
+	protected function remove($source)
 	{
 		$loopCounter = 0;
 
 		// Iteration provides nested tag protection
-		while ($source != $this->_cleanTags($source))
+		while ($source != $this->cleanTags($source))
 		{
-			$source = $this->_cleanTags($source);
+			$source = $this->cleanTags($source);
 			$loopCounter++;
 		}
 
@@ -674,10 +674,10 @@ class JFilterInput
 	 *
 	 * @since   11.1
 	 */
-	protected function _cleanTags($source)
+	protected function cleanTags($source)
 	{
 		// First, pre-process this for illegal characters inside attribute values
-		$source = $this->_escapeAttributeValues($source);
+		$source = $this->escapeAttributeValues($source);
 
 		// In the beginning we don't really have a tag, so everything is postTag
 		$preTag = null;
@@ -856,7 +856,7 @@ class JFilterInput
 				if (!$isCloseTag)
 				{
 					// Open or single tag
-					$attrSet = $this->_cleanAttributes($attrSet);
+					$attrSet = $this->cleanAttributes($attrSet);
 					$preTag .= '<' . $tagName;
 
 					for ($i = 0, $count = count($attrSet); $i < $count; $i++)
@@ -904,7 +904,7 @@ class JFilterInput
 	 *
 	 * @since   11.1
 	 */
-	protected function _cleanAttributes($attrSet)
+	protected function cleanAttributes($attrSet)
 	{
 		$newSet = array();
 
@@ -1007,7 +1007,7 @@ class JFilterInput
 	 *
 	 * @since   11.1
 	 */
-	protected function _decode($source)
+	protected function decode($source)
 	{
 		static $ttr;
 
@@ -1050,7 +1050,7 @@ class JFilterInput
 	 *
 	 * @since    11.1
 	 */
-	protected function _escapeAttributeValues($source)
+	protected function escapeAttributeValues($source)
 	{
 		$alreadyFiltered = '';
 		$remainder = $source;
@@ -1087,7 +1087,7 @@ class JFilterInput
 
 			// Escape bad chars
 			$attributeValue = str_replace($badChars, $escapedChars, $attributeValue);
-			$attributeValue = $this->_stripCSSExpressions($attributeValue);
+			$attributeValue = $this->stripCSSExpressions($attributeValue);
 			$alreadyFiltered .= substr($remainder, 0, $nextBefore) . $attributeValue . $quote;
 			$remainder = substr($remainder, $nextAfter + 1);
 		}
@@ -1105,7 +1105,7 @@ class JFilterInput
 	 *
 	 * @since   11.1
 	 */
-	protected function _stripCSSExpressions($source)
+	protected function stripCSSExpressions($source)
 	{
 		// Strip any comments out (in the form of /*...*/)
 		$test = preg_replace('#\/\*.*\*\/#U', '', $source);

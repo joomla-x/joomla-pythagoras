@@ -105,9 +105,9 @@ class JFilterWrapperOutput
 	 * @see     JFilterOutput::_ampReplaceCallback()
 	 * @since   3.4
 	 */
-	public function _ampReplaceCallback($m)
+	public function ampReplaceCallback($m)
 	{
-		return JFilterOutput::_ampReplaceCallback($m);
+		return JFilterOutput::ampReplaceCallback($m);
 	}
 
 	/**
