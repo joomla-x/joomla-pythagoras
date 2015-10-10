@@ -17,7 +17,7 @@ defined('JPATH_PLATFORM') or die;
  * @method      string  q()   q($text, $escape = true)  Alias for quote method
  * @method      string  qn()  qn($name, $as = null)     Alias for quoteName method
  */
-abstract class JDatabaseDriver extends JDatabase implements JDatabaseInterface
+abstract class JDatabaseDriver implements JDatabaseInterface
 {
 	/**
 	 * The name of the database.
@@ -143,20 +143,6 @@ abstract class JDatabaseDriver extends JDatabase implements JDatabaseInterface
 	 * @since  CMS 3.5.0
 	 */
 	protected $utf8mb4 = false;
-
-	/**
-	 * @var         integer  The database error number
-	 * @since       11.1
-	 * @deprecated  12.1
-	 */
-	protected $errorNum = 0;
-
-	/**
-	 * @var         string  The database error message
-	 * @since       11.1
-	 * @deprecated  12.1
-	 */
-	protected $errorMsg;
 
 	/**
 	 * @var    array  JDatabaseDriver instances container.
@@ -430,7 +416,6 @@ abstract class JDatabaseDriver extends JDatabase implements JDatabaseInterface
 
 		$this->tablePrefix = (isset($options['prefix'])) ? $options['prefix'] : 'jos_';
 		$this->count = 0;
-		$this->errorNum = 0;
 		$this->log = array();
 
 		// Set class options.
@@ -1243,21 +1228,6 @@ abstract class JDatabaseDriver extends JDatabase implements JDatabaseInterface
 	 *
 	 * @return  boolean  True if the database engine supports UTF-8 character encoding.
 	 *
-	 * @since   11.1
-	 * @deprecated 12.3 (Platform) & 4.0 (CMS) - Use hasUTFSupport() instead
-	 */
-	public function getUTFSupport()
-	{
-		JLog::add('JDatabaseDriver::getUTFSupport() is deprecated. Use JDatabaseDriver::hasUTFSupport() instead.', JLog::WARNING, 'deprecated');
-
-		return $this->hasUTFSupport();
-	}
-
-	/**
-	 * Determine whether or not the database engine supports UTF-8 character encoding.
-	 *
-	 * @return  boolean  True if the database engine supports UTF-8 character encoding.
-	 *
 	 * @since   12.1
 	 */
 	public function hasUTFSupport()
@@ -1486,84 +1456,6 @@ abstract class JDatabaseDriver extends JDatabase implements JDatabaseInterface
 		$this->freeResult($cursor);
 
 		return $array;
-	}
-
-	/**
-	 * Method to get the next row in the result set from the database query as an object.
-	 *
-	 * @param   string  $class  The class name to use for the returned row object.
-	 *
-	 * @return  mixed   The result of the query as an array, false if there are no more rows.
-	 *
-	 * @since   11.1
-	 * @throws  RuntimeException
-	 * @deprecated  12.3 (Platform) & 4.0 (CMS) - Use getIterator() instead
-	 */
-	public function loadNextObject($class = 'stdClass')
-	{
-		JLog::add(__METHOD__ . '() is deprecated. Use JDatabaseDriver::getIterator() instead.', JLog::WARNING, 'deprecated');
-		$this->connect();
-
-		static $cursor = null;
-
-		// Execute the query and get the result set cursor.
-		if ( is_null($cursor) )
-		{
-			if (!($cursor = $this->execute()))
-			{
-				return $this->errorNum ? null : false;
-			}
-		}
-
-		// Get the next row from the result set as an object of type $class.
-		if ($row = $this->fetchObject($cursor, $class))
-		{
-			return $row;
-		}
-
-		// Free up system resources and return.
-		$this->freeResult($cursor);
-		$cursor = null;
-
-		return false;
-	}
-
-	/**
-	 * Method to get the next row in the result set from the database query as an array.
-	 *
-	 * @return  mixed  The result of the query as an array, false if there are no more rows.
-	 *
-	 * @since   11.1
-	 * @throws  RuntimeException
-	 * @deprecated  4.0 (CMS)  Use JDatabaseDriver::getIterator() instead
-	 */
-	public function loadNextRow()
-	{
-		JLog::add(__METHOD__ . '() is deprecated. Use JDatabaseDriver::getIterator() instead.', JLog::WARNING, 'deprecated');
-		$this->connect();
-
-		static $cursor = null;
-
-		// Execute the query and get the result set cursor.
-		if ( is_null($cursor) )
-		{
-			if (!($cursor = $this->execute()))
-			{
-				return $this->errorNum ? null : false;
-			}
-		}
-
-		// Get the next row from the result set as an object of type $class.
-		if ($row = $this->fetchArray($cursor))
-		{
-			return $row;
-		}
-
-		// Free up system resources and return.
-		$this->freeResult($cursor);
-		$cursor = null;
-
-		return false;
 	}
 
 	/**
