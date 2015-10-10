@@ -135,7 +135,6 @@ class AdminModelSysInfo extends JModelLegacy
 
 		$this->info = array();
 		$version = new JVersion;
-		$platform = new JPlatform;
 		$db = $this->getDbo();
 
 		$this->info['php'] = php_uname();
@@ -146,7 +145,6 @@ class AdminModelSysInfo extends JModelLegacy
 		$this->info['server'] = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : getenv('SERVER_SOFTWARE');
 		$this->info['sapi_name'] = php_sapi_name();
 		$this->info['version'] = $version->getLongVersion();
-		$this->info['platform'] = $platform->getLongVersion();
 		$this->info['useragent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
 
 		return $this->info;
