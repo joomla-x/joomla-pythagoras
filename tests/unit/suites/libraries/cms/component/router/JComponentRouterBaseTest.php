@@ -38,7 +38,7 @@ class JComponentRouterBaseTest extends TestCase
 		 * $menu are properly populated
 		 */
 		$object = new JComponentRouterBaseInspector();
-		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\Interface', $object);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\RouterInterface', $object);
 		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\Base', $object);
 		$this->assertEquals($app, $object->app);
 		$this->assertEquals($app->getMenu(), $object->menu);
