@@ -7,16 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Joomla\CMS\Language;
 
 use Joomla\Registry\Registry;
+use JPluginHelper;
+use Exception;
+use JFactory;
+use RuntimeException;
 
 /**
  * Utitlity class for associations in multilang
  *
  * @since  3.1
  */
-class JLanguageAssociations
+class Associations
 {
 	/**
 	 * Get the associations.
@@ -123,7 +127,7 @@ class JLanguageAssociations
 		// Status of language filter parameter.
 		static $enabled = false;
 
-		if (JLanguageMultilang::isEnabled())
+		if (Multilang::isEnabled())
 		{
 			// If already tested, don't test again.
 			if (!$tested)

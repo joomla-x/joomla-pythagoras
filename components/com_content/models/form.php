@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
 use Joomla\Registry\Registry;
 
 // Base this model on the backend version.

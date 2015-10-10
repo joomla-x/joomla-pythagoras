@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
 
 /**
  * Methods supporting a list of newsfeed records.

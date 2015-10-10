@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
+
 $assoc = JLanguageAssociations::isEnabled();
 
 ?>

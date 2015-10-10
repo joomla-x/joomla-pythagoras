@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 
 /**
  * Registration model class for Users.

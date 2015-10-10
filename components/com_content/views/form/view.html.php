@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 /**
  * HTML Article View class for the Content component
  *

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 /**
  * JMenu class
  *

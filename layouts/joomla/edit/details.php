@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 $app = JFactory::getApplication();
 
 // JLayout for standard handling of the details sidebar in administrator edit screens.

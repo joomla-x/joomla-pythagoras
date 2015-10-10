@@ -7,14 +7,16 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Joomla\CMS\Language;
+
+use JFactory;
 
 /**
  * Utitlity class for multilang
  *
  * @since  2.5.4
  */
-class JLanguageMultilang
+class Multilang
 {
 	/**
 	 * Method to determine if the language filter plugin is enabled.

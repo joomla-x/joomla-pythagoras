@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 /**
  * Form Field class for the Joomla Platform.
  * Supports a generic list of options.

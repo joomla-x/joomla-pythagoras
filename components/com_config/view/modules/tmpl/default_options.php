@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 $fieldSets = $this->form->getFieldsets('params');
 
 echo JHtml::_('bootstrap.startAccordion', 'collapseTypes');
