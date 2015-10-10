@@ -137,7 +137,7 @@ class Editor implements DispatcherAwareInterface
 	 *
 	 * @param   string  $editor  The editor to use.
 	 *
-	 * @return  JEditor The Editor object.
+	 * @return  Editor The Editor object.
 	 *
 	 * @since   1.5
 	 */
@@ -147,7 +147,7 @@ class Editor implements DispatcherAwareInterface
 
 		if (empty(self::$instances[$signature]))
 		{
-			self::$instances[$signature] = new JEditor($editor);
+			self::$instances[$signature] = new Editor($editor);
 		}
 
 		return self::$instances[$signature];
