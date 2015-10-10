@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Pagination\Pagination as JPagination;
 
 /**
  * Cache Model

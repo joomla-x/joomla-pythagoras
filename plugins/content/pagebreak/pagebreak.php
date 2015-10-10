@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Pagination\Pagination as JPagination;
+
 jimport('joomla.utilities.utility');
 
 /**

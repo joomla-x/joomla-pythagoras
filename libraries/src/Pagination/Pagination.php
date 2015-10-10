@@ -7,16 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Joomla\CMS\Pagination;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use JFactory;
+use JLayoutHelper;
+use JHtml;
+use JLog;
+use JRoute;
+use JText;
+use stdClass;
 
 /**
  * Pagination Class. Provides a common interface for content pagination for the Joomla! CMS.
  *
  * @since  1.5
  */
-class JPagination
+class Pagination
 {
 	/**
 	 * @var    integer  The record number to start displaying from.
@@ -694,13 +701,13 @@ class JPagination
 	/**
 	 * Method to create an active pagination link to the item
 	 *
-	 * @param   JPaginationObject  $item  The object with which to make an active link.
+	 * @param   Object  $item  The object with which to make an active link.
 	 *
 	 * @return  string  HTML link
 	 *
 	 * @since   1.5
 	 */
-	protected function _item_active(JPaginationObject $item)
+	protected function _item_active(Object $item)
 	{
 		$title = '';
 		$class = '';
@@ -726,13 +733,13 @@ class JPagination
 	/**
 	 * Method to create an inactive pagination string
 	 *
-	 * @param   JPaginationObject  $item  The item to be processed
+	 * @param   Object  $item  The item to be processed
 	 *
 	 * @return  string
 	 *
 	 * @since   1.5
 	 */
-	protected function _item_inactive(JPaginationObject $item)
+	protected function _item_inactive(Object $item)
 	{
 		if ($this->app->isAdmin())
 		{
@@ -766,7 +773,7 @@ class JPagination
 			}
 		}
 
-		$data->all = new JPaginationObject(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
+		$data->all = new Object(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
 
 		if (!$this->viewall)
 		{
@@ -775,8 +782,8 @@ class JPagination
 		}
 
 		// Set the start and previous data objects.
-		$data->start = new JPaginationObject(JText::_('JLIB_HTML_START'), $this->prefix);
-		$data->previous = new JPaginationObject(JText::_('JPREV'), $this->prefix);
+		$data->start = new Object(JText::_('JLIB_HTML_START'), $this->prefix);
+		$data->previous = new Object(JText::_('JPREV'), $this->prefix);
 
 		if ($this->pagesCurrent > 1)
 		{
@@ -792,8 +799,8 @@ class JPagination
 		}
 
 		// Set the next and end data objects.
-		$data->next = new JPaginationObject(JText::_('JNEXT'), $this->prefix);
-		$data->end = new JPaginationObject(JText::_('JLIB_HTML_END'), $this->prefix);
+		$data->next = new Object(JText::_('JNEXT'), $this->prefix);
+		$data->end = new Object(JText::_('JLIB_HTML_END'), $this->prefix);
 
 		if ($this->pagesCurrent < $this->pagesTotal)
 		{
@@ -813,7 +820,7 @@ class JPagination
 		{
 			$offset = ($i - 1) * $this->limit;
 
-			$data->pages[$i] = new JPaginationObject($i, $this->prefix);
+			$data->pages[$i] = new Object($i, $this->prefix);
 
 			if ($i != $this->pagesCurrent || $this->viewall)
 			{

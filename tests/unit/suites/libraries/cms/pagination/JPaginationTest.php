@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Pagination\Pagination as JPagination;
+use Joomla\CMS\Pagination\Object as JPaginationObject;
+
 /**
  * Test class for JPagination.
  *
