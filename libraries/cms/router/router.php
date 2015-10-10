@@ -393,7 +393,7 @@ class JRouter
 	/**
 	 * Attach a build rule
 	 *
-	 * @param   callback  $callback  The function to be called
+	 * @param   callable  $callback  The function to be called
 	 * @param   string    $stage     The stage of the build process that
 	 *                               this should be added to. Possible values:
 	 *                               'preprocess', '' for the main build process,
@@ -416,7 +416,7 @@ class JRouter
 	/**
 	 * Attach a parse rule
 	 *
-	 * @param   callback  $callback  The function to be called.
+	 * @param   callable  $callback  The function to be called.
 	 * @param   string    $stage     The stage of the parse process that
 	 *                               this should be added to. Possible values:
 	 *                               'preprocess', '' for the main parse process,

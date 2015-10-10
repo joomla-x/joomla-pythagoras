@@ -234,7 +234,7 @@ class AbstractCMS extends JApplicationWeb
 			}
 			catch (RuntimeException $e)
 			{
-				throw new RuntimeException(JText::_('JERROR_SESSION_STARTUP'));
+				throw new RuntimeException(JText::_('JERROR_SESSION_STARTUP'), $e->getCode(), $e);
 			}
 		}
 	}
@@ -433,7 +433,7 @@ class AbstractCMS extends JApplicationWeb
 	 * @param   string  $name     The name of the application/client.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JMenu
+	 * @return  JMenu|null
 	 *
 	 * @since   3.2
 	 */
@@ -499,7 +499,7 @@ class AbstractCMS extends JApplicationWeb
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JPathway
+	 * @return  JPathway|null
 	 *
 	 * @since   3.2
 	 */
@@ -528,7 +528,7 @@ class AbstractCMS extends JApplicationWeb
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JRouter
+	 * @return  JRouter|null
 	 *
 	 * @since   3.2
 	 */

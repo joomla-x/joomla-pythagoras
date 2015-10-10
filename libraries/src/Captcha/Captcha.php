@@ -68,7 +68,7 @@ class Captcha implements DispatcherAwareInterface
 		// Set the dispatcher
 		if (!is_object($dispatcher))
 		{
-			$dispatcher = new Dispatcher();
+			$dispatcher = new Dispatcher;
 		}
 
 		$this->setDispatcher($dispatcher);
@@ -84,9 +84,9 @@ class Captcha implements DispatcherAwareInterface
 	 * @param   string  $captcha  The plugin to use.
 	 * @param   array   $options  Associative array of options.
 	 *
-	 * @return  Captcha  Instance of this class.
+	 * @return  Captcha|null  Instance of this class.
 	 *
-	 * @since 2.5
+	 * @since   2.5
 	 */
 	public static function getInstance($captcha, array $options = array())
 	{
@@ -122,7 +122,8 @@ class Captcha implements DispatcherAwareInterface
 	{
 		$event = new Event('onInit', [
 			'id' => $id
-		]);
+		]
+		);
 
 		try
 		{
@@ -167,7 +168,8 @@ class Captcha implements DispatcherAwareInterface
 			'name'	=> $name,
 			'id'	=> $id ? $id : $name,
 			'class' => $class ? 'class="' . $class . '"' : '',
-		]);
+		]
+		);
 
 		$result = $this->getDispatcher()->dispatch('onInit', $event);
 
@@ -194,7 +196,8 @@ class Captcha implements DispatcherAwareInterface
 
 		$event = new Event('onCheckAnswer', [
 			'code'	=> $code
-		]);
+		]
+		);
 
 		$result = $this->getDispatcher()->dispatch('onCheckAnswer', $event);
 

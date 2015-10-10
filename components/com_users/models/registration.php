@@ -87,6 +87,14 @@ class UsersModelRegistration extends JModelForm
 			$data['siteurl'] = JUri::base();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 			$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
+
+			// Remove administrator/ from activate url in case this method is called from admin
+			if (JFactory::getApplication()->isAdmin())
+			{
+				$adminPos         = strrpos($data['activate'], 'administrator/');
+				$data['activate'] = substr_replace($data['activate'], '', $adminPos, 14);
+			}
+
 			$data['fromname'] = $config->get('fromname');
 			$data['mailfrom'] = $config->get('mailfrom');
 			$data['sitename'] = $config->get('sitename');
@@ -411,6 +419,13 @@ class UsersModelRegistration extends JModelForm
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 			$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
 
+			// Remove administrator/ from activate url in case this method is called from admin
+			if (JFactory::getApplication()->isAdmin())
+			{
+				$adminPos         = strrpos($data['activate'], 'administrator/');
+				$data['activate'] = substr_replace($data['activate'], '', $adminPos, 14);
+			}
+
 			$emailSubject = JText::sprintf(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
@@ -447,6 +462,13 @@ class UsersModelRegistration extends JModelForm
 			$uri = JUri::getInstance();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 			$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
+
+			// Remove administrator/ from activate url in case this method is called from admin
+			if (JFactory::getApplication()->isAdmin())
+			{
+				$adminPos         = strrpos($data['activate'], 'administrator/');
+				$data['activate'] = substr_replace($data['activate'], '', $adminPos, 14);
+			}
 
 			$emailSubject = JText::sprintf(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',

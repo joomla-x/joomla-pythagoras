@@ -56,7 +56,9 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 					'JLIB_INSTALLER_ABORT_ROLLBACK',
 					JText::_('JLIB_INSTALLER_' . $this->route),
 					$e->getMessage()
-				)
+				),
+				$e->getCode(),
+				$e
 			);
 		}
 	}

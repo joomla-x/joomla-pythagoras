@@ -943,12 +943,15 @@ class PlgEditorTinymce extends JPlugin
 
 		if (is_array($buttons) || (is_bool($buttons) && $buttons))
 		{
-			$buttonsEvent = new Event('getButtons', [
-				'name'		=> $name,
-				'buttons'	=> $buttons,
-				'asset'		=> $asset,
-				'author'	=> $author
-			]);
+			$buttonsEvent = new Event(
+				'getButtons',
+				[
+					'name'		=> $name,
+					'buttons'	=> $buttons,
+					'asset'		=> $asset,
+					'author'	=> $author
+				]
+			);
 
 			$buttonsResult = $this->getDispatcher()->dispatch('getButtons', $buttonsEvent);
 

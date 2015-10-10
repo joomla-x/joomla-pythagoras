@@ -45,12 +45,13 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	 * @return  void
 	 *
 	 * @since   3.0
+	 * @covers  Editor::getInstance
 	 */
 	public function testGetInstance()
 	{
-		$this->assertThat(
-			Editor::getInstance('none'),
-			$this->isInstanceOf('Joomla\CMS\Editor\Editor')
+		$this->assertInstanceOf(
+			'\\Joomla\\CMS\\Editor\\Editor',
+			Editor::getInstance('none')
 		);
 	}
 }

@@ -17,19 +17,19 @@ use Joomla\Cms\Event as CmsEvent;
  *
  * This plugin supersedes JHelperObserverTags.
  *
- * @since   4.0.0
+ * @since  4.0.0
  */
 class PlgBehaviourTaggable extends JPlugin
 {
 	/**
 	 * Constructor
 	 *
-	 * @param   DispatcherInterface &$subject   The object to observe
-	 * @param   array               $config     An optional associative array of configuration settings.
+	 * @param   DispatcherInterface  &$subject  The object to observe
+	 * @param   array                $config    An optional associative array of configuration settings.
 	 *                                          Recognized key values include 'name', 'group', 'params', 'language'
 	 *                                          (this list is not meant to be comprehensive).
 	 *
-	 * @since   1.5
+	 * @since   4.0
 	 */
 	public function __construct(&$subject, $config = array())
 	{
@@ -42,6 +42,10 @@ class PlgBehaviourTaggable extends JPlugin
 	 * Runs when a new table object is being created
 	 *
 	 * @param   CmsEvent\Table\ObjectCreateEvent  $event  The event to handle
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
 	 */
 	public function onTableObjectCreate(CmsEvent\Table\ObjectCreateEvent $event)
 	{
@@ -255,6 +259,10 @@ class PlgBehaviourTaggable extends JPlugin
 	 * Runs when an existing table object is reset
 	 *
 	 * @param   CmsEvent\Table\AfterResetEvent  $event  The event to handle
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
 	 */
 	public function onTableAfterReset(CmsEvent\Table\AfterResetEvent $event)
 	{
@@ -279,6 +287,10 @@ class PlgBehaviourTaggable extends JPlugin
 	 * Runs when an existing table object is reset
 	 *
 	 * @param   CmsEvent\Table\AfterLoadEvent  $event  The event to handle
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
 	 */
 	public function onTableAfterLoad(CmsEvent\Table\AfterLoadEvent $event)
 	{
@@ -315,7 +327,7 @@ class PlgBehaviourTaggable extends JPlugin
 	 * Internal method
 	 * Parses a TypeAlias of the form "{variableName}.type", replacing {variableName} with table-instance variables variableName
 	 *
-	 * @param   JTableInterface  $table  The table
+	 * @param   JTableInterface  &$table  The table
 	 *
 	 * @return  string
 	 *

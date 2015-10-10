@@ -31,7 +31,7 @@ class Helper
 	 * @var    array
 	 * @since  1.6
 	 */
-	protected static $_clients = null;
+	protected static $_clients = array();
 
 	/**
 	 * Return the name of the request component [main component]
@@ -119,8 +119,8 @@ class Helper
 	 */
 	public static function getClientInfo($id = null, $byName = false)
 	{
-		// Only create the array if it does not exist
-		if (self::$_clients === null)
+		// Only create the array if it is empty
+		if (empty(self::$_clients))
 		{
 			$obj = new stdClass;
 

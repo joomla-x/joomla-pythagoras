@@ -14,6 +14,8 @@ use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Dispatcher;
 
+JLoader::register('JAuthenticationResponse', __DIR__ . '/response.php');
+
 /**
  * Authentication class, provides an interface for the Joomla authentication system
  *
@@ -83,13 +85,10 @@ class JAuthentication implements DispatcherAwareInterface
 	 */
 	public function __construct(DispatcherInterface $dispatcher = null)
 	{
-		// Pre-load JAuthenticationResponse (it's not resolved by the autoloader)
-		require_once 'response.php'; // Because JLoader::import won't include class files for classes not following its particular naming scheme. If you want to waste 2 hours of your life refactor it, I'm done.
-
 		// Set the dispatcher
 		if (!is_object($dispatcher))
 		{
-			$dispatcher = new Dispatcher();
+			$dispatcher = new Dispatcher;
 		}
 
 		$this->setDispatcher($dispatcher);
@@ -120,8 +119,6 @@ class JAuthentication implements DispatcherAwareInterface
 
 		return self::$instance;
 	}
-
-
 
 	/**
 	 * Finds out if a set of login credentials are valid by asking all observing

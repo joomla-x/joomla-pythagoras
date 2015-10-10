@@ -37,9 +37,12 @@ class PlgButtonReadmore extends JPlugin
 
 		// Button is not active in specific content components
 
-		$event = new \Joomla\Event\Event('getContent', [
-			'name' => $name
-		]);
+		$event = new \Joomla\Event\Event(
+			'getContent',
+			[
+				'name' => $name
+			]
+		);
 		$getContentResult = $this->getDispatcher()->dispatch('getContent', $event);
 		$getContent = $getContentResult['result'][0];
 		$present = JText::_('PLG_READMORE_ALREADY_EXISTS', true);

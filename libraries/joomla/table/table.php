@@ -613,7 +613,6 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeBind', $event);
 
-
 		// JSON encode any fields required
 		if (!empty($this->_jsonEncode))
 		{
@@ -827,7 +826,6 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 			'k'				=> $k,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeStore', $event);
-
 
 		$currentAssetId = 0;
 
@@ -1050,7 +1048,6 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 			'pk'		=> $pk,
 		]);
 		$this->getDispatcher()->dispatch('onTableBeforeDelete', $event);
-
 
 		// If tracking assets, remove the asset first.
 		if ($this->_trackAssets)
@@ -1652,7 +1649,6 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 			'where'		=> $where,
 		]);
 		$this->getDispatcher()->dispatch('onTableAfterMove', $event);
-
 
 		return true;
 	}

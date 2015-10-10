@@ -36,7 +36,7 @@ final class Version
 	 * @var    string
 	 * @since  3.5
 	 */
-	const RELEASE = '3.5';
+	const RELEASE = '4.0';
 
 	/**
 	 * Maintenance version.
@@ -68,7 +68,7 @@ final class Version
 	 * @var    string
 	 * @since  3.5
 	 */
-	const CODENAME = 'Ember';
+	const CODENAME = 'Pythagoras';
 
 	/**
 	 * Release date.

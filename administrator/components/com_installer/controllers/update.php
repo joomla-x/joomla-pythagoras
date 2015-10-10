@@ -146,7 +146,7 @@ class InstallerControllerUpdate extends JControllerLegacy
 
 		if (!JSession::checkToken('get'))
 		{
-			JResponse::setHeader('status', 403, true);
+			$app->setHeader('status', 403, true);
 			$app->sendHeaders();
 			echo JText::_('JINVALID_TOKEN');
 			$app->close();
