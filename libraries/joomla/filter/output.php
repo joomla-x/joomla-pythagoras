@@ -69,7 +69,7 @@ class JFilterOutput
 	{
 		$regex = 'href="([^"]*(&(amp;){0})[^"]*)*?"';
 
-		return preg_replace_callback("#$regex#i", array('JFilterOutput', '_ampReplaceCallback'), $input);
+		return preg_replace_callback("#$regex#i", array('JFilterOutput', 'ampReplaceCallback'), $input);
 	}
 
 	/**
@@ -168,7 +168,7 @@ class JFilterOutput
 	 *
 	 * @since   11.1
 	 */
-	public static function _ampReplaceCallback($m)
+	public static function ampReplaceCallback($m)
 	{
 		$rx = '&(?!amp;)';
 
