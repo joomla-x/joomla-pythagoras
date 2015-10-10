@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\String\StringHelper as JString;
 
 /**
  * Content table

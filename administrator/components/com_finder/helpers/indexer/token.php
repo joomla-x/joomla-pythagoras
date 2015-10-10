@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * Token class for the Finder indexer package.
  *

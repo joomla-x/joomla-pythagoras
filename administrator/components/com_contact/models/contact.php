@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\String\StringHelper as JString;
 
 JLoader::register('ContactHelper', JPATH_ADMINISTRATOR . '/components/com_contact/helpers/contact.php');
 

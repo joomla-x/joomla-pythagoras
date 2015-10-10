@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * Allows for quoting in language .ini files.
  */

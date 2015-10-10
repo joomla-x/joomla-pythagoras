@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * Helper for mod_random_image
  *

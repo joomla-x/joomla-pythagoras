@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 // Include the syndicate functions only once
 require_once __DIR__ . '/helper.php';
 

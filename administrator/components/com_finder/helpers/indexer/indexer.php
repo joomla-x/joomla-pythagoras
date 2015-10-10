@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 JLoader::register('FinderIndexerHelper', __DIR__ . '/helper.php');
 JLoader::register('FinderIndexerParser', __DIR__ . '/parser.php');
 JLoader::register('FinderIndexerStemmer', __DIR__ . '/stemmer.php');
