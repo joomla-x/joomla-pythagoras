@@ -630,7 +630,8 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 				catch (RuntimeException $e)
 				{
 					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
-					throw new RuntimeException($errorMsg, $errorNum);
+
+					throw new RuntimeException($errorMsg, $errorNum, $e);
 				}
 
 				// Since we were able to reconnect, run the query again.
@@ -640,6 +641,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 			else
 			{
 				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
+
 				throw new RuntimeException($errorMsg, $errorNum);
 			}
 		}
@@ -908,7 +910,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 	 *
 	 * @return  boolean
 	 *
-	 * @since 3.1.3
+	 * @since   3.1.3
 	 */
 	private function hasProfiling()
 	{

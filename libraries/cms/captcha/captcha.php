@@ -59,7 +59,7 @@ class JCaptcha implements DispatcherAwareInterface
 		// Set the dispatcher
 		if (!is_object($dispatcher))
 		{
-			$dispatcher = new Dispatcher();
+			$dispatcher = new Dispatcher;
 		}
 
 		$this->setDispatcher($dispatcher);
@@ -75,9 +75,9 @@ class JCaptcha implements DispatcherAwareInterface
 	 * @param   string  $captcha  The plugin to use.
 	 * @param   array   $options  Associative array of options.
 	 *
-	 * @return  JCaptcha  Instance of this class.
+	 * @return  JCaptcha|null  Instance of this class.
 	 *
-	 * @since 2.5
+	 * @since   2.5
 	 */
 	public static function getInstance($captcha, array $options = array())
 	{
@@ -113,7 +113,8 @@ class JCaptcha implements DispatcherAwareInterface
 	{
 		$event = new Event('onInit', [
 			'id' => $id
-		]);
+		]
+		);
 
 		try
 		{
@@ -158,7 +159,8 @@ class JCaptcha implements DispatcherAwareInterface
 			'name'	=> $name,
 			'id'	=> $id ? $id : $name,
 			'class' => $class ? 'class="' . $class . '"' : '',
-		]);
+		]
+		);
 
 		$result = $this->getDispatcher()->dispatch('onInit', $event);
 
@@ -185,7 +187,8 @@ class JCaptcha implements DispatcherAwareInterface
 
 		$event = new Event('onCheckAnswer', [
 			'code'	=> $code
-		]);
+		]
+		);
 
 		$result = $this->getDispatcher()->dispatch('onCheckAnswer', $event);
 

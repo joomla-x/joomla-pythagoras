@@ -725,7 +725,8 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 
 					// Throw the normal query exception.
 					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
-					throw new RuntimeException($errorMsg);
+
+					throw new RuntimeException($errorMsg, null, $e);
 				}
 
 				// Since we were able to reconnect, run the query again.
@@ -740,6 +741,7 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 
 				// Throw the normal query exception.
 				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
+
 				throw new RuntimeException($errorMsg);
 			}
 		}

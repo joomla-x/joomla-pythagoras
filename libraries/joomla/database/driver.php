@@ -306,7 +306,7 @@ abstract class JDatabaseDriver implements JDatabaseInterface
 			}
 			catch (RuntimeException $e)
 			{
-				throw new RuntimeException(sprintf('Unable to connect to the Database: %s', $e->getMessage()));
+				throw new RuntimeException(sprintf('Unable to connect to the Database: %s', $e->getMessage()), $e->getCode(), $e);
 			}
 
 			// Set the new connector to the global instances based on signature.
@@ -606,7 +606,7 @@ abstract class JDatabaseDriver implements JDatabaseInterface
 	 *
 	 * @since   CMS 3.1.2
 	 */
-	public function addDisconnectHandler($callable)
+	public function addDisconnectHandler(callable $callable)
 	{
 		$this->disconnectHandlers[] = $callable;
 	}

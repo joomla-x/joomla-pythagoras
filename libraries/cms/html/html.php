@@ -110,61 +110,52 @@ abstract class JHtml
 		{
 			$path = JPath::find(static::$includePaths, strtolower($file) . '.php');
 
-			if ($path)
-			{
-				require_once $path;
-
-				if (!class_exists($className))
-				{
-					throw new InvalidArgumentException(sprintf('%s not found.', $className), 500);
-				}
-			}
-			else
+			if (!$path)
 			{
 				throw new InvalidArgumentException(sprintf('%s %s not found.', $prefix, $file), 500);
+			}
+
+			require_once $path;
+
+			if (!class_exists($className))
+			{
+				throw new InvalidArgumentException(sprintf('%s not found.', $className), 500);
 			}
 		}
 
 		$toCall = array($className, $func);
 
-		if (is_callable($toCall))
-		{
-			static::register($key, $toCall);
-			$args = func_get_args();
-
-			// Remove function name from arguments
-			array_shift($args);
-
-			return static::call($toCall, $args);
-		}
-		else
+		if (!is_callable($toCall))
 		{
 			throw new InvalidArgumentException(sprintf('%s::%s not found.', $className, $func), 500);
 		}
+
+		static::register($key, $toCall);
+		$args = func_get_args();
+
+		// Remove function name from arguments
+		array_shift($args);
+
+		return static::call($toCall, $args);
 	}
 
 	/**
 	 * Registers a function to be called with a specific key
 	 *
-	 * @param   string  $key       The name of the key
-	 * @param   string  $function  Function or method
+	 * @param   string    $key       The name of the key
+	 * @param   callable  $function  Function or method
 	 *
 	 * @return  boolean  True if the function is callable
 	 *
 	 * @since   1.6
 	 */
-	public static function register($key, $function)
+	public static function register($key, callable $function)
 	{
 		list($key) = static::extract($key);
 
-		if (is_callable($function))
-		{
-			static::$registry[$key] = $function;
+		static::$registry[$key] = $function;
 
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	/**
@@ -216,15 +207,9 @@ abstract class JHtml
 	 *
 	 * @see     http://php.net/manual/en/function.call-user-func-array.php
 	 * @since   1.6
-	 * @throws  InvalidArgumentException
 	 */
-	protected static function call($function, $args)
+	protected static function call(callable $function, $args)
 	{
-		if (!is_callable($function))
-		{
-			throw new InvalidArgumentException('Function not supported', 500);
-		}
-
 		// PHP 5.3 workaround
 		$temp = array();
 
@@ -975,7 +960,7 @@ abstract class JHtml
 		static::_('bootstrap.tooltip');
 
 		// Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
-		if ($value && $value != JFactory::getDbo()->getNullDate())
+		if ($value && $value != JFactory::getDbo()->getNullDate() && strtotime($value) !== false)
 		{
 			$tz = date_default_timezone_get();
 			date_default_timezone_set('UTC');

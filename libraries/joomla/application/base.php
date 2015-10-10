@@ -121,8 +121,8 @@ abstract class JApplicationBase extends AbstractApplication
 	 *
 	 * This method will only return the 'result' argument of the event
 	 *
-	 * @param   string        $eventName  The event name.
-	 * @param   array|Event   $args       An array of arguments or an Event object (optional).
+	 * @param   string       $eventName  The event name.
+	 * @param   array|Event  $args       An array of arguments or an Event object (optional).
 	 *
 	 * @return  array   An array of results from each function call, or null if no dispatcher is defined.
 	 *
@@ -174,7 +174,7 @@ abstract class JApplicationBase extends AbstractApplication
 	 */
 	public function loadDispatcher(DispatcherInterface $dispatcher = null)
 	{
-		$this->dispatcher = ($dispatcher === null) ? new Dispatcher() : $dispatcher;
+		$this->dispatcher = ($dispatcher === null) ? new Dispatcher : $dispatcher;
 
 		return $this;
 	}

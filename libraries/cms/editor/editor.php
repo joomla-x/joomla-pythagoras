@@ -77,53 +77,57 @@ class JEditor implements DispatcherAwareInterface
 		// Set the dispatcher
 		if (!is_object($dispatcher))
 		{
-			$dispatcher = new Dispatcher();
+			$dispatcher = new Dispatcher;
 		}
 
 		$this->setDispatcher($dispatcher);
 
 		// Register the getButtons event
-		$this->getDispatcher()->addListener('getButtons', function(AbstractEvent $event) {
-			$editor = $event->getArgument('editor', null);
-			$buttons = $event->getArgument('buttons', null);
-			$result = $event->getArgument('result', []);
-
-			$newResult = $this->getButtons($editor, $buttons);
-			$newResult = (array) $newResult;
-
-			$event['result'] = array_merge($result, $newResult);
-		});
+		$this->getDispatcher()->addListener(
+			'getButtons',
+			function(AbstractEvent $event) {
+				$editor = $event->getArgument('editor', null);
+				$buttons = $event->getArgument('buttons', null);
+				$result = $event->getArgument('result', []);
+				$newResult = $this->getButtons($editor, $buttons);
+				$newResult = (array) $newResult;
+				$event['result'] = array_merge($result, $newResult);
+			}
+		);
 
 		// Register the getContent event
-		$this->getDispatcher()->addListener('getContent', function(AbstractEvent $event) {
-			$editor = $event->getArgument('editor', null);
-			$result = $event->getArgument('result', []);
-
-			$result[] = $this->getContent($editor);
-
-			$event['result'] = $result;
-		});
+		$this->getDispatcher()->addListener(
+			'getContent',
+			function(AbstractEvent $event) {
+				$editor = $event->getArgument('editor', null);
+				$result = $event->getArgument('result', []);
+				$result[] = $this->getContent($editor);
+				$event['result'] = $result;
+			}
+		);
 
 		// Register the setContent event
-		$this->getDispatcher()->addListener('getContent', function(AbstractEvent $event) {
-			$editor = $event->getArgument('editor', null);
-			$html = $event->getArgument('html', null);
-			$result = $event->getArgument('result', []);
-
-			$result[] = $this->setContent($editor, $html);
-
-			$event['result'] = $result;
-		});
+		$this->getDispatcher()->addListener(
+			'getContent',
+			function(AbstractEvent $event) {
+				$editor = $event->getArgument('editor', null);
+				$html = $event->getArgument('html', null);
+				$result = $event->getArgument('result', []);
+				$result[] = $this->setContent($editor, $html);
+				$event['result'] = $result;
+			}
+		);
 
 		// Register the save event
-		$this->getDispatcher()->addListener('save', function(AbstractEvent $event) {
-			$editor = $event->getArgument('editor', null);
-			$result = $event->getArgument('result', []);
-
-			$result[] = $this->save($editor);
-
-			$event['result'] = $result;
-		});
+		$this->getDispatcher()->addListener(
+			'save',
+			function(AbstractEvent $event) {
+				$editor = $event->getArgument('editor', null);
+				$result = $event->getArgument('result', []);
+				$result[] = $this->save($editor);
+				$event['result'] = $result;
+			}
+		);
 	}
 
 	/**
@@ -212,7 +216,9 @@ class JEditor implements DispatcherAwareInterface
 		// Check whether editor is already loaded
 		if (is_null(($this->_editor)))
 		{
-			return '';
+			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_NO_EDITOR_PLUGIN_PUBLISHED'), 'error');
+
+			return;
 		}
 
 		// Backwards compatibility. Width and height should be passed without a semicolon from now on.
@@ -429,6 +435,13 @@ class JEditor implements DispatcherAwareInterface
 
 		// Get the plugin
 		$plugin = JPluginHelper::getPlugin('editors', $this->_name);
+
+		// If no plugin is published we get an empty array and there not so much to do with it
+		if (empty($plugin))
+		{
+			return false;
+		}
+
 		$params = new Registry;
 		$params->loadString($plugin->params);
 		$params->loadArray($config);
