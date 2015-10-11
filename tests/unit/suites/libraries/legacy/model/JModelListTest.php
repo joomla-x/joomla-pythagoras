@@ -379,7 +379,7 @@ class JModelListTest extends TestCaseDatabase
 
 		$paginationObject = $this->object->getPagination();
 
-		$this->assertInstanceOf('JPagination', $paginationObject);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Pagination\\Pagination', $paginationObject);
 		$this->assertSame(100, $paginationObject->total);
 		$this->assertSame(0, $paginationObject->limitstart);
 		$this->assertSame(30, $paginationObject->limit);
