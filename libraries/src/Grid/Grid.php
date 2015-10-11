@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Grid;
+
 defined('JPATH_PLATFORM') or die;
 
+use stdClass;
+
 /**
- * JGrid class to dynamically generate HTML tables
+ * Grid class to dynamically generate HTML tables
  *
  * @since  11.3
  */
-class JGrid
+class Grid
 {
 	/**
 	 * Array of columns
@@ -81,7 +85,7 @@ class JGrid
 	 * @param   array  $options  Associative array of attributes for the table-tag
 	 * @param   bool   $replace  Replace possibly existing attributes
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -116,7 +120,7 @@ class JGrid
 	 *
 	 * @param   string  $name  Internal column name
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -144,7 +148,7 @@ class JGrid
 	 *
 	 * @param   string  $name  Name of the column to be deleted
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -167,7 +171,7 @@ class JGrid
 	 *
 	 * @param   array  $columns  List of internal column names
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -185,7 +189,7 @@ class JGrid
 	 * @param   array  $options  Associative array of attributes for the row
 	 * @param   int    $special  1 for a new row in the header, 2 for a new row in the footer
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -226,7 +230,7 @@ class JGrid
 	 *
 	 * @param   array  $options  Associative array of attributes
 	 *
-	 * @return JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -254,7 +258,7 @@ class JGrid
 	 *
 	 * @param   int  $id  ID of the row to be set to current
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -274,7 +278,7 @@ class JGrid
 	 * @param   array   $option   Associative array of attributes for the td-element
 	 * @param   bool    $replace  If false, the content is appended to the current content of the cell
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
@@ -353,7 +357,7 @@ class JGrid
 	 *
 	 * @param   int  $id  ID of the row to be deleted
 	 *
-	 * @return  JGrid This object for chaining
+	 * @return  $this
 	 *
 	 * @since 11.3
 	 */
