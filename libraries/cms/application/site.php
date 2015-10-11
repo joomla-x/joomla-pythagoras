@@ -282,21 +282,6 @@ final class JApplicationSite extends JApplicationCms
 	 * @return  Registry  The parameters object
 	 *
 	 * @since   3.2
-	 * @deprecated  4.0  Use getParams() instead
-	 */
-	public function getPageParameters($option = null)
-	{
-		return $this->getParams($option);
-	}
-
-	/**
-	 * Get the application parameters
-	 *
-	 * @param   string  $option  The component option
-	 *
-	 * @return  Registry  The parameters object
-	 *
-	 * @since   3.2
 	 */
 	public function getParams($option = null)
 	{

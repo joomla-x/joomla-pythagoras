@@ -71,30 +71,10 @@ class JPathway
 
 			if (!class_exists($classname))
 			{
-				// @deprecated 4.0 Everything in this block is deprecated but the warning is only logged after the file_exists
-				// Load the pathway object
-				$info = JApplicationHelper::getClientInfo($client, true);
-
-				if (is_object($info))
-				{
-					$path = $info->path . '/includes/pathway.php';
-
-					if (file_exists($path))
-					{
-						JLog::add('Non-autoloadable JPathway subclasses are deprecated, support will be removed in 4.0.', JLog::WARNING, 'deprecated');
-						include_once $path;
-					}
-				}
-			}
-
-			if (class_exists($classname))
-			{
-				self::$instances[$client] = new $classname($options);
-			}
-			else
-			{
 				throw new RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_PATHWAY_LOAD', $client), 500);
 			}
+
+			self::$instances[$client] = new $classname($options);
 		}
 
 		return self::$instances[$client];
@@ -199,23 +179,6 @@ class JPathway
 		}
 
 		return $ret;
-	}
-
-	/**
-	 * Create and return a new pathway object.
-	 *
-	 * @param   string  $name  Name of the item
-	 * @param   string  $link  Link to the item
-	 *
-	 * @return  JPathway  Pathway item object
-	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use makeItem() instead
-	 * @codeCoverageIgnore
-	 */
-	protected function _makeItem($name, $link)
-	{
-		return $this->makeItem($name, $link);
 	}
 
 	/**

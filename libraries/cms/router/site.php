@@ -441,22 +441,6 @@ class JRouterSite extends JRouter
 	/**
 	 * Function to build a sef route
 	 *
-	 * @param   JUri  &$uri  The internal URL
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Attach your logic as rule to the main build stage
-	 * @codeCoverageIgnore
-	 */
-	protected function _buildSefRoute(&$uri)
-	{
-		$this->buildSefRoute($uri);
-	}
-
-	/**
-	 * Function to build a sef route
-	 *
 	 * @param   JUri  &$uri  The uri
 	 *
 	 * @return  void

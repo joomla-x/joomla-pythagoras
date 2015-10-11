@@ -345,22 +345,6 @@ class JApplicationCms extends JApplicationWeb
 	}
 
 	/**
-	 * Gets a configuration value.
-	 *
-	 * @param   string  $varname  The name of the value to get.
-	 * @param   string  $default  Default value to return
-	 *
-	 * @return  mixed  The user state.
-	 *
-	 * @since   3.2
-	 * @deprecated  4.0  Use get() instead
-	 */
-	public function getCfg($varname, $default = null)
-	{
-		return $this->get($varname, $default);
-	}
-
-	/**
 	 * Gets the client id of the current running application.
 	 *
 	 * @return  integer  A client identifier.
