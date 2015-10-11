@@ -96,7 +96,7 @@ class JRouterTest extends TestCase
 	 */
 	public function testProperTypeAndMode($client)
 	{
-		$cache = new ReflectionProperty('JRouter', 'instances');
+		$cache = new ReflectionProperty('\\Joomla\\CMS\\Router\\Router', 'instances');
 		$cache->setAccessible(true);
 		$cache->setValue(array());
 
@@ -104,7 +104,7 @@ class JRouterTest extends TestCase
 
 		$object = JRouter::getInstance($client, array('mode' => 'test'));
 
-		$expected = 'JRouter' . ucfirst($client);
+		$expected = '\\Joomla\\CMS\\Router\\' . ucfirst($client);
 
 		$this->assertInstanceOf($expected, $object);
 		$this->assertEquals('test', $object->getMode());
@@ -135,7 +135,7 @@ class JRouterTest extends TestCase
 			'path' => __DIR__ . '/data'
 		));
 
-		$this->assertInstanceOf('JRouter', JRouter::getInstance('tester'));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Router\\Router', JRouter::getInstance('tester'));
 	}
 
 	/**

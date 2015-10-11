@@ -78,7 +78,7 @@ class JRouterSiteTest extends TestCase
 			TestMockMenu::create($this)
 		);
 
-		$this->assertInstanceOf('JRouter', $object);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Router\\Router', $object);
 	}
 
 	/**
