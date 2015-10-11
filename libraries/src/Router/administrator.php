@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Router;
+
 defined('JPATH_PLATFORM') or die;
+
+use JUri;
 
 /**
  * Class to create and parse routes
  *
  * @since  1.5
  */
-class JRouterAdministrator extends JRouter
+class Administrator extends Router
 {
 	/**
 	 * Function to convert a route to an internal URI.

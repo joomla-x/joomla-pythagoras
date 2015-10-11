@@ -7,18 +7,24 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Router;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use Joomla\CMS\Component\Router\Legacy as JComponentRouterLegacy;
 use Joomla\CMS\Component\Router\RouterInterface as JComponentRouterInterface;
+use JMenu;
+use JString;
+use JUri;
+use ReflectionClass;
 
 /**
  * Class to create and parse routes for the site application
  *
  * @since  1.5
  */
-class JRouterSite extends JRouter
+class Site extends Router
 {
 	/**
 	 * Component-router objects

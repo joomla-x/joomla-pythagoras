@@ -8,6 +8,7 @@
  */
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Router\Router as JRouter;
 
 /**
  * Test class for JRouter.

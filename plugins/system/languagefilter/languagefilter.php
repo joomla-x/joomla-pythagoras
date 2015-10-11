@@ -14,6 +14,7 @@ use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\CMS\Language\Associations as JLanguageAssociations;
 use Joomla\CMS\Plugin\Plugin as JPlugin;
+use Joomla\CMS\Router\Router as JRouter;
 use Joomla\Registry\Registry;
 
 JLoader::register('MenusHelper', JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');

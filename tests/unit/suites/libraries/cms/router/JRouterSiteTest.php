@@ -8,7 +8,8 @@
  */
 
 require_once __DIR__ . '/data/TestRouter.php';
-jimport('cms.router.router');
+
+use Joomla\CMS\Router\Site as JRouterSite;
 
 /**
  * Test class for JRouterSite.

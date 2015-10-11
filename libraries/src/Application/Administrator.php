@@ -23,7 +23,7 @@ use JFilterInput;
 use JInput;
 use JLanguage;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
-use JRouter;
+use Joomla\CMS\Router\Router as JRouter;
 use JText;
 use JUri;
 
@@ -172,12 +172,12 @@ class Administrator extends AbstractCMS
 	}
 
 	/**
-	 * Return a reference to the JRouter object.
+	 * Return a reference to the Router object.
 	 *
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JRouter
+	 * @return  \Joomla\CMS\Router\Router
 	 *
 	 * @since	3.2
 	 */

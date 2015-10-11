@@ -26,7 +26,7 @@ use JMenu;
 use JPathway;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JRoute;
-use JRouter;
+use Joomla\CMS\Router\Router as JRouter;
 use JText;
 use JUri;
 use stdClass;
@@ -410,12 +410,12 @@ final class Site extends AbstractCMS
 	}
 
 	/**
-	 * Return a reference to the JRouter object.
+	 * Return a reference to the Router object.
 	 *
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return	JRouter
+	 * @return	\Joomla\CMS\Router\Router
 	 *
 	 * @since	3.2
 	 */

@@ -28,7 +28,7 @@ use JPathway;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JProfiler;
 use JRoute;
-use JRouter;
+use Joomla\CMS\Router\Router as JRouter;
 use JSession;
 use JText;
 use JUri;
@@ -523,12 +523,12 @@ class AbstractCMS extends JApplicationWeb
 	}
 
 	/**
-	 * Returns the application JRouter object.
+	 * Returns the application Router object.
 	 *
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JRouter|null
+	 * @return  \Joomla\CMS\Router\Router|null
 	 *
 	 * @since   3.2
 	 */

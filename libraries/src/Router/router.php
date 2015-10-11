@@ -7,9 +7,16 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Router;
+
 defined('JPATH_PLATFORM') or die;
 
+use InvalidArgumentException;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use JLog;
+use JText;
+use JUri;
+use RuntimeException;
 
 /**
  * Mask for the raw routing mode
@@ -30,7 +37,7 @@ const JROUTER_MODE_SEF = 1;
  *
  * @since  1.5
  */
-class JRouter
+class Router
 {
 	/**
 	 * Mask for the before process stage
@@ -130,9 +137,9 @@ class JRouter
 	protected $cache = array();
 
 	/**
-	 * JRouter instances container.
+	 * Router instances container.
 	 *
-	 * @var    JRouter[]
+	 * @var    Router[]
 	 * @since  1.7
 	 */
 	protected static $instances = array();
@@ -157,13 +164,13 @@ class JRouter
 	}
 
 	/**
-	 * Returns the global JRouter object, only creating it if it
+	 * Returns the global Router object, only creating it if it
 	 * doesn't already exist.
 	 *
 	 * @param   string  $client   The name of the client
 	 * @param   array   $options  An associative array of options
 	 *
-	 * @return  JRouter  A JRouter object.
+	 * @return  Router  A Router object.
 	 *
 	 * @since   1.5
 	 * @throws  RuntimeException
@@ -172,8 +179,8 @@ class JRouter
 	{
 		if (empty(self::$instances[$client]))
 		{
-			// Create a JRouter object
-			$classname = 'JRouter' . ucfirst($client);
+			// Create a Router object
+			$classname = '\\Joomla\\CMS\\Router\\' . ucfirst($client);
 
 			if (!class_exists($classname))
 			{
