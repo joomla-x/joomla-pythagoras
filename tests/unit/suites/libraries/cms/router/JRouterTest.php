@@ -810,7 +810,7 @@ class JRouterTest extends TestCase
 	{
 		$this->object->setVars($preset, false);
 
-		$createUriMethod = new ReflectionMethod('JRouter', 'createUri');
+		$createUriMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Router', 'createUri');
 		$createUriMethod->setAccessible(true);
 		$this->assertEquals($expected, (string)($createUriMethod->invoke($this->object, $url)));
 	}
@@ -839,7 +839,7 @@ class JRouterTest extends TestCase
 	 */
 	public function testEncodeSegments($segments, $expected)
 	{
-		$encodeSegmentsMethod = new ReflectionMethod('JRouter', 'encodeSegments');
+		$encodeSegmentsMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Router', 'encodeSegments');
 		$encodeSegmentsMethod->setAccessible(true);
 		$this->assertEquals($expected, $encodeSegmentsMethod->invoke($this->object, $segments));
 	}
@@ -868,7 +868,7 @@ class JRouterTest extends TestCase
 	 */
 	public function testDecodeSegments($encoded, $expected)
 	{
-		$decodeSegmentsMethod = new ReflectionMethod('JRouter', 'decodeSegments');
+		$decodeSegmentsMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Router', 'decodeSegments');
 		$decodeSegmentsMethod->setAccessible(true);
 		$this->assertEquals($expected, $decodeSegmentsMethod->invoke($this->object, $encoded));
 	}
