@@ -39,7 +39,8 @@ class JCaptcha implements DispatcherAwareInterface
 	/**
 	 * Array of instances of this class.
 	 *
-	 * @var	array
+	 * @var	   JCaptcha[]
+	 * @since  2.5
 	 */
 	private static $_instances = array();
 
@@ -50,7 +51,7 @@ class JCaptcha implements DispatcherAwareInterface
 	 * @param   array                $options     Associative array of options.
 	 * @param   DispatcherInterface  $dispatcher  The event dispatcher we're going to use
 	 *
-	 * @since 2.5
+	 * @since   2.5
 	 */
 	public function __construct($captcha, $options, DispatcherInterface $dispatcher = null)
 	{

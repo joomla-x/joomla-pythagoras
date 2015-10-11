@@ -49,7 +49,7 @@ class JTableMenuType extends JTable
 			return false;
 		}
 
-		$this->menutype = JApplication::stringURLSafe($this->menutype);
+		$this->menutype = JApplicationHelper::stringURLSafe($this->menutype);
 
 		if (empty($this->menutype))
 		{
