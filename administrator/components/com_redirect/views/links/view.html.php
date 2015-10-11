@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
 
 /**
  * View class for a list of redirection links.
@@ -109,7 +110,7 @@ class RedirectViewLinks extends JViewLegacy
 		if ($canDo->get('core.create'))
 		{
 			// Get the toolbar object instance
-			$bar = JToolBar::getInstance('toolbar');
+			$bar = JToolbar::getInstance('toolbar');
 
 			$title = JText::_('JTOOLBAR_BATCH');
 

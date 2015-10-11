@@ -7,6 +7,9 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Toolbar\Button\Help as JToolbarButtonHelp;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * Test class for JToolbarButtonHelp.
  *

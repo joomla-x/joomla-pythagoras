@@ -7,6 +7,8 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * Test class for JToolbar.
  *
@@ -67,7 +69,7 @@ class JToolbarTest extends TestCase
 	{
 		$this->assertThat(
 			new JToolbar('toolbar'),
-			$this->isInstanceOf('JToolbar')
+			$this->isInstanceOf('\\Joomla\\CMS\\Toolbar\\Toolbar')
 		);
 	}
 
@@ -84,7 +86,7 @@ class JToolbarTest extends TestCase
 
 		$this->assertThat(
 			$this->object,
-			$this->isInstanceOf('JToolbar')
+			$this->isInstanceOf('\\Joomla\\CMS\\Toolbar\\Toolbar')
 		);
 	}
 
@@ -170,7 +172,7 @@ class JToolbarTest extends TestCase
 	{
 		$this->assertThat(
 			$this->object->loadButtonType('Separator'),
-			$this->isInstanceOf('JToolbarButtonSeparator')
+			$this->isInstanceOf('\\Joomla\\CMS\\Toolbar\\Button\\Separator')
 		);
 	}
 

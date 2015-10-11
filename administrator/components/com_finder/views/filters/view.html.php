@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * Filters view class for Finder.
  *

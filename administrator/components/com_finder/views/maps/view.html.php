@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 JLoader::register('FinderHelperLanguage', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/language.php');
 
 /**

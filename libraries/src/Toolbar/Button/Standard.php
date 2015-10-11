@@ -7,16 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Toolbar\Button;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\AbstractButton as JToolbarButton;
+use JText;
 
 /**
  * Renders a standard button
  *
  * @since  3.0
  */
-class JToolbarButtonStandard extends JToolbarButton
+class Standard extends JToolbarButton
 {
 	/**
 	 * Button type

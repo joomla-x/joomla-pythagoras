@@ -7,6 +7,8 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * Test class for JToolbarButton.
  *
@@ -91,7 +93,7 @@ class JToolbarButtonTest extends TestCaseDatabase
 	{
 		$this->assertThat(
 			new JToolbarButtonStandard($this->toolbar),
-			$this->isInstanceOf('JToolbarButton')
+			$this->isInstanceOf('\\Joomla\\CMS\\Toolbar\\AbstractButton')
 		);
 	}
 

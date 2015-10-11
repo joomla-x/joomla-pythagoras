@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * Displays a list of the installed languages.
  *

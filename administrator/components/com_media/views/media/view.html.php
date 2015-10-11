@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
 
 /**
  * HTML View class for the Media component
@@ -70,7 +71,7 @@ class MediaViewMedia extends JViewLegacy
 	protected function addToolbar()
 	{
 		// Get the toolbar object instance
-		$bar  = JToolBar::getInstance('toolbar');
+		$bar  = JToolbar::getInstance('toolbar');
 		$user = JFactory::getUser();
 
 		// Set the titlebar text

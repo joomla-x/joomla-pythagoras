@@ -7,16 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Toolbar\Button;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\AbstractButton as JToolbarButton;
 
 /**
  * Renders a button separator
  *
  * @since  3.0
  */
-class JToolbarButtonSeparator extends JToolbarButton
+class Separator extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -32,7 +35,7 @@ class JToolbarButtonSeparator extends JToolbarButton
 	 *
 	 * @return  string  The HTML for the separator
 	 *
-	 * @see     JToolbarButton::render()
+	 * @see     AbstractButton::render()
 	 * @since   3.0
 	 */
 	public function render(&$definition)

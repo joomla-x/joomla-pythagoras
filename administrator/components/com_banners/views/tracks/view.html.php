@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * View class for a list of tracks.
  *
@@ -69,7 +71,7 @@ class BannersViewTracks extends JViewLegacy
 
 		JToolbarHelper::title(JText::_('COM_BANNERS_MANAGER_TRACKS'), 'bookmark banners-tracks');
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 		$bar->appendButton('Popup', 'download', 'JTOOLBAR_EXPORT', 'index.php?option=com_banners&amp;view=download&amp;tmpl=component', 600, 300);
 
 		if ($canDo->get('core.delete'))

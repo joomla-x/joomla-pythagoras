@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * HTML Languages View class for the Languages component.
  *

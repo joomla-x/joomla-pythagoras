@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
 
 /**
  * Categories view class for the Category package.
@@ -94,7 +95,7 @@ class CategoriesViewCategories extends JViewLegacy
 		$extension  = JFactory::getApplication()->input->get('extension', '', 'word');
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
 		// Avoid nonsense situation.
 		if ($component == 'com_categories')

@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
 
 /**
  * HTML View class for the Modules component

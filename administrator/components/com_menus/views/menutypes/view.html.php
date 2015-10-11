@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * The HTML Menus Menu Item TYpes View.
  *
@@ -99,7 +101,7 @@ class MenusViewMenutypes extends JViewLegacy
 		JToolbarHelper::title(JText::_('COM_MENUS'), 'list menumgr');
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
 		// Cancel
 		$title = JText::_('JTOOLBAR_CANCEL');

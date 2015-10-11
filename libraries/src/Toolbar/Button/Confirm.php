@@ -7,16 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Toolbar\Button;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\AbstractButton as JToolbarButton;
+use JText;
 
 /**
  * Renders a standard button with a confirm dialog
  *
  * @since  3.0
  */
-class JToolbarButtonConfirm extends JToolbarButton
+class Confirm extends JToolbarButton
 {
 	/**
 	 * Button type

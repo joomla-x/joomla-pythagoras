@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Toolbar;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
@@ -14,11 +16,11 @@ use Joomla\CMS\Layout\File as JLayoutFile;
 /**
  * Button base class
  *
- * The JButton is the base class for all JButton types
+ * The AbstractButton is the base class for all AbstractButton types
  *
  * @since  3.0
  */
-abstract class JToolbarButton
+abstract class AbstractButton
 {
 	/**
 	 * element name
@@ -32,7 +34,7 @@ abstract class JToolbarButton
 	/**
 	 * reference to the object that instantiated the element
 	 *
-	 * @var    JButton
+	 * @var    Toolbar
 	 */
 	protected $_parent = null;
 
@@ -120,27 +122,4 @@ abstract class JToolbarButton
 	 * @since   3.0
 	 */
 	abstract public function fetchButton();
-}
-
-/**
- * Deprecated class placeholder. You should use JToolbarButton instead.
- *
- * @since       1.5
- * @deprecated  4.0  Use JToolbarButton instead.
- * @codeCoverageIgnore
- */
-abstract class JButton extends JToolbarButton
-{
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $parent  The parent
-	 *
-	 * @deprecated  4.0  Use JToolbarButton instead.
-	 */
-	public function __construct($parent = null)
-	{
-		JLog::add('JButton is deprecated. Use JToolbarButton instead.', JLog::WARNING, 'deprecated');
-		parent::__construct($parent);
-	}
 }

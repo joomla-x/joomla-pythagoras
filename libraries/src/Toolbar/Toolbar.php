@@ -7,16 +7,22 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Toolbar;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFilterInput;
+use JLog;
 use Joomla\CMS\Layout\File as JLayoutFile;
+use JPath;
+use JText;
 
 /**
  * ToolBar handler
  *
  * @since  1.5
  */
-class JToolbar
+class Toolbar
 {
 	/**
 	 * Toolbar name
@@ -49,7 +55,7 @@ class JToolbar
 	/**
 	 * Stores the singleton instances of various toolbar.
 	 *
-	 * @var    JToolbar
+	 * @var    Toolbar
 	 * @since  2.5
 	 */
 	protected static $instances = array();
@@ -75,7 +81,7 @@ class JToolbar
 	 *
 	 * @param   string  $name  The name of the toolbar.
 	 *
-	 * @return  JToolbar  The JToolbar object.
+	 * @return  Toolbar  The JToolbar object.
 	 *
 	 * @since   1.5
 	 */
@@ -83,7 +89,7 @@ class JToolbar
 	{
 		if (empty(self::$instances[$name]))
 		{
-			self::$instances[$name] = new JToolbar($name);
+			self::$instances[$name] = new Toolbar($name);
 		}
 
 		return self::$instances[$name];
@@ -219,17 +225,17 @@ class JToolbar
 			return $this->_buttons[$signature];
 		}
 
-		if (!class_exists('JToolbarButton'))
+		if (!class_exists('\\Joomla\\CMS\\Toolbar\\AbstractButton'))
 		{
 			JLog::add(JText::_('JLIB_HTML_BUTTON_BASE_CLASS'), JLog::WARNING, 'jerror');
 
 			return false;
 		}
 
-		$buttonClass = 'JToolbarButton' . ucfirst($type);
+		$buttonClass = '\\Joomla\\CMS\\Toolbar\\Button\\' . ucfirst($type);
 
 		// @deprecated 12.3 Remove the acceptance of legacy classes starting with JButton.
-		$buttonClassOld = 'JButton' . ucfirst($type);
+		$buttonClassOld = '\\Joomla\\Button\\' . ucfirst($type);
 
 		if (!class_exists($buttonClass))
 		{

@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
 
 JHtml::_('behavior.modal');
 
@@ -81,7 +82,7 @@ class MessagesViewMessages extends JViewLegacy
 		}
 
 		JToolbarHelper::divider();
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
 		// Instantiate a new JLayoutFile instance and render the layout
 		JHtml::_('behavior.modal', 'a.messagesSettings');

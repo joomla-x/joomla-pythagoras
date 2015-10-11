@@ -7,17 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Toolbar\Button;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Help\Help as JHelp;
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\AbstractButton as JToolbarButton;
+use JText;
 
 /**
  * Renders a help popup window button
  *
  * @since  3.0
  */
-class JToolbarButtonHelp extends JToolbarButton
+class Help extends JToolbarButton
 {
 	/**
 	 * @var    string	Button type

@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
 
 /**
  * The HTML Menus Menu Items View.
@@ -229,7 +230,7 @@ class MenusViewItems extends JViewLegacy
 		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
 		JToolbarHelper::title(JText::_('COM_MENUS_VIEW_ITEMS_TITLE'), 'list menumgr');
 
