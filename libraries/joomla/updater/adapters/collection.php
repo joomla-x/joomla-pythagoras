@@ -145,10 +145,9 @@ class JUpdaterCollection extends JUpdateAdapter
 				}
 
 				// Only add the update if it is on the same platform and release as we are
-				$ver = new JVersion;
 
 				// Lower case and remove the exclamation mark
-				$product = strtolower(JFilterInput::getInstance()->clean($ver->PRODUCT, 'cmd'));
+				$product = strtolower(JFilterInput::getInstance()->clean(JVersion::PRODUCT, 'cmd'));
 
 				/*
 				 * Set defaults, the extension file should clarify in case but it may be only available in one version
@@ -166,7 +165,7 @@ class JUpdaterCollection extends JUpdateAdapter
 				// Set this to ourself as a default
 				if (!isset($values['targetplatformversion']))
 				{
-					$values['targetplatformversion'] = $ver->RELEASE;
+					$values['targetplatformversion'] = JVersion::RELEASE;
 				}
 
 				// Set this to ourselves as a default

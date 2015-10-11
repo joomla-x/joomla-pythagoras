@@ -51,8 +51,7 @@ class MediawikiCli extends JApplicationCli
 	public function doExecute()
 	{
 		// Get the version data for the script
-		$version     = new JVersion;
-		$helpVersion = str_replace('.', '', $version->RELEASE);
+		$helpVersion = str_replace('.', '', JVersion::RELEASE);
 		$namespace   = 'Help' . $helpVersion . ':';
 
 		// Set up options for JMediawiki
@@ -63,7 +62,7 @@ class MediawikiCli extends JApplicationCli
 
 		// Get the category members (local hack)
 		$this->out('Fetching data from docs wiki', true);
-		$categoryMembers = $mediawiki->categories->getCategoryMembers('Category:Help_screen_' . $version->RELEASE, null, 'max');
+		$categoryMembers = $mediawiki->categories->getCategoryMembers('Category:Help_screen_' . JVersion::RELEASE, null, 'max');
 
 		$members = array();
 
