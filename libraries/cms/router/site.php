@@ -103,7 +103,7 @@ class JRouterSite extends JRouter
 		}
 
 		// Identify format
-		if ($this->_mode == JROUTER_MODE_SEF)
+		if ($this->mode == JROUTER_MODE_SEF)
 		{
 			if ($this->app->get('sef_suffix') && !(substr($path, -9) == 'index.php' || substr($path, -1) == '/'))
 			{
@@ -139,7 +139,7 @@ class JRouterSite extends JRouter
 		$route = $uri->getPath();
 
 		// Add the suffix to the uri
-		if ($this->_mode == JROUTER_MODE_SEF && $route)
+		if ($this->mode == JROUTER_MODE_SEF && $route)
 		{
 			if ($this->app->get('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/'))
 			{
@@ -379,7 +379,7 @@ class JRouterSite extends JRouter
 		$this->setVars($vars);
 
 		// Parse the component route
-		if (!empty($route) && isset($this->_vars['option']))
+		if (!empty($route) && isset($this->vars['option']))
 		{
 			$segments = explode('/', $route);
 
@@ -389,7 +389,7 @@ class JRouterSite extends JRouter
 			}
 
 			// Handle component route
-			$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $this->_vars['option']);
+			$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $this->vars['option']);
 
 			if (count($segments))
 			{
@@ -536,7 +536,7 @@ class JRouterSite extends JRouter
 		if ($stage == self::PROCESS_DURING)
 		{
 			// Process the pagination support
-			if ($this->_mode == JROUTER_MODE_SEF)
+			if ($this->mode == JROUTER_MODE_SEF)
 			{
 				if ($start = $uri->getVar('start'))
 				{
@@ -568,7 +568,7 @@ class JRouterSite extends JRouter
 		{
 			// Make sure any menu vars are used if no others are specified
 			$query = $uri->getQuery(true);
-			if ($this->_mode != 1
+			if ($this->mode != 1
 				&& isset($query['Itemid'])
 				&& (count($query) == 2 || (count($query) == 3 && isset($query['lang']))))
 			{
@@ -616,7 +616,7 @@ class JRouterSite extends JRouter
 			// Get the path data
 			$route = $uri->getPath();
 
-			if ($this->_mode == JROUTER_MODE_SEF && $route)
+			if ($this->mode == JROUTER_MODE_SEF && $route)
 			{
 				if ($limitstart = $uri->getVar('limitstart'))
 				{
