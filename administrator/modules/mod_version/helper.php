@@ -38,7 +38,7 @@ abstract class ModVersionHelper
 		if ($format == 'short' && !empty($product))
 		{
 			// Add the product name to short format only (in long format it's included)
-			$version = $instance->PRODUCT . ' ' . $version;
+			$version = JVersion::PRODUCT . ' ' . $version;
 		}
 
 		return $version;
