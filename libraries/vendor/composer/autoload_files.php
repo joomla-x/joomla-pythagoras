@@ -7,4 +7,12 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     $vendorDir . '/ircmaxell/password-compat/lib/password.php',
+    $baseDir . '/libraries/platform.php',
+    $baseDir . '/libraries/joomla/factory.php',
+    $baseDir . '/libraries/joomla/language/text.php',
+    $baseDir . '/libraries/joomla/application/route.php',
+    $baseDir . '/libraries/phpass/PasswordHash.php',
+    $baseDir . '/bootstrap/legacy/helper.php',
+    $baseDir . '/bootstrap/legacy/toolbar.php',
+    $baseDir . '/bootstrap/legacy/subtoolbar.php',
 );

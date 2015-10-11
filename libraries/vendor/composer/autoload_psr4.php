@@ -22,6 +22,9 @@ return array(
     'Joomla\\Event\\' => array($vendorDir . '/joomla/event/src'),
     'Joomla\\DI\\Tests\\' => array($vendorDir . '/joomla/di/Tests'),
     'Joomla\\DI\\' => array($vendorDir . '/joomla/di/src'),
+    'Joomla\\Cms\\' => array($baseDir . '/libraries/cms'),
     'Joomla\\Application\\Tests\\' => array($vendorDir . '/joomla/application/Tests'),
     'Joomla\\Application\\' => array($vendorDir . '/joomla/application/src'),
+    'Joomla\\' => array($baseDir . '/libraries/joomla'),
+    '' => array($baseDir . '/libraries/joomla', $baseDir . '/libraries/cms'),
 );

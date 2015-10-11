@@ -7,41 +7,19 @@
  */
 
 /**
- * Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
- */
-define('JOOMLA_MINIMUM_PHP', '5.3.10');
-
-if (version_compare(PHP_VERSION, JOOMLA_MINIMUM_PHP, '<'))
-{
-	die('Your host needs to use PHP ' . JOOMLA_MINIMUM_PHP . ' or higher to run this version of Joomla!');
-}
-
-/**
  * Constant that is checked in included files to prevent direct access.
- * define() is used in the installation folder rather than "const" to not error for PHP 5.2 and lower
+ * define() is used in the installation folder rather than "const" to
+ * not error for PHP 5.2 and lower
  */
 define('_JEXEC', 1);
 
-if (file_exists(__DIR__ . '/defines.php'))
-{
-	include_once __DIR__ . '/defines.php';
-}
+/*
+ * Register the auto loader
+ */
+require __DIR__.'/../bootstrap/autoload.php';
 
-if (!defined('_JDEFINES'))
-{
-	define('JPATH_BASE', __DIR__);
-	require_once JPATH_BASE . '/includes/defines.php';
-}
+define('JAPPLICATIONTYPE', 'administrator');
 
-require_once JPATH_BASE . '/includes/framework.php';
-require_once JPATH_BASE . '/includes/helper.php';
-require_once JPATH_BASE . '/includes/toolbar.php';
+require __DIR__.'/../bootstrap/defines.php';
 
-// Mark afterLoad in the profiler.
-JDEBUG ? $_PROFILER->mark('afterLoad') : null;
-
-// Instantiate the application.
-$app = JFactory::getApplication('administrator');
-
-// Execute the application.
-$app->execute();
+require __DIR__.'/../bootstrap/app.php';

@@ -8,6 +8,31 @@
     "config": {
         "vendor-dir": "libraries/vendor"
     },
+    "autoload": {
+        "psr-4": {
+            "Joomla\\"      :"libraries/joomla",
+            "Joomla\\Cms\\" :"libraries/cms",
+            ""              :["libraries/joomla","libraries/cms"]
+        },
+        "classmap": [
+            "libraries/legacy/",
+            "libraries/joomla/",
+            "libraries/cms/",
+            "libraries/idna_convert/",
+            "administrator/components/com_config",
+            "components/com_config"
+        ],
+        "files": [
+            "libraries/platform.php",
+            "libraries/joomla/factory.php",
+            "libraries/joomla/language/text.php",
+            "libraries/joomla/application/route.php",
+            "libraries/phpass/PasswordHash.php",
+            "bootstrap/legacy/helper.php",
+            "bootstrap/legacy/toolbar.php",
+            "bootstrap/legacy/subtoolbar.php"
+        ]
+    },
     "require-joomla_framework_packages_not_public_yet_remember_to_move_these_into_require_below": {
         "joomla/event": "~2.0"
     },
