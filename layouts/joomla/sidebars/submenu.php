@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 JHtmlBehavior::core();
 
 JFactory::getDocument()->addScriptDeclaration('

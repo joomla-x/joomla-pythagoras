@@ -7,10 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Layout;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
+use JLoader;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use JPath;
 
 /**
  * Base class for rendering a display layout
@@ -19,7 +24,7 @@ use Joomla\CMS\Component\Helper as JComponentHelper;
  * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
  * @since  3.0
  */
-class JLayoutFile extends JLayoutBase
+class File extends Base
 {
 	/**
 	 * @var    string  Dot separated path to the layout file, relative to base path

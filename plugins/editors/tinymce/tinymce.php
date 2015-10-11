@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
 use Joomla\CMS\Plugin\Plugin as JPlugin;
 use Joomla\Event\Event;
 

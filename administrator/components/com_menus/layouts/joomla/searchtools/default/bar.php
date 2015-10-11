@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 $data = $displayData;
 
 // We will get the menutype filter & remove it from the form filters

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 /**
  * Renders a button to render an HTML element in a slider container
  *

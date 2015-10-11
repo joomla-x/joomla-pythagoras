@@ -8,6 +8,9 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 JHtml::_('behavior.modal');
 
 /**

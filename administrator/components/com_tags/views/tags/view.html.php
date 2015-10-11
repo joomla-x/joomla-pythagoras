@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 /**
  * Tags view class for the Tags package.
  *

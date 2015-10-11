@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 // Note that this layout opens a div with the page class suffix. If you do not use the category children
 // layout you need to close this div either by overriding this file or in your main layout.
 $params    = $displayData->params;

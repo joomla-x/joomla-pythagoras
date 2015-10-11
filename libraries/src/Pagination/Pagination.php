@@ -13,7 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use JFactory;
-use JLayoutHelper;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
 use JHtml;
 use JLog;
 use JRoute;

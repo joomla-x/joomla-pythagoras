@@ -9,5 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 $this->subtemplatename = 'items';
 echo JLayoutHelper::render('joomla.content.category_default', $this);

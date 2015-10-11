@@ -9,6 +9,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
 use Joomla\Registry\Registry;
 
 $list = $displayData['list'];

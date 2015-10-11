@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 JLoader::register('JSubMenuHelper', JPATH_BASE . '/includes/subtoolbar.php');
 
 /**

@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Layout;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
@@ -17,7 +19,7 @@ use Joomla\Registry\Registry;
  * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
  * @since  3.0
  */
-class JLayoutBase implements JLayout
+class Base implements LayoutInterface
 {
 	/**
 	 * Options object
@@ -40,7 +42,7 @@ class JLayoutBase implements JLayout
 	 *
 	 * @param   array|Registry  $options  Array / Registry object with the options to load
 	 *
-	 * @return  JLayoutBase  Instance of $this to allow chaining.
+	 * @return  Base  Instance of $this to allow chaining.
 	 *
 	 * @since   3.2
 	 */
@@ -85,7 +87,7 @@ class JLayoutBase implements JLayout
 	/**
 	 * Function to empty all the options
 	 *
-	 * @return  JLayoutBase  Instance of $this to allow chaining.
+	 * @return  Base  Instance of $this to allow chaining.
 	 *
 	 * @since   3.2
 	 */

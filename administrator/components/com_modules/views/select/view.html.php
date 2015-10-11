@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 /**
  * HTML View class for the Modules component
  *

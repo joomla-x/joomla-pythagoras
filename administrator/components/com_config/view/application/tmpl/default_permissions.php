@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 $this->name = JText::_('COM_CONFIG_PERMISSION_SETTINGS');
 $this->fieldsname = 'permissions';
 $this->formclass = 'form-vertical';

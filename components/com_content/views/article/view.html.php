@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\File as JLayoutFile;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 
 /**

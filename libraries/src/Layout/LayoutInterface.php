@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Layout;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -15,7 +17,7 @@ defined('JPATH_PLATFORM') or die;
  * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
  * @since  3.0
  */
-interface JLayout
+interface LayoutInterface
 {
 	/**
 	 * Method to escape output.

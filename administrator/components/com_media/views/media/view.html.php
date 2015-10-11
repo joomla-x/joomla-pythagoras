@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Layout\File as JLayoutFile;
 
 /**
  * HTML View class for the Media component

@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Layout;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -15,7 +17,7 @@ defined('JPATH_PLATFORM') or die;
  * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
  * @since  3.1
  */
-class JLayoutHelper
+class Helper
 {
 	/**
 	 * A default base path that will be used if none is provided when calling the render method.
@@ -44,7 +46,7 @@ class JLayoutHelper
 
 		// Make sure we send null to JLayoutFile if no path set
 		$basePath = empty($basePath) ? null : $basePath;
-		$layout = new JLayoutFile($layoutFile, $basePath, $options);
+		$layout = new File($layoutFile, $basePath, $options);
 		$renderedLayout = $layout->render($displayData);
 
 		return $renderedLayout;
