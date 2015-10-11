@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Installer\Installer as JInstaller;
+
 /**
  * Database configuration model for the Joomla Core Installer.
  *

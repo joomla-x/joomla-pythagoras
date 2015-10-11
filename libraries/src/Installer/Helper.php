@@ -7,10 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer;
+
 defined('JPATH_PLATFORM') or die;
 
+use Exception;
+use JArchive;
+use JFactory;
+use JFile;
+use JFolder;
+use JHttpFactory;
+use JLog;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Joomla\CMS\Version as JVersion;
+use JPath;
+use JText;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -21,7 +32,7 @@ jimport('joomla.filesystem.path');
  *
  * @since  3.1
  */
-abstract class JInstallerHelper
+abstract class Helper
 {
 	/**
 	 * Downloads a package

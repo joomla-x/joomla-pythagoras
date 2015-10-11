@@ -7,20 +7,34 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer;
+
 defined('JPATH_PLATFORM') or die;
 
-jimport('joomla.base.adapterinstance');
+\jimport('joomla.base.adapterinstance');
+
+use JAdapterInstance;
+use JDatabaseDriver;
+use JFactory;
+use JFilterInput;
+use JFolder;
+use JTable;
+use JTableExtension;
+use JTableInterface;
+use JText;
+use RuntimeException;
+use SimpleXMLElement;
 
 /**
  * Abstract adapter for the installer.
  *
- * @method         JInstaller  getParent()  Retrieves the parent object.
- * @property-read  JInstaller  $parent      Parent object
+ * @method         Installer  getParent()  Retrieves the parent object.
+ * @property-read  Installer  $parent      Parent object
  *
  * @since  3.4
  * @note   As of 4.0, this class will no longer extend from JAdapterInstance
  */
-abstract class JInstallerAdapter extends JAdapterInstance
+abstract class Adapter extends JAdapterInstance
 {
 	/**
 	 * ID for the currently installed extension if present
@@ -109,13 +123,13 @@ abstract class JInstallerAdapter extends JAdapterInstance
 	/**
 	 * Constructor
 	 *
-	 * @param   JInstaller       $parent   Parent object
+	 * @param   Installer       $parent   Parent object
 	 * @param   JDatabaseDriver  $db       Database object
 	 * @param   array            $options  Configuration Options
 	 *
 	 * @since   3.4
 	 */
-	public function __construct(JInstaller $parent, JDatabaseDriver $db, array $options = array())
+	public function __construct(Installer $parent, JDatabaseDriver $db, array $options = array())
 	{
 		parent::__construct($parent, $db, $options);
 
@@ -128,7 +142,7 @@ abstract class JInstallerAdapter extends JAdapterInstance
 		// Sanity check, make sure the type is set by taking the adapter name from the class name
 		if (!$this->type)
 		{
-			$this->type = strtolower(str_replace('JInstallerAdapter', '', get_called_class()));
+			$this->type = strtolower(str_replace('\\Joomla\\CMS\\Installer\\Adapter\\', '', get_called_class()));
 		}
 	}
 

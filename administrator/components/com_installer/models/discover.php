@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 require_once __DIR__ . '/extension.php';
 
+use Joomla\CMS\Installer\Installer as JInstaller;
+
 /**
  * Installer Discover Model
  *

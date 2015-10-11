@@ -7,16 +7,22 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use JObject;
+use JLog;
+use JText;
+use SimpleXMLElement;
 
 /**
  * Extension object
  *
  * @since  3.1
  */
-class JInstallerExtension extends JObject
+class Extension extends JObject
 {
 	/**
 	 * Filename of the extension
@@ -141,27 +147,5 @@ class JInstallerExtension extends JObject
 
 			$this->filename = (string) $element;
 		}
-	}
-}
-
-/**
- * Deprecated class placeholder. You should use JInstallerExtension instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JExtension extends JInstallerExtension
-{
-	/**
-	 * Constructor
-	 *
-	 * @param   SimpleXMLElement  $element  A SimpleXMLElement from which to load data from
-	 *
-	 * @since  3.1
-	 */
-	public function __construct(SimpleXMLElement $element = null)
-	{
-		parent::__construct($element);
 	}
 }

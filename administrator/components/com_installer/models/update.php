@@ -11,6 +11,9 @@ defined('_JEXEC') or die;
 
 jimport('joomla.updater.update');
 
+use Joomla\CMS\Installer\Installer as JInstaller;
+use Joomla\CMS\Installer\Helper as JInstallerHelper;
+
 /**
  * Installer Update Model
  *

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Installer\Installer as JInstaller;
+use Joomla\CMS\Installer\Helper as JInstallerHelper;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 
 /**

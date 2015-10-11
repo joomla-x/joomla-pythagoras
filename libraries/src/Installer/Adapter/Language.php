@@ -7,20 +7,31 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer\Adapter;
+
 defined('JPATH_PLATFORM') or die;
 
+\jimport('joomla.filesystem.folder');
+
+use JFilterInput;
+use JFactory;
+use JFolder;
+use JLog;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
+use Joomla\CMS\Installer\Installer as JInstaller;
 use Joomla\Registry\Registry;
-
-jimport('joomla.filesystem.folder');
+use JTable;
+use JText;
+use RuntimeException;
 
 /**
  * Language installer
  *
  * @since  3.1
  */
-class JInstallerAdapterLanguage extends JInstallerAdapter
+class Language extends JInstallerAdapter
 {
 	/**
 	 * Core language pack flag
@@ -703,15 +714,4 @@ class JInstallerAdapterLanguage extends JInstallerAdapter
 			return false;
 		}
 	}
-}
-
-/**
- * Deprecated class placeholder. You should use JInstallerAdapterLanguage instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JInstallerLanguage extends JInstallerAdapterLanguage
-{
 }

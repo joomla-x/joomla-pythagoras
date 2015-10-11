@@ -7,8 +7,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
+
 /**
- * Test class for JInstallerAdapter.
+ * Test class for \Joomla\CMS\Installer\Adapter.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Installer
@@ -17,14 +19,14 @@
 class JInstallerAdapterTest extends TestCaseDatabase
 {
 	/**
-	 * Used in tests for callbacks involving JInstaller::setOverwrite()
+	 * Used in tests for callbacks involving \Joomla\CMS\Installer\Installer::setOverwrite()
 	 *
 	 * @var  boolean
 	 */
 	protected static $installerOverwrite;
 
 	/**
-	 * Used in tests for callbacks involving JInstaller::setUpgrade()
+	 * Used in tests for callbacks involving \Joomla\CMS\Installer\Installer::setUpgrade()
 	 *
 	 * @var  boolean
 	 */
@@ -68,11 +70,11 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Tests the public constructor
 	 * 
-	 * @covers  JInstallerAdapter::__construct
+	 * @covers  \Joomla\CMS\Installer\Adapter::__construct
 	 */
 	public function testConstructor()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase, array('foo' => 'bar')));
 
@@ -91,13 +93,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test checking if an existing extension exists
 	 * 
-	 * @covers  JInstallerAdapter::checkExistingExtension
+	 * @covers  \Joomla\CMS\Installer\Adapter::checkExistingExtension
 	 */
 	public function testCheckExistingExtensionForExistingExtension()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		// Set up a mock JTableExtension
 		$mockTableExtension = $this->getMock('JTableExtension', array('find', 'load'), array($this->getMockDatabase()));
@@ -136,13 +138,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test checking if an existing extension exists with an extension that doesn't exist
 	 * 
-	 * @covers  JInstallerAdapter::checkExistingExtension
+	 * @covers  \Joomla\CMS\Installer\Adapter::checkExistingExtension
 	 */
 	public function testCheckExistingExtensionForExtensionThatDoesNotExist()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		// Set up a mock JTableExtension
 		$mockTableExtension = $this->getMock('JTableExtension', array('find', 'load'), array($this->getMockDatabase()));
@@ -179,13 +181,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	 * @testdox Test checking if an existing extension exists
 	 *
 	 * @expectedException RuntimeException
-	 * @covers  JInstallerAdapter::checkExistingExtension
+	 * @covers  \Joomla\CMS\Installer\Adapter::checkExistingExtension
 	 */
 	public function testCheckExistingExtensionReturnsErrorWhenTableGivesException()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		// Set up a mock JTableExtension
 		$mockTableExtension = $this->getMock('JTableExtension', array('find'), array($this->getMockDatabase()));
@@ -207,13 +209,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::checkExtensionInFilesystem works with an existing XML file and with upgrade flag set to true
+	 * @testdox \Joomla\CMS\Installer\Adapter::checkExtensionInFilesystem works with an existing XML file and with upgrade flag set to true
 	 * 
-	 * @covers  JInstallerAdapter::checkExtensionInFilesystem
+	 * @covers  \Joomla\CMS\Installer\Adapter::checkExtensionInFilesystem
 	 */
 	public function testCheckExtensionInFilesystem()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('getPath', 'isOverwrite', 'isUpgrade', 'setOverwrite', 'setUpgrade'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('getPath', 'isOverwrite', 'isUpgrade', 'setOverwrite', 'setUpgrade'));
 		$mockInstaller->expects($this->once())
 			->method('getPath')
 			->with('extension_root')
@@ -236,7 +238,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 			->willReturnCallback(array($this, 'installerUpgrade'));
 
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 		$manifestObject = simplexml_load_string($this->sampleManifest);
 
 		TestReflection::setValue($object, 'manifest', $manifestObject);
@@ -263,13 +265,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::checkExtensionInFilesystem sets the route to update when upgrade is set to true, a file exists and an extension ID is set
+	 * @testdox \Joomla\CMS\Installer\Adapter::checkExtensionInFilesystem sets the route to update when upgrade is set to true, a file exists and an extension ID is set
 	 * 
-	 * @covers  JInstallerAdapter::checkExtensionInFilesystem
+	 * @covers  \Joomla\CMS\Installer\Adapter::checkExtensionInFilesystem
 	 */
 	public function testsCheckExtensionInFilesystemInstallerRouteSetWhenFilesystemExistsWithExtensionIdSet()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('getPath', 'isOverwrite', 'isUpgrade', 'setOverwrite', 'setUpgrade'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('getPath', 'isOverwrite', 'isUpgrade', 'setOverwrite', 'setUpgrade'));
 		$mockInstaller->expects($this->once())
 			->method('getPath')
 			->with('extension_root')
@@ -284,7 +286,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 			->willReturn(true);
 
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 		$manifestObject = simplexml_load_string($this->sampleManifest);
 
 		TestReflection::setValue($object, 'manifest', $manifestObject);
@@ -302,14 +304,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::checkExtensionInFilesystem throws an exception when a file exists and overwrite is set to false
+	 * @testdox \Joomla\CMS\Installer\Adapter::checkExtensionInFilesystem throws an exception when a file exists and overwrite is set to false
 	 *
 	 * @expectedException  RuntimeException
-	 * @covers  JInstallerAdapter::checkExtensionInFilesystem
+	 * @covers  \Joomla\CMS\Installer\Adapter::checkExtensionInFilesystem
 	 */
 	public function testsCheckExtensionInFilesystemWithOverwriteSetFalse()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('getPath', 'isOverwrite', 'isUpgrade'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('getPath', 'isOverwrite', 'isUpgrade'));
 		$mockInstaller->expects($this->any())
 			->method('getPath')
 			->with('extension_root')
@@ -324,7 +326,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 			->willReturn(false);
 
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 		$manifestObject = simplexml_load_string($this->sampleManifest);
 		unset($manifestObject->update);
 
@@ -335,13 +337,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::discover_install works correctly
+	 * @testdox \Joomla\CMS\Installer\Adapter::discover_install works correctly
 	 * 
-	 * @covers  JInstallerAdapter::discover_install
+	 * @covers  \Joomla\CMS\Installer\Adapter::discover_install
 	 */
 	public function testDiscoverInstall()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
 		// For this test we to ensure abort is not called in JInstaller
 		$mockInstaller->expects($this->never())
@@ -349,7 +351,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -403,13 +405,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::discover_install works correctly
+	 * @testdox \Joomla\CMS\Installer\Adapter::discover_install works correctly
 	 * 
-	 * @covers  JInstallerAdapter::discover_install
+	 * @covers  \Joomla\CMS\Installer\Adapter::discover_install
 	 */
 	public function testDiscoverInstallWithNoDescription()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
 		// For this test we to ensure abort is not called in JInstaller
 		$mockInstaller->expects($this->never())
@@ -417,7 +419,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -487,24 +489,24 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::discover_install deals with an exception being thrown in various called JInstallerAdapter internal methods
+	 * @testdox \Joomla\CMS\Installer\Adapter::discover_install deals with an exception being thrown in various called Adapter internal methods
 	 *
 	 * @param   string  $method  The method to throw an exception in
 	 *
 	 * @dataProvider  casesTestExceptionThrownInDiscoverInstall
-	 * @covers  JInstallerAdapter::discover_install
+	 * @covers  \Joomla\CMS\Installer\Adapter::discover_install
 	 */
 	public function testDiscoverInstallWithExceptionThrownInAdapterMethods($method)
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
-		// For this test we to ensure abort is not called in JInstaller
+		// For this test we to ensure abort is not called in Installer
 		$mockInstaller->expects($this->once())
 			->method('abort');
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -548,13 +550,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting the discover install class var
 	 * 
-	 * @covers  JInstallerAdapter::getDiscoverInstallSupported
+	 * @covers  \Joomla\CMS\Installer\Adapter::getDiscoverInstallSupported
 	 */
 	public function testDefaultGetDiscoverInstallSupported()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$this->assertTrue(
 			$object->getDiscoverInstallSupported(),
@@ -565,13 +567,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting the discover install class var
 	 * 
-	 * @covers  JInstallerAdapter::getDiscoverInstallSupported
+	 * @covers  \Joomla\CMS\Installer\Adapter::getDiscoverInstallSupported
 	 */
 	public function testGetDiscoverInstallSupported()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		TestReflection::setValue($object, 'supportsDiscoverInstall', false);
 
@@ -584,14 +586,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting the element from the manifest
 	 * 
-	 * @covers  JInstallerAdapter::getElement
+	 * @covers  \Joomla\CMS\Installer\Adapter::getElement
 	 */
 	public function testGetElementWithElementInManifest()
 	{
 		// Create the test object
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		// Mock the manifest Object and set it into the test object
 		$manifestObject = simplexml_load_string($this->sampleManifest);
@@ -607,14 +609,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting the element by injecting it
 	 * 
-	 * @covers  JInstallerAdapter::getElement
+	 * @covers  \Joomla\CMS\Installer\Adapter::getElement
 	 */
 	public function testGetElementWithInjectedElement()
 	{
 		// Create the test object
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$this->assertEquals(
 			'com_contact',
@@ -626,15 +628,15 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting the element by injecting it
 	 * 
-	 * @covers  JInstallerAdapter::getElement
+	 * @covers  \Joomla\CMS\Installer\Adapter::getElement
 	 */
 	public function testGetElementWithElementFromName()
 	{
 		// Create the test object
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -661,13 +663,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting the simple xml object from the manifest
 	 * 
-	 * @covers  JInstallerAdapter::getManifest
+	 * @covers  \Joomla\CMS\Installer\Adapter::getManifest
 	 */
 	public function testGetManifest()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 		$manifestObject = simplexml_load_string($this->sampleManifest);
 
 		$object->manifest = $manifestObject;
@@ -682,14 +684,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting the name from the manifest
 	 * 
-	 * @covers  JInstallerAdapter::getName
+	 * @covers  \Joomla\CMS\Installer\Adapter::getName
 	 */
 	public function testGetName()
 	{
 		// Create the test object
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		// Mock the manifest Object and set it into the test object
 		$manifestObject = simplexml_load_string('<extension><name>plg_finder_content</name></extension>');
@@ -708,7 +710,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	 */
 	public function testGetDefaultRoute()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
 
@@ -722,13 +724,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test getting a non-default route from the class
 	 * 
-	 * @covers  JInstallerAdapter::getRoute
+	 * @covers  \Joomla\CMS\Installer\Adapter::getRoute
 	 */
 	public function testGetRouteForSetObject()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		TestReflection::setValue($object, 'route', 'update');
 
@@ -768,13 +770,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	 * @param   string  $failureMessage  The failure message
 	 *
 	 * @dataProvider  casesGetScriptClassName
-	 * @covers  JInstallerAdapter::getScriptClassName
+	 * @covers  \Joomla\CMS\Installer\Adapter::getScriptClassName
 	 */
 	public function testGetScriptClassName($element, $expected, $failureMessage)
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		TestReflection::setValue($object, 'element', $element);
 
@@ -786,21 +788,21 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::install works correctly
+	 * @testdox \Joomla\CMS\Installer\Adapter::install works correctly
 	 * 
-	 * @covers  JInstallerAdapter::install
+	 * @covers  \Joomla\CMS\Installer\Adapter::install
 	 */
 	public function testInstall()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
-		// For this test we to ensure abort is not called in JInstaller
+		// For this test we to ensure abort is not called in Installer
 		$mockInstaller->expects($this->never())
 			->method('abort');
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -859,21 +861,21 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::install works correctly when the route is set to update
+	 * @testdox \Joomla\CMS\Installer\Adapter::install works correctly when the route is set to update
 	 * 
-	 * @covers  JInstallerAdapter::install
+	 * @covers  \Joomla\CMS\Installer\Adapter::install
 	 */
 	public function testInstallOnUpdateRoute()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
-		// For this test we to ensure abort is not called in JInstaller
+		// For this test we to ensure abort is not called in Installer
 		$mockInstaller->expects($this->never())
 			->method('abort');
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -938,21 +940,21 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::install works correctly
+	 * @testdox \Joomla\CMS\Installer\Adapter::install works correctly
 	 * 
-	 * @covers  JInstallerAdapter::install
+	 * @covers  \Joomla\CMS\Installer\Adapter::install
 	 */
 	public function testInstallAbortsWhenSetupUpdatesThrowsException()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
-		// For this test we to ensure abort is not called in JInstaller
+		// For this test we to ensure abort is not called in Installer
 		$mockInstaller->expects($this->once())
 			->method('abort');
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1011,21 +1013,21 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::install works correctly
+	 * @testdox \Joomla\CMS\Installer\Adapter::install works correctly
 	 * 
-	 * @covers  JInstallerAdapter::install
+	 * @covers  \Joomla\CMS\Installer\Adapter::install
 	 */
 	public function testInstallWithNoDescription()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
-		// For this test we to ensure abort is not called in JInstaller
+		// For this test we to ensure abort is not called in Installer
 		$mockInstaller->expects($this->never())
 			->method('abort');
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1104,24 +1106,24 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::install deals with an exception being thrown in various called JInstallerAdapter internal methods
+	 * @testdox \Joomla\CMS\Installer\Adapter::install deals with an exception being thrown in various called Adapter internal methods
 	 *
 	 * @param   string  $method  The method to throw an exception in
 	 *
 	 * @dataProvider  casesTestExceptionThrownInInstall
-	 * @covers  JInstallerAdapter::install
+	 * @covers  \Joomla\CMS\Installer\Adapter::install
 	 */
 	public function testInstallWithExceptionThrownInAdapterMethods($method)
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
-		// For this test we to ensure abort is not called in JInstaller
+		// For this test we to ensure abort is not called in Installer
 		$mockInstaller->expects($this->once())
 			->method('abort');
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1168,21 +1170,21 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox JInstallerAdapter::install deals with an exception being thrown in JInstallerAdapter::finaliseInstall()
+	 * @testdox \Joomla\CMS\Installer\Adapter::install deals with an exception being thrown in Adapter::finaliseInstall()
 	 * 
-	 * @covers  JInstallerAdapter::install
+	 * @covers  \Joomla\CMS\Installer\Adapter::install
 	 */
 	public function testInstallWithExceptionThrownInFinaliseInstall()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('abort'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('abort'));
 
-		// For this test we to ensure abort is not called in JInstaller
+		// For this test we to ensure abort is not called in Installer
 		$mockInstaller->expects($this->once())
 			->method('abort');
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1230,17 +1232,17 @@ class JInstallerAdapterTest extends TestCaseDatabase
 
 
 	/**
-	 * @testdox Test parse queries throws an exception with install route and JInstallerAdapter::doDatabaseTransactions() returning false
+	 * @testdox Test parse queries throws an exception with install route and \Joomla\CMS\Installer\Adapter::doDatabaseTransactions() returning false
 	 *
 	 * @expectedException  RuntimeException
-	 * @covers  JInstallerAdapter::parseQueries
+	 * @covers  \Joomla\CMS\Installer\Adapter::parseQueries
 	 */
 	public function testParseQueriesWithInstallRoute()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1257,17 +1259,17 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox Test parse queries throws an exception with install route and JInstallerAdapter::doDatabaseTransactions() returning false
+	 * @testdox Test parse queries throws an exception with install route and \Joomla\CMS\Installer\Adapter::doDatabaseTransactions() returning false
 	 *
 	 * @expectedException  RuntimeException
-	 * @covers  JInstallerAdapter::parseQueries
+	 * @covers  \Joomla\CMS\Installer\Adapter::parseQueries
 	 */
 	public function testParseQueriesWithUpdateRouteAndParsingReturningFalseReturnsException()
 	{
 		// The sample Schema
 		$schema = simplexml_load_string('<extension><update><schemas><schemapath type="mysql">sql/updates/mysql</schemapath></schemas></update></extension>');
 
-		$mockInstaller = $this->getMock('JInstaller', array('parseSchemaUpdates'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('parseSchemaUpdates'));
 		$mockInstaller->expects($this->once())
 			->method('parseSchemaUpdates')
 			->with($schema->update->schemas, 444)
@@ -1275,7 +1277,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1299,16 +1301,16 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * @testdox Test JInstallerAdapter::parseQueries() correctly calls JInstaller::parseSchemaUpdates() when in update route
+	 * @testdox Test \Joomla\CMS\Installer\Adapter::parseQueries() correctly calls \Joomla\CMS\Installer\Installer::parseSchemaUpdates() when in update route
 	 * 
-	 * @covers  JInstallerAdapter::parseQueries
+	 * @covers  \Joomla\CMS\Installer\Adapter::parseQueries
 	 */
 	public function testParseQueriesWithUpdateRouteAndParsingReturningTrueCallsParseSchemaUpdatesCorrectly()
 	{
 		// The sample Schema
 		$schema = simplexml_load_string('<extension><update><schemas><schemapath type="mysql">sql/updates/mysql</schemapath></schemas></update></extension>');
 
-		$mockInstaller = $this->getMock('JInstaller', array('parseSchemaUpdates'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('parseSchemaUpdates'));
 		$mockInstaller->expects($this->once())
 			->method('parseSchemaUpdates')
 			->with($schema->update->schemas, 444)
@@ -1316,7 +1318,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1342,17 +1344,17 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test setting a SimpleXML object into the manifest
 	 * 
-	 * @covers  JInstallerAdapter::setManifest
+	 * @covers  \Joomla\CMS\Installer\Adapter::setManifest
 	 */
 	public function testSetManifest()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 		$manifestObject = simplexml_load_string($this->sampleManifest);
 
 		$this->assertInstanceOf(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			$object->setManifest($manifestObject),
 			'JInstallerAdapter::setManifest() should return an instance of itself'
 		);
@@ -1368,13 +1370,13 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test setting a string as the route
 	 * 
-	 * @covers  JInstallerAdapter::setRoute
+	 * @covers  \Joomla\CMS\Installer\Adapter::setRoute
 	 */
 	public function testSetRoute()
 	{
-		$mockInstaller = $this->getMock('JInstaller');
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$this->assertEquals(
 			'install',
@@ -1383,7 +1385,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 		);
 
 		$this->assertInstanceOf(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			$object->setRoute('update'),
 			'JInstallerAdapter::setRoute() should return an instance of itself'
 		);
@@ -1415,14 +1417,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	 * @param   string  $method  The method to run
 	 *
 	 * @dataProvider  casesTestTriggerManifestScript
-	 * @covers  JInstallerAdapter::triggerManifestScript
+	 * @covers  \Joomla\CMS\Installer\Adapter::triggerManifestScript
 	 */
 	public function testTriggerManifestScriptForMethodsTakingInstallerObjectOnly($method)
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('set'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('set'));
 
 		$mockDatabase = $this->getMockDatabase();
-		$object       = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object       = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$mockScript   = $this->getMock('DummyScript', array('preflight', 'postflight', 'install', 'uninstall', 'update'));
 
@@ -1457,14 +1459,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	 * @param   string  $method  The method to run
 	 *
 	 * @dataProvider  casesTestTriggerManifestScriptFlights
-	 * @covers  JInstallerAdapter::triggerManifestScript
+	 * @covers  \Joomla\CMS\Installer\Adapter::triggerManifestScript
 	 */
 	public function testTriggerManifestScriptForMethodsTakingInstallerObjectAndRoute($method)
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('set'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('set'));
 
 		$mockDatabase = $this->getMockDatabase();
-		$object       = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object       = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$mockScript   = $this->getMock('DummyScript', array('preflight', 'postflight', 'install', 'uninstall', 'update'));
 
@@ -1487,14 +1489,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	 * @testdox Test a exception is thrown when the preflight method returns false
 	 *
 	 * @expectedException  RuntimeException
-	 * @covers  JInstallerAdapter::triggerManifestScript
+	 * @covers  \Joomla\CMS\Installer\Adapter::triggerManifestScript
 	 */
 	public function testTriggerManifestScriptPreflightReturningFalseThrowsException()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('set'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('set'));
 
 		$mockDatabase = $this->getMockDatabase();
-		$object       = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object       = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$mockScript   = $this->getMock('DummyScript', array('preflight', 'postflight', 'install', 'uninstall', 'update'));
 
@@ -1531,14 +1533,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	 *
 	 * @dataProvider       casesTestTriggerManifestException
 	 * @expectedException  RuntimeException
-	 * @covers  JInstallerAdapter::triggerManifestScript
+	 * @covers  \Joomla\CMS\Installer\Adapter::triggerManifestScript
 	 */
 	public function testTriggerManifestScriptInstallOrUpdateReturningFalseThrowsException($method)
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('set'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('set'));
 
 		$mockDatabase = $this->getMockDatabase();
-		$object       = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object       = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$mockScript   = $this->getMock('DummyScript', array('preflight', 'postflight', 'install', 'uninstall', 'update'));
 
@@ -1557,14 +1559,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test a exception isn't thrown when the uninstall method returns false
 	 * 
-	 * @covers  JInstallerAdapter::triggerManifestScript
+	 * @covers  \Joomla\CMS\Installer\Adapter::triggerManifestScript
 	 */
 	public function testTriggerManifestScriptUninstallReturningFalseDoesNotThrowAnException()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('set'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('set'));
 
 		$mockDatabase = $this->getMockDatabase();
-		$object       = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object       = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$mockScript   = $this->getMock('DummyScript', array('preflight', 'postflight', 'install', 'uninstall', 'update'));
 
@@ -1585,14 +1587,14 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test a exception isn't thrown when the postflight method returns false
 	 * 
-	 * @covers  JInstallerAdapter::triggerManifestScript
+	 * @covers  \Joomla\CMS\Installer\Adapter::triggerManifestScript
 	 */
 	public function testTriggerManifestScriptPostflightReturningFalseDoesNotThrowAnException()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('set'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('set'));
 
 		$mockDatabase = $this->getMockDatabase();
-		$object       = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object       = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$mockScript   = $this->getMock('DummyScript', array('preflight', 'postflight', 'install', 'uninstall', 'update'));
 
@@ -1613,11 +1615,11 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	/**
 	 * @testdox Test running the update method
 	 * 
-	 * @covers  JInstallerAdapter::update
+	 * @covers  \Joomla\CMS\Installer\Adapter::update
 	 */
 	public function testUpdate()
 	{
-		$mockInstaller = $this->getMock('JInstaller', array('setOverwrite', 'setUpgrade'));
+		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer', array('setOverwrite', 'setUpgrade'));
 
 		$mockInstaller->expects($this->once())
 			->method('setUpgrade')
@@ -1629,7 +1631,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 
 		$mockDatabase = $this->getMockDatabase();
 		$object = $this->getMockForAbstractClass(
-			'JInstallerAdapter',
+			'\\Joomla\\CMS\\Installer\\Adapter',
 			array($mockInstaller, $mockDatabase),
 			'',
 			true,
@@ -1653,7 +1655,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * A callback to proxy for JInstaller::setOverwrite()
+	 * A callback to proxy for \Joomla\CMS\Installer\Installer::setOverwrite()
 	 *
 	 * @param   boolean  $value  Is overwrite set or not
 	 */
@@ -1663,7 +1665,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	}
 
 	/**
-	 * A callback to proxy for JInstaller::setUpgrade()
+	 * A callback to proxy for \Joomla\CMS\Installer\Installer::setUpgrade()
 	 *
 	 * @param   boolean  $value  Is upgrade set or not
 	 */

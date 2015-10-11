@@ -7,11 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer\Adapter;
+
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Application\Helper as JApplicationHelper;
+\jimport('joomla.filesystem.folder');
 
-jimport('joomla.filesystem.folder');
+use JFactory;
+use JFolder;
+use JLog;
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
+use Joomla\CMS\Installer\Installer as JInstaller;
+use JTable;
+use JTableUpdate;
+use JText;
+use RuntimeException;
+use SimpleXMLElement;
 
 /**
  * Template installer
@@ -168,7 +180,7 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 	 *
 	 * @param   string  $path  The path where to find language files.
 	 *
-	 * @return  JInstallerTemplate
+	 * @return  void
 	 *
 	 * @since   3.1
 	 */
@@ -610,15 +622,4 @@ class JInstallerAdapterTemplate extends JInstallerAdapter
 			return false;
 		}
 	}
-}
-
-/**
- * Deprecated class placeholder. You should use JInstallerAdapterTemplate instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JInstallerTemplate extends JInstallerAdapterTemplate
-{
 }

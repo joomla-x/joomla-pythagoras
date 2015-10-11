@@ -7,16 +7,31 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer\Adapter;
+
 defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.filesystem.folder');
+
+use JFilterInput;
+use JFile;
+use JFolder;
+use JLog;
+use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
+use Joomla\CMS\Installer\Installer as JInstaller;
+use Joomla\CMS\Installer\Manifest\Library as JInstallerManifestLibrary;
+use JPath;
+use JTable;
+use JTableUpdate;
+use JText;
+use RuntimeException;
 
 /**
  * Library installer
  *
  * @since  3.1
  */
-class JInstallerAdapterLibrary extends JInstallerAdapter
+class Library extends JInstallerAdapter
 {
 	/**
 	 * Method to check if the extension is present in the filesystem, flags the route as update if so
@@ -502,15 +517,4 @@ class JInstallerAdapterLibrary extends JInstallerAdapter
 			return false;
 		}
 	}
-}
-
-/**
- * Deprecated class placeholder. You should use JInstallerAdapterLibrary instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JInstallerLibrary extends JInstallerAdapterLibrary
-{
 }

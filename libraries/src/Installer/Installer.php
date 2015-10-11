@@ -7,22 +7,38 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer;
+
 defined('JPATH_PLATFORM') or die;
 
+\jimport('joomla.base.adapter');
+\jimport('joomla.filesystem.file');
+\jimport('joomla.filesystem.folder');
+\jimport('joomla.filesystem.path');
+
+use DirectoryIterator;
+use InvalidArgumentException;
+use JAdapter;
+use JDatabaseDriver;
+use JFile;
+use JFactory;
+use JFolder;
+use JLog;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
-
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.path');
-jimport('joomla.base.adapter');
+use JPath;
+use JTable;
+use JTableExtension;
+use JText;
+use RuntimeException;
+use SimpleXMLElement;
 
 /**
  * Joomla base installer class
  *
  * @since  3.1
  */
-class JInstaller extends JAdapter
+class Installer extends JAdapter
 {
 	/**
 	 * Array of paths needed by the installer
@@ -108,7 +124,7 @@ class JInstaller extends JAdapter
 	/**
 	 * JInstaller instance container.
 	 *
-	 * @var    JInstaller
+	 * @var    Installer
 	 * @since  3.1
 	 * @deprecated  4.0
 	 */
@@ -117,7 +133,7 @@ class JInstaller extends JAdapter
 	/**
 	 * JInstaller instances container.
 	 *
-	 * @var    JInstaller[]
+	 * @var    Installer[]
 	 * @since  3.4
 	 */
 	protected static $instances;
@@ -145,15 +161,15 @@ class JInstaller extends JAdapter
 	 * @param   string  $classprefix    Class prefix of adapters
 	 * @param   string  $adapterfolder  Name of folder to append to base path
 	 *
-	 * @return  JInstaller  An installer object
+	 * @return  Installer  An installer object
 	 *
 	 * @since   3.1
 	 */
-	public static function getInstance($basepath = __DIR__, $classprefix = 'JInstallerAdapter', $adapterfolder = 'adapter')
+	public static function getInstance($basepath = __DIR__, $classprefix = '\\Joomla\\Installer\\Adapter\\', $adapterfolder = 'adapter')
 	{
 		if (!isset(self::$instances[$basepath]))
 		{
-			self::$instances[$basepath] = new JInstaller($basepath, $classprefix, $adapterfolder);
+			self::$instances[$basepath] = new Installer($basepath, $classprefix, $adapterfolder);
 
 			// For B/C, we load the first instance into the static $instance container, remove at 4.0
 			if (!isset(self::$instance))

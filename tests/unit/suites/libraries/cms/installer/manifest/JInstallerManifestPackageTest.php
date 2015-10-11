@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Installer\Manifest\Package as JInstallerManifestPackage;
+
 /**
  * Test class for JInstallerManifestPackage.
  *

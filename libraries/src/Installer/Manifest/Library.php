@@ -7,14 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer\Manifest;
+
 defined('JPATH_PLATFORM') or die;
+
+use Joomla\CMS\Installer\Manifest as JInstallerManifest;
+use SimpleXMLElement;
 
 /**
  * Joomla! Library Manifest File
  *
  * @since  3.1
  */
-class JInstallerManifestLibrary extends JInstallerManifest
+class Library extends JInstallerManifest
 {
 	/**
 	 * File system name of the library

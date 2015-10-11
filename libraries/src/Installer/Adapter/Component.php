@@ -7,18 +7,34 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer\Adapter;
+
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Application\Helper as JApplicationHelper;
+\jimport('joomla.filesystem.folder');
 
-jimport('joomla.filesystem.folder');
+use InvalidArgumentException;
+use JError;
+use JFolder;
+use JLog;
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
+use Joomla\CMS\Installer\Installer as JInstaller;
+use JPath;
+use JTable;
+use JTableAsset;
+use JTableExtension;
+use JTableMenu;
+use JTableUpdate;
+use JText;
+use RuntimeException;
 
 /**
  * Component installer
  *
  * @since  3.1
  */
-class JInstallerAdapterComponent extends JInstallerAdapter
+class Component extends JInstallerAdapter
 {
 	/**
 	 * The list of current files fo the Joomla! CMS administrator that are installed and is read
@@ -1332,13 +1348,3 @@ class JInstallerAdapterComponent extends JInstallerAdapter
 	}
 }
 
-/**
- * Deprecated class placeholder. You should use JInstallerAdapterComponent instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JInstallerComponent extends JInstallerAdapterComponent
-{
-}

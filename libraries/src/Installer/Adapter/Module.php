@@ -7,11 +7,24 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer\Adapter;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 
-jimport('joomla.filesystem.folder');
+\jimport('joomla.filesystem.folder');
+
+use JArrayHelper;
+use JFolder;
+use JLog;
+use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
+use Joomla\CMS\Installer\Installer as JInstaller;
+use JTable;
+use JTableModule;
+use JText;
+use RuntimeException;
+use SimpleXMLElement;
 
 /**
  * Module installer
@@ -773,15 +786,4 @@ class JInstallerAdapterModule extends JInstallerAdapter
 			return false;
 		}
 	}
-}
-
-/**
- * Deprecated class placeholder. You should use JInstallerAdapterModule instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JInstallerModule extends JInstallerAdapterModule
-{
 }

@@ -13,7 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use JFactory;
 use JFilterOutput;
-use JInstaller;
+use Joomla\CMS\Installer\Installer as JInstaller;
 use JLog;
 use JText;
 use stdClass;

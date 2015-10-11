@@ -7,16 +7,30 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Installer\Adapter;
+
 defined('JPATH_PLATFORM') or die;
 
-jimport('joomla.filesystem.folder');
+\jimport('joomla.filesystem.folder');
+
+use JFactory;
+use JFile;
+use JFilterInput;
+use JFolder;
+use JLog;
+use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
+use Joomla\CMS\Installer\Installer as JInstaller;
+use JPath;
+use JTable;
+use JText;
+use RuntimeException;
 
 /**
  * File installer
  *
  * @since  3.1
  */
-class JInstallerAdapterFile extends JInstallerAdapter
+class File extends JInstallerAdapter
 {
 	/**
 	 * <scriptfile> element of the extension manifest
@@ -638,15 +652,4 @@ class JInstallerAdapterFile extends JInstallerAdapter
 			return false;
 		}
 	}
-}
-
-/**
- * Deprecated class placeholder. You should use JInstallerAdapterFile instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JInstallerFile extends JInstallerAdapterFile
-{
 }
