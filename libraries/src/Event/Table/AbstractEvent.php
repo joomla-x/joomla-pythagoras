@@ -12,7 +12,7 @@ namespace Joomla\CMS\Event\Table;
 defined('JPATH_PLATFORM') or die;
 
 use BadMethodCallException;
-use Joomla\Cms\Event\AbstractImmutableEvent;
+use Joomla\CMS\Event\AbstractImmutableEvent;
 use JTableInterface;
 
 /**
