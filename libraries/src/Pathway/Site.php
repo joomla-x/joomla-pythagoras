@@ -7,8 +7,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Pathway;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 
@@ -17,7 +20,7 @@ use Joomla\CMS\Language\Multilang as JLanguageMultilang;
  *
  * @since  1.5
  */
-class JPathwaySite extends JPathway
+class Site extends Pathway
 {
 	/**
 	 * Class constructor.

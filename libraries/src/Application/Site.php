@@ -23,7 +23,7 @@ use JInput;
 use JLanguage;
 use JLanguageHelper;
 use JMenu;
-use JPathway;
+use Joomla\CMS\Pathway\Pathway as JPathway;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JRoute;
 use Joomla\CMS\Router\Router as JRouter;
@@ -395,7 +395,7 @@ final class Site extends AbstractCMS
 	}
 
 	/**
-	 * Return a reference to the JPathway object.
+	 * Return a reference to the Pathway object.
 	 *
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.

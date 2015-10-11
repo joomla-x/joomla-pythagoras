@@ -24,7 +24,7 @@ use JInput;
 use JLanguage;
 use JLog;
 use JMenu;
-use JPathway;
+use Joomla\CMS\Pathway\Pathway as JPathway;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JProfiler;
 use JRoute;
@@ -494,7 +494,7 @@ class AbstractCMS extends JApplicationWeb
 	}
 
 	/**
-	 * Returns the application JPathway object.
+	 * Returns the application Pathway object.
 	 *
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.

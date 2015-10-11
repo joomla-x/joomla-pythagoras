@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Pathway\Pathway as JPathway;
+
 /**
  * Stub class to test JPathway.
  *

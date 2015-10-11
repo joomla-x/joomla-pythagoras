@@ -7,9 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Pathway;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use JLog;
+use JText;
+use RuntimeException;
+use stdClass;
 
 /**
  * Class to maintain a pathway.
@@ -18,7 +24,7 @@ use Joomla\CMS\Application\Helper as JApplicationHelper;
  *
  * @since  1.5
  */
-class JPathway
+class Pathway
 {
 	/**
 	 * @var    array  Array to hold the pathway item objects
@@ -35,9 +41,9 @@ class JPathway
 	protected $_count = 0;
 
 	/**
-	 * JPathway instances container.
+	 * Pathway instances container.
 	 *
-	 * @var    JPathway[]
+	 * @var    Pathway[]
 	 * @since  1.7
 	 */
 	protected static $instances = array();
@@ -59,7 +65,7 @@ class JPathway
 	 * @param   string  $client   The name of the client
 	 * @param   array   $options  An associative array of options
 	 *
-	 * @return  JPathway  A JPathway object.
+	 * @return  Pathway  A JPathway object.
 	 *
 	 * @since   1.5
 	 * @throws  RuntimeException
@@ -209,7 +215,7 @@ class JPathway
 	 * @param   string  $name  Name of the item
 	 * @param   string  $link  Link to the item
 	 *
-	 * @return  JPathway  Pathway item object
+	 * @return  Pathway  Pathway item object
 	 *
 	 * @since   1.5
 	 * @deprecated  4.0  Use makeItem() instead
@@ -226,7 +232,7 @@ class JPathway
 	 * @param   string  $name  Name of the item
 	 * @param   string  $link  Link to the item
 	 *
-	 * @return  JPathway  Pathway item object
+	 * @return  Pathway  Pathway item object
 	 *
 	 * @since   3.1
 	 */
