@@ -106,7 +106,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_SESSION_AUTO_START'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.integer', $this->php_settings['session.auto_start']); ?>
+					<?php echo intval($this->php_settings['session.auto_start']); ?>
 				</td>
 			</tr>
 			<tr>
