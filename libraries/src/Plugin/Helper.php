@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Plugin;
 
+defined('JPATH_PLATFORM') or die;
+
 use Joomla\Event\Dispatcher;
 use JFactory;
 

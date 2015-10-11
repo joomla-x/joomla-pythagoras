@@ -9,7 +9,7 @@
 
 namespace Joomla\CMS\ClassLoader;
 
-defined('_JEXEC') or die;
+defined('JPATH_PLATFORM') or die;
 
 use Composer\Autoload\ClassLoader;
 use JLoader;

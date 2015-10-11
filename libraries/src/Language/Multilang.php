@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Language;
 
+defined('JPATH_PLATFORM') or die;
+
 use JFactory;
 
 /**

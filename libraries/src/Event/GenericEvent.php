@@ -7,15 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event\Table;
+namespace Joomla\CMS\Event;
 
 defined('JPATH_PLATFORM') or die;
 
 /**
- * Event class for JTable's onAfterReset event
+ * Concrete implementation of the AbstractEvent class
  *
  * @since  4.0
  */
-class AfterResetEvent extends AbstractEvent
+class GenericEvent extends AbstractEvent
 {
 }

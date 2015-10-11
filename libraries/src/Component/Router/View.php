@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Component\Router;
 
+defined('JPATH_PLATFORM') or die;
+
 use Exception;
 use Joomla\CMS\Component\Router\Rules\RulesInterface;
 

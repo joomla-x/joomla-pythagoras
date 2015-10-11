@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Component\Router\Rules;
 
+defined('JPATH_PLATFORM') or die;
+
 /**
  * Component Router Rules interface for Joomla
  *

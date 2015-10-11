@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Pagination;
 
+defined('JPATH_PLATFORM') or die;
+
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use JFactory;
 use JLayoutHelper;

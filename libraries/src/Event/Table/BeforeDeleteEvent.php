@@ -7,25 +7,26 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event\Table;
+namespace Joomla\CMS\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
 use BadMethodCallException;
+use JTableInterface;
 
 /**
- * Event class for JTable's onBeforeCheckin event
+ * Event class for JTable's onBeforeDelete event
  *
  * @since  4.0
  */
-class BeforeCheckinEvent extends AbstractEvent
+class BeforeDeleteEvent extends AbstractEvent
 {
 	/**
 	 * Constructor.
 	 *
 	 * Mandatory arguments:
 	 * subject		JTableInterface	The table we are operating on
-	 * pk			mixed			An optional primary key value to check out.
+	 * pk			An optional primary key value to delete.
 	 *
 	 * @param   string  $name       The event name.
 	 * @param   array   $arguments  The event arguments.

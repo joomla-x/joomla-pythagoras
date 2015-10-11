@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Plugin;
 
+defined('JPATH_PLATFORM') or die;
+
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherAwareTrait;

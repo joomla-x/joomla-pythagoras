@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Language;
 
+defined('JPATH_PLATFORM') or die;
+
 use Joomla\Registry\Registry;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Exception;

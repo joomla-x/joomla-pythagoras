@@ -9,6 +9,8 @@
 
 namespace Joomla\CMS\Component\Router;
 
+defined('JPATH_PLATFORM') or die;
+
 /**
  * View-configuration class for the view-based component router
  *

@@ -7,28 +7,26 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event\Table;
+namespace Joomla\CMS\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
 use BadMethodCallException;
-use JTableInterface;
-use stdClass;
 
 /**
- * Event class for JTable's onAfterReorder event
+ * Event class for JTable's onBeforeBind event
  *
  * @since  4.0
  */
-class AfterReorderEvent extends AbstractEvent
+class BeforeBindEvent extends AbstractEvent
 {
 	/**
 	 * Constructor.
 	 *
 	 * Mandatory arguments:
 	 * subject		JTableInterface	The table we are operating on
-	 * rows			stdClass[]|null	The primary keys and ordering values for the selection.
-	 * where		string			WHERE clause which was used for limiting the selection of rows to compact the ordering values.
+	 * src			mixed			An associative array or object to bind to the JTable instance.
+	 * ignore		mixed			An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @param   string  $name       The event name.
 	 * @param   array   $arguments  The event arguments.
@@ -37,12 +35,12 @@ class AfterReorderEvent extends AbstractEvent
 	 */
 	public function __construct($name, array $arguments = array())
 	{
-		if (!array_key_exists('rows', $arguments))
+		if (!array_key_exists('src', $arguments))
 		{
-			throw new BadMethodCallException("Argument 'rows' is required for event $name");
+			throw new BadMethodCallException("Argument 'src' is required for event $name");
 		}
 
-		if (!array_key_exists('where', $arguments))
+		if (!array_key_exists('ignore', $arguments))
 		{
 			throw new BadMethodCallException("Argument 'ignore' is required for event $name");
 		}
@@ -51,38 +49,38 @@ class AfterReorderEvent extends AbstractEvent
 	}
 
 	/**
-	 * Setter for the rows argument
+	 * Setter for the src argument
 	 *
-	 * @param   stdClass[]|null  $value  The value to set
+	 * @param   mixed  $value  The value to set
 	 *
 	 * @return  mixed
 	 *
 	 * @throws  BadMethodCallException  if the argument is not of the expected type
 	 */
-	protected function setRows($value)
+	protected function setSrc($value)
 	{
-		if (!is_array($value) && !empty($value))
+		if (!empty($value) && !is_object($value) && !is_array($value))
 		{
-			throw new BadMethodCallException("Argument 'rows' of event {$this->name} must be an array or null");
+			throw new BadMethodCallException("Argument 'src' of event {$this->name} must be empty, object or array");
 		}
 
 		return $value;
 	}
 
 	/**
-	 * Setter for the where argument
+	 * Setter for the ignore argument
 	 *
-	 * @param   string|null  $value  The value to set
+	 * @param   mixed  $value  The value to set
 	 *
 	 * @return  mixed
 	 *
 	 * @throws  BadMethodCallException  if the argument is not of the expected type
 	 */
-	protected function setWhere($value)
+	protected function setIgnore($value)
 	{
-		if (!empty($value) && !is_string($value))
+		if (!empty($value) && !is_array($value))
 		{
-			throw new BadMethodCallException("Argument 'where' of event {$this->name} must be empty or string");
+			throw new BadMethodCallException("Argument 'ignore' of event {$this->name} must be empty or array");
 		}
 
 		return $value;

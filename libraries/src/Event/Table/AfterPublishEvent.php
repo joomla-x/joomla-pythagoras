@@ -7,15 +7,17 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event\Table;
+namespace Joomla\CMS\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
+use JTableInterface;
+
 /**
- * Event class for JTable's onBeforeHit event
+ * Event class for JTable's onAfterPublish event
  *
  * @since  4.0
  */
-class BeforeHitEvent extends BeforeCheckinEvent
+class AfterPublishEvent extends BeforePublishEvent
 {
 }

@@ -7,15 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event;
+namespace Joomla\CMS\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
 /**
- * Concrete implementation of the AbstractEvent class
+ * Event class for JTable's onTableCheck event
  *
  * @since  4.0
  */
-class GenericEvent extends AbstractEvent
+class CheckEvent extends AbstractEvent
 {
 }

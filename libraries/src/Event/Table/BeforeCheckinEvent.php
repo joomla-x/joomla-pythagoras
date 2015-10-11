@@ -7,26 +7,25 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event\Table;
+namespace Joomla\CMS\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
 use BadMethodCallException;
-use JTableInterface;
 
 /**
- * Event class for JTable's onAfterStore event
+ * Event class for JTable's onBeforeCheckin event
  *
  * @since  4.0
  */
-class AfterStoreEvent extends AbstractEvent
+class BeforeCheckinEvent extends AbstractEvent
 {
 	/**
 	 * Constructor.
 	 *
 	 * Mandatory arguments:
 	 * subject		JTableInterface	The table we are operating on
-	 * result		boolean         Did the save succeed?
+	 * pk			mixed			An optional primary key value to check out.
 	 *
 	 * @param   string  $name       The event name.
 	 * @param   array   $arguments  The event arguments.
@@ -35,26 +34,11 @@ class AfterStoreEvent extends AbstractEvent
 	 */
 	public function __construct($name, array $arguments = array())
 	{
-		if (!array_key_exists('result', $arguments))
+		if (!array_key_exists('pk', $arguments))
 		{
-			throw new BadMethodCallException("Argument 'result' is required for event $name");
+			throw new BadMethodCallException("Argument 'pk' is required for event $name");
 		}
 
 		parent::__construct($name, $arguments);
 	}
-
-	/**
-	 * Setter for the result argument
-	 *
-	 * @param   boolean  $value  The value to set
-	 *
-	 * @return  boolean
-	 *
-	 * @throws  BadMethodCallException  if the argument is not of the expected type
-	 */
-	protected function setResult($value)
-	{
-		return $value ? true : false;
-	}
-
 }

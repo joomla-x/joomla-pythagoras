@@ -7,15 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Cms\Event\Table;
+namespace Joomla\CMS\Event\Table;
 
 defined('JPATH_PLATFORM') or die;
 
 /**
- * Event class for JTable's onAfterCheckin event
+ * Event class for JTable's onAfterReset event
  *
  * @since  4.0
  */
-class AfterCheckinEvent extends BeforeCheckinEvent
+class AfterResetEvent extends AbstractEvent
 {
 }
