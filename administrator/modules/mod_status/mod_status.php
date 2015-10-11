@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 $config = JFactory::getConfig();
 $user   = JFactory::getUser();
 $db     = JFactory::getDbo();

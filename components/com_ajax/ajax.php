@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
 use Joomla\CMS\Response\Json as JResponseJson;
 
 /*
@@ -52,7 +53,7 @@ elseif ($input->get('module'))
 	$moduleObject = JModuleHelper::getModule('mod_' . $module, null);
 
 	/*
-	 * As JModuleHelper::isEnabled always returns true, we check
+	 * As \Joomla\CMS\Module\Helper::isEnabled always returns true, we check
 	 * for an id other than 0 to see if it is published.
 	 */
 	if ($moduleObject->id != 0)

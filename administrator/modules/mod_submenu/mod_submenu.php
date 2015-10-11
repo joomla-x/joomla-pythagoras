@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 $list    = JSubMenuHelper::getEntries();
 $filters = JSubMenuHelper::getFilters();
 $action  = JSubMenuHelper::getAction();

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 if ($params->def('prepare_content', 1))
 {
 	JPluginHelper::importPlugin('content');

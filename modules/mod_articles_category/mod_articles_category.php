@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 // Include the helper functions only once
 require_once __DIR__ . '/helper.php';
 

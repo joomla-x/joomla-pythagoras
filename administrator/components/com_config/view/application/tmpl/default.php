@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Module\Helper as JModuleHelper;
 
 // Load tooltips behavior
 JHtml::_('behavior.formvalidator');

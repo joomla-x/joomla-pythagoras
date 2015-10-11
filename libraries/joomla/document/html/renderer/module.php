@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
 use Joomla\Registry\Registry;
 
 /**
@@ -83,7 +84,7 @@ class JDocumentRendererModule extends JDocumentRenderer
 			$module->params = (string) $params;
 		}
 
-		// Default for compatibility purposes. Set cachemode parameter or use JModuleHelper::moduleCache from within the
+		// Default for compatibility purposes. Set cachemode parameter or use \Joomla\CMS\Module\Helper::moduleCache from within the
 		// module instead
 		$cachemode = $params->get('cachemode', 'oldstatic');
 
@@ -92,7 +93,7 @@ class JDocumentRendererModule extends JDocumentRenderer
 			// Default to itemid creating method and workarounds on
 			$cacheparams = new stdClass;
 			$cacheparams->cachemode = $cachemode;
-			$cacheparams->class = 'JModuleHelper';
+			$cacheparams->class = '\\Joomla\\CMS\\Module\\Helper';
 			$cacheparams->method = 'renderModule';
 			$cacheparams->methodparams = array($module, $attribs);
 

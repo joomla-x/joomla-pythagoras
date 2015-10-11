@@ -7,17 +7,24 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Joomla\CMS\Module;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
+use stdClass;
+use JFilterInput;
+use JLog;
+use JProfiler;
+use JFactory;
+use JText;
+use RuntimeException;
 
 /**
  * Module helper class
  *
  * @since  1.5
  */
-abstract class JModuleHelper
+abstract class Helper
 {
 	/**
 	 * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
@@ -316,7 +323,7 @@ abstract class JModuleHelper
 	 * @return  array
 	 *
 	 * @since   1.5
-	 * @deprecated  4.0  Use JModuleHelper::load() instead
+	 * @deprecated  4.0  Use \Joomla\CMS\Module\Helper::load() instead
 	 */
 	protected static function &_load()
 	{

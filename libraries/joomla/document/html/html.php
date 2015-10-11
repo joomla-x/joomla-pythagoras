@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
 use Joomla\Registry\Registry;
 
 jimport('joomla.utilities.utility');
