@@ -22,19 +22,17 @@ final class JApplicationSite extends JApplicationCms
 	 * Option to filter by language
 	 *
 	 * @var    boolean
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $language_filter
+	 * @since  4.0
 	 */
-	protected $_language_filter = false;
+	protected $language_filter = false;
 
 	/**
 	 * Option to detect language by the browser
 	 *
 	 * @var    boolean
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $detect_browser
+	 * @since  4.0
 	 */
-	protected $_detect_browser = false;
+	protected $detect_browser = false;
 
 	/**
 	 * Class constructor.
@@ -54,10 +52,10 @@ final class JApplicationSite extends JApplicationCms
 	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
 		// Register the application name
-		$this->_name = 'site';
+		$this->name = 'site';
 
 		// Register the client ID
-		$this->_clientId = 0;
+		$this->clientId = 0;
 
 		// Execute the parent constructor
 		parent::__construct($input, $config, $client);
@@ -242,7 +240,7 @@ final class JApplicationSite extends JApplicationCms
 	 */
 	public function getDetectBrowser()
 	{
-		return $this->_detect_browser;
+		return $this->detect_browser;
 	}
 
 	/**
@@ -254,7 +252,7 @@ final class JApplicationSite extends JApplicationCms
 	 */
 	public function getLanguageFilter()
 	{
-		return $this->_language_filter;
+		return $this->language_filter;
 	}
 
 	/**
@@ -445,7 +443,7 @@ final class JApplicationSite extends JApplicationCms
 
 		$cache = JFactory::getCache('com_templates', '');
 
-		if ($this->_language_filter)
+		if ($this->getLanguageFilter())
 		{
 			$tag = $this->getLanguage()->getTag();
 		}
@@ -475,7 +473,7 @@ final class JApplicationSite extends JApplicationCms
 				$template->params = $registry;
 
 				// Create home element
-				if ($template->home == 1 && !isset($templates[0]) || $this->_language_filter && $template->home == $tag)
+				if ($template->home == 1 && !isset($templates[0]) || $this->getLanguageFilter() && $template->home == $tag)
 				{
 					$templates[0] = clone $template;
 				}
@@ -585,7 +583,7 @@ final class JApplicationSite extends JApplicationCms
 			}
 		}
 
-		if ($this->_language_filter && empty($options['language']))
+		if ($this->getLanguageFilter() && empty($options['language']))
 		{
 			// Detect cookie language
 			$lang = $this->input->cookie->get(md5($this->get('secret') . 'language'), null, 'string');
@@ -609,7 +607,7 @@ final class JApplicationSite extends JApplicationCms
 			}
 		}
 
-		if ($this->_detect_browser && empty($options['language']))
+		if ($this->getDetectBrowser() && empty($options['language']))
 		{
 			// Detect browser language
 			$lang = JLanguageHelper::detectLanguage();
@@ -762,8 +760,8 @@ final class JApplicationSite extends JApplicationCms
 	 */
 	public function setDetectBrowser($state = false)
 	{
-		$old = $this->_detect_browser;
-		$this->_detect_browser = $state;
+		$old = $this->getDetectBrowser();
+		$this->detect_browser = $state;
 
 		return $old;
 	}
@@ -779,8 +777,8 @@ final class JApplicationSite extends JApplicationCms
 	 */
 	public function setLanguageFilter($state = false)
 	{
-		$old = $this->_language_filter;
-		$this->_language_filter = $state;
+		$old = $this->getLanguageFilter();
+		$this->language_filter = $state;
 
 		return $old;
 	}

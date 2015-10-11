@@ -46,28 +46,25 @@ class JApplicationCms extends JApplicationWeb
 	 * The client identifier.
 	 *
 	 * @var    integer
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $clientId
+	 * @since  4.0
 	 */
-	protected $_clientId = null;
+	protected $clientId = null;
 
 	/**
 	 * The application message queue.
 	 *
 	 * @var    array
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $messageQueue
+	 * @since  4.0
 	 */
-	protected $_messageQueue = array();
+	protected $messageQueue = array();
 
 	/**
 	 * The name of the application.
 	 *
 	 * @var    array
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $name
+	 * @since  4.0
 	 */
-	protected $_name = null;
+	protected $name = null;
 
 	/**
 	 * The profiler instance
@@ -236,7 +233,7 @@ class JApplicationCms extends JApplicationWeb
 		$this->getMessageQueue();
 
 		// Enqueue the message.
-		$this->_messageQueue[] = array('message' => $msg, 'type' => strtolower($type));
+		$this->messageQueue[] = array('message' => $msg, 'type' => strtolower($type));
 	}
 
 	/**
@@ -353,7 +350,7 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function getClientId()
 	{
-		return $this->_clientId;
+		return $this->clientId;
 	}
 
 	/**
@@ -425,19 +422,19 @@ class JApplicationCms extends JApplicationWeb
 	public function getMessageQueue()
 	{
 		// For empty queue, if messages exists in the session, enqueue them.
-		if (!count($this->_messageQueue))
+		if (!count($this->messageQueue))
 		{
 			$session = JFactory::getSession();
 			$sessionQueue = $session->get('application.queue');
 
 			if (count($sessionQueue))
 			{
-				$this->_messageQueue = $sessionQueue;
+				$this->messageQueue = $sessionQueue;
 				$session->set('application.queue', null);
 			}
 		}
 
-		return $this->_messageQueue;
+		return $this->messageQueue;
 	}
 
 	/**
@@ -449,7 +446,7 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function getName()
 	{
-		return $this->_name;
+		return $this->name;
 	}
 
 	/**
@@ -949,10 +946,10 @@ class JApplicationCms extends JApplicationWeb
 	public function redirect($url, $status = 303)
 	{
 		// Persist messages if they exist.
-		if (count($this->_messageQueue))
+		if (count($this->messageQueue))
 		{
 			$session = JFactory::getSession();
-			$session->set('application.queue', $this->_messageQueue);
+			$session->set('application.queue', $this->messageQueue);
 		}
 
 		// Hand over processing to the parent now
