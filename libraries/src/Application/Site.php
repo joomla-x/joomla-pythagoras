@@ -24,7 +24,7 @@ use JLanguage;
 use JLanguageHelper;
 use JMenu;
 use JPathway;
-use JPluginHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JRoute;
 use JRouter;
 use JText;

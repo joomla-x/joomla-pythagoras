@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 /**
  * HTML View class for the Content component
  *

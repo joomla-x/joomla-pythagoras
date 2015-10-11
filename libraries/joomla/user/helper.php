@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 /**
  * Authorisation helper class, provides static methods to perform various tasks relevant
  * to the Joomla user and authorisation classes

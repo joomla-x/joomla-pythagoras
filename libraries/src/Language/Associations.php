@@ -10,7 +10,7 @@
 namespace Joomla\CMS\Language;
 
 use Joomla\Registry\Registry;
-use JPluginHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Exception;
 use JFactory;
 use RuntimeException;

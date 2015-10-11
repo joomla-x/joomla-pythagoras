@@ -7,20 +7,24 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Joomla\CMS\Plugin;
 
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\AbstractEvent;
 use Joomla\Registry\Registry;
+use JFactory;
+use ReflectionObject;
+use ReflectionMethod;
+use ReflectionParameter;
 
 /**
  * JPlugin Class
  *
  * @since  1.5
  */
-abstract class JPlugin implements DispatcherAwareInterface
+abstract class Plugin implements DispatcherAwareInterface
 {
 	use DispatcherAwareTrait;
 
@@ -53,7 +57,7 @@ abstract class JPlugin implements DispatcherAwareInterface
 	 *
 	 * TODO REFACTOR ME! Use a Container, not the application itself
 	 *
-	 * @var    JApplicationBase
+	 * @var    \JApplicationBase
 	 * @since  2.5
 	 */
 	protected $app = null;
@@ -63,7 +67,7 @@ abstract class JPlugin implements DispatcherAwareInterface
 	 *
 	 * TODO REFACTOR ME! No need for it once we have a Container
 	 *
-	 * @var    JDatabaseDriver
+	 * @var    \JDatabaseDriver
 	 * @since  2.5
 	 */
 	protected $db = null;

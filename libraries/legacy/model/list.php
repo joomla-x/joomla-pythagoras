@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Pagination\Pagination as JPagination;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 
 /**
  * Model class for handling lists of items.

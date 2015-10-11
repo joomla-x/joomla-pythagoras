@@ -13,6 +13,7 @@ use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\CMS\Less\Less;
 use Joomla\CMS\Less\Formatter\Joomla;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 
 /**
  * Template model class.

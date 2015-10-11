@@ -22,7 +22,7 @@ use JFactory;
 use JFilterInput;
 use JInput;
 use JLanguage;
-use JPluginHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JRouter;
 use JText;
 use JUri;

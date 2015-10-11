@@ -7,16 +7,17 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die;
+namespace Joomla\CMS\Plugin;
 
 use Joomla\Event\Dispatcher;
+use JFactory;
 
 /**
  * Plugin helper class
  *
  * @since  1.5
  */
-abstract class JPluginHelper
+abstract class Helper
 {
 	/**
 	 * A persistent cache of the loaded plugins.

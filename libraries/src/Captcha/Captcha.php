@@ -17,12 +17,12 @@ use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Dispatcher;
 use Joomla\Event\Event;
 use Joomla\Registry\Registry;
-use JPlugin;
+use Joomla\CMS\Plugin\Plugin as JPlugin;
 use JFactory;
 use RuntimeException;
 use JText;
 use Exception;
-use JPluginHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JFilterInput;
 
 /**
@@ -48,7 +48,7 @@ class Captcha implements DispatcherAwareInterface
 	/**
 	 * Array of instances of this class.
 	 *
-	 * @var	   JCaptcha[]
+	 * @var	   Captcha[]
 	 * @since  2.5
 	 */
 	private static $_instances = array();

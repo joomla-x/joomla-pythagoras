@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Plugin\Plugin as JPlugin;
 
 /**
  * Plugin class for logout redirect handling.

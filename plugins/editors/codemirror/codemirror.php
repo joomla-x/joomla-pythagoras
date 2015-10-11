@@ -10,6 +10,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * CodeMirror Editor Plugin.
  *

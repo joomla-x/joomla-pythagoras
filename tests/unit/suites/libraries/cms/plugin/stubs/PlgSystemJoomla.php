@@ -7,6 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Plugin\Plugin as JPlugin;
 use Joomla\Registry\Registry;
 
 /**

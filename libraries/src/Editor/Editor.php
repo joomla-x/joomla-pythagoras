@@ -19,7 +19,7 @@ use Joomla\Event\Event;
 use Joomla\Event\AbstractEvent;
 use Joomla\Registry\Registry;
 use JFactory;
-use JPluginHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JFilterInput;
 
 /**

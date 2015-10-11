@@ -10,8 +10,9 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
-use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Associations as JLanguageAssociations;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+use Joomla\Registry\Registry;
 
 jimport('joomla.filesystem.path');
 require_once JPATH_COMPONENT . '/helpers/menus.php';

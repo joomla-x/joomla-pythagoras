@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');

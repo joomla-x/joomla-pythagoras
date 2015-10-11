@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Module\Helper as JModuleHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Joomla\CMS\Response\Json as JResponseJson;
 
 /*
