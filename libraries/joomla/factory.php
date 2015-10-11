@@ -116,18 +116,6 @@ abstract class JFactory
 	public static function getApplication($id = null, array $config = array(), $prefix = 'J')
 	{
 		return JApplicationCms::getInstance(JAPPLICATIONTYPE);
-
-		if (!self::$application)
-		{
-			if (!$id)
-			{
-				throw new Exception('Application Instantiation Error', 500);
-			}
-
-			self::$application = JApplicationCms::getInstance($id);
-		}
-
-		return self::$application;
 	}
 
 	/**
