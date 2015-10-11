@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Ucm\Type as JUcmType;
 
 /**
  * HTML View class for the Categories component

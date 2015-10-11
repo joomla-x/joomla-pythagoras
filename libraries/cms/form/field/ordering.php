@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Ucm\Type as JUcmType;
+
 /**
  * Form Field class for the Joomla Platform.
  *

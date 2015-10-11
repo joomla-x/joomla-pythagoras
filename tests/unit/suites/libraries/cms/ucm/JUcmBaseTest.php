@@ -7,6 +7,8 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Ucm\Base as JUcmBase;
+
 /**
  * Test class for JUcmBase.
  *
@@ -87,9 +89,9 @@ class JUcmBaseTest extends TestCaseDatabase
 		$object = new JUcmBase('com_content.article');
 
 		$this->assertInstanceOf(
-			'JUcmType',
+			'\\Joomla\\CMS\\Ucm\\Type',
 			TestReflection::getValue($object, 'type'),
-			'Ensure the type property is an instance of JUcmType'
+			'Ensure the type property is an instance of \\Joomla\\CMS\\Ucm\\Type'
 		);
 	}
 

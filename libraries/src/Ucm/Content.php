@@ -7,14 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Ucm;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JHelperContent;
+use JTable;
+use JTableInterface;
 
 /**
  * Base class for implementing UCM
  *
  * @since  3.1
  */
-class JUcmContent extends JUcmBase
+class Content extends Base
 {
 	/**
 	 * The related table object
@@ -37,11 +44,11 @@ class JUcmContent extends JUcmBase
 	 *
 	 * @param   JTableInterface  $table  The table object
 	 * @param   string           $alias  The type alias
-	 * @param   JUcmType         $type   The type object
+	 * @param   Type             $type   The type object
 	 *
 	 * @since   3.1
 	 */
-	public function __construct(JTableInterface $table = null, $alias = null, JUcmType $type = null)
+	public function __construct(JTableInterface $table = null, $alias = null, Type $type = null)
 	{
 		// Setup dependencies.
 		$input = JFactory::getApplication()->input;
@@ -63,14 +70,14 @@ class JUcmContent extends JUcmBase
 	/**
 	 * Method to save the data
 	 *
-	 * @param   array     $original  The original data to be saved
-	 * @param   JUcmType  $type      The UCM Type object
+	 * @param   array  $original  The original data to be saved
+	 * @param   Type   $type      The UCM Type object
 	 *
 	 * @return  boolean  true
 	 *
 	 * @since   3.1
 	 */
-	public function save($original = null, JUcmType $type = null)
+	public function save($original = null, Type $type = null)
 	{
 		$type    = $type ? $type : $this->type;
 		$ucmData = $original ? $this->mapData($original, $type) : $this->ucmData;
@@ -91,14 +98,14 @@ class JUcmContent extends JUcmBase
 	/**
 	 * Delete content from the Core Content table
 	 *
-	 * @param   mixed     $pk    The string/array of id's to delete
-	 * @param   JUcmType  $type  The content type object
+	 * @param   mixed  $pk    The string/array of id's to delete
+	 * @param   Type   $type  The content type object
 	 *
 	 * @return  boolean  True if success
 	 *
 	 * @since   3.1
 	 */
-	public function delete($pk, JUcmType $type = null)
+	public function delete($pk, Type $type = null)
 	{
 		$db   = JFactory::getDbo();
 		$type = $type ? $type : $this->type;
@@ -122,14 +129,14 @@ class JUcmContent extends JUcmBase
 	/**
 	 * Map the original content to the Core Content fields
 	 *
-	 * @param   array     $original  The original data array
-	 * @param   JUcmType  $type      Type object for this data
+	 * @param   array  $original  The original data array
+	 * @param   Type   $type      Type object for this data
 	 *
 	 * @return  array  $ucmData  The mapped UCM data
 	 *
 	 * @since   3.1
 	 */
-	public function mapData($original, JUcmType $type = null)
+	public function mapData($original, Type $type = null)
 	{
 		$contentType = isset($type) ? $type : $this->type;
 

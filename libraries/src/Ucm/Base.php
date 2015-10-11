@@ -7,19 +7,28 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Ucm;
+
 defined('JPATH_PLATFORM') or die;
+
+use Exception;
+use JFactory;
+use JHelperContent;
+use JTable;
+use JTableInterface;
+use RuntimeException;
 
 /**
  * Base class for implementing UCM
  *
  * @since  3.1
  */
-class JUcmBase implements JUcm
+class Base implements UcmInterface
 {
 	/**
 	 * The UCM type object
 	 *
-	 * @var    JUcmType
+	 * @var    Type
 	 * @since  3.1
 	 */
 	protected $type;
@@ -35,12 +44,12 @@ class JUcmBase implements JUcm
 	/**
 	 * Instantiate the UcmBase.
 	 *
-	 * @param   string    $alias  The alias string
-	 * @param   JUcmType  $type   The type object
+	 * @param   string  $alias  The alias string
+	 * @param   Type    $type   The type object
 	 *
 	 * @since   3.1
 	 */
-	public function __construct($alias = null, JUcmType $type = null)
+	public function __construct($alias = null, Type $type = null)
 	{
 		// Setup dependencies.
 		$input = JFactory::getApplication()->input;
@@ -100,26 +109,26 @@ class JUcmBase implements JUcm
 	/**
 	 * Get the UCM Content type.
 	 *
-	 * @return  JUcmType  The UCM content type
+	 * @return  Type  The UCM content type
 	 *
 	 * @since   3.1
 	 */
 	public function getType()
 	{
-		return new JUcmType($this->alias);
+		return new Type($this->alias);
 	}
 
 	/**
 	 * Method to map the base ucm fields
 	 *
-	 * @param   array     $original  Data array
-	 * @param   JUcmType  $type      UCM Content Type
+	 * @param   array  $original  Data array
+	 * @param   Type   $type      UCM Content Type
 	 *
 	 * @return  array  Data array of UCM mappings
 	 *
 	 * @since   3.1
 	 */
-	public function mapBase($original, JUcmType $type = null)
+	public function mapBase($original, Type $type = null)
 	{
 		$type = $type ? $type : $this->type;
 

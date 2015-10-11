@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Ucm\Type as JUcmType;
+use Joomla\CMS\Ucm\Content as JUcmContent;
 
 /**
  * Tags helper class, provides methods to perform various tasks relevant

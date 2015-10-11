@@ -7,7 +7,13 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Ucm;
+
 defined('JPATH_PLATFORM') or die;
+
+use JApplicationBase;
+use JDatabaseDriver;
+use JFactory;
 
 /**
  * UCM Class for handling content types
@@ -48,12 +54,12 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since  3.1
  */
-class JUcmType implements JUcm
+class Type implements UcmInterface
 {
 	/**
 	 * The UCM Type
 	 *
-	 * @var    JUcmType
+	 * @var    Type
 	 * @since  3.1
 	 */
 	public $type;

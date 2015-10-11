@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Ucm;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -14,6 +16,6 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since  3.1
  */
-interface JUcm
+interface UcmInterface
 {
 }
