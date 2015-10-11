@@ -44,11 +44,10 @@ class JDocumentRendererRSSTest extends TestCase
 
 		$this->saveFactoryState();
 
-		JFactory::$application = $this->getMock(
-			'JApplication',
+		JFactory::$application = $this->getMockForAbstractClass(
+			'JApplicationCms',
 			array(
 				'get',
-				'getCfg',
 				'getRouter',
 			)
 		);

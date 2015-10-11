@@ -102,7 +102,7 @@ class JFactoryTest extends TestCaseDatabase
 	 */
 	public function testGetDocument()
 	{
-		JFactory::$application = TestMockApplication::create($this);
+		JFactory::$application = TestMockApplicationCms::create($this);
 
 		$this->assertInstanceOf(
 			'JDocument',
