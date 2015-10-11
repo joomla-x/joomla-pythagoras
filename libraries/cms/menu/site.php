@@ -42,7 +42,7 @@ class JMenuSite extends JMenu
 
 		try
 		{
-			$this->_items = $db->loadObjectList('id');
+			$this->items = $db->loadObjectList('id');
 		}
 		catch (RuntimeException $e)
 		{
@@ -51,14 +51,14 @@ class JMenuSite extends JMenu
 			return false;
 		}
 
-		foreach ($this->_items as &$item)
+		foreach ($this->items as &$item)
 		{
 			// Get parent information.
 			$parent_tree = array();
 
-			if (isset($this->_items[$item->parent_id]))
+			if (isset($this->items[$item->parent_id]))
 			{
-				$parent_tree  = $this->_items[$item->parent_id]->tree;
+				$parent_tree  = $this->items[$item->parent_id]->tree;
 			}
 
 			// Create tree.
@@ -140,13 +140,13 @@ class JMenuSite extends JMenu
 	 */
 	public function getDefault($language = '*')
 	{
-		if (array_key_exists($language, $this->_default) && JApplicationCms::getInstance('site')->getLanguageFilter())
+		if (array_key_exists($language, $this->default) && JApplicationCms::getInstance('site')->getLanguageFilter())
 		{
-			return $this->_items[$this->_default[$language]];
+			return $this->items[$this->default[$language]];
 		}
-		elseif (array_key_exists('*', $this->_default))
+		elseif (array_key_exists('*', $this->default))
 		{
-			return $this->_items[$this->_default['*']];
+			return $this->items[$this->default['*']];
 		}
 		else
 		{

@@ -22,28 +22,25 @@ class JMenu
 	 * Array to hold the menu items
 	 *
 	 * @var    array
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $items
+	 * @since  4.0
 	 */
-	protected $_items = array();
+	protected $items = array();
 
 	/**
 	 * Identifier of the default menu item
 	 *
 	 * @var    integer
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $default
+	 * @since  4.0
 	 */
-	protected $_default = array();
+	protected $default = array();
 
 	/**
 	 * Identifier of the active menu item
 	 *
 	 * @var    integer
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $active
+	 * @since  4.0
 	 */
-	protected $_active = 0;
+	protected $active = 0;
 
 	/**
 	 * JMenu instances container.
@@ -65,11 +62,11 @@ class JMenu
 		// Load the menu items
 		$this->load();
 
-		foreach ($this->_items as $item)
+		foreach ($this->items as $item)
 		{
 			if ($item->home)
 			{
-				$this->_default[trim($item->language)] = $item->id;
+				$this->default[trim($item->language)] = $item->id;
 			}
 
 			// Decode the item params
@@ -121,9 +118,9 @@ class JMenu
 	{
 		$result = null;
 
-		if (isset($this->_items[$id]))
+		if (isset($this->items[$id]))
 		{
-			$result = &$this->_items[$id];
+			$result = &$this->items[$id];
 		}
 
 		return $result;
@@ -141,9 +138,9 @@ class JMenu
 	 */
 	public function setDefault($id, $language = '*')
 	{
-		if (isset($this->_items[$id]))
+		if (isset($this->items[$id]))
 		{
-			$this->_default[$language] = $id;
+			$this->default[$language] = $id;
 
 			return true;
 		}
@@ -162,13 +159,13 @@ class JMenu
 	 */
 	public function getDefault($language = '*')
 	{
-		if (array_key_exists($language, $this->_default))
+		if (array_key_exists($language, $this->default))
 		{
-			return $this->_items[$this->_default[$language]];
+			return $this->items[$this->default[$language]];
 		}
-		elseif (array_key_exists('*', $this->_default))
+		elseif (array_key_exists('*', $this->default))
 		{
-			return $this->_items[$this->_default['*']];
+			return $this->items[$this->default['*']];
 		}
 		else
 		{
@@ -187,10 +184,10 @@ class JMenu
 	 */
 	public function setActive($id)
 	{
-		if (isset($this->_items[$id]))
+		if (isset($this->items[$id]))
 		{
-			$this->_active = $id;
-			$result = &$this->_items[$id];
+			$this->active = $id;
+			$result = &$this->items[$id];
 
 			return $result;
 		}
@@ -207,9 +204,9 @@ class JMenu
 	 */
 	public function getActive()
 	{
-		if ($this->_active)
+		if ($this->active)
 		{
-			$item = &$this->_items[$this->_active];
+			$item = &$this->items[$this->active];
 
 			return $item;
 		}
@@ -235,7 +232,7 @@ class JMenu
 		$attributes = (array) $attributes;
 		$values = (array) $values;
 
-		foreach ($this->_items as $item)
+		foreach ($this->items as $item)
 		{
 			if (!is_object($item))
 			{
@@ -308,7 +305,7 @@ class JMenu
 	 */
 	public function getMenu()
 	{
-		return $this->_items;
+		return $this->items;
 	}
 
 	/**
