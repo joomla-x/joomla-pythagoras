@@ -74,7 +74,12 @@ class Pathway
 	{
 		if (empty(self::$instances[$client]))
 		{
-			// Create a JPathway object
+			// Create a Pathway object. Handle a empty string for legacy reasons when classes were not namespaced.
+			if ($client === '')
+			{
+				$client = 'Pathway';
+			}
+
 			$classname = '\\Joomla\\CMS\\Pathway\\' . ucfirst($client);
 
 			if (!class_exists($classname))

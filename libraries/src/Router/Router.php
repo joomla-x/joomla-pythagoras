@@ -179,7 +179,12 @@ class Router
 	{
 		if (empty(self::$instances[$client]))
 		{
-			// Create a Router object
+			// Create a Router object. Handle a empty string for legacy reasons when classes were not namespaced.
+			if ($client === '')
+			{
+				$client = 'Router';
+			}
+
 			$classname = '\\Joomla\\CMS\\Router\\' . ucfirst($client);
 
 			if (!class_exists($classname))
