@@ -12,6 +12,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Menu\Menu as JMenu;
 use Joomla\CMS\Pathway\Pathway as JPathway;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Joomla\CMS\Router\Router as JRouter;

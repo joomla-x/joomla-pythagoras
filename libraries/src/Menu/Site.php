@@ -7,16 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Menu;
+
 defined('JPATH_PLATFORM') or die;
 
+use JError;
+use JFactory;
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+use JText;
+use RuntimeException;
 
 /**
- * JMenu class
+ * Menu class
  *
  * @since  1.5
  */
-class JMenuSite extends JMenu
+class Site extends Menu
 {
 	/**
 	 * Loads the entire menu table into memory.

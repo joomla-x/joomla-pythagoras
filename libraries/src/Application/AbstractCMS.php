@@ -23,7 +23,7 @@ use JFactory;
 use JInput;
 use JLanguage;
 use JLog;
-use JMenu;
+use Joomla\CMS\Menu\Menu as JMenu;
 use Joomla\CMS\Pathway\Pathway as JPathway;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use JProfiler;

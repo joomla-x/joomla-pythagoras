@@ -296,7 +296,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	 */
 	public function testGetMenu()
 	{
-		$this->assertInstanceOf('JMenu', $this->class->getMenu(''));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Menu\\Menu', $this->class->getMenu(''));
 	}
 
 	/**

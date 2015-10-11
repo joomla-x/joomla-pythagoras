@@ -7,13 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Menu;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
- * JMenu class.
+ * Menu class.
  *
  * @since  1.5
  */
-class JMenuAdministrator extends JMenu
+class Administrator extends Menu
 {
 }

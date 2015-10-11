@@ -283,7 +283,7 @@ final class Site extends AbstractCMS
 	 * @param   string  $name     The name of the application/client.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JMenu  JMenu object.
+	 * @return  \Joomla\CMS\Menu\Menu  Menu object.
 	 *
 	 * @since   3.2
 	 */

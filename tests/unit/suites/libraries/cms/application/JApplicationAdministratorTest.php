@@ -183,7 +183,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetMenu()
 	{
-		$this->assertInstanceOf('JMenuAdministrator', $this->class->getMenu());
+		$this->assertInstanceOf('\\Joomla\\CMS\\Menu\\Administrator', $this->class->getMenu());
 	}
 
 	/**

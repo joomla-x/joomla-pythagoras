@@ -14,7 +14,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 
 use JFactory;
-use JMenu;
+use Joomla\CMS\Menu\Menu as JMenu;
 
 /**
  * Base component routing class

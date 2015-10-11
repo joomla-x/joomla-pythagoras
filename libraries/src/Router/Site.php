@@ -14,7 +14,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use Joomla\CMS\Component\Router\Legacy as JComponentRouterLegacy;
 use Joomla\CMS\Component\Router\RouterInterface as JComponentRouterInterface;
-use JMenu;
+use Joomla\CMS\Menu\Menu as JMenu;
 use JString;
 use JUri;
 use ReflectionClass;

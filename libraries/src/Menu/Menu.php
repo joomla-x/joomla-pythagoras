@@ -7,17 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Menu;
+
 defined('JPATH_PLATFORM') or die;
 
+use Exception;
+use JFactory;
+use JLog;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\Registry\Registry;
+use JText;
 
 /**
- * JMenu class
+ * Menu class
  *
  * @since  1.5
  */
-class JMenu
+class Menu
 {
 	/**
 	 * Array to hold the menu items
@@ -47,9 +53,9 @@ class JMenu
 	protected $_active = 0;
 
 	/**
-	 * JMenu instances container.
+	 * Menu instances container.
 	 *
-	 * @var    JMenu[]
+	 * @var    Menu[]
 	 * @since  1.7
 	 */
 	protected static $instances = array();
@@ -81,12 +87,12 @@ class JMenu
 	}
 
 	/**
-	 * Returns a JMenu object
+	 * Returns a Menu object
 	 *
 	 * @param   string  $client   The name of the client
 	 * @param   array   $options  An associative array of options
 	 *
-	 * @return  JMenu  A menu object.
+	 * @return  Menu  A menu object.
 	 *
 	 * @since   1.5
 	 * @throws  Exception
@@ -95,8 +101,13 @@ class JMenu
 	{
 		if (empty(self::$instances[$client]))
 		{
-			// Create a JMenu object
-			$classname = 'JMenu' . ucfirst($client);
+			// Create a Menu object. Handle a empty string for legacy reasons when classes were not namespaced.
+			if ($client === '')
+			{
+				$client = 'Menu';
+			}
+
+			$classname = '\\Joomla\\CMS\\Menu\\' . ucfirst($client);
 
 			if (!class_exists($classname))
 			{
@@ -333,7 +344,7 @@ class JMenu
 	}
 
 	/**
-	 * Method to check JMenu object authorization against an access control
+	 * Method to check Menu object authorization against an access control
 	 * object and optionally an access extension object
 	 *
 	 * @param   integer  $id  The menu id
