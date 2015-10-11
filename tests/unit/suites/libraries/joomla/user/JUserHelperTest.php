@@ -39,6 +39,9 @@ class JUserHelperTest extends TestCaseDatabase
 		$mockApp->expects($this->any())
 			->method('getDispatcher')
 			->willReturn($this->getMockDispatcher());
+		$mockApp->expects($this->any())
+			->method('triggerEvent')
+			->willReturn(array(true));
 		JFactory::$application = $mockApp;
 
 		$this->saveFactoryState();

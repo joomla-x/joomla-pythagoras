@@ -529,9 +529,10 @@ class JTableNested extends JTable
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
 		// Pre-processing by observers
-		$event = new Event('onBeforeDelete', [
-			'pk'	=> $pk,
-		]);
+		$event = new Event(
+			'onBeforeDelete',
+			['pk'	=> $pk]
+		);
 		$this->getDispatcher()->dispatch('onBeforeDelete', $event);
 
 		// Lock the table for writing.
@@ -656,9 +657,10 @@ class JTableNested extends JTable
 		$this->_unlock();
 
 		// Post-processing by observers
-		$event = new Event('onAfterDelete', [
-			'pk'	=> $pk,
-		]);
+		$event = new Event(
+			'onAfterDelete',
+			['pk'	=> $pk]
+		);
 		$this->getDispatcher()->dispatch('onAfterDelete', $event);
 
 		return true;
@@ -734,11 +736,14 @@ class JTableNested extends JTable
 		$k = $this->_tbl_key;
 
 		// Pre-processing by observers
-		$event = AbstractEvent::create('onTableBeforeStore', [
-			'subject'		=> $this,
-			'updateNulls'	=> $updateNulls,
-			'k'				=> $k,
-		]);
+		$event = AbstractEvent::create(
+			'onTableBeforeStore',
+			[
+				'subject'     => $this,
+				'updateNulls' => $updateNulls,
+				'k'           => $k,
+			]
+		);
 		$this->getDispatcher()->dispatch('onTableBeforeStore', $event);
 
 		// @codeCoverageIgnoreStart
@@ -889,10 +894,13 @@ class JTableNested extends JTable
 		$this->_unlock();
 
 		// Post-processing by observers
-		$event = AbstractEvent::create('onTableAfterStore', [
-			'subject'	=> $this,
-			'result'	=> &$result,
-		]);
+		$event = AbstractEvent::create(
+			'onTableAfterStore',
+			[
+				'subject'	=> $this,
+				'result'	=> &$result,
+			]
+		);
 		$this->getDispatcher()->dispatch('onTableAfterStore', $event);
 
 		return $result;

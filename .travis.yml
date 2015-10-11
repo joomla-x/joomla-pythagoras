@@ -25,8 +25,8 @@ before_script:
   # - ./build/travis/php-apache.sh
   # Enable additional PHP extensions
   - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/travis/phpenv/memcached.ini; fi
-  # PHP 5.3 and 5.4 use APC
-  - if [ $TRAVIS_PHP_VERSION == "5.3" ] || [ $TRAVIS_PHP_VERSION == "5.4" ]; then phpenv config-add build/travis/phpenv/apc-$TRAVIS_PHP_VERSION.ini; fi
+  # PHP 5.4 uses APC
+  - if [ $TRAVIS_PHP_VERSION == "5.4" ]; then phpenv config-add build/travis/phpenv/apc-$TRAVIS_PHP_VERSION.ini; fi
   # PHP 5.5+ use APCu
   - if [ $TRAVIS_PHP_VERSION == "5.5" ] || [ $TRAVIS_PHP_VERSION == "5.6" ]; then printf "\n" | pecl install apcu-beta; fi
   - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/travis/phpenv/redis.ini; fi
