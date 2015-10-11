@@ -29,10 +29,27 @@ $container = new Joomla\DI\Container();
 $container->registerServiceProvider(new Joomla\Provider\InputProvider());
 $container->registerServiceProvider(new Joomla\Provider\LanguageProvider());
 $container->registerServiceProvider(new Joomla\Provider\DatabaseProvider());
-$container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
+$container->registerServiceProvider(new Joomla\Provider\DispatcherProvider());
 $container->registerServiceProvider(new Joomla\Provider\SessionProvider());
-$container->registerServiceProvider(new Joomla\Cms\Provider\ApplicationProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
 
+$container->set('InstallationApplicationWeb',
+	function (Joomla\DI\Container $container)
+	{
+		$app = new \InstallationApplicationWeb($container->get('input'), $container->get('config'));
+
+		\JFactory::$application = $app;
+		$container->share('app', $app);
+
+		$app->setContainer($container);
+		$app->setLanguage($container->get('language'));
+		$app->setDocument($container->get('JDocument'));
+		$app->setSession($container->get('JSession'));
+		$app->setDispatcher($container->get('Dispatcher'));
+
+		return $app;
+	}
+);
 $container->set('JDocument',
 	function (Joomla\DI\Container $container)
 	{
