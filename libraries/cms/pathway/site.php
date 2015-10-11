@@ -25,7 +25,7 @@ class JPathwaySite extends JPathway
 	 */
 	public function __construct($options = array())
 	{
-		$this->_pathway = array();
+		$this->pathway = array();
 
 		$app  = JApplicationCms::getInstance('site');
 		$menu = $app->getMenu();

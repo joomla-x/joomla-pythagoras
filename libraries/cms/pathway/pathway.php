@@ -20,17 +20,15 @@ class JPathway
 {
 	/**
 	 * @var    array  Array to hold the pathway item objects
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $pathway
+	 * @since  4.0
 	 */
-	protected $_pathway = array();
+	protected $pathway = array();
 
 	/**
 	 * @var    integer  Integer number of items in the pathway
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $count
+	 * @since  4.0
 	 */
-	protected $_count = 0;
+	protected $count = 0;
 
 	/**
 	 * JPathway instances container.
@@ -89,7 +87,7 @@ class JPathway
 	 */
 	public function getPathway()
 	{
-		$pw = $this->_pathway;
+		$pw = $this->pathway;
 
 		// Use array_values to reset the array keys numerically
 		return array_values($pw);
@@ -106,10 +104,10 @@ class JPathway
 	 */
 	public function setPathway($pathway)
 	{
-		$oldPathway = $this->_pathway;
+		$oldPathway = $this->pathway;
 
 		// Set the new pathway.
-		$this->_pathway = array_values((array) $pathway);
+		$this->pathway = array_values((array) $pathway);
 
 		return array_values($oldPathway);
 	}
@@ -126,7 +124,7 @@ class JPathway
 		$names = array();
 
 		// Build the names array using just the names of each pathway item
-		foreach ($this->_pathway as $item)
+		foreach ($this->pathway as $item)
 		{
 			$names[] = $item->name;
 		}
@@ -149,10 +147,10 @@ class JPathway
 	{
 		$ret = false;
 
-		if ($this->_pathway[] = $this->makeItem($name, $link))
+		if ($this->pathway[] = $this->makeItem($name, $link))
 		{
 			$ret = true;
-			$this->_count++;
+			$this->count++;
 		}
 
 		return $ret;
@@ -172,9 +170,9 @@ class JPathway
 	{
 		$ret = false;
 
-		if (isset($this->_pathway[$id]))
+		if (isset($this->pathway[$id]))
 		{
-			$this->_pathway[$id]->name = $name;
+			$this->pathway[$id]->name = $name;
 			$ret = true;
 		}
 
