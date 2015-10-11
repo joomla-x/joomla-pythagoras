@@ -60,8 +60,3 @@ if (!interface_exists('JsonSerializable'))
 
 // Register the PasswordHash lib
 JLoader::register('PasswordHash', JPATH_PLATFORM . '/phpass/PasswordHash.php');
-
-// Register classes where the names have been changed to fit the autoloader rules
-// @deprecated  4.0
-JLoader::register('JTree', JPATH_PLATFORM . '/legacy/base/tree.php');
-JLoader::register('JNode', JPATH_PLATFORM . '/legacy/base/node.php');
