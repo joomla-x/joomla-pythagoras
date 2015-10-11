@@ -54,7 +54,7 @@ class AbstractCMS extends JApplicationWeb
 	/**
 	 * Application instances container.
 	 *
-	 * @var    JApplicationCms[]
+	 * @var    AbstractCms[]
 	 * @since  3.2
 	 */
 	protected static $instances = array();
