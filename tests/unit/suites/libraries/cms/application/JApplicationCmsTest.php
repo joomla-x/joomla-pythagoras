@@ -308,7 +308,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	 */
 	public function testGetPathway()
 	{
-		$this->assertInstanceOf('JPathway', $this->class->getPathway(''));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Pathway\\Pathway', $this->class->getPathway(''));
 	}
 
 	/**
@@ -320,7 +320,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 	 */
 	public function testGetRouter()
 	{
-		$this->assertInstanceOf('JRouter', $this->class->getRouter(''));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Router\\Router', $this->class->getRouter(''));
 	}
 
 	/**

@@ -215,7 +215,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	 */
 	public function testGetPathway()
 	{
-		$this->assertInstanceOf('JPathwaySite', $this->class->getPathway());
+		$this->assertInstanceOf('\\Joomla\\CMS\\Pathway\\Site', $this->class->getPathway());
 	}
 
 	/**
@@ -227,7 +227,7 @@ class JApplicationSiteTest extends TestCaseDatabase
 	 */
 	public function testGetRouter()
 	{
-		$this->assertInstanceOf('JRouterSite', $this->class->getRouter());
+		$this->assertInstanceOf('\\Joomla\\CMS\\Router\\Site', $this->class->getRouter());
 	}
 
 	/**

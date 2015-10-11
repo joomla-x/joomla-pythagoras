@@ -207,7 +207,7 @@ class JApplicationAdministratorTest extends TestCaseDatabase
 	 */
 	public function testGetRouter()
 	{
-		$this->assertInstanceOf('JRouterAdministrator', $this->class->getRouter());
+		$this->assertInstanceOf('\\Joomla\\CMS\\Router\\Administrator', $this->class->getRouter());
 	}
 
 	/**
