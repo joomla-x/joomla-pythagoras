@@ -10,6 +10,20 @@
 defined('JPATH_PLATFORM') or die;
 
 /**
+ * Mask for the raw routing mode
+ *
+ * @deprecated  4.0
+ */
+const JROUTER_MODE_RAW = 0;
+
+/**
+ * Mask for the SEF routing mode
+ *
+ * @deprecated  4.0
+ */
+const JROUTER_MODE_SEF = 1;
+
+/**
  * Class to create and parse routes
  *
  * @since  1.5
@@ -186,18 +200,18 @@ class JRouter
 
 		// Process the parsed variables based on custom defined rules
 		// This is the main parse stage
-		$vars += $this->_processParseRules($uri);
+		$vars += $this->processParseRules($uri);
 
 		// Parse RAW URL
 		if ($this->_mode == JROUTER_MODE_RAW)
 		{
-			$vars += $this->_parseRawRoute($uri);
+			$vars += $this->parseRawRoute($uri);
 		}
 
 		// Parse SEF URL
 		if ($this->_mode == JROUTER_MODE_SEF)
 		{
-			$vars += $this->_parseSefRoute($uri);
+			$vars += $this->parseSefRoute($uri);
 		}
 
 		// Do the postprocess stage of the URL build process
@@ -232,18 +246,18 @@ class JRouter
 
 		// Process the uri information based on custom defined rules.
 		// This is the main build stage
-		$this->_processBuildRules($uri);
+		$this->processBuildRules($uri);
 
 		// Build RAW URL
 		if ($this->_mode == JROUTER_MODE_RAW)
 		{
-			$this->_buildRawRoute($uri);
+			$this->buildRawRoute($uri);
 		}
 
 		// Build SEF URL : mysite/route/index.php?var=x
 		if ($this->_mode == JROUTER_MODE_SEF)
 		{
-			$this->_buildSefRoute($uri);
+			$this->buildSefRoute($uri);
 		}
 
 		// Do the postprocess stage of the URL build process

@@ -81,20 +81,11 @@ class JPathwayTest extends TestCase
 		$obj->name = 'inspector';
 		$obj->path = JPATH_TESTS;
 
-		$obj2 = new stdClass;
-		$obj2->id = 1;
-		$obj2->name = 'inspector2';
-		$obj2->path = __DIR__ . '/stubs';
-
-		TestReflection::setValue('JApplicationHelper', '_clients', array($obj, $obj2));
+		TestReflection::setValue('JApplicationHelper', '_clients', array($obj));
 
 		$pathway = JPathway::getInstance('');
 
 		$this->assertInstanceOf('JPathway', $pathway);
-
-		$pathway = JPathway::getInstance('Inspector2');
-
-		$this->assertInstanceOf('JPathwayInspector2', $pathway);
 
 		$ret = true;
 
