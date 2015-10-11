@@ -32,7 +32,7 @@ abstract class Helper
 	 * @param   string  $name   The name of the module
 	 * @param   string  $title  The title of the module, optional
 	 *
-	 * @return  object  The Module object
+	 * @return  stdClass  The Module object
 	 *
 	 * @since   1.5
 	 */

@@ -246,7 +246,7 @@ class Pagination
 	/**
 	 * Return the pagination data object, only creating it if it doesn't already exist.
 	 *
-	 * @return  object   Pagination data object.
+	 * @return  stdClass  Pagination data object.
 	 *
 	 * @since   1.5
 	 */
@@ -754,7 +754,7 @@ class Pagination
 	/**
 	 * Create and return the pagination data object.
 	 *
-	 * @return  object  Pagination data object.
+	 * @return  stdClass  Pagination data object.
 	 *
 	 * @since   1.5
 	 */
