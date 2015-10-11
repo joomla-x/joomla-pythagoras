@@ -11,7 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.filesystem.path');
 
-use Joomla\Cms\Event\AbstractEvent;
+use Joomla\CMS\Event\AbstractEvent;
 use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\DispatcherInterface;
