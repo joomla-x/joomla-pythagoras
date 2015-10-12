@@ -85,7 +85,7 @@ class JInstallerTest extends TestCaseDatabase
 		$object1 = JInstaller::getInstance();
 
 		$this->assertInstanceOf(
-			'JInstaller',
+			'\\Joomla\\CMS\\Installer\\Installer',
 			$object1
 		);
 

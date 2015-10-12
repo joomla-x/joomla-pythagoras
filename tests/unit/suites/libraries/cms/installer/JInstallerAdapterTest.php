@@ -76,7 +76,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	{
 		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase, array('foo' => 'bar')));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase, array('foo' => 'bar')));
 
 		$this->assertAttributeInstanceOf('JTableExtension', 'extension', $object);
 
@@ -712,7 +712,7 @@ class JInstallerAdapterTest extends TestCaseDatabase
 	{
 		$mockInstaller = $this->getMock('\\Joomla\\CMS\\Installer\\Installer');
 		$mockDatabase = $this->getMockDatabase();
-		$object = $this->getMockForAbstractClass('JInstallerAdapter', array($mockInstaller, $mockDatabase));
+		$object = $this->getMockForAbstractClass('\\Joomla\\CMS\\Installer\\Adapter', array($mockInstaller, $mockDatabase));
 
 		$this->assertEquals(
 			'install',

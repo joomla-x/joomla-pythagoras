@@ -92,7 +92,7 @@ class JPathwayTest extends TestCase
 
 		$pathway = JPathway::getInstance('');
 
-		$this->assertInstanceOf('JPathway', $pathway);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Pathway\\Pathway', $pathway);
 
 		$pathway = JPathway::getInstance('Inspector2');
 

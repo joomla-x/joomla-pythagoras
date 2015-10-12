@@ -31,7 +31,7 @@ class JInstallerExtensionTest extends TestCase
 
 		$this->assertThat(
 			new JInstallerExtension($xml),
-			$this->isInstanceOf('JInstallerExtension'),
+			$this->isInstanceOf('\\Joomla\\CMS\\Installer\\Extension'),
 			'Instantiating JInstallerExtension failed'
 		);
 	}
