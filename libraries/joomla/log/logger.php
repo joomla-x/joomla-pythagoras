@@ -64,27 +64,3 @@ abstract class JLogLogger
 	 */
 	abstract public function addEntry(JLogEntry $entry);
 }
-
-/**
- * Deprecated class placeholder.  You should use JLogLogger instead.
- *
- * @since       11.1
- * @deprecated  13.3 (Platform) & 4.0 (CMS)
- * @codeCoverageIgnore
- */
-abstract class JLogger extends JLogLogger
-{
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  &$options  Log object options.
-	 *
-	 * @since   11.1
-	 * @deprecated  13.3
-	 */
-	public function __construct(array &$options)
-	{
-		JLog::add('JLogger is deprecated. Use JLogLogger instead.', JLog::WARNING, 'deprecated');
-		parent::__construct($options);
-	}
-}

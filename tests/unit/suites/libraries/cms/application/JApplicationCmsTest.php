@@ -252,23 +252,6 @@ class JApplicationCmsTest extends TestCaseDatabase
 	}
 
 	/**
-	 * Tests the JApplicationCms::getCfg method.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function testGetCfg()
-	{
-		$config = new Registry(array('foo' => 'bar'));
-
-		TestReflection::setValue($this->class, 'config', $config);
-
-		$this->assertEquals('bar', $this->class->getCfg('foo', 'car'));
-		$this->assertEquals('car', $this->class->getCfg('goo', 'car'));
-	}
-
-	/**
 	 * Tests the JApplicationCms::getInstance method.
 	 *
 	 * @return  void
@@ -389,102 +372,8 @@ class JApplicationCmsTest extends TestCaseDatabase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url, 303);
 
-		$this->assertEquals(
-			array(
-				array('HTTP/1.1 303 See other', true, null),
-				array('Location: ' . $base . $url, true, null),
-				array('Content-Type: text/html; charset=utf-8', true, null),
-			),
-			$this->class->headers
-		);
-	}
-
-	/**
-	 * Tests the JApplicationCms::redirect method.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function testRedirectLegacy()
-	{
-		$base = 'http://mydomain.com/';
-		$url = 'index.php';
-
-		// Inject the client information.
-		TestReflection::setValue(
-			$this->class,
-			'client',
-			(object) array(
-				'engine' => JApplicationWebClient::GECKO,
-			)
-		);
-
-		// Inject the internal configuration.
-		$config = new Registry;
-		$config->set('uri.base.full', $base);
-
-		TestReflection::setValue($this->class, 'config', $config);
-
-		$this->class->redirect($url, 'Test Message', 'message', false);
-
-		$this->assertEquals(
-			array(
-				array(
-					'message' => 'Test Message',
-					'type' => 'message'
-				)
-			),
-			$this->class->getMessageQueue()
-		);
-
-		$this->assertEquals(
-			array(
-				array('HTTP/1.1 303 See other', true, null),
-				array('Location: ' . $base . $url, true, null),
-				array('Content-Type: text/html; charset=utf-8', true, null),
-			),
-			$this->class->headers
-		);
-	}
-
-	/**
-	 * Tests the JApplicationCms::redirect method.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function testRedirectLegacyWithEmptyMessageAndEmptyStatus()
-	{
-		$base = 'http://mydomain.com/';
-		$url = 'index.php';
-
-		// Inject the client information.
-		TestReflection::setValue(
-			$this->class,
-			'client',
-			(object) array(
-				'engine' => JApplicationWebClient::GECKO,
-			)
-		);
-
-		// Inject the internal configuration.
-		$config = new Registry;
-		$config->set('uri.base.full', $base);
-
-		TestReflection::setValue($this->class, 'config', $config);
-
-		$this->class->redirect($url, '', 'message');
-
-		// The message isn't enqueued as it's an empty string
-		$this->assertEmpty(
-			$this->class->getMessageQueue()
-		);
-
-		// The redirect gives a 303 error code
 		$this->assertEquals(
 			array(
 				array('HTTP/1.1 303 See other', true, null),
@@ -578,7 +467,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 			)
 		);
 
-		$this->class->redirect($url, true);
+		$this->class->redirect($url, 301);
 
 		$this->assertEquals(
 			array(
@@ -621,7 +510,7 @@ class JApplicationCmsTest extends TestCaseDatabase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url);
 
 		$this->assertEquals('Location: ' . $expected, $this->class->headers[1][0]);
 	}

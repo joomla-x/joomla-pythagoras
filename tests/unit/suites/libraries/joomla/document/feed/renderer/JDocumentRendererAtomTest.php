@@ -44,11 +44,10 @@ class JDocumentRendererAtomTest extends TestCase
 		require_once JPATH_PLATFORM . '/joomla/environment/response.php';
 		$this->saveFactoryState();
 
-		JFactory::$application = $this->getMock(
-			'JApplication',
+		JFactory::$application = $this->getMockForAbstractClass(
+			'JApplicationCms',
 			array(
 				'get',
-				'getCfg',
 				'getRouter',
 			)
 		);

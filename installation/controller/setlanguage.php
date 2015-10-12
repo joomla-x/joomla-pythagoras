@@ -76,7 +76,7 @@ class InstallationControllerSetlanguage extends JControllerBase
 
 		// Setup language
 		$language = JFactory::getLanguage();
-		$language->setLanguage($return['language']);
+		JFactory::$language = JLanguage::getInstance($return['language']);
 
 		// Redirect to the page.
 		$r->view = $this->input->getWord('view', 'site');

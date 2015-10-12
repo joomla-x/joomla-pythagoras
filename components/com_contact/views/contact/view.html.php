@@ -43,15 +43,6 @@ class ContactViewContact extends JViewLegacy
 	protected $item;
 
 	/**
-	 * The page to return to on sumission
-	 *
-	 * @var         string
-	 * @since       1.6
-	 * @deprecated  4.0  Variable not used
-	 */
-	protected $return_page;
-
-	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.

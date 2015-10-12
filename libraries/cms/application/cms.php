@@ -46,28 +46,25 @@ class JApplicationCms extends JApplicationWeb
 	 * The client identifier.
 	 *
 	 * @var    integer
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $clientId
+	 * @since  4.0
 	 */
-	protected $_clientId = null;
+	protected $clientId = null;
 
 	/**
 	 * The application message queue.
 	 *
 	 * @var    array
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $messageQueue
+	 * @since  4.0
 	 */
-	protected $_messageQueue = array();
+	protected $messageQueue = array();
 
 	/**
 	 * The name of the application.
 	 *
 	 * @var    array
-	 * @since  3.2
-	 * @deprecated  4.0  Will be renamed $name
+	 * @since  4.0
 	 */
-	protected $_name = null;
+	protected $name = null;
 
 	/**
 	 * The profiler instance
@@ -236,7 +233,7 @@ class JApplicationCms extends JApplicationWeb
 		$this->getMessageQueue();
 
 		// Enqueue the message.
-		$this->_messageQueue[] = array('message' => $msg, 'type' => strtolower($type));
+		$this->messageQueue[] = array('message' => $msg, 'type' => strtolower($type));
 	}
 
 	/**
@@ -345,22 +342,6 @@ class JApplicationCms extends JApplicationWeb
 	}
 
 	/**
-	 * Gets a configuration value.
-	 *
-	 * @param   string  $varname  The name of the value to get.
-	 * @param   string  $default  Default value to return
-	 *
-	 * @return  mixed  The user state.
-	 *
-	 * @since   3.2
-	 * @deprecated  4.0  Use get() instead
-	 */
-	public function getCfg($varname, $default = null)
-	{
-		return $this->get($varname, $default);
-	}
-
-	/**
 	 * Gets the client id of the current running application.
 	 *
 	 * @return  integer  A client identifier.
@@ -369,7 +350,7 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function getClientId()
 	{
-		return $this->_clientId;
+		return $this->clientId;
 	}
 
 	/**
@@ -441,19 +422,19 @@ class JApplicationCms extends JApplicationWeb
 	public function getMessageQueue()
 	{
 		// For empty queue, if messages exists in the session, enqueue them.
-		if (!count($this->_messageQueue))
+		if (!count($this->messageQueue))
 		{
 			$session = JFactory::getSession();
 			$sessionQueue = $session->get('application.queue');
 
 			if (count($sessionQueue))
 			{
-				$this->_messageQueue = $sessionQueue;
+				$this->messageQueue = $sessionQueue;
 				$session->set('application.queue', null);
 			}
 		}
 
-		return $this->_messageQueue;
+		return $this->messageQueue;
 	}
 
 	/**
@@ -465,7 +446,7 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function getName()
 	{
-		return $this->_name;
+		return $this->name;
 	}
 
 	/**
@@ -964,54 +945,11 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function redirect($url, $status = 303)
 	{
-		// Handle B/C by checking if a message was passed to the method, will be removed at 4.0
-		if (func_num_args() > 1)
-		{
-			$args = func_get_args();
-
-			/*
-			 * Do some checks on the $args array, values below correspond to legacy redirect() method
-			 *
-			 * $args[0] = $url
-			 * $args[1] = Message to enqueue
-			 * $args[2] = Message type
-			 * $args[3] = $status (previously moved)
-			 */
-			if (isset($args[1]) && !empty($args[1]) && (!is_bool($args[1]) && !is_int($args[1])))
-			{
-				// Log that passing the message to the function is deprecated
-				JLog::add(
-					'Passing a message and message type to JFactory::getApplication()->redirect() is deprecated. '
-					. 'Please set your message via JFactory::getApplication()->enqueueMessage() prior to calling redirect().',
-					JLog::WARNING,
-					'deprecated'
-				);
-
-				$message = $args[1];
-
-				// Set the message type if present
-				if (isset($args[2]) && !empty($args[2]))
-				{
-					$type = $args[2];
-				}
-				else
-				{
-					$type = 'message';
-				}
-
-				// Enqueue the message
-				$this->enqueueMessage($message, $type);
-
-				// Reset the $moved variable
-				$status = isset($args[3]) ? (boolean) $args[3] : false;
-			}
-		}
-
 		// Persist messages if they exist.
-		if (count($this->_messageQueue))
+		if (count($this->messageQueue))
 		{
 			$session = JFactory::getSession();
-			$session->set('application.queue', $this->_messageQueue);
+			$session->set('application.queue', $this->messageQueue);
 		}
 
 		// Hand over processing to the parent now

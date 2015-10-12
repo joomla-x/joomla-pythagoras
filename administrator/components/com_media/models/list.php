@@ -127,6 +127,8 @@ class MediaModelList extends JModelLegacy
 			$folderList = JFolder::folders($basePath);
 		}
 
+		$mediaHelper = new JHelperMedia;
+
 		// Iterate over the files if they exist
 		if ($fileList !== false)
 		{
@@ -162,7 +164,7 @@ class MediaModelList extends JModelLegacy
 
 							if (($info[0] > 60) || ($info[1] > 60))
 							{
-								$dimensions = MediaHelper::imageResize($info[0], $info[1], 60);
+								$dimensions = $mediaHelper->imageResize($info[0], $info[1], 60);
 								$tmp->width_60 = $dimensions[0];
 								$tmp->height_60 = $dimensions[1];
 							}
@@ -174,7 +176,7 @@ class MediaModelList extends JModelLegacy
 
 							if (($info[0] > 16) || ($info[1] > 16))
 							{
-								$dimensions = MediaHelper::imageResize($info[0], $info[1], 16);
+								$dimensions = $mediaHelper->imageResize($info[0], $info[1], 16);
 								$tmp->width_16 = $dimensions[0];
 								$tmp->height_16 = $dimensions[1];
 							}
@@ -207,7 +209,7 @@ class MediaModelList extends JModelLegacy
 				$tmp->name = basename($folder);
 				$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
 				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
-				$count = MediaHelper::countFiles($tmp->path);
+				$count = $mediaHelper->countFiles($tmp->path);
 				$tmp->files = $count[0];
 				$tmp->folders = $count[1];
 

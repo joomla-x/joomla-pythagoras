@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\String\StringHelper as JString;
 
 jimport('joomla.filesystem.path');
 require_once JPATH_COMPONENT . '/helpers/menus.php';

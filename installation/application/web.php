@@ -26,10 +26,10 @@ final class InstallationApplicationWeb extends JApplicationCms
 	public function __construct()
 	{
 		// Register the application name.
-		$this->_name = 'installation';
+		$this->name = 'installation';
 
 		// Register the client ID.
-		$this->_clientId = 2;
+		$this->clientId = 2;
 
 		// Run the parent constructor.
 		parent::__construct();

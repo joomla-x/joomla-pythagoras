@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 $com_path = JPATH_SITE . '/components/com_content/';
 require_once $com_path . 'helpers/route.php';
 

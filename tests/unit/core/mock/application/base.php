@@ -49,7 +49,10 @@ class TestMockApplicationBase
 	{
 		$test->assignMockReturns(
 			$mockObject,
-			array('close' => true)
+			array(
+				'close' => true,
+				'getDispatcher' => TestMockDispatcher::create($test)
+			)
 		);
 
 		return $mockObject;

@@ -1093,26 +1093,6 @@ class JLanguageTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @return void
 	 */
-	public function testSetLanguage()
-	{
-		$this->assertEquals(
-			'en-GB',
-			$this->object->setLanguage('es-ES'),
-			'Line: ' . __LINE__
-		);
-
-		$this->assertEquals(
-			'es-ES',
-			$this->object->setLanguage('en-GB'),
-			'Line: ' . __LINE__
-		);
-	}
-
-	/**
-	 * Test...
-	 *
-	 * @return void
-	 */
 	public function testParseLanguageFiles()
 	{
 		$dir = __DIR__ . '/data/language';

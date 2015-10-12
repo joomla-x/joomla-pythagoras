@@ -789,81 +789,6 @@ class JApplicationWebTest extends TestCase
 	}
 
 	/**
-	 * Tests the JApplicationWeb::initialise method with default settings.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.3
-	 */
-	public function testInitialiseWithDefaults()
-	{
-		// TODO JSession default is not tested properly.
-
-		$this->class->initialise(false);
-
-		$this->assertAttributeInstanceOf('JDocument', 'document', $this->class);
-		$this->assertAttributeInstanceOf('JLanguage', 'language', $this->class);
-		$this->assertAttributeInstanceOf('\\Joomla\\Event\\DispatcherInterface', 'dispatcher', $this->class);
-	}
-
-	/**
-	 * Tests the JApplicationWeb::initialise method with false injection.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.3
-	 */
-	public function testInitialiseWithFalse()
-	{
-		$this->class->initialise(false, false, false);
-
-		$this->assertAttributeEmpty('session', $this->class);
-		$this->assertAttributeEmpty('document', $this->class);
-		$this->assertAttributeEmpty('language', $this->class);
-	}
-
-	/**
-	 * Tests the JApplicationWeb::initialise method with dependancy injection.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.3
-	 */
-	public function testInitialiseWithInjection()
-	{
-		$mockSession = $this->getMock('JSession', array('test'), array(), '', false);
-		$mockSession
-			->expects($this->any())
-			->method('test')
-			->willReturnSelf();
-
-		$mockDocument = $this->getMock('JDocument', array('test'), array(), '', false);
-		$mockDocument
-			->expects($this->any())
-			->method('test')
-			->willReturnSelf();
-
-		$mockLanguage = $this->getMock('JLanguage', array('test'), array(), '', false);
-		$mockLanguage
-			->expects($this->any())
-			->method('test')
-			->willReturnSelf();
-
-		$mockDispatcher = $this->getMock('\\Joomla\\Event\\DispatcherInterface', array('addListener', 'dispatch', 'removeListener'), array(), '', false);
-		$mockDispatcher
-			->expects($this->any())
-			->method('dispatch')
-			->willReturnSelf();
-
-		$this->class->initialise($mockSession, $mockDocument, $mockLanguage, $mockDispatcher);
-
-		$this->assertSame($mockSession, $this->class->getSession()->test());
-		$this->assertSame($mockDocument, $this->class->getDocument()->test());
-		$this->assertSame($mockLanguage, $this->class->getLanguage()->test());
-		$this->assertSame($mockDispatcher, TestReflection::getValue($this->class, 'dispatcher')->dispatch('foo'));
-	}
-
-	/**
 	 * Tests the JApplicationWeb::loadConfiguration method.
 	 *
 	 * @return  void
@@ -1046,7 +971,7 @@ class JApplicationWebTest extends TestCase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url);
 
 		$this->assertEquals(
 			array(
@@ -1138,7 +1063,7 @@ class JApplicationWebTest extends TestCase
 			)
 		);
 
-		$this->class->redirect($url, true);
+		$this->class->redirect($url, 301);
 
 		$this->assertEquals(
 			array(
@@ -1181,7 +1106,7 @@ class JApplicationWebTest extends TestCase
 
 		TestReflection::setValue($this->class, 'config', $config);
 
-		$this->class->redirect($url, false);
+		$this->class->redirect($url);
 
 		$this->assertEquals('Location: ' . $expected, $this->class->headers[1][0]);
 	}

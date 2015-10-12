@@ -102,7 +102,7 @@ class JFactoryTest extends TestCaseDatabase
 	 */
 	public function testGetDocument()
 	{
-		JFactory::$application = TestMockApplication::create($this);
+		JFactory::$application = TestMockApplicationCms::create($this);
 
 		$this->assertInstanceOf(
 			'JDocument',
@@ -137,56 +137,6 @@ class JFactoryTest extends TestCaseDatabase
 		$this->assertInstanceOf(
 			'JCacheControllerView',
 			JFactory::getCache('', 'view', null),
-			'Line: ' . __LINE__
-		);
-	}
-
-	/**
-	 * Tests the JFactory::getACL method.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.1
-	 */
-	public function testGetAcl()
-	{
-		$this->assertInstanceOf(
-			'JAccess',
-			JFactory::getAcl(),
-			'Line: ' . __LINE__
-		);
-	}
-
-	/**
-	 * Tests the JFactory::getURI method.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.1
-	 */
-	public function testGetUri()
-	{
-		$this->assertInstanceOf(
-			'JUri',
-			JFactory::getUri('https://www.joomla.org'),
-			'Line: ' . __LINE__
-		);
-	}
-
-	/**
-	 * Tests the JFactory::getXML method.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.2
-	 */
-	public function testGetXml()
-	{
-		$xml = JFactory::getXml('<foo />', false);
-
-		$this->assertInstanceOf(
-			'SimpleXMLElement',
-			$xml,
 			'Line: ' . __LINE__
 		);
 	}

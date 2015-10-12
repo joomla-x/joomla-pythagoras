@@ -117,25 +117,6 @@ class JFilesystemWrapperFile
 	}
 
 	/**
-	 * Helper wrapper method for read
-	 *
-	 * @param   string   $filename   The full file path.
-	 * @param   boolean  $incpath    Use include path.
-	 * @param   integer  $amount     Amount of file to read.
-	 * @param   integer  $chunksize  Size of chunks to read.
-	 * @param   integer  $offset     Offset of the file.
-	 *
-	 * @return mixed  Returns file contents or boolean False if failed.
-	 *
-	 * @see     JFile::read()
-	 * @since   3.4
-	 */
-	public function read($filename, $incpath = false, $amount = 0, $chunksize = 8192, $offset = 0)
-	{
-		return JFile::read($filename, $incpath, $amount, $chunksize, $offset);
-	}
-
-	/**
 	 * Helper wrapper method for write
 	 *
 	 * @param   string   $file         The full file path.
@@ -182,20 +163,5 @@ class JFilesystemWrapperFile
 	public function exists($file)
 	{
 		return JFile::exists($file);
-	}
-
-	/**
-	 * Helper wrapper method for getName
-	 *
-	 * @param   string  $file  File path.
-	 *
-	 * @return string  filename.
-	 *
-	 * @see     JFile::getName()
-	 * @since   3.4
-	 */
-	public function getName($file)
-	{
-		return JFile::getName($file);
 	}
 }

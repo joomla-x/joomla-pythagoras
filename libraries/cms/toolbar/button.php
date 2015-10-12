@@ -119,26 +119,3 @@ abstract class JToolbarButton
 	 */
 	abstract public function fetchButton();
 }
-
-/**
- * Deprecated class placeholder. You should use JToolbarButton instead.
- *
- * @since       1.5
- * @deprecated  4.0  Use JToolbarButton instead.
- * @codeCoverageIgnore
- */
-abstract class JButton extends JToolbarButton
-{
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $parent  The parent
-	 *
-	 * @deprecated  4.0  Use JToolbarButton instead.
-	 */
-	public function __construct($parent = null)
-	{
-		JLog::add('JButton is deprecated. Use JToolbarButton instead.', JLog::WARNING, 'deprecated');
-		parent::__construct($parent);
-	}
-}

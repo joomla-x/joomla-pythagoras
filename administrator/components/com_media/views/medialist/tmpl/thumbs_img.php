@@ -33,4 +33,5 @@ JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_me
 		<a href="<?php echo COM_MEDIA_BASEURL . '/' . $this->_tmp_img->path_relative; ?>" title="<?php echo $this->_tmp_img->name; ?>" class="preview"><?php echo JHtml::_('string.truncate', $this->_tmp_img->name, 10, false); ?></a>
 	</div>
 </li>
+<?php
 JFactory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));

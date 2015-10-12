@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.calendar');
-JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidator');
 
 // Create shortcut to parameters.
 $params = $this->state->get('params');

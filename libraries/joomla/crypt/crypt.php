@@ -286,29 +286,4 @@ class JCrypt
 		// They are only identical strings if $result is exactly 0...
 		return $result === 0;
 	}
-
-	/**
-	 * Tests for the availability of updated crypt().
-	 * Based on a method by Anthony Ferrera
-	 *
-	 * @return  boolean  Always returns true since 3.3
-	 *
-	 * @note    To be removed when PHP 5.3.7 or higher is the minimum supported version.
-	 * @see     https://github.com/ircmaxell/password_compat/blob/master/version-test.php
-	 * @since   3.2
-	 * @deprecated  4.0
-	 */
-	public static function hasStrongPasswordSupport()
-	{
-		// Log usage of deprecated function
-		JLog::add(__METHOD__ . '() is deprecated without replacement.', JLog::WARNING, 'deprecated');
-
-		if (!defined('PASSWORD_DEFAULT'))
-		{
-			// Always make sure that the password hashing API has been defined.
-			include_once JPATH_ROOT . '/vendor/ircmaxell/password-compat/lib/password.php';
-		}
-
-		return true;
-	}
 }

@@ -51,24 +51,4 @@ abstract class JHtmlPhpSetting
 	{
 		return !empty($val) ? $val : JText::_('JNONE');
 	}
-
-	/**
-	 * Method to generate an integer from a value
-	 *
-	 * @param   string  $val  a php ini value
-	 *
-	 * @return  string html code
-	 *
-	 * @deprecated  4.0  Use intval() or casting instead.
-	 */
-	public static function integer($val)
-	{
-		JLog::add(
-			'JHtmlPhpSetting::integer() is deprecated. Use intval() or casting instead.',
-			JLog::WARNING,
-			'deprecated'
-		);
-
-		return (int) $val;
-	}
 }

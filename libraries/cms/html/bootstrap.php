@@ -51,7 +51,7 @@ abstract class JHtmlBootstrap
 			// Setup options object
 			$opt['offset'] = isset($params['offset']) ? $params['offset'] : 10;
 
-			$options = JHtml::getJSObject($opt);
+			$options = json_encode($opt);
 
 			// Attach affix to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -159,7 +159,7 @@ abstract class JHtmlBootstrap
 			$opt['interval'] = isset($params['interval']) ? (int) $params['interval'] : 5000;
 			$opt['pause']    = isset($params['pause']) ? $params['pause'] : 'hover';
 
-			$options = JHtml::getJSObject($opt);
+			$options = json_encode($opt);
 
 			// Attach the carousel to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -239,29 +239,6 @@ abstract class JHtmlBootstrap
 		JHtml::_('script', 'jui/bootstrap.min.js', false, true, false, false, $debug);
 		static::$loaded[__METHOD__] = true;
 
-		return;
-	}
-
-	/**
-	 * Add javascript support for Bootstrap modals
-	 *
-	 * @param   string  $selector  The ID selector for the modal.
-	 * @param   array   $params    An array of options for the modal.
-	 *                             Options for the modal can be:
-	 *                             - backdrop  boolean  Includes a modal-backdrop element.
-	 *                             - keyboard  boolean  Closes the modal when escape key is pressed.
-	 *                             - show      boolean  Shows the modal when initialized.
-	 *                             - remote    string   An optional remote URL to load
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 * @deprecated  4.0  This method was used by the old renderModal() implementation.
-	 *                   Since the new implementation it is unneeded and the broken JS it was injecting could create issues
-	 *                   As a case, please see: https://github.com/joomla/joomla-cms/pull/6918
-	 */
-	public static function modal($selector = 'modal', $params = array())
-	{
 		return;
 	}
 
@@ -347,7 +324,7 @@ abstract class JHtmlBootstrap
 		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
 		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
 
-		$options = JHtml::getJSObject($opt);
+		$options = json_encode($opt);
 
 		// Attach the popover to the document
 		JFactory::getDocument()->addScriptDeclaration(
@@ -386,7 +363,7 @@ abstract class JHtmlBootstrap
 			// Setup options object
 			$opt['offset'] = isset($params['offset']) ? (int) $params['offset'] : 10;
 
-			$options = JHtml::getJSObject($opt);
+			$options = json_encode($opt);
 
 			// Attach ScrollSpy to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -449,7 +426,7 @@ abstract class JHtmlBootstrap
 			$onHide           = isset($params['onHide']) ? (string) $params['onHide'] : null;
 			$onHidden         = isset($params['onHidden']) ? (string) $params['onHidden'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = json_encode($opt);
 
 			// Build the script.
 			$script = array();
@@ -530,7 +507,7 @@ abstract class JHtmlBootstrap
 			$opt['updater']     = isset($params['updater']) ? (string) $params['updater'] : null;
 			$opt['highlighter'] = isset($params['highlighter']) ? (int) $params['highlighter'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = json_encode($opt);
 
 			// Attach typehead to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -557,12 +534,12 @@ abstract class JHtmlBootstrap
 	 *                                                 collapsible item is shown. (similar to traditional accordion behavior)
 	 *                             - toggle  boolean   Toggles the collapsible element on invocation
 	 *                             - active  string    Sets the active slide during load
-	 * 
+	 *
 	 *                             - onShow    function  This event fires immediately when the show instance method is called.
-	 *                             - onShown   function  This event is fired when a collapse element has been made visible to the user 
+	 *                             - onShown   function  This event is fired when a collapse element has been made visible to the user
 	 *                                                   (will wait for css transitions to complete).
 	 *                             - onHide    function  This event is fired immediately when the hide method has been called.
-	 *                             - onHidden  function  This event is fired when a collapse element has been hidden from the user 
+	 *                             - onHidden  function  This event is fired when a collapse element has been hidden from the user
 	 *                                                   (will wait for css transitions to complete).
 	 *
 	 * @return  string  HTML for the accordian
@@ -584,7 +561,7 @@ abstract class JHtmlBootstrap
 			$onHide = isset($params['onHide']) ? (string) $params['onHide'] : null;
 			$onHidden = isset($params['onHidden']) ? (string) $params['onHidden'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = json_encode($opt);
 
 			$opt['active'] = isset($params['active']) ? (string) $params['active'] : '';
 
@@ -772,91 +749,6 @@ abstract class JHtmlBootstrap
 		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.endtab');
 
 		return $html;
-	}
-
-	/**
-	 * Creates a tab pane
-	 *
-	 * @param   string  $selector  The pane identifier.
-	 * @param   array   $params    The parameters for the pane
-	 *
-	 * @return  string
-	 *
-	 * @since   3.0
-	 * @deprecated  4.0	Use JHtml::_('bootstrap.startTabSet') instead.
-	 */
-	public static function startPane($selector = 'myTab', $params = array())
-	{
-		$sig = md5(serialize(array($selector, $params)));
-
-		if (!isset(static::$loaded['JHtmlBootstrap::startTabSet'][$sig]))
-		{
-			// Include Bootstrap framework
-			static::framework();
-
-			// Setup options object
-			$opt['active'] = isset($params['active']) ? (string) $params['active'] : '';
-
-			// Attach tab to document
-			JFactory::getDocument()->addScriptDeclaration(
-				"(function($){
-					$('#$selector a').click(function (e) {
-						e.preventDefault();
-						$(this).tab('show');
-					});
-				})(jQuery);"
-			);
-
-			// Set static array
-			static::$loaded['JHtmlBootstrap::startTabSet'][$sig] = true;
-			static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] = $opt['active'];
-		}
-
-		return '<div class="tab-content" id="' . $selector . 'Content">';
-	}
-
-	/**
-	 * Close the current tab pane
-	 *
-	 * @return  string  HTML to close the pane
-	 *
-	 * @since   3.0
-	 * @deprecated  4.0	Use JHtml::_('bootstrap.endTabSet') instead.
-	 */
-	public static function endPane()
-	{
-		return '</div>';
-	}
-
-	/**
-	 * Begins the display of a new tab content panel.
-	 *
-	 * @param   string  $selector  Identifier of the panel.
-	 * @param   string  $id        The ID of the div element
-	 *
-	 * @return  string  HTML to start a new panel
-	 *
-	 * @since   3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.addTab') instead.
-	 */
-	public static function addPanel($selector, $id)
-	{
-		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
-
-		return '<div id="' . $id . '" class="tab-pane' . $active . '">';
-	}
-
-	/**
-	 * Close the current tab content panel
-	 *
-	 * @return  string  HTML to close the pane
-	 *
-	 * @since   3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.endTab') instead.
-	 */
-	public static function endPanel()
-	{
-		return '</div>';
 	}
 
 	/**

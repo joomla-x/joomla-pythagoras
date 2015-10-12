@@ -70,20 +70,3 @@ if (array_key_exists('REQUEST_METHOD', $_SERVER))
 
 // Register JArrayHelper due to JRegistry moved to composer's vendor folder
 JLoader::register('JArrayHelper', JPATH_PLATFORM . '/joomla/utilities/arrayhelper.php');
-
-// Register classes where the names have been changed to fit the autoloader rules
-// @deprecated  4.0
-JLoader::register('JButton',  JPATH_PLATFORM . '/cms/toolbar/button.php');
-JLoader::register('JExtension',  JPATH_PLATFORM . '/cms/installer/extension.php');
-JLoader::register('JInstallerComponent',  JPATH_PLATFORM . '/cms/installer/adapter/component.php');
-JLoader::register('JInstallerFile',  JPATH_PLATFORM . '/cms/installer/adapter/file.php');
-JLoader::register('JInstallerLanguage',  JPATH_PLATFORM . '/cms/installer/adapter/language.php');
-JLoader::register('JInstallerLibrary',  JPATH_PLATFORM . '/cms/installer/adapter/library.php');
-JLoader::register('JInstallerModule',  JPATH_PLATFORM . '/cms/installer/adapter/module.php');
-JLoader::register('JInstallerPackage',  JPATH_PLATFORM . '/cms/installer/adapter/package.php');
-JLoader::register('JInstallerPlugin',  JPATH_PLATFORM . '/cms/installer/adapter/plugin.php');
-JLoader::register('JInstallerTemplate',  JPATH_PLATFORM . '/cms/installer/adapter/template.php');
-JLoader::register('JToolBar', JPATH_PLATFORM . '/cms/toolbar/toolbar.php');
-
-JLoader::registerAlias('JAdministrator',  'JApplicationAdministrator');
-JLoader::registerAlias('JSite',  'JApplicationSite');

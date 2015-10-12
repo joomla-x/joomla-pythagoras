@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * Search component helper.
  *
@@ -31,24 +33,6 @@ class SearchHelper
 	}
 
 	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @return  JObject
-	 *
-	 * @deprecated  3.2  Use JHelperContent::getActions() instead.
-	 */
-	public static function getActions()
-	{
-		// Log usage of deprecated function.
-		JLog::add(__METHOD__ . '() is deprecated, use JHelperContent::getActions() with new arguments order instead.', JLog::WARNING, 'deprecated');
-
-		// Get list of actions.
-		$result = JHelperContent::getActions('com_search');
-
-		return $result;
-	}
-
-	/**
 	 * Sanitise search word.
 	 *
 	 * @param   string  &$searchword   Search word to be sanitised.
@@ -63,14 +47,6 @@ class SearchHelper
 		$lang          = JFactory::getLanguage();
 		$tag           = $lang->getTag();
 		$search_ignore = $lang->getIgnoredSearchWords();
-
-		// Deprecated in 1.6 use $lang->getIgnoredSearchWords instead.
-		$ignoreFile = $lang->getLanguagePath() . '/' . $tag . '/' . $tag . '.ignore.php';
-
-		if (file_exists($ignoreFile))
-		{
-			include $ignoreFile;
-		}
 
 		// Check for words to ignore.
 		$aterms = explode(' ', JString::strtolower($searchword));
@@ -134,23 +110,6 @@ class SearchHelper
 		}
 
 		return $restriction;
-	}
-
-	/**
-	 * Logs a search term.
-	 *
-	 * @param   string  $search_term  The term being searched.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use JSearchHelper::logSearch() instead.
-	 */
-	public static function logSearch($search_term)
-	{
-		JLog::add(__METHOD__ . '() is deprecated, use JSearchHelper::logSearch() instead.', JLog::WARNING, 'deprecated');
-
-		JSearchHelper::logSearch($search_term, 'com_search');
 	}
 
 	/**

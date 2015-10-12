@@ -20,17 +20,15 @@ class JPathway
 {
 	/**
 	 * @var    array  Array to hold the pathway item objects
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $pathway
+	 * @since  4.0
 	 */
-	protected $_pathway = array();
+	protected $pathway = array();
 
 	/**
 	 * @var    integer  Integer number of items in the pathway
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $count
+	 * @since  4.0
 	 */
-	protected $_count = 0;
+	protected $count = 0;
 
 	/**
 	 * JPathway instances container.
@@ -71,30 +69,10 @@ class JPathway
 
 			if (!class_exists($classname))
 			{
-				// @deprecated 4.0 Everything in this block is deprecated but the warning is only logged after the file_exists
-				// Load the pathway object
-				$info = JApplicationHelper::getClientInfo($client, true);
-
-				if (is_object($info))
-				{
-					$path = $info->path . '/includes/pathway.php';
-
-					if (file_exists($path))
-					{
-						JLog::add('Non-autoloadable JPathway subclasses are deprecated, support will be removed in 4.0.', JLog::WARNING, 'deprecated');
-						include_once $path;
-					}
-				}
-			}
-
-			if (class_exists($classname))
-			{
-				self::$instances[$client] = new $classname($options);
-			}
-			else
-			{
 				throw new RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_PATHWAY_LOAD', $client), 500);
 			}
+
+			self::$instances[$client] = new $classname($options);
 		}
 
 		return self::$instances[$client];
@@ -109,7 +87,7 @@ class JPathway
 	 */
 	public function getPathway()
 	{
-		$pw = $this->_pathway;
+		$pw = $this->pathway;
 
 		// Use array_values to reset the array keys numerically
 		return array_values($pw);
@@ -126,10 +104,10 @@ class JPathway
 	 */
 	public function setPathway($pathway)
 	{
-		$oldPathway = $this->_pathway;
+		$oldPathway = $this->pathway;
 
 		// Set the new pathway.
-		$this->_pathway = array_values((array) $pathway);
+		$this->pathway = array_values((array) $pathway);
 
 		return array_values($oldPathway);
 	}
@@ -146,7 +124,7 @@ class JPathway
 		$names = array();
 
 		// Build the names array using just the names of each pathway item
-		foreach ($this->_pathway as $item)
+		foreach ($this->pathway as $item)
 		{
 			$names[] = $item->name;
 		}
@@ -169,10 +147,10 @@ class JPathway
 	{
 		$ret = false;
 
-		if ($this->_pathway[] = $this->makeItem($name, $link))
+		if ($this->pathway[] = $this->makeItem($name, $link))
 		{
 			$ret = true;
-			$this->_count++;
+			$this->count++;
 		}
 
 		return $ret;
@@ -192,30 +170,13 @@ class JPathway
 	{
 		$ret = false;
 
-		if (isset($this->_pathway[$id]))
+		if (isset($this->pathway[$id]))
 		{
-			$this->_pathway[$id]->name = $name;
+			$this->pathway[$id]->name = $name;
 			$ret = true;
 		}
 
 		return $ret;
-	}
-
-	/**
-	 * Create and return a new pathway object.
-	 *
-	 * @param   string  $name  Name of the item
-	 * @param   string  $link  Link to the item
-	 *
-	 * @return  JPathway  Pathway item object
-	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use makeItem() instead
-	 * @codeCoverageIgnore
-	 */
-	protected function _makeItem($name, $link)
-	{
-		return $this->makeItem($name, $link);
 	}
 
 	/**

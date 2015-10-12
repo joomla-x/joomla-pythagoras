@@ -302,20 +302,17 @@ class JInstallerAdapterPlugin extends JInstallerAdapter
 	 * @return  void
 	 *
 	 * @since   3.4
+	 * @throws  InvalidArgumentException
 	 */
 	public function prepareDiscoverInstall()
 	{
-		$client   = JApplicationHelper::getClientInfo($this->extension->client_id);
-		$basePath = $client->path . '/plugins/' . $this->extension->folder;
+		$client       = JApplicationHelper::getClientInfo($this->extension->client_id);
+		$basePath     = $client->path . '/plugins/' . $this->extension->folder;
+		$manifestPath = $basePath . '/' . $this->extension->element;
 
-		if (is_dir($basePath . '/' . $this->extension->element))
+		if (!is_dir($manifestPath))
 		{
-			$manifestPath = $basePath . '/' . $this->extension->element . '/' . $this->extension->element . '.xml';
-		}
-		else
-		{
-			// @deprecated 4.0 - This path supports Joomla! 1.5 plugin folder layouts
-			$manifestPath = $basePath . '/' . $this->extension->element . '.xml';
+			throw new InvalidArgumentException(sprintf('Plugin path "%s" does not exist.', $manifestPath));
 		}
 
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
@@ -722,15 +719,4 @@ class JInstallerAdapterPlugin extends JInstallerAdapter
 			return false;
 		}
 	}
-}
-
-/**
- * Deprecated class placeholder. You should use JInstallerAdapterPlugin instead.
- *
- * @since       3.1
- * @deprecated  4.0
- * @codeCoverageIgnore
- */
-class JInstallerPlugin extends JInstallerAdapterPlugin
-{
 }

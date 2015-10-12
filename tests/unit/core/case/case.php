@@ -40,7 +40,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		'session' => null,
 		'language' => null,
 		'document' => null,
-		'acl' => null,
 		'mailer' => null
 	);
 
@@ -150,21 +149,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		$this->fail('An unexpected error occurred - ' . $error->get('message'));
 
 		return $error;
-	}
-
-	/**
-	 * Gets a mock application object.
-	 *
-	 * @return  JApplication
-	 *
-	 * @since   12.1
-	 */
-	public function getMockApplication()
-	{
-		// Attempt to load the real class first.
-		class_exists('JApplication');
-
-		return TestMockApplication::create($this);
 	}
 
 	/**
@@ -389,7 +373,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		JFactory::$session = $this->_stashedFactoryState['session'];
 		JFactory::$language = $this->_stashedFactoryState['language'];
 		JFactory::$document = $this->_stashedFactoryState['document'];
-		JFactory::$acl = $this->_stashedFactoryState['acl'];
 		JFactory::$mailer = $this->_stashedFactoryState['mailer'];
 		JFactory::$database = $this->_stashedFactoryState['database'];
 	}
@@ -430,7 +413,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		$this->_stashedFactoryState['session'] = JFactory::$session;
 		$this->_stashedFactoryState['language'] = JFactory::$language;
 		$this->_stashedFactoryState['document'] = JFactory::$document;
-		$this->_stashedFactoryState['acl'] = JFactory::$acl;
 		$this->_stashedFactoryState['mailer'] = JFactory::$mailer;
 		$this->_stashedFactoryState['database'] = JFactory::$database;
 	}

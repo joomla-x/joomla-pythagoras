@@ -28,20 +28,6 @@ if (!defined('IS_UNIX'))
 	define('IS_UNIX', (($os !== 'MAC') && ($os !== 'WIN')) ? true : false);
 }
 
-/**
- * @deprecated 13.3	Use IS_UNIX instead
- */
-if (!defined('IS_MAC'))
-{
-	define('IS_MAC', (IS_UNIX === true && ($os === 'DAR' || $os === 'MAC')) ? true : false);
-}
-
-// Import the platform version library if necessary.
-if (!class_exists('JPlatform'))
-{
-	require_once JPATH_PLATFORM . '/platform.php';
-}
-
 // Import the library loader if necessary.
 if (!class_exists('JLoader'))
 {
@@ -72,23 +58,5 @@ if (!interface_exists('JsonSerializable'))
 	JLoader::register('JsonSerializable', JPATH_PLATFORM . '/vendor/joomla/compat/src/JsonSerializable.php');
 }
 
-// Add deprecated constants
-// @deprecated 4.0
-define('JPATH_ISWIN', IS_WIN);
-define('JPATH_ISMAC', IS_MAC);
-
 // Register the PasswordHash lib
 JLoader::register('PasswordHash', JPATH_PLATFORM . '/phpass/PasswordHash.php');
-
-// Register classes where the names have been changed to fit the autoloader rules
-// @deprecated  4.0
-JLoader::register('JSimpleCrypt', JPATH_PLATFORM . '/legacy/simplecrypt/simplecrypt.php');
-JLoader::register('JTree', JPATH_PLATFORM . '/legacy/base/tree.php');
-JLoader::register('JNode', JPATH_PLATFORM . '/legacy/base/node.php');
-JLoader::register('LogException', JPATH_PLATFORM . '/legacy/log/logexception.php');
-JLoader::register('JXMLElement', JPATH_PLATFORM . '/legacy/utilities/xmlelement.php');
-JLoader::register('JRule', JPATH_PLATFORM . '/legacy/access/rule.php');
-JLoader::register('JRules', JPATH_PLATFORM . '/legacy/access/rules.php');
-JLoader::register('JCli', JPATH_PLATFORM . '/legacy/application/cli.php');
-JLoader::register('JDaemon', JPATH_PLATFORM . '/legacy/application/daemon.php');
-JLoader::register('JApplication', JPATH_LIBRARIES . '/legacy/application/application.php');

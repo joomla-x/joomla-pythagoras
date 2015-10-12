@@ -134,37 +134,6 @@ abstract class JHtmlBehavior
 	 *
 	 * @return  void
 	 *
-	 * @since   1.5
-	 *
-	 * @Deprecated 3.4 Use formvalidator instead
-	 */
-	public static function formvalidation()
-	{
-		JLog::add('The use of formvalidation is deprecated use formvalidator instead.', JLog::WARNING, 'deprecated');
-
-		// Only load once
-		if (isset(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// Include MooTools framework
-		static::framework();
-
-		// Load the new jQuery code
-		static::formvalidator();
-	}
-
-	/**
-	 * Add unobtrusive JavaScript support for form validation.
-	 *
-	 * To enable form validation the form tag must have class="form-validate".
-	 * Each field that needs to be validated needs to have class="validate".
-	 * Additional handlers can be added to the handler for username, password,
-	 * numeric and email. To use these add class="validate-email" and so on.
-	 *
-	 * @return  void
-	 *
 	 * @since   3.4
 	 */
 	public static function formvalidator()
@@ -296,7 +265,7 @@ abstract class JHtmlBehavior
 		$opt['onShow']    = (isset($params['onShow'])) ? '\\' . $params['onShow'] : null;
 		$opt['onHide']    = (isset($params['onHide'])) ? '\\' . $params['onHide'] : null;
 
-		$options = JHtml::getJSObject($opt);
+		$options = json_encode($opt);
 
 		// Include jQuery
 		JHtml::_('jquery.framework');
@@ -393,7 +362,7 @@ abstract class JHtmlBehavior
 			$opt['size']      = array('x' => '\\jQuery(window).width() - 80', 'y' => '\\jQuery(window).height() - 80');
 		}
 
-		$options = JHtml::getJSObject($opt);
+		$options = json_encode($opt);
 
 		// Attach modal behavior to document
 		$document
@@ -493,7 +462,7 @@ abstract class JHtmlBehavior
 		$opt['onClick']  = (array_key_exists('onClick', $params)) ? '\\' . $params['onClick']
 		: '\\function(node){  window.open(node.data.url, node.data.target != null ? node.data.target : \'_self\'); }';
 
-		$options = JHtml::getJSObject($opt);
+		$options = json_encode($opt);
 
 		// Setup root node
 		$rt['text']     = (array_key_exists('text', $root)) ? $root['text'] : 'Root';
@@ -503,7 +472,7 @@ abstract class JHtmlBehavior
 		$rt['icon']     = (array_key_exists('icon', $root)) ? $root['icon'] : null;
 		$rt['openicon'] = (array_key_exists('openicon', $root)) ? $root['openicon'] : null;
 		$rt['data']     = (array_key_exists('data', $root)) ? $root['data'] : null;
-		$rootNode = JHtml::getJSObject($rt);
+		$rootNode = json_encode($rt);
 
 		$treeName = (array_key_exists('treeName', $params)) ? $params['treeName'] : '';
 
@@ -765,23 +734,6 @@ abstract class JHtmlBehavior
 		JFactory::getApplication()->setHeader('X-Frame-Options', 'SAMEORIGIN');
 
 		static::$loaded[__METHOD__] = true;
-	}
-
-	/**
-	 * Internal method to get a JavaScript object notation string from an array
-	 *
-	 * @param   array  $array  The array to convert to JavaScript object notation
-	 *
-	 * @return  string  JavaScript object notation representation of the array
-	 *
-	 * @since       1.5
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use JHtml::getJSObject() instead.
-	 */
-	protected static function _getJSObject($array = array())
-	{
-		JLog::add('JHtmlBehavior::_getJSObject() is deprecated. JHtml::getJSObject() instead..', JLog::WARNING, 'deprecated');
-
-		return JHtml::getJSObject($array);
 	}
 
 	/**

@@ -37,21 +37,6 @@ class JDocumentRendererMessage extends JDocumentRenderer
 			'content' => $content
 		);
 
-		$app = JFactory::getApplication();
-		$chromePath = JPATH_THEMES . '/' . $app->getTemplate() . '/html/message.php';
-
-		if (file_exists($chromePath))
-		{
-			include_once $chromePath;
-		}
-
-		if (function_exists('renderMessage'))
-		{
-			JLog::add('renderMessage() is deprecated. Override system message rendering with layouts instead.', JLog::WARNING, 'deprecated');
-
-			return renderMessage($msgList);
-		}
-
 		return JLayoutHelper::render('joomla.system.message', $displayData);
 	}
 

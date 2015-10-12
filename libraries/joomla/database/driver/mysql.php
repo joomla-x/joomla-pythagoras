@@ -259,12 +259,6 @@ class JDatabaseDriverMysql extends JDatabaseDriverMysqli
 	{
 		$this->connect();
 
-		if (!is_resource($this->connection))
-		{
-			JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
-			throw new RuntimeException($this->errorMsg, $this->errorNum);
-		}
-
 		// Take a local copy so that we don't modify the original query and cause issues later
 		$query = $this->replacePrefix((string) $this->sql);
 
@@ -275,10 +269,6 @@ class JDatabaseDriverMysql extends JDatabaseDriverMysqli
 
 		// Increment the query counter.
 		$this->count++;
-
-		// Reset the error values.
-		$this->errorNum = 0;
-		$this->errorMsg = '';
 
 		// If debugging is enabled then let's log the query.
 		if ($this->debug)
@@ -312,8 +302,8 @@ class JDatabaseDriverMysql extends JDatabaseDriverMysqli
 		if (!$this->cursor)
 		{
 			// Get the error number and message.
-			$this->errorNum = (int) mysql_errno($this->connection);
-			$this->errorMsg = (string) mysql_error($this->connection) . ' SQL=' . $query;
+			$errorNum = (int) mysql_errno($this->connection);
+			$errorMsg = (string) mysql_error($this->connection) . ' SQL=' . $query;
 
 			// Check if the server was disconnected.
 			if (!$this->connected())
@@ -328,9 +318,9 @@ class JDatabaseDriverMysql extends JDatabaseDriverMysqli
 				catch (RuntimeException $e)
 				{
 					// Throw the normal query exception.
-					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
 
-					throw new RuntimeException($this->errorMsg, $this->errorNum, $e);
+					throw new RuntimeException($errorMsg, $errorNum, $e);
 				}
 
 				// Since we were able to reconnect, run the query again.
@@ -340,9 +330,9 @@ class JDatabaseDriverMysql extends JDatabaseDriverMysqli
 			else
 			{
 				// Throw the normal query exception.
-				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
 
-				throw new RuntimeException($this->errorMsg, $this->errorNum);
+				throw new RuntimeException($errorMsg, $errorNum);
 			}
 		}
 

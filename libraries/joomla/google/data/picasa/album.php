@@ -387,15 +387,14 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	{
 		if ($this->isAuthenticated())
 		{
-			jimport('joomla.filesystem.file');
-			$title = $title != '' ? $title : JFile::getName($file);
+			$title = $title != '' ? $title : basename($file);
 
 			if (!($type = $this->getMime($file)))
 			{
 				throw new RuntimeException("Inappropriate file type.");
 			}
 
-			if (!($data = JFile::read($file)))
+			if (!($data = file_get_contents($file)))
 			{
 				throw new RuntimeException("Cannot access file: `$file`");
 			}

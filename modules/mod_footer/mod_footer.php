@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper as JString;
+
 $app        = JFactory::getApplication();
 $date       = JFactory::getDate();
 $cur_year   = JHtml::_('date', $date, 'Y');

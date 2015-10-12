@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * Allows for quoting in language .ini files.
  */
@@ -1241,29 +1243,6 @@ class JLanguage
 		}
 
 		return $dir;
-	}
-
-	/**
-	 * Set the language attributes to the given language.
-	 *
-	 * Once called, the language still needs to be loaded using JLanguage::load().
-	 *
-	 * @param   string  $lang  Language code.
-	 *
-	 * @return  string  Previous value.
-	 *
-	 * @since   11.1
-	 * @deprecated  4.0 (CMS) - Instantiate a new JLanguage object instead
-	 */
-	public function setLanguage($lang)
-	{
-		JLog::add(__METHOD__ . ' is deprecated. Instantiate a new JLanguage object instead.', JLog::WARNING, 'deprecated');
-
-		$previous = $this->lang;
-		$this->lang = $lang;
-		$this->metadata = $this->getMetadata($this->lang);
-
-		return $previous;
 	}
 
 	/**

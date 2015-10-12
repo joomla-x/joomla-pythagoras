@@ -22,28 +22,25 @@ class JMenu
 	 * Array to hold the menu items
 	 *
 	 * @var    array
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $items
+	 * @since  4.0
 	 */
-	protected $_items = array();
+	protected $items = array();
 
 	/**
 	 * Identifier of the default menu item
 	 *
 	 * @var    integer
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $default
+	 * @since  4.0
 	 */
-	protected $_default = array();
+	protected $default = array();
 
 	/**
 	 * Identifier of the active menu item
 	 *
 	 * @var    integer
-	 * @since  1.5
-	 * @deprecated  4.0  Will convert to $active
+	 * @since  4.0
 	 */
-	protected $_active = 0;
+	protected $active = 0;
 
 	/**
 	 * JMenu instances container.
@@ -65,11 +62,11 @@ class JMenu
 		// Load the menu items
 		$this->load();
 
-		foreach ($this->_items as $item)
+		foreach ($this->items as $item)
 		{
 			if ($item->home)
 			{
-				$this->_default[trim($item->language)] = $item->id;
+				$this->default[trim($item->language)] = $item->id;
 			}
 
 			// Decode the item params
@@ -99,30 +96,10 @@ class JMenu
 
 			if (!class_exists($classname))
 			{
-				// @deprecated 4.0 Everything in this block is deprecated but the warning is only logged after the file_exists
-				// Load the menu object
-				$info = JApplicationHelper::getClientInfo($client, true);
-
-				if (is_object($info))
-				{
-					$path = $info->path . '/includes/menu.php';
-
-					if (file_exists($path))
-					{
-						JLog::add('Non-autoloadable JMenu subclasses are deprecated, support will be removed in 4.0.', JLog::WARNING, 'deprecated');
-						include_once $path;
-					}
-				}
-			}
-
-			if (class_exists($classname))
-			{
-				self::$instances[$client] = new $classname($options);
-			}
-			else
-			{
 				throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_MENU_LOAD', $client), 500);
 			}
+
+			self::$instances[$client] = new $classname($options);
 		}
 
 		return self::$instances[$client];
@@ -141,9 +118,9 @@ class JMenu
 	{
 		$result = null;
 
-		if (isset($this->_items[$id]))
+		if (isset($this->items[$id]))
 		{
-			$result = &$this->_items[$id];
+			$result = &$this->items[$id];
 		}
 
 		return $result;
@@ -161,9 +138,9 @@ class JMenu
 	 */
 	public function setDefault($id, $language = '*')
 	{
-		if (isset($this->_items[$id]))
+		if (isset($this->items[$id]))
 		{
-			$this->_default[$language] = $id;
+			$this->default[$language] = $id;
 
 			return true;
 		}
@@ -182,13 +159,13 @@ class JMenu
 	 */
 	public function getDefault($language = '*')
 	{
-		if (array_key_exists($language, $this->_default))
+		if (array_key_exists($language, $this->default))
 		{
-			return $this->_items[$this->_default[$language]];
+			return $this->items[$this->default[$language]];
 		}
-		elseif (array_key_exists('*', $this->_default))
+		elseif (array_key_exists('*', $this->default))
 		{
-			return $this->_items[$this->_default['*']];
+			return $this->items[$this->default['*']];
 		}
 		else
 		{
@@ -207,10 +184,10 @@ class JMenu
 	 */
 	public function setActive($id)
 	{
-		if (isset($this->_items[$id]))
+		if (isset($this->items[$id]))
 		{
-			$this->_active = $id;
-			$result = &$this->_items[$id];
+			$this->active = $id;
+			$result = &$this->items[$id];
 
 			return $result;
 		}
@@ -227,9 +204,9 @@ class JMenu
 	 */
 	public function getActive()
 	{
-		if ($this->_active)
+		if ($this->active)
 		{
-			$item = &$this->_items[$this->_active];
+			$item = &$this->items[$this->active];
 
 			return $item;
 		}
@@ -255,7 +232,7 @@ class JMenu
 		$attributes = (array) $attributes;
 		$values = (array) $values;
 
-		foreach ($this->_items as $item)
+		foreach ($this->items as $item)
 		{
 			if (!is_object($item))
 			{
@@ -328,7 +305,7 @@ class JMenu
 	 */
 	public function getMenu()
 	{
-		return $this->_items;
+		return $this->items;
 	}
 
 	/**

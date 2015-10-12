@@ -38,31 +38,6 @@ class FinderControllerSuggestions extends JControllerLegacy
 	}
 
 	/**
-	 * Method to find search query suggestions. Uses Mootools and autocompleter.js
-	 *
-	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return  void
-	 *
-	 * @since   2.5
-	 * @deprecated 3.4
-	 */
-	public function display($cachable = false, $urlparams = false)
-	{
-		$app = JFactory::getApplication();
-		$app->mimeType = 'application/json';
-
-		$suggestions = $this->getSuggestions();
-
-		// Send the response.
-		$app->setHeader('Content-Type', $app->mimeType . '; charset=' . $app->charSet);
-		$app->sendHeaders();
-		echo json_encode($suggestions);
-		$app->close();
-	}
-
-	/**
 	 * Method to retrieve the data from the database
 	 *
 	 * @return  array  The suggested words

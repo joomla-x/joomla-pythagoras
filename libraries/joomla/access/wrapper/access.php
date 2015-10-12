@@ -129,22 +129,6 @@ class JAccessWrapperAccess
 	}
 
 	/**
-	 * Helper wrapper method for getActions
-	 *
-	 * @param   string  $component  The component from which to retrieve the actions.
-	 * @param   string  $section    The name of the section within the component from which to retrieve the actions.
-	 *
-	 * @return array  List of actions available for the given component and section.
-	 *
-	 * @see     JAccess::getActions()
-	 * @since   3.4
-	 */
-	public function getActions($component, $section = 'component')
-	{
-		return JAccess::getActions($component, $section);
-	}
-
-	/**
 	 * Helper wrapper method for getActionsFromFile
 	 *
 	 * @param   string  $file   The path to the XML file.
