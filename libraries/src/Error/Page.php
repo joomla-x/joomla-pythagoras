@@ -13,7 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Exception;
 use JFactory;
-use JDocument;
+use Joomla\CMS\Document\Document as JDocument;
 use JText;
 
 /**
