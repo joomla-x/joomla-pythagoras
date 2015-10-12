@@ -837,6 +837,8 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 	 */
 	public function store($updateNulls = false)
 	{
+		$result = true;
+
 		$k = $this->_tbl_keys;
 
 		// Pre-processing by observers
@@ -872,11 +874,11 @@ abstract class JTable extends JObject implements JTableInterface, DispatcherAwar
 			// If a primary key exists update the object, otherwise insert it.
 			if ($this->hasPrimaryKey())
 			{
-				$result = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_keys, $updateNulls);
+				$this->_db->updateObject($this->_tbl, $this, $this->_tbl_keys, $updateNulls);
 			}
 			else
 			{
-				$result = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_keys[0]);
+				$this->_db->insertObject($this->_tbl, $this, $this->_tbl_keys[0]);
 			}
 		}
 		catch (\Exception $e)
