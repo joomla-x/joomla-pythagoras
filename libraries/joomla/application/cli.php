@@ -44,9 +44,9 @@ class JApplicationCli extends JApplicationBase
 	 * @param   DispatcherInterface  $dispatcher  An optional argument to provide dependency injection for the application's
 	 *                                            event dispatcher.  If the argument is a DispatcherInterface object that object will become
 	 *                                            the application's event dispatcher, if it is null then the default event dispatcher
-	 *                                            will be created based on the application's loadDispatcher() method.
+	 *                                            will be created based on the application's setDispatcher() method.
 	 *
-	 * @see     JApplicationBase::loadDispatcher()
+	 * @see     JApplicationBase::setDispatcher()
 	 * @since   11.1
 	 */
 	public function __construct(JInputCli $input = null, Registry $config = null, DispatcherInterface $dispatcher = null)
@@ -84,7 +84,7 @@ class JApplicationCli extends JApplicationBase
 			$this->config = new Registry;
 		}
 
-		$this->loadDispatcher($dispatcher);
+		$this->setDispatcher($dispatcher);
 
 		// Load the configuration object.
 		$this->loadConfiguration($this->fetchConfigurationData());

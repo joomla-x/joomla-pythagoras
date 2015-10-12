@@ -28,7 +28,7 @@ class TestMockApplicationBase
 			'getIdentity',
 			'registerEvent',
 			'triggerEvent',
-			'loadDispatcher',
+			'setDispatcher',
 			'loadIdentity',
 			'getDispatcher'
 		);

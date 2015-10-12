@@ -25,8 +25,49 @@ define('_JEXEC', 1);
 // Bootstrap the application
 require_once dirname(__FILE__) . '/application/bootstrap.php';
 
+$container = new Joomla\DI\Container();
+$container->registerServiceProvider(new Joomla\Provider\InputProvider());
+$container->registerServiceProvider(new Joomla\Provider\LanguageProvider());
+$container->registerServiceProvider(new Joomla\Provider\DatabaseProvider());
+$container->registerServiceProvider(new Joomla\Provider\DispatcherProvider());
+$container->registerServiceProvider(new Joomla\Provider\SessionProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
+
+$container->set('InstallationApplicationWeb',
+	function (Joomla\DI\Container $container)
+	{
+		$app = new \InstallationApplicationWeb($container->get('input'), $container->get('config'));
+
+		\JFactory::$application = $app;
+		$container->share('app', $app);
+
+		$app->setContainer($container);
+		$app->setLanguage($container->get('language'));
+		$app->setDocument($container->get('JDocument'));
+		$app->setSession($container->get('JSession'));
+		$app->setDispatcher($container->get('Dispatcher'));
+
+		return $app;
+	}
+);
+$container->set('JDocument',
+	function (Joomla\DI\Container $container)
+	{
+		$lang = $container->get('language');
+		$attributes = array(
+				'charset' => 'utf-8',
+				'lineend' => 'unix',
+				'tab' => '  ',
+				'language' => $lang->getTag(),
+				'direction' => $lang->isRtl() ? 'rtl' : 'ltr',
+		);
+
+		return \JDocument::getInstance($container->get('input')->getWord('format', 'html'), $attributes);
+	}
+);
+
 // Get the application
-$app = JApplicationWeb::getInstance('InstallationApplicationWeb');
+$app = $container->get('InstallationApplicationWeb');
 
 // Execute the application
 $app->execute();

@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 /**
  * Joomla! CMS Application class
@@ -88,8 +89,8 @@ class JApplicationCms extends JApplicationWeb
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JInput                 $input   An optional argument to provide dependency injection for the application's
-	 *                                          input object.  If the argument is a JInput object that object will become
+	 * @param   Input                  $input   An optional argument to provide dependency injection for the application's
+	 *                                          input object.  If the argument is a Input object that object will become
 	 *                                          the application's input object, otherwise a default input object is created.
 	 * @param   Registry               $config  An optional argument to provide dependency injection for the application's
 	 *                                          config object.  If the argument is a Registry object that object will become
@@ -100,12 +101,9 @@ class JApplicationCms extends JApplicationWeb
 	 *
 	 * @since   3.2
 	 */
-	public function __construct(JInput $input = null, Registry $config = null, JApplicationWebClient $client = null)
+	public function __construct(Input $input = null, Registry $config = null, JApplicationWebClient $client = null)
 	{
 		parent::__construct($input, $config, $client);
-
-		// Load and set the dispatcher
-		$this->loadDispatcher();
 
 		// If JDEBUG is defined, load the profiler instance
 		if (defined('JDEBUG') && JDEBUG)
@@ -124,12 +122,6 @@ class JApplicationCms extends JApplicationWeb
 		{
 			$this->config->set('session_name', $this->getName());
 		}
-
-		// Create the session if a session name is passed.
-		if ($this->config->get('session') !== false)
-		{
-			$this->loadSession();
-		}
 	}
 
 	/**
@@ -141,12 +133,10 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	public function afterSessionStart()
 	{
-		$session = JFactory::getSession();
-
-		if ($session->isNew())
+		if ($this->session->isNew())
 		{
-			$session->set('registry', new Registry('session'));
-			$session->set('user', new JUser);
+			$this->session->set('registry', new Registry('session'));
+			$this->session->set('user', new JUser);
 		}
 	}
 
@@ -164,7 +154,7 @@ class JApplicationCms extends JApplicationWeb
 	public function checkSession()
 	{
 		$db = JFactory::getDbo();
-		$session = JFactory::getSession();
+		$session = $this->session;
 		$user = JFactory::getUser();
 
 		$query = $db->getQuery(true)
@@ -517,7 +507,7 @@ class JApplicationCms extends JApplicationWeb
 
 		try
 		{
-			$router = JRouter::getInstance($name, $options);
+			$router = JRouter::getInstance($name, $options, JFactory::getApplication());
 		}
 		catch (Exception $e)
 		{
@@ -615,23 +605,11 @@ class JApplicationCms extends JApplicationWeb
 	 */
 	protected function initialiseApp($options = array())
 	{
-		// Set the configuration in the API.
-		$this->config = JFactory::getConfig();
-
 		// Check that we were given a language in the array (since by default may be blank).
 		if (isset($options['language']))
 		{
 			$this->set('language', $options['language']);
 		}
-
-		// Build our language object
-		$lang = JLanguage::getInstance($this->get('language'), $this->get('debug_lang'));
-
-		// Load the language to the API
-		$this->loadLanguage($lang);
-
-		// Register the language object with JFactory
-		JFactory::$language = $this->getLanguage();
 
 		// Set user specific editor.
 		$user = JFactory::getUser();
@@ -681,65 +659,9 @@ class JApplicationCms extends JApplicationWeb
 		return ($this->getClientId() === 0);
 	}
 
-	/**
-	 * Allows the application to load a custom or default session.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a session,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JSession  $session  An optional session object. If omitted, the session is created.
-	 *
-	 * @return  JApplicationCms  This method is chainable.
-	 *
-	 * @since   3.2
-	 */
-	public function loadSession(JSession $session = null)
+	public function setSession(JSession $session)
 	{
-		if ($session !== null)
-		{
-			$this->session = $session;
-
-			return $this;
-		}
-
-		// Generate a session name.
-		$name = JApplicationHelper::getHash($this->get('session_name', get_class($this)));
-
-		// Calculate the session lifetime.
-		$lifetime = (($this->get('lifetime')) ? $this->get('lifetime') * 60 : 900);
-
-		// Initialize the options for JSession.
-		$options = array(
-			'name'   => $name,
-			'expire' => $lifetime
-		);
-
-		switch ($this->getClientId())
-		{
-			case 0:
-				if ($this->get('force_ssl') == 2)
-				{
-					$options['force_ssl'] = true;
-				}
-
-				break;
-
-			case 1:
-				if ($this->get('force_ssl') >= 1)
-				{
-					$options['force_ssl'] = true;
-				}
-
-				break;
-		}
-
-		$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart'));
-
-		// There's an internal coupling to the session object being present in JFactory, need to deal with this at some point
-		$session = JFactory::getSession($options);
-		$session->initialise($this->input, $this->dispatcher);
-		$session->start();
+		parent::setSession($session);
 
 		// TODO: At some point we need to get away from having session data always in the db.
 		$db = JFactory::getDbo();
@@ -767,9 +689,6 @@ class JApplicationCms extends JApplicationWeb
 		{
 			$this->checkSession();
 		}
-
-		// Set the session object.
-		$this->session = $session;
 
 		return $this;
 	}
