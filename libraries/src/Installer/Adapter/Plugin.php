@@ -29,7 +29,7 @@ use RuntimeException;
  *
  * @since  3.1
  */
-class JInstallerAdapterPlugin extends JInstallerAdapter
+class Plugin extends JInstallerAdapter
 {
 	/**
 	 * <scriptfile> element of the extension manifest

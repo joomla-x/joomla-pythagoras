@@ -30,7 +30,7 @@ use RuntimeException;
  *
  * @since  3.1
  */
-class JInstallerAdapterPackage extends JInstallerAdapter
+class Package extends JInstallerAdapter
 {
 	/**
 	 * The results of each installed extensions

@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\CMS\Plugin\Plugin as JPlugin;
 
 // Uncomment the following line to enable debug mode (update notification email sent every single time)

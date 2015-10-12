@@ -11,13 +11,12 @@ namespace Joomla\CMS\Installer\Adapter;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Application\Helper as JApplicationHelper;
-
 \jimport('joomla.filesystem.folder');
 
 use JArrayHelper;
 use JFolder;
 use JLog;
+use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Installer\Adapter as JInstallerAdapter;
 use Joomla\CMS\Installer\Installer as JInstaller;
 use JTable;
@@ -31,7 +30,7 @@ use SimpleXMLElement;
  *
  * @since  3.1
  */
-class JInstallerAdapterModule extends JInstallerAdapter
+class Module extends JInstallerAdapter
 {
 	/**
 	 * The install client ID

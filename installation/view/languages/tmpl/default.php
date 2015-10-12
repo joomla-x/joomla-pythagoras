@@ -93,8 +93,8 @@ $version = new JVersion;
 									/> <?php echo $language->name; ?>
 
 									<?php // Display a Note if language pack version is not equal to Joomla version ?>
-									<?php if (substr($language->version, 0, 3) != $version->RELEASE
-											|| substr($language->version, 0, 5) != $version->RELEASE . "." . $version->DEV_LEVEL) : ?>
+									<?php if (substr($language->version, 0, 3) != JVersion::RELEASE
+											|| substr($language->version, 0, 5) != JVersion::RELEASE . "." . JVersion::DEV_LEVEL) : ?>
 										<div class="small"><?php echo JText::_('JGLOBAL_LANGUAGE_VERSION_NOT_PLATFORM'); ?></div>
 									<?php endif; ?>
 							</label>

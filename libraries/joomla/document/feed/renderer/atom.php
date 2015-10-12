@@ -118,9 +118,7 @@ class JDocumentRendererAtom extends JDocumentRenderer
 
 		if ($app->get('MetaVersion', 0))
 		{
-			$version = new JVersion;
-
-			$versionHtmlEscaped = ' version="' . htmlspecialchars($version->RELEASE, ENT_COMPAT, 'UTF-8') . '"';
+			$versionHtmlEscaped = ' version="' . htmlspecialchars(JVersion::RELEASE, ENT_COMPAT, 'UTF-8') . '"';
 		}
 		else
 		{
