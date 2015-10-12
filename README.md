@@ -1,10 +1,9 @@
-Joomla! CMS™ [![Analytics](https://ga-beacon.appspot.com/UA-544070-3/joomla-cms/readme)](https://github.com/igrigorik/ga-beacon)
+Joomla! CMS™ [![Stories in Ready](https://badge.waffle.io/joomla-projects/joomla-pythagoras.png?label=ready&title=Ready)](http://waffle.io/joomla-projects/joomla-pythagoras)
 ====================
 
 Build Status
 ---------------------
-Travis-CI: [![Build Status](https://travis-ci.org/joomla/joomla-cms.png)](https://travis-ci.org/joomla/joomla-cms)
-Jenkins: [![Build Status](http://build.joomla.org/job/cms/badge/icon)](http://build.joomla.org/job/cms/)
+Travis-CI: [![Build Status](https://travis-ci.org/joomla-projects/joomla-pythagoras.png)](https://travis-ci.org/joomla-projects/joomla-pythagoras)
 
 What is this?
 ---------------------
