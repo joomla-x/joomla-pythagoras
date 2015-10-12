@@ -8,6 +8,7 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Joomla\CMS\Version as JVersion;
 
 /**
