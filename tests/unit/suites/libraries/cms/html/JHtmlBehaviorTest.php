@@ -179,37 +179,6 @@ class JHtmlBehaviorTest extends TestCase
 	}
 
 	/**
-	 * Tests the formvalidation method.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.1
-	 */
-	public function testFormvalidation()
-	{
-		// We generate a random template name so that we don't collide or hit anything//
-		$template = 'mytemplate' . rand(1, 10000);
-
-		// We create a stub (not a mock because we don't enforce whether it is called or not)
-		// to return a value from getTemplate
-		$mock = $this->getMock('myMockObject', array('getTemplate'));
-		$mock->expects($this->any())
-			->method('getTemplate')
-			->will($this->returnValue($template));
-
-		// @todo We need to mock this.
-		$mock->input = new JInput;
-
-		JFactory::$application = $mock;
-
-		JHtmlBehaviorInspector::formvalidation();
-		$this->assertEquals(
-			array('JHtmlBehavior::core' => true, 'JHtmlBehavior::framework' => array('core' => true), 'JHtmlBehavior::formvalidator' => true),
-			JHtmlBehaviorInspector::getLoaded()
-		);
-	}
-
-	/**
 	 * Tests the switcher method.
 	 *
 	 * @return  void
