@@ -165,7 +165,7 @@ class Installer extends JAdapter
 	 *
 	 * @since   3.1
 	 */
-	public static function getInstance($basepath = __DIR__, $classprefix = '\\Joomla\\Installer\\Adapter\\', $adapterfolder = 'adapter')
+	public static function getInstance($basepath = __DIR__, $classprefix = '\\Joomla\\CMS\\Installer\\Adapter\\', $adapterfolder = 'adapter')
 	{
 		if (!isset(self::$instances[$basepath]))
 		{

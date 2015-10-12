@@ -30,7 +30,7 @@ use SimpleXMLElement;
  *
  * @since  3.1
  */
-class JInstallerAdapterTemplate extends JInstallerAdapter
+class Template extends JInstallerAdapter
 {
 	/**
 	 * The install client ID
