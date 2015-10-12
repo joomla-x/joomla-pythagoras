@@ -801,7 +801,7 @@ class JApplicationWebTest extends TestCase
 
 		$this->class->initialise(false);
 
-		$this->assertAttributeInstanceOf('JDocument', 'document', $this->class);
+		$this->assertAttributeInstanceOf('\\Joomla\\CMS\\Document\\Document', 'document', $this->class);
 		$this->assertAttributeInstanceOf('JLanguage', 'language', $this->class);
 		$this->assertAttributeInstanceOf('\\Joomla\\Event\\DispatcherInterface', 'dispatcher', $this->class);
 	}
@@ -837,7 +837,7 @@ class JApplicationWebTest extends TestCase
 			->method('test')
 			->willReturnSelf();
 
-		$mockDocument = $this->getMock('JDocument', array('test'), array(), '', false);
+		$mockDocument = $this->getMock('\\Joomla\\CMS\\Document\\Document', array('test'), array(), '', false);
 		$mockDocument
 			->expects($this->any())
 			->method('test')
@@ -897,7 +897,7 @@ class JApplicationWebTest extends TestCase
 	{
 		$this->class->loadDocument();
 
-		$this->assertAttributeInstanceOf('JDocument', 'document', $this->class);
+		$this->assertAttributeInstanceOf('\\Joomla\\CMS\\Document\\Document', 'document', $this->class);
 	}
 
 	/**

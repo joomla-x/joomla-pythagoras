@@ -274,7 +274,7 @@ abstract class TestCaseDatabase extends PHPUnit_Extensions_Database_TestCase
 	public function getMockDocument()
 	{
 		// Attempt to load the real class first.
-		class_exists('JDocument');
+		class_exists('\\Joomla\\CMS\\Document\\Document');
 
 		return TestMockDocument::create($this);
 	}
