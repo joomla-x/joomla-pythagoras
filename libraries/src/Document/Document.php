@@ -1009,7 +1009,7 @@ class Document
 	 */
 	public function loadRenderer($type)
 	{
-		$class = 'JDocumentRenderer' . $type;
+		$class = '\\Joomla\\CMS\\Document\\' . $this->getType() . '\\Renderer\\' . $type;
 
 		if (!class_exists($class))
 		{
