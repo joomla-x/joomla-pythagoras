@@ -7,14 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document\Error;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JFilterInput;
+use Joomla\CMS\Document\Document as JDocument;
+use JUri;
 
 /**
  * DocumentError class, provides an easy interface to parse and display an error page
  *
  * @since  11.1
  */
-class JDocumentError extends JDocument
+class Error extends JDocument
 {
 	/**
 	 * Error Object

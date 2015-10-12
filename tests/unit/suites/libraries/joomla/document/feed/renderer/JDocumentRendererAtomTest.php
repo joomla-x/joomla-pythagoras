@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Document\Feed\Feed as JDocumentFeed;
+use Joomla\CMS\Document\Feed\Item as JFeedItem;
+use Joomla\CMS\Document\Feed\Renderer\Atom as JDocumentRendererAtom;
 use Joomla\CMS\Router\Router as JRouter;
 
 /**

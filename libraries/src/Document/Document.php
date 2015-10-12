@@ -7,14 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use RuntimeException;
 
 /**
  * Document class, provides an easy interface to parse and display a document
  *
  * @since  11.1
  */
-class JDocument
+class Document
 {
 	/**
 	 * Document title
@@ -281,7 +286,7 @@ class JDocument
 			$ntype = null;
 
 			// Determine the path and class
-			$class = 'JDocument' . $type;
+			$class = '\\Joomla\\CMS\\Document\\' . $type . '\\' . $type;
 
 			if (!class_exists($class))
 			{
@@ -295,19 +300,20 @@ class JDocument
 					$ntype = $type;
 					$type = 'raw';
 
-					$class = 'JDocument' . $type;
+					$class = '\\Joomla\\CMS\\Document\\' . $type . '\\' . $type;
 
 					require_once $rawpath;
 				}
 				else
 				{
 					// @codeCoverageIgnoreStart
-					throw new RuntimeException('Invalid JDocument Class', 500);
+					throw new RuntimeException('Invalid Document Class', 500);
 
 					// @codeCoverageIgnoreEnd
 				}
 			}
 
+			/** @var Document $instance */
 			$instance = new $class($attributes);
 			self::$instances[$signature] = $instance;
 
@@ -326,7 +332,7 @@ class JDocument
 	 *
 	 * @param   string  $type  Type document is to set to
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -352,7 +358,7 @@ class JDocument
 	/**
 	 * Get the contents of the document buffer
 	 *
-	 * @return  The contents of the document buffer
+	 * @return  string  The contents of the document buffer
 	 *
 	 * @since   11.1
 	 */
@@ -367,7 +373,7 @@ class JDocument
 	 * @param   string  $content  The content to be set in the buffer.
 	 * @param   array   $options  Array of optional elements.
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -420,7 +426,7 @@ class JDocument
 	 * @param   string   $content     Value of the content tag
 	 * @param   boolean  $http_equiv  META type "http-equiv" defaults to null
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -457,7 +463,7 @@ class JDocument
 	 * @param   boolean  $defer  Adds the defer attribute.
 	 * @param   boolean  $async  Adds the async attribute.
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -480,7 +486,7 @@ class JDocument
 	 * @param   boolean  $defer    Adds the defer attribute.
 	 * @param   boolean  $async    [description]
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   3.2
 	 */
@@ -506,7 +512,7 @@ class JDocument
 	 * @param   string  $content  Script
 	 * @param   string  $type     Scripting mime (defaults to 'text/javascript')
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -532,7 +538,7 @@ class JDocument
 	 * @param   string  $media    Media type that this stylesheet applies to
 	 * @param   array   $attribs  Array of attributes
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -555,7 +561,7 @@ class JDocument
 	 * @param   string  $media    Media type that this stylesheet applies to
 	 * @param   array   $attribs  Array of attributes
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   3.2
 	 */
@@ -581,7 +587,7 @@ class JDocument
 	 * @param   string  $content  Style declarations
 	 * @param   string  $type     Type of stylesheet (defaults to 'text/css')
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -604,7 +610,7 @@ class JDocument
 	 *
 	 * @param   string  $type  Charset encoding string
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -632,7 +638,7 @@ class JDocument
 	 *
 	 * @param   string  $lang  The language to be set
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -660,7 +666,7 @@ class JDocument
 	 *
 	 * @param   string  $dir  The language direction to be set
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -688,7 +694,7 @@ class JDocument
 	 *
 	 * @param   string  $title  The title to be set
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -716,7 +722,7 @@ class JDocument
 	 *
 	 * @param   string  $mediaVersion  Media version to use
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   3.2
 	 */
@@ -744,7 +750,7 @@ class JDocument
 	 *
 	 * @param   string  $base  The base URI to be set
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -772,7 +778,7 @@ class JDocument
 	 *
 	 * @param   string  $description  The description to set
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -800,7 +806,7 @@ class JDocument
 	 *
 	 * @param   string  $url  A url
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -828,7 +834,7 @@ class JDocument
 	 *
 	 * @param   string  $generator  The generator to be set
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -856,7 +862,7 @@ class JDocument
 	 *
 	 * @param   string  $date  The date to be set
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -891,7 +897,7 @@ class JDocument
 	 * @param   string   $type  The document type to be sent
 	 * @param   boolean  $sync  Should the type be synced with HTML?
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 *
@@ -927,7 +933,7 @@ class JDocument
 	 *
 	 * @param   string  $style  "win", "mac", "unix" or custom string.
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -968,7 +974,7 @@ class JDocument
 	 *
 	 * @param   string  $string  String used to indent ("\11", "\t", '  ', etc.).
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -996,7 +1002,7 @@ class JDocument
 	 *
 	 * @param   string  $type  The renderer type
 	 *
-	 * @return  JDocumentRenderer  Object or null if class does not exist
+	 * @return  null|Renderer  Object or null if class does not exist
 	 *
 	 * @since   11.1
 	 * @throws  RuntimeException
@@ -1034,7 +1040,7 @@ class JDocument
 	 *
 	 * @param   array  $params  The array of parameters
 	 *
-	 * @return  JDocument instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -1049,7 +1055,7 @@ class JDocument
 	 * @param   boolean  $cache   If true, cache the output
 	 * @param   array    $params  Associative array of attributes
 	 *
-	 * @return  The rendered data
+	 * @return  string  The rendered data
 	 *
 	 * @since   11.1
 	 */

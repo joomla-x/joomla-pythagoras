@@ -7,14 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document\Xml;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use Joomla\CMS\Document\Document as JDocument;
 
 /**
  * DocumentXML class, provides an easy interface to parse and display XML output
  *
  * @since  11.1
  */
-class JDocumentXml extends JDocument
+class Xml extends JDocument
 {
 	/**
 	 * Document name
@@ -48,7 +53,7 @@ class JDocumentXml extends JDocument
 	 * @param   boolean  $cache   If true, cache the output
 	 * @param   array    $params  Associative array of attributes
 	 *
-	 * @return  The rendered data
+	 * @return  string  The rendered data
 	 *
 	 * @since  11.1
 	 */
@@ -78,7 +83,7 @@ class JDocumentXml extends JDocument
 	 *
 	 * @param   string  $name  Document name
 	 *
-	 * @return  JDocumentXml instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */

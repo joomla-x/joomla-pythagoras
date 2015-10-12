@@ -7,19 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document;
+
 defined('JPATH_PLATFORM') or die;
+
+use JUri;
 
 /**
  * Abstract class for a renderer
  *
  * @since  11.1
  */
-class JDocumentRenderer
+class Renderer
 {
 	/**
-	 * Reference to the JDocument object that instantiated the renderer
+	 * Reference to the Document object that instantiated the renderer
 	 *
-	 * @var    JDocument
+	 * @var    Document
 	 * @since  11.1
 	 */
 	protected $_doc = null;
@@ -35,11 +39,11 @@ class JDocumentRenderer
 	/**
 	 * Class constructor
 	 *
-	 * @param   JDocument  $doc  A reference to the JDocument object that instantiated the renderer
+	 * @param   Document  $doc  A reference to the JDocument object that instantiated the renderer
 	 *
 	 * @since   11.1
 	 */
-	public function __construct(JDocument $doc)
+	public function __construct(Document $doc)
 	{
 		$this->_doc = $doc;
 	}

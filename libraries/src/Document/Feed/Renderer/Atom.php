@@ -7,9 +7,17 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document\Feed\Renderer;
+
 defined('JPATH_PLATFORM') or die;
 
+use DateTimeZone;
+use JFactory;
+use Joomla\CMS\Document\Renderer as JDocumentRenderer;
 use Joomla\CMS\Version as JVersion;
+use JText;
+use JRoute;
+use JUri;
 
 /**
  * JDocumentRenderer_Atom is a feed that implements the atom specification
@@ -21,7 +29,7 @@ use Joomla\CMS\Version as JVersion;
  * @see    http://www.atomenabled.org/developers/syndication/atom-format-spec.php
  * @since  11.1
  */
-class JDocumentRendererAtom extends JDocumentRenderer
+class Atom extends JDocumentRenderer
 {
 	/**
 	 * Document mime type

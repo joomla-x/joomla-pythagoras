@@ -7,7 +7,16 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document\Feed\Renderer;
+
 defined('JPATH_PLATFORM') or die;
+
+use DateTimeZone;
+use JFactory;
+use Joomla\CMS\Document\Renderer as JDocumentRenderer;
+use JText;
+use JRoute;
+use JUri;
 
 /**
  * JDocumentRenderer_RSS is a feed that implements RSS 2.0 Specification
@@ -15,7 +24,7 @@ defined('JPATH_PLATFORM') or die;
  * @see    http://www.rssboard.org/rss-specification
  * @since  11.1
  */
-class JDocumentRendererRSS extends JDocumentRenderer
+class RSS extends JDocumentRenderer
 {
 	/**
 	 * Renderer mime type

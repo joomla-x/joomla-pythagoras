@@ -7,14 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document\Html\Renderer;
+
 defined('JPATH_PLATFORM') or die;
+
+use JArrayHelper;
+use JFactory;
+use JHelperTags;
+use Joomla\CMS\Document\Document as JDocument;
+use Joomla\CMS\Document\Renderer as JDocumentRenderer;
+use JText;
 
 /**
  * JDocument head renderer
  *
  * @since  11.1
  */
-class JDocumentRendererHead extends JDocumentRenderer
+class Head extends JDocumentRenderer
 {
 	/**
 	 * Renders the document head and returns the results as a string

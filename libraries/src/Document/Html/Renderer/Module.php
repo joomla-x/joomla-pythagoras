@@ -7,17 +7,22 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document\Html\Renderer;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
+use Joomla\CMS\Document\Renderer as JDocumentRenderer;
 use Joomla\CMS\Module\Helper as JModuleHelper;
 use Joomla\Registry\Registry;
+use stdClass;
 
 /**
  * JDocument Module renderer
  *
  * @since  11.1
  */
-class JDocumentRendererModule extends JDocumentRenderer
+class Module extends JDocumentRenderer
 {
 	/**
 	 * Renders a module script and returns the results as a string

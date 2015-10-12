@@ -7,7 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once JPATH_PLATFORM . '/joomla/document/feed/feed.php';
+use Joomla\CMS\Document\Feed\Feed as JDocumentFeed;
+use Joomla\CMS\Document\Feed\Item as JFeedItem;
 
 /**
  * Test class for JDocumentFeed

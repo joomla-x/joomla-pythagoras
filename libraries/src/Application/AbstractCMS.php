@@ -17,7 +17,7 @@ use Exception;
 use JApplicationWeb;
 use JApplicationWebClient;
 use JAuthentication;
-use JDocument;
+use Joomla\CMS\Document\Document as JDocument;
 use JError;
 use JFactory;
 use JInput;

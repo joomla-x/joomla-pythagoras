@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once JPATH_PLATFORM . '/joomla/document/xml/xml.php';
+use Joomla\CMS\Document\Xml\Xml as JDocumentXml;
 
 /**
  * Test class for JDocumentXml

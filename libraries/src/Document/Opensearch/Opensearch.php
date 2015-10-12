@@ -7,7 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Document\Opensearch;
+
 defined('JPATH_PLATFORM') or die;
+
+use DOMDocument;
+use JFactory;
+use Joomla\CMS\Document\Document as JDocument;
+use JRoute;
+use JUri;
 
 /**
  * OpenSearch class, provides an easy interface to display an OpenSearch document
@@ -15,7 +23,7 @@ defined('JPATH_PLATFORM') or die;
  * @see    http://www.opensearch.org/
  * @since  11.1
  */
-class JDocumentOpensearch extends JDocument
+class Opensearch extends JDocument
 {
 	/**
 	 * ShortName element
@@ -63,7 +71,7 @@ class JDocumentOpensearch extends JDocument
 		$this->_mime = 'application/opensearchdescription+xml';
 
 		// Add the URL for self updating
-		$update = new JOpenSearchUrl;
+		$update = new Url;
 		$update->type = 'application/opensearchdescription+xml';
 		$update->rel = 'self';
 		$update->template = JRoute::_(JUri::getInstance());
@@ -80,7 +88,7 @@ class JDocumentOpensearch extends JDocument
 			{
 				$path = str_replace(JPATH_BASE, '', $dir);
 				$path = str_replace('\\', '/', $path);
-				$favicon = new JOpenSearchImage;
+				$favicon = new Image;
 
 				if ($path == "")
 				{
@@ -113,7 +121,7 @@ class JDocumentOpensearch extends JDocument
 	 * @param   boolean  $cache   If true, cache the output
 	 * @param   array    $params  Associative array of attributes
 	 *
-	 * @return  The rendered data
+	 * @return  string  The rendered data
 	 *
 	 * @since   11.1
 	 */
@@ -181,7 +189,7 @@ class JDocumentOpensearch extends JDocument
 	 *
 	 * @param   string  $name  The name.
 	 *
-	 * @return  JDocumentOpensearch instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
@@ -195,13 +203,13 @@ class JDocumentOpensearch extends JDocument
 	/**
 	 * Adds an URL to the OpenSearch description.
 	 *
-	 * @param   JOpenSearchUrl  $url  The url to add to the description.
+	 * @param   Url  $url  The url to add to the description.
 	 *
-	 * @return  JDocumentOpensearch instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
-	public function addUrl(JOpenSearchUrl $url)
+	public function addUrl(Url $url)
 	{
 		$this->_urls[] = $url;
 
@@ -211,102 +219,16 @@ class JDocumentOpensearch extends JDocument
 	/**
 	 * Adds an image to the OpenSearch description.
 	 *
-	 * @param   JOpenSearchImage  $image  The image to add to the description.
+	 * @param   Image  $image  The image to add to the description.
 	 *
-	 * @return  JDocumentOpensearch instance of $this to allow chaining
+	 * @return  $this
 	 *
 	 * @since   11.1
 	 */
-	public function addImage(JOpenSearchImage $image)
+	public function addImage(Image $image)
 	{
 		$this->_images[] = $image;
 
 		return $this;
 	}
-}
-
-/**
- * JOpenSearchUrl is an internal class that stores the search URLs for the OpenSearch description
- *
- * @since  11.1
- */
-class JOpenSearchUrl
-{
-	/**
-	 * Type item element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $type = 'text/html';
-
-	/**
-	 * Rel item element
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $rel = 'results';
-
-	/**
-	 * Template item element. Has to contain the {searchTerms} parameter to work.
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $template;
-}
-
-/**
- * JOpenSearchImage is an internal class that stores Images for the OpenSearch Description
- *
- * @since  11.1
- */
-class JOpenSearchImage
-{
-	/**
-	 * The images MIME type
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $type = "";
-
-	/**
-	 * URL of the image or the image as base64 encoded value
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $data = "";
-
-	/**
-	 * The image's width
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $width;
-
-	/**
-	 * The image's height
-	 *
-	 * required
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $height;
 }

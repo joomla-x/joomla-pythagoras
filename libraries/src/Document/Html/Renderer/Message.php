@@ -7,8 +7,13 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Document\Html\Renderer;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
+use JLog;
+use Joomla\CMS\Document\Renderer as JDocumentRenderer;
 use Joomla\CMS\Layout\Helper as JLayoutHelper;
 
 /**
@@ -16,7 +21,7 @@ use Joomla\CMS\Layout\Helper as JLayoutHelper;
  *
  * @since  11.1
  */
-class JDocumentRendererMessage extends JDocumentRenderer
+class Message extends JDocumentRenderer
 {
 	/**
 	 * Renders the error stack and returns the results as a string

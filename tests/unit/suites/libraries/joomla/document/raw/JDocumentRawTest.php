@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once JPATH_PLATFORM . '/joomla/document/raw/raw.php';
+use Joomla\CMS\Document\Raw\Raw as JDocumentRaw;
 
 /**
  * Test class for JDocumentRaw

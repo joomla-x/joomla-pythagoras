@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Document\Document as JDocument;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 
 // Register dependent classes.
