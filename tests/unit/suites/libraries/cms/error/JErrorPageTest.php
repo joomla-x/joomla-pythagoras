@@ -33,7 +33,7 @@ class JErrorPageTest extends TestCaseDatabase
 	 */
 	protected function tearDown()
 	{
-		TestReflection::setValue('JDocument', 'instances', array());
+		TestReflection::setValue('\\Joomla\\CMS\\Document\\Document', 'instances', array());
 		$this->restoreFactoryState();
 
 		parent::tearDown();
@@ -56,7 +56,7 @@ class JErrorPageTest extends TestCaseDatabase
 			->method('render')
 			->willReturn($documentResponse);
 
-		TestReflection::setValue('JDocument', 'instances', array($key => $mockErrorDocument));
+		TestReflection::setValue('\\Joomla\\CMS\\Document\\Document', 'instances', array($key => $mockErrorDocument));
 
 		// Create an Exception to inject into the method
 		$exception = new RuntimeException('Testing JErrorPage::render()', 500);
