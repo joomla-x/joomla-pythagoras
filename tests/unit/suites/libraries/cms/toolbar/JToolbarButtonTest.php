@@ -8,6 +8,7 @@
  */
 
 use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+use Joomla\CMS\Toolbar\Button\Standard as JToolbarButtonStandard;
 
 /**
  * Test class for JToolbarButton.
