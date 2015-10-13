@@ -34,7 +34,7 @@ class TestMockDocument
 
 		// Create the mock.
 		$mockObject = $test->getMock(
-			'\\Joomla\\CMS\\Document\\Document',
+			'Joomla\CMS\Document\Document',
 			$methods,
 			// Constructor arguments.
 			array(),
