@@ -285,7 +285,7 @@ class Document
 		{
 			$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 			$path = __DIR__ . '/' . $type . '/' . $type . '.php';
-			$rawpath = __DIR__ . '/raw/raw.php';
+			$rawpath = __DIR__ . '/Raw/Raw.php';
 			$ntype = null;
 
 			// Determine the path and class
