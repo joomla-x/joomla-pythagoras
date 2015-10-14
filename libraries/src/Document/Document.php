@@ -307,7 +307,7 @@ class Document
 				else
 				{
 					// @codeCoverageIgnoreStart
-					throw new RuntimeException('Invalid Document Class', 500);
+					throw new RuntimeException(sprintf('Invalid Document Class: %s', $class), 500);
 
 					// @codeCoverageIgnoreEnd
 				}
