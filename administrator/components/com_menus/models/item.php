@@ -120,7 +120,7 @@ class MenusModelItem extends JModelAdmin
 		// $value comes as {menutype}.{parent_id}
 		$parts = explode('.', $value);
 		$menuType = $parts[0];
-		$parentId = (int) JArrayHelper::getValue($parts, 1, 0);
+		$parentId = (int) Joomla\Utilities\ArrayHelper::getValue($parts, 1, 0);
 
 		$table = $this->getTable();
 		$db = $this->getDbo();
@@ -323,7 +323,7 @@ class MenusModelItem extends JModelAdmin
 		// $value comes as {menutype}.{parent_id}
 		$parts    = explode('.', $value);
 		$menuType = $parts[0];
-		$parentId = (int) JArrayHelper::getValue($parts, 1, 0);
+		$parentId = (int) Joomla\Utilities\ArrayHelper::getValue($parts, 1, 0);
 
 		$table = $this->getTable();
 		$db    = $this->getDbo();
@@ -439,7 +439,7 @@ class MenusModelItem extends JModelAdmin
 		{
 			// Remove any duplicates and sanitize ids.
 			$children = array_unique($children);
-			JArrayHelper::toInteger($children);
+			Joomla\Utilities\ArrayHelper::toInteger($children);
 
 			// Update the menutype field in all nodes where necessary.
 			$query->clear()
@@ -503,8 +503,8 @@ class MenusModelItem extends JModelAdmin
 		}
 		else
 		{
-			$this->setState('item.link', JArrayHelper::getValue($data, 'link'));
-			$this->setState('item.type', JArrayHelper::getValue($data, 'type'));
+			$this->setState('item.link', Joomla\Utilities\ArrayHelper::getValue($data, 'link'));
+			$this->setState('item.type', Joomla\Utilities\ArrayHelper::getValue($data, 'type'));
 		}
 
 		// Get the form.
@@ -675,7 +675,7 @@ class MenusModelItem extends JModelAdmin
 
 		// Convert to the JObject before adding the params.
 		$properties = $table->getProperties(1);
-		$result = JArrayHelper::toObject($properties);
+		$result = Joomla\Utilities\ArrayHelper::toObject($properties);
 
 		// Convert the params field to an array.
 		$registry = new Registry;

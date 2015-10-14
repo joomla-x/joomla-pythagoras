@@ -124,7 +124,7 @@ class MenusControllerItems extends JControllerAdmin
 		$cid   = $this->input->get('cid', array(), 'array');
 		$data  = array('setDefault' => 1, 'unsetDefault' => 0);
 		$task  = $this->getTask();
-		$value = JArrayHelper::getValue($data, $task, 0, 'int');
+		$value = Joomla\Utilities\ArrayHelper::getValue($data, $task, 0, 'int');
 
 		if (empty($cid))
 		{
@@ -136,7 +136,7 @@ class MenusControllerItems extends JControllerAdmin
 			$model = $this->getModel();
 
 			// Make sure the item ids are integers
-			JArrayHelper::toInteger($cid);
+			Joomla\Utilities\ArrayHelper::toInteger($cid);
 
 			// Publish the items.
 			if (!$model->setHome($cid, $value))

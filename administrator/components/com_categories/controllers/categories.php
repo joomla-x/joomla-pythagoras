@@ -125,7 +125,7 @@ class CategoriesControllerCategories extends JControllerAdmin
 
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			Joomla\Utilities\ArrayHelper::toInteger($cid);
 
 			// Remove the items.
 			if ($model->delete($cid))

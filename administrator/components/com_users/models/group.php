@@ -115,7 +115,7 @@ class UsersModelGroup extends JModelAdmin
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = '')
 	{
-		$obj = is_array($data) ? JArrayHelper::toObject($data, 'JObject') : $data;
+		$obj = is_array($data) ? Joomla\Utilities\ArrayHelper::toObject($data, 'JObject') : $data;
 
 		if (isset($obj->parent_id) && $obj->parent_id == 0 && $obj->id > 0)
 		{

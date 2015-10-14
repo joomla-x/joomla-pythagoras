@@ -137,7 +137,7 @@ class JForm
 			elseif ($data instanceof JObject)
 			{
 				// Handle a JObject. Getting just the properties won't work. We need to convert any nested JObject too.
-				$data = JArrayHelper::fromObject($data);
+				$data = Joomla\Utilities\ArrayHelper::fromObject($data);
 			}
 			else
 			{
@@ -154,7 +154,7 @@ class JForm
 				// If the field exists set the value.
 				$this->data->set($k, $v);
 			}
-			elseif (is_object($v) || JArrayHelper::isAssociative($v))
+			elseif (is_object($v) || Joomla\Utilities\ArrayHelper::isAssociative($v))
 			{
 				// If the value is an object or an associative array hand it off to the recursive bind level method.
 				$this->bindLevel($k, $v);
@@ -187,7 +187,7 @@ class JForm
 				// If the field exists set the value.
 				$this->data->set($group . '.' . $k, $v);
 			}
-			elseif (is_object($v) || JArrayHelper::isAssociative($v))
+			elseif (is_object($v) || Joomla\Utilities\ArrayHelper::isAssociative($v))
 			{
 				// If the value is an object or an associative array, hand it off to the recursive bind level method
 				$this->bindLevel($group . '.' . $k, $v);
@@ -1275,7 +1275,7 @@ class JForm
 
 				$value = is_array($value) ? $value : array($value);
 
-				JArrayHelper::toInteger($value);
+				Joomla\Utilities\ArrayHelper::toInteger($value);
 				$return = $value;
 				break;
 

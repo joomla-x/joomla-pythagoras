@@ -104,7 +104,7 @@ abstract class JHtmlSelect
 		{
 			if (is_array($options['list.attr']))
 			{
-				$attribs = JArrayHelper::toString($options['list.attr']);
+				$attribs = Joomla\Utilities\ArrayHelper::toString($options['list.attr']);
 			}
 			else
 			{
@@ -229,7 +229,7 @@ abstract class JHtmlSelect
 		{
 			if (is_array($options['list.attr']))
 			{
-				$attribs = JArrayHelper::toString($options['list.attr']);
+				$attribs = Joomla\Utilities\ArrayHelper::toString($options['list.attr']);
 			}
 			else
 			{
@@ -683,7 +683,7 @@ abstract class JHtmlSelect
 
 				if (is_array($attr))
 				{
-					$attr = JArrayHelper::toString($attr);
+					$attr = Joomla\Utilities\ArrayHelper::toString($attr);
 				}
 				else
 				{
@@ -748,7 +748,7 @@ abstract class JHtmlSelect
 
 		if (is_array($attribs))
 		{
-			$attribs = JArrayHelper::toString($attribs);
+			$attribs = Joomla\Utilities\ArrayHelper::toString($attribs);
 		}
 
 		$id_text = $idtag ? $idtag : $name;

@@ -36,7 +36,7 @@ abstract class JHtmlCategoriesAdministrator
 		// Get the associations
 		if ($associations = CategoriesHelper::getAssociations($catid, $extension))
 		{
-			JArrayHelper::toInteger($associations);
+			Joomla\Utilities\ArrayHelper::toInteger($associations);
 
 			// Get the associated categories
 			$db = JFactory::getDbo();

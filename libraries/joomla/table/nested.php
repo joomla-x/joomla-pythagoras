@@ -930,7 +930,7 @@ class JTableNested extends JTable
 		$query = $this->_db->getQuery(true);
 
 		// Sanitize input.
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 		$userId = (int) $userId;
 		$state = (int) $state;
 

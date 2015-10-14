@@ -265,8 +265,8 @@ class TemplatesModelStyle extends JModelAdmin
 		}
 		else
 		{
-			$clientId  = JArrayHelper::getValue($data, 'client_id');
-			$template  = JArrayHelper::getValue($data, 'template');
+			$clientId  = Joomla\Utilities\ArrayHelper::getValue($data, 'client_id');
+			$template  = Joomla\Utilities\ArrayHelper::getValue($data, 'template');
 		}
 
 		// These variables are used to add data from the plugin XML files.
@@ -346,7 +346,7 @@ class TemplatesModelStyle extends JModelAdmin
 
 			// Convert to the JObject before adding other data.
 			$properties        = $table->getProperties(1);
-			$this->_cache[$pk] = JArrayHelper::toObject($properties, 'JObject');
+			$this->_cache[$pk] = Joomla\Utilities\ArrayHelper::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
 			$registry = new Registry;
@@ -536,7 +536,7 @@ class TemplatesModelStyle extends JModelAdmin
 
 			if (!empty($data['assigned']) && is_array($data['assigned']))
 			{
-				JArrayHelper::toInteger($data['assigned']);
+				Joomla\Utilities\ArrayHelper::toInteger($data['assigned']);
 
 				// Update the mapping for menu items that this style IS assigned to.
 				$query = $db->getQuery(true)

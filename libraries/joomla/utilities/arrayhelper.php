@@ -12,7 +12,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\Utilities\ArrayHelper;
 
 /**
- * JArrayHelper is an array utility class for doing all sorts of odds and ends with arrays.
+ * Joomla\Utilities\ArrayHelper is an array utility class for doing all sorts of odds and ends with arrays.
  *
  * @since       11.1
  * @deprecated  4.0 Use Joomla\Utilities\ArrayHelper instead
@@ -273,7 +273,7 @@ abstract class JArrayHelper
 	 *     'New' => array('1000', '1500', '1750'),
 	 *     'Used' => array('3000', '4000', '5000', '6000')
 	 * );
-	 * $output = JArrayHelper::invert($input);
+	 * $output = Joomla\Utilities\ArrayHelper::invert($input);
 	 *
 	 * Output would be equal to:
 	 * $output = array(
@@ -433,7 +433,7 @@ abstract class JArrayHelper
 	 *
 	 * @return  integer  Comparison status
 	 *
-	 * @see     JArrayHelper::sortObjects()
+	 * @see     Joomla\Utilities\ArrayHelper::sortObjects()
 	 * @since   11.1
 	 */
 	protected static function _sortObjects(&$a, &$b)

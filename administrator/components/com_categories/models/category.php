@@ -229,7 +229,7 @@ class CategoriesModelCategory extends JModelAdmin
 			if ($result->id != null)
 			{
 				$result->associations = CategoriesHelper::getAssociations($result->id, $result->extension);
-				JArrayHelper::toInteger($result->associations);
+				Joomla\Utilities\ArrayHelper::toInteger($result->associations);
 			}
 			else
 			{
@@ -763,7 +763,7 @@ class CategoriesModelCategory extends JModelAdmin
 
 		// $value comes as {parent_id}.{extension}
 		$parts = explode('.', $value);
-		$parentId = (int) JArrayHelper::getValue($parts, 0, 1);
+		$parentId = (int) Joomla\Utilities\ArrayHelper::getValue($parts, 0, 1);
 
 		$db = $this->getDbo();
 		$extension = JFactory::getApplication()->input->get('extension', '', 'word');
@@ -1101,7 +1101,7 @@ class CategoriesModelCategory extends JModelAdmin
 		{
 			// Remove any duplicates and sanitize ids.
 			$children = array_unique($children);
-			JArrayHelper::toInteger($children);
+			Joomla\Utilities\ArrayHelper::toInteger($children);
 		}
 
 		return true;

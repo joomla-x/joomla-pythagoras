@@ -139,7 +139,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 
 	// Menu Types
 	$menuTypes = ModMenuHelper::getMenus();
-	$menuTypes = JArrayHelper::sortObjects($menuTypes, 'title', 1, false);
+	$menuTypes = Joomla\Utilities\ArrayHelper::sortObjects($menuTypes, 'title', 1, false);
 
 	foreach ($menuTypes as $menuType)
 	{

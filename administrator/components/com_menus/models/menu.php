@@ -133,7 +133,7 @@ class MenusModelMenu extends JModelForm
 		}
 
 		$properties = $table->getProperties(1);
-		$value      = JArrayHelper::toObject($properties, 'JObject');
+		$value      = Joomla\Utilities\ArrayHelper::toObject($properties, 'JObject');
 
 		return $value;
 	}
@@ -261,7 +261,7 @@ class MenusModelMenu extends JModelForm
 	{
 		// Sanitize the ids.
 		$itemIds = (array) $itemIds;
-		JArrayHelper::toInteger($itemIds);
+		Joomla\Utilities\ArrayHelper::toInteger($itemIds);
 
 		// Get a group row instance.
 		$table = $this->getTable();

@@ -144,7 +144,7 @@ class FinderControllerFilter extends JControllerForm
 		// Get and sanitize the filter data.
 		$validData['data'] = $input->post->get('t', array(), 'array');
 		$validData['data'] = array_unique($validData['data']);
-		JArrayHelper::toInteger($validData['data']);
+		Joomla\Utilities\ArrayHelper::toInteger($validData['data']);
 
 		// Remove any values of zero.
 		if (array_search(0, $validData['data'], true))

@@ -285,7 +285,7 @@ class ContentModelArticles extends JModelList
 		}
 		elseif (is_array($published))
 		{
-			JArrayHelper::toInteger($published);
+			Joomla\Utilities\ArrayHelper::toInteger($published);
 			$published = implode(',', $published);
 
 			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
@@ -322,7 +322,7 @@ class ContentModelArticles extends JModelList
 		}
 		elseif (is_array($articleId))
 		{
-			JArrayHelper::toInteger($articleId);
+			Joomla\Utilities\ArrayHelper::toInteger($articleId);
 			$articleId = implode(',', $articleId);
 			$type = $this->getState('filter.article_id.include', true) ? 'IN' : 'NOT IN';
 			$query->where('a.id ' . $type . ' (' . $articleId . ')');
@@ -365,7 +365,7 @@ class ContentModelArticles extends JModelList
 		}
 		elseif (is_array($categoryId) && (count($categoryId) > 0))
 		{
-			JArrayHelper::toInteger($categoryId);
+			Joomla\Utilities\ArrayHelper::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
 
 			if (!empty($categoryId))
@@ -386,7 +386,7 @@ class ContentModelArticles extends JModelList
 		}
 		elseif (is_array($authorId))
 		{
-			JArrayHelper::toInteger($authorId);
+			Joomla\Utilities\ArrayHelper::toInteger($authorId);
 			$authorId = implode(',', $authorId);
 
 			if ($authorId)

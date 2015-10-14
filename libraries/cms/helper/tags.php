@@ -461,7 +461,7 @@ class JHelperTags extends JHelper
 		$ids = (array) $ids;
 		$ids = implode(',', $ids);
 		$ids = explode(',', $ids);
-		JArrayHelper::toInteger($ids);
+		Joomla\Utilities\ArrayHelper::toInteger($ids);
 
 		$db = JFactory::getDbo();
 
@@ -518,7 +518,7 @@ class JHelperTags extends JHelper
 		$tagIds = (array) $tagId;
 		$tagIds = implode(',', $tagIds);
 		$tagIds = explode(',', $tagIds);
-		JArrayHelper::toInteger($tagIds);
+		Joomla\Utilities\ArrayHelper::toInteger($tagIds);
 
 		// If we want to include children we have to adjust the list of tags.
 		// We do not search child tags when the match all option is selected.
@@ -537,7 +537,7 @@ class JHelperTags extends JHelper
 
 		// Sanitize filter states
 		$stateFilters = explode(',', $stateFilter);
-		JArrayHelper::toInteger($stateFilters);
+		Joomla\Utilities\ArrayHelper::toInteger($stateFilters);
 
 		// M is the mapping table. C is the core_content table. Ct is the content_types table.
 		$query
@@ -650,7 +650,7 @@ class JHelperTags extends JHelper
 
 		if (is_array($tagIds) && count($tagIds) > 0)
 		{
-			JArrayHelper::toInteger($tagIds);
+			Joomla\Utilities\ArrayHelper::toInteger($tagIds);
 
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)
@@ -751,7 +751,7 @@ class JHelperTags extends JHelper
 			}
 			else
 			{
-				JArrayHelper::toInteger($selectTypes);
+				Joomla\Utilities\ArrayHelper::toInteger($selectTypes);
 
 				$query->where($db->quoteName('type_id') . ' IN (' . implode(',', $selectTypes) . ')');
 			}
@@ -1055,7 +1055,7 @@ class JHelperTags extends JHelper
 
 		if (is_array($tags) && count($tags) > 0)
 		{
-			JArrayHelper::toInteger($tags);
+			Joomla\Utilities\ArrayHelper::toInteger($tags);
 
 			$query->where($db->quoteName('tag_id') . ' IN ' . implode(',', $tags));
 		}

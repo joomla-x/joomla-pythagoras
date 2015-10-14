@@ -48,7 +48,7 @@ class InstallationControllerInstallLanguages extends JControllerBase
 
 		// Get array of selected languages
 		$lids = $this->input->get('cid', array(), 'array');
-		JArrayHelper::toInteger($lids, array());
+		Joomla\Utilities\ArrayHelper::toInteger($lids, array());
 
 		// Get the languages model.
 		$model = new InstallationModelLanguages;

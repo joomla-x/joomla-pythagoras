@@ -580,7 +580,7 @@ class ContentModelArticle extends JModelAdmin
 	{
 		// Sanitize the ids.
 		$pks = (array) $pks;
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 		if (empty($pks))
 		{

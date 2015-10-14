@@ -169,7 +169,7 @@ class InstallerModelDiscover extends InstallerModel
 				$eid = array($eid);
 			}
 
-			JArrayHelper::toInteger($eid);
+			Joomla\Utilities\ArrayHelper::toInteger($eid);
 			$failed = false;
 
 			foreach ($eid as $id)

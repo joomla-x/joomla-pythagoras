@@ -70,7 +70,7 @@ class MenusModelMenus extends JModelList
 
 		// Get the menu types of menus in the list.
 		$db = $this->getDbo();
-		$menuTypes = JArrayHelper::getColumn($items, 'menutype');
+		$menuTypes = Joomla\Utilities\ArrayHelper::getColumn($items, 'menutype');
 
 		// Quote the strings.
 		$menuTypes = implode(

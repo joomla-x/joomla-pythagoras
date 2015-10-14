@@ -67,7 +67,7 @@ class JFormFieldMenutype extends JFormFieldList
 				$link = $this->form->getValue('link');
 
 				// Clean the link back to the option, view and layout
-				$value = JText::_(JArrayHelper::getValue($rlu, MenusHelper::getLinkKey($link)));
+				$value = JText::_(Joomla\Utilities\ArrayHelper::getValue($rlu, MenusHelper::getLinkKey($link)));
 				break;
 		}
 		// Include jQuery

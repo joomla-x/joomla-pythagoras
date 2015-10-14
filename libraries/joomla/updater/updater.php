@@ -170,7 +170,7 @@ class JUpdater extends JAdapter
 			{
 				if (array_key_exists('update_sites', $update_result) && count($update_result['update_sites']))
 				{
-					$results = JArrayHelper::arrayUnique(array_merge($results, $update_result['update_sites']));
+					$results = Joomla\Utilities\ArrayHelper::arrayUnique(array_merge($results, $update_result['update_sites']));
 					$result_count = count($results);
 				}
 

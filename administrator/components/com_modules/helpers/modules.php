@@ -208,7 +208,7 @@ abstract class ModulesHelper
 			$modules[$i]->text = JText::_($module->text);
 		}
 
-		JArrayHelper::sortObjects($modules, 'text', 1, true, true);
+		Joomla\Utilities\ArrayHelper::sortObjects($modules, 'text', 1, true, true);
 
 		return $modules;
 	}
