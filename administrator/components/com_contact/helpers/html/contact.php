@@ -122,7 +122,7 @@ abstract class JHtmlContact
 			0 => array('unfeatured', 'contacts.featured', 'COM_CONTACT_UNFEATURED', 'JGLOBAL_TOGGLE_FEATURED'),
 			1 => array('featured', 'contacts.unfeatured', 'JFEATURED', 'JGLOBAL_TOGGLE_FEATURED'),
 		);
-		$state = JArrayHelper::getValue($states, (int) $value, $states[1]);
+		$state = Joomla\Utilities\ArrayHelper::getValue($states, (int) $value, $states[1]);
 		$icon  = $state[0];
 
 		if ($canChange)

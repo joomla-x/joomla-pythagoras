@@ -29,7 +29,7 @@ class ModulesControllerModules extends JControllerAdmin
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$pks = $this->input->post->get('cid', array(), 'array');
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 		try
 		{

@@ -30,7 +30,7 @@ class InstallationModelConfiguration extends JModelBase
 	public function setup($options)
 	{
 		// Get the options as an object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Attempt to create the root user.
 		if (!$this->_createConfiguration($options))

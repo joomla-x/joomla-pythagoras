@@ -92,7 +92,7 @@ class UsersModelUsers extends JModelList
 
 		if (isset($groups))
 		{
-			JArrayHelper::toInteger($groups);
+			Joomla\Utilities\ArrayHelper::toInteger($groups);
 		}
 
 		$this->setState('filter.groups', $groups);
@@ -101,7 +101,7 @@ class UsersModelUsers extends JModelList
 
 		if (isset($excluded))
 		{
-			JArrayHelper::toInteger($excluded);
+			Joomla\Utilities\ArrayHelper::toInteger($excluded);
 		}
 
 		$this->setState('filter.excluded', $excluded);

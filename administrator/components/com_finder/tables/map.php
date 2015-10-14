@@ -47,7 +47,7 @@ class FinderTableMap extends JTable
 		$k = $this->_tbl_key;
 
 		// Sanitize input.
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 		$state = (int) $state;
 
 		// If there are no primary keys set check to see if the instance key is set.

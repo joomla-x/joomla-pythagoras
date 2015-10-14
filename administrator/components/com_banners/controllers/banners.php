@@ -71,7 +71,7 @@ class BannersControllerBanners extends JControllerAdmin
 		$ids    = $this->input->get('cid', array(), 'array');
 		$values = array('sticky_publish' => 1, 'sticky_unpublish' => 0);
 		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		if (empty($ids))
 		{

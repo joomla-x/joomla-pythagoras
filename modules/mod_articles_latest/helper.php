@@ -105,7 +105,7 @@ abstract class ModArticlesLatestHelper
 			'p_dsc' => 'a.publish_up',
 			'random' => 'RAND()',
 		);
-		$ordering = JArrayHelper::getValue($order_map, $params->get('ordering'), 'a.publish_up');
+		$ordering = Joomla\Utilities\ArrayHelper::getValue($order_map, $params->get('ordering'), 'a.publish_up');
 		$dir      = 'DESC';
 
 		$model->setState('list.ordering', $ordering);

@@ -160,7 +160,7 @@ class RedirectModelLink extends JModelAdmin
 
 		// Sanitize the ids.
 		$pks = (array) $pks;
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 		// Populate default comment if necessary.
 		$comment = (!empty($comment)) ? $comment : JText::sprintf('COM_REDIRECT_REDIRECTED_ON', JHtml::_('date', time()));

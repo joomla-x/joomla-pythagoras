@@ -78,7 +78,7 @@ class ModFinderHelper
 		// Get the dynamic taxonomy filters.
 		$options['filters'] = $request->get('t', '', 'array');
 		$options['filters'] = $filter->clean($options['filters'], 'array');
-		JArrayHelper::toInteger($options['filters']);
+		Joomla\Utilities\ArrayHelper::toInteger($options['filters']);
 
 		// Instantiate a query object.
 		$query = new FinderIndexerQuery($options);

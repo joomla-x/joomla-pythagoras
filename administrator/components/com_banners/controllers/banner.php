@@ -35,7 +35,7 @@ class BannersControllerBanner extends JControllerForm
 	{
 		$user       = JFactory::getUser();
 		$filter     = $this->input->getInt('filter_category_id');
-		$categoryId = JArrayHelper::getValue($data, 'catid', $filter, 'int');
+		$categoryId = Joomla\Utilities\ArrayHelper::getValue($data, 'catid', $filter, 'int');
 		$allow      = null;
 
 		if ($categoryId)

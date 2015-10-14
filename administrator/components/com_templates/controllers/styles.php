@@ -35,7 +35,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 				throw new Exception(JText::_('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
 			}
 
-			JArrayHelper::toInteger($pks);
+			Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 			$model = $this->getModel();
 			$model->duplicate($pks);
@@ -88,7 +88,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 				throw new Exception(JText::_('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
 			}
 
-			JArrayHelper::toInteger($pks);
+			Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 			// Pop off the first element.
 			$id = array_shift($pks);
@@ -117,7 +117,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
 		$pks = $this->input->get->get('cid', array(), 'array');
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 		try
 		{

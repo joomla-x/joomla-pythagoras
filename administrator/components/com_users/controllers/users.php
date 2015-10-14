@@ -69,7 +69,7 @@ class UsersControllerUsers extends JControllerAdmin
 		$ids    = $this->input->get('cid', array(), 'array');
 		$values = array('block' => 1, 'unblock' => 0);
 		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		if (empty($ids))
 		{

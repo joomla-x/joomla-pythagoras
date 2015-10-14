@@ -47,7 +47,7 @@ class ContactControllerContacts extends JControllerAdmin
 		$ids    = $this->input->get('cid', array(), 'array');
 		$values = array('featured' => 1, 'unfeatured' => 0);
 		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
 		$model  = $this->getModel();

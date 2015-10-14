@@ -34,7 +34,7 @@ class InstallerControllerUpdate extends JControllerLegacy
 		$model = $this->getModel('update');
 		$uid   = $this->input->get('cid', array(), 'array');
 
-		JArrayHelper::toInteger($uid, array());
+		Joomla\Utilities\ArrayHelper::toInteger($uid, array());
 
 		// Get the minimum stability.
 		$component     = JComponentHelper::getComponent('com_installer');

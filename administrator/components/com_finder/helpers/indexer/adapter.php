@@ -553,7 +553,7 @@ abstract class FinderIndexerAdapter extends JPlugin
 		$row = $this->db->loadAssoc();
 
 		// Convert the item to a result object.
-		$item = JArrayHelper::toObject($row, 'FinderIndexerResult');
+		$item = Joomla\Utilities\ArrayHelper::toObject($row, 'FinderIndexerResult');
 
 		// Set the item type.
 		$item->type_id = $this->type_id;
@@ -588,7 +588,7 @@ abstract class FinderIndexerAdapter extends JPlugin
 		foreach ($rows as $row)
 		{
 			// Convert the item to a result object.
-			$item = JArrayHelper::toObject($row, 'FinderIndexerResult');
+			$item = Joomla\Utilities\ArrayHelper::toObject($row, 'FinderIndexerResult');
 
 			// Set the item type.
 			$item->type_id = $this->type_id;

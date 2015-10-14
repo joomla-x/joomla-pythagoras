@@ -166,7 +166,7 @@ abstract class JHtmlModules
 					}
 				}
 
-				$options = JArrayHelper::sortObjects($options, 'text');
+				$options = Joomla\Utilities\ArrayHelper::sortObjects($options, 'text');
 			}
 
 			$templateGroups[$template] = ModulesHelper::createOptionGroup(ucfirst($template), $options);

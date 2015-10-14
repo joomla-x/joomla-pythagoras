@@ -419,7 +419,7 @@ class PlgSystemDebug extends JPlugin
 
 				if (is_object($entries))
 				{
-					$o = JArrayHelper::fromObject($entries);
+					$o = Joomla\Utilities\ArrayHelper::fromObject($entries);
 
 					if ($o)
 					{

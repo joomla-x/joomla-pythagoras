@@ -179,7 +179,7 @@ class TagsModelTag extends JModelList
 		// Load state from the request.
 		$ids = $app->input->get('id', array(), 'array');
 
-		JArrayHelper::toInteger($ids);
+		Joomla\Utilities\ArrayHelper::toInteger($ids);
 
 		$pkString = implode(',', $ids);
 
@@ -195,7 +195,7 @@ class TagsModelTag extends JModelList
 
 			// Sanitise
 			$typesr = explode(',', $typesr);
-			JArrayHelper::toInteger($typesr);
+			Joomla\Utilities\ArrayHelper::toInteger($typesr);
 
 			$this->setState('tag.typesr', $typesr);
 		}
@@ -298,7 +298,7 @@ class TagsModelTag extends JModelList
 
 					// Convert the JTable to a clean JObject.
 					$properties = $table->getProperties(1);
-					$this->item[] = JArrayHelper::toObject($properties, 'JObject');
+					$this->item[] = Joomla\Utilities\ArrayHelper::toObject($properties, 'JObject');
 				}
 				catch (RuntimeException $e)
 				{

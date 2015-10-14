@@ -356,7 +356,7 @@ class JAccess
 				$result = $db->loadColumn();
 
 				// Clean up any NULL or duplicate values, just in case
-				JArrayHelper::toInteger($result);
+				Joomla\Utilities\ArrayHelper::toInteger($result);
 
 				if (empty($result))
 				{
@@ -405,7 +405,7 @@ class JAccess
 		$result = $db->loadColumn();
 
 		// Clean up any NULL values, just in case
-		JArrayHelper::toInteger($result);
+		Joomla\Utilities\ArrayHelper::toInteger($result);
 
 		return $result;
 	}

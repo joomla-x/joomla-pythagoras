@@ -981,7 +981,7 @@ class FinderModelSearch extends JModelList
 
 		// Sanitize the link ids.
 		$links = array_unique($links);
-		JArrayHelper::toInteger($links);
+		Joomla\Utilities\ArrayHelper::toInteger($links);
 
 		// Push the link ids into cache.
 		$this->store($store, $links);

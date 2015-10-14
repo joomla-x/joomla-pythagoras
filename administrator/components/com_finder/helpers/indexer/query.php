@@ -379,7 +379,7 @@ class FinderIndexerQuery
 
 		// Sanitize the terms.
 		$results = array_unique($results);
-		JArrayHelper::toInteger($results);
+		Joomla\Utilities\ArrayHelper::toInteger($results);
 
 		return $results;
 	}
@@ -421,7 +421,7 @@ class FinderIndexerQuery
 		foreach ($results as $key => $value)
 		{
 			$results[$key] = array_unique($results[$key]);
-			JArrayHelper::toInteger($results[$key]);
+			Joomla\Utilities\ArrayHelper::toInteger($results[$key]);
 		}
 
 		return $results;
@@ -462,7 +462,7 @@ class FinderIndexerQuery
 		foreach ($results as $key => $value)
 		{
 			$results[$key] = array_unique($results[$key]);
-			JArrayHelper::toInteger($results[$key]);
+			Joomla\Utilities\ArrayHelper::toInteger($results[$key]);
 		}
 
 		return $results;
@@ -521,7 +521,7 @@ class FinderIndexerQuery
 		// Remove duplicates and sanitize.
 		$filters = explode(',', $return->data);
 		$filters = array_unique($filters);
-		JArrayHelper::toInteger($filters);
+		Joomla\Utilities\ArrayHelper::toInteger($filters);
 
 		// Remove any values of zero.
 		if (array_search(0, $filters, true) !== false)
@@ -585,7 +585,7 @@ class FinderIndexerQuery
 
 		// Remove duplicates and sanitize.
 		$filters = array_unique($filters);
-		JArrayHelper::toInteger($filters);
+		Joomla\Utilities\ArrayHelper::toInteger($filters);
 
 		// Remove any values of zero.
 		if (array_search(0, $filters, true) !== false)

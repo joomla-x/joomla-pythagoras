@@ -155,7 +155,7 @@ abstract class JUserHelper
 		$user = JUser::getInstance((int) $userId);
 
 		// Set the group ids.
-		JArrayHelper::toInteger($groups);
+		Joomla\Utilities\ArrayHelper::toInteger($groups);
 		$user->groups = $groups;
 
 		// Get the titles for the user groups.

@@ -45,7 +45,7 @@ function admin_postinstall_eaccelerator_condition()
 function admin_postinstall_eaccelerator_action()
 {
 	$prev = new JConfig;
-	$prev = JArrayHelper::fromObject($prev);
+	$prev = Joomla\Utilities\ArrayHelper::fromObject($prev);
 
 	$data = array('cacheHandler' => 'file');
 

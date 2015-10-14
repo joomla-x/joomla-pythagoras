@@ -32,7 +32,7 @@ class InstallationModelFtp extends JModelBase
 		$app = JFactory::getApplication();
 
 		// Get the options as a object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Connect and login to the FTP server.
 		// Use binary transfer mode to be able to compare files.
@@ -151,7 +151,7 @@ class InstallationModelFtp extends JModelBase
 		$app = JFactory::getApplication();
 
 		// Get the options as a object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Connect and login to the FTP server.
 		@$ftp = JClientFtp::getInstance($options->get('ftp_host'), $options->get('ftp_port'));

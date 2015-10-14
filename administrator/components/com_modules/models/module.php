@@ -531,9 +531,9 @@ class ModulesModelModule extends JModelAdmin
 		}
 		else
 		{
-			$clientId = JArrayHelper::getValue($data, 'client_id');
-			$module   = JArrayHelper::getValue($data, 'module');
-			$id       = JArrayHelper::getValue($data, 'id');
+			$clientId = Joomla\Utilities\ArrayHelper::getValue($data, 'client_id');
+			$module   = Joomla\Utilities\ArrayHelper::getValue($data, 'module');
+			$id       = Joomla\Utilities\ArrayHelper::getValue($data, 'id');
 		}
 
 		// These variables are used to add data from the plugin XML files.
@@ -693,7 +693,7 @@ class ModulesModelModule extends JModelAdmin
 
 			// Convert to the JObject before adding other data.
 			$properties        = $table->getProperties(1);
-			$this->_cache[$pk] = JArrayHelper::toObject($properties, 'JObject');
+			$this->_cache[$pk] = Joomla\Utilities\ArrayHelper::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
 			$registry = new Registry;

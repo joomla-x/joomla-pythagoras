@@ -59,7 +59,7 @@ abstract class JHtmlTag
 				}
 				elseif (is_array($config['filter.published']))
 				{
-					JArrayHelper::toInteger($config['filter.published']);
+					Joomla\Utilities\ArrayHelper::toInteger($config['filter.published']);
 					$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
 				}
 			}
@@ -129,7 +129,7 @@ abstract class JHtmlTag
 			}
 			elseif (is_array($config['filter.published']))
 			{
-				JArrayHelper::toInteger($config['filter.published']);
+				Joomla\Utilities\ArrayHelper::toInteger($config['filter.published']);
 				$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
 			}
 		}

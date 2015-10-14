@@ -121,7 +121,7 @@ class BannersModelBanners extends JModelList
 		}
 		elseif ((is_array($categoryId)) && (count($categoryId) > 0))
 		{
-			JArrayHelper::toInteger($categoryId);
+			Joomla\Utilities\ArrayHelper::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
 
 			if ($categoryId != '0')

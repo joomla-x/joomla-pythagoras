@@ -95,7 +95,7 @@ class InstallationModelDatabase extends JModelBase
 		$app = JFactory::getApplication();
 
 		// Get the options as a object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Load the back-end language files so that the DB error messages work.
 		$lang = JFactory::getLanguage();
@@ -206,7 +206,7 @@ class InstallationModelDatabase extends JModelBase
 		}
 
 		// Get the options as a object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Check database version.
 		$type = $options->db_type;
@@ -420,7 +420,7 @@ class InstallationModelDatabase extends JModelBase
 		}
 
 		// Get the options as a object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Set the character set to UTF-8 for pre-existing databases.
 		$this->setDatabaseCharset($db, $options->db_name);
@@ -473,7 +473,7 @@ class InstallationModelDatabase extends JModelBase
 		}
 
 		// Get the options as a object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Check database type.
 		$type = $options->db_type;
@@ -691,7 +691,7 @@ class InstallationModelDatabase extends JModelBase
 		}
 
 		// Get the options as a object for easier handling.
-		$options = JArrayHelper::toObject($options);
+		$options = Joomla\Utilities\ArrayHelper::toObject($options);
 
 		// Build the path to the sample data file.
 		$type = $options->db_type;

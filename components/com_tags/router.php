@@ -50,7 +50,7 @@ class TagsRouter extends JComponentRouterBase
 
 		if (is_array($mId))
 		{
-			JArrayHelper::toInteger($mId);
+			Joomla\Utilities\ArrayHelper::toInteger($mId);
 		}
 
 		$view = '';

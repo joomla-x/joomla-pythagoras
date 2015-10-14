@@ -661,7 +661,7 @@ class Module extends JInstallerAdapter
 		if (count($modules))
 		{
 			// Ensure the list is sane
-			JArrayHelper::toInteger($modules);
+			Joomla\Utilities\ArrayHelper::toInteger($modules);
 			$modID = implode(',', $modules);
 
 			// Wipe out any items assigned to menus
