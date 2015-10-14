@@ -274,8 +274,11 @@ class Document
 	 * @since   11.1
 	 * @throws  RuntimeException
 	 */
-	public static function getInstance($type = 'html', $attributes = array())
+	public static function getInstance($type = 'Html', $attributes = array())
 	{
+		// Ensure that the type is correctly transformed to the namespace
+		$type = ucFirst(strtolower($type));
+
 		$signature = serialize(array($type, $attributes));
 
 		if (empty(self::$instances[$signature]))
@@ -298,7 +301,7 @@ class Document
 				elseif (file_exists($rawpath))
 				{
 					$ntype = $type;
-					$type = 'raw';
+					$type = 'Raw';
 
 					$class = '\\Joomla\\CMS\\Document\\' . $type . '\\' . $type;
 
