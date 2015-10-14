@@ -277,7 +277,7 @@ class Document
 	public static function getInstance($type = 'Html', $attributes = array())
 	{
 		// Ensure that the type is correctly transformed to the namespace
-		$type = ucFirst(strtolower($type));
+		$type = ucfirst(strtolower($type));
 
 		$signature = serialize(array($type, $attributes));
 
@@ -1012,11 +1012,12 @@ class Document
 	 */
 	public function loadRenderer($type)
 	{
+		$type  = ucfirst(strtolower($type));
 		$class = '\\Joomla\\CMS\\Document\\' . $this->getType() . '\\Renderer\\' . $type;
 
 		if (!class_exists($class))
 		{
-			$path = __DIR__ . '/' . $this->_type . '/renderer/' . $type . '.php';
+			$path = __DIR__ . '/' . $this->getType() . '/renderer/' . $type . '.php';
 
 			if (file_exists($path))
 			{
