@@ -1024,7 +1024,7 @@ class Document
 			}
 			else
 			{
-				throw new RuntimeException('Unable to load renderer class', 500);
+				throw new RuntimeException(sprintf('Unable to load renderer class %s', $type), 500);
 			}
 		}
 
