@@ -7,7 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use Joomla\Utilities\ArrayHelper;
+use DateTimeZone;
+use InvalidArgumentException;
+use JBrowser;
+use JFactory;
+use JFile;
+use JLog;
+use JPath;
+use JText;
+use JUri;
 
 jimport('joomla.environment.browser');
 jimport('joomla.filesystem.file');
@@ -19,7 +32,7 @@ jimport('joomla.utilities.arrayhelper');
  *
  * @since  1.5
  */
-abstract class JHtml
+abstract class Html
 {
 	/**
 	 * Option values related to the generation of HTML output. Recognized
@@ -67,11 +80,11 @@ abstract class JHtml
 		// Check to see whether we need to load a helper file
 		$parts = explode('.', $key);
 
-		$prefix = (count($parts) == 3 ? array_shift($parts) : 'JHtml');
-		$file = (count($parts) == 2 ? array_shift($parts) : '');
+		$prefix = count($parts) == 3 ? array_shift($parts) : __NAMESPACE__;
+		$file = count($parts) == 2 ? array_shift($parts) : str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
 		$func = array_shift($parts);
 
-		return array(strtolower($prefix . '.' . $file . '.' . $func), $prefix, $file, $func);
+		return array(strtolower(str_replace('\\', '.', $prefix) . '.' . $file . '.' . $func), $prefix, $file, $func);
 	}
 
 	/**
@@ -104,7 +117,16 @@ abstract class JHtml
 			return static::call($function, $args);
 		}
 
-		$className = $prefix . ucfirst($file);
+		/*
+		 * Check if this namespace matches the prefix to decide the separator between the prefix and file...
+		 * InstallationHtmlHelper should pass this check until the install app is namespaced out
+		 *
+		 * Note that this has pretty much broken any HTML helpers with class names of JHtmlWhatever in component directories since they don't pass
+		 * a prefix in the key.  At this point I'll argue they shouldn't be using the core base classname anyway and since we're refactoring
+		 * all the things anyway they can be renamed to proper namespaced items.
+		 */
+		$separator = $prefix === __NAMESPACE__ ? '\\' : '';
+		$className = $prefix . $separator . ucfirst($file);
 
 		if (!class_exists($className))
 		{
@@ -112,7 +134,7 @@ abstract class JHtml
 
 			if (!$path)
 			{
-				throw new InvalidArgumentException(sprintf('%s %s not found.', $prefix, $file), 500);
+				throw new InvalidArgumentException(sprintf('%s\\%s not found.', $prefix, ucfirst($file)), 500);
 			}
 
 			require_once $path;
@@ -236,7 +258,7 @@ abstract class JHtml
 	{
 		if (is_array($attribs))
 		{
-			$attribs = JArrayHelper::toString($attribs);
+			$attribs = ArrayHelper::toString($attribs);
 		}
 
 		return '<a href="' . $url . '" ' . $attribs . '>' . $text . '</a>';
@@ -258,7 +280,7 @@ abstract class JHtml
 	{
 		if (is_array($attribs))
 		{
-			$attribs = JArrayHelper::toString($attribs);
+			$attribs = ArrayHelper::toString($attribs);
 		}
 
 		return '<iframe src="' . $url . '" ' . $attribs . ' name="' . $name . '">' . $noFrames . '</iframe>';
@@ -563,7 +585,7 @@ abstract class JHtml
 		else
 		{
 			return '<img src="' . $file . '" alt="' . $alt . '" '
-			. trim((is_array($attribs) ? JArrayHelper::toString($attribs) : $attribs) . ' /')
+			. trim((is_array($attribs) ? ArrayHelper::toString($attribs) : $attribs) . ' /')
 			. '>';
 		}
 	}
@@ -954,7 +976,7 @@ abstract class JHtml
 			$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : 'input-medium';
 			$attribs['class'] = trim($attribs['class'] . ' hasTooltip');
 
-			$attribs = JArrayHelper::toString($attribs);
+			$attribs = ArrayHelper::toString($attribs);
 		}
 
 		static::_('bootstrap.tooltip');

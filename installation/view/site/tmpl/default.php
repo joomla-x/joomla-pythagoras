@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /* @var InstallationViewDefault $this */
 ?>
 <?php echo JHtml::_('InstallationHtml.helper.stepbar'); ?>

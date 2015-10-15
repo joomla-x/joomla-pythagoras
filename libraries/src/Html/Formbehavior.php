@@ -7,16 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use JFactory;
+use JText;
 
 /**
  * Utility class for form related behaviors
  *
  * @since  3.0
  */
-abstract class JHtmlFormbehavior
+abstract class Formbehavior
 {
 	/**
 	 * @var    array  Array containing information for loaded files
@@ -45,7 +49,7 @@ abstract class JHtmlFormbehavior
 		}
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
@@ -89,8 +93,8 @@ abstract class JHtmlFormbehavior
 		// Options array to json options string
 		$options_str = json_encode($options, ($debug && defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : false));
 
-		JHtml::_('script', 'jui/chosen.jquery.min.js', false, true, false, false, $debug);
-		JHtml::_('stylesheet', 'jui/chosen.css', false, true);
+		Html::_('script', 'jui/chosen.jquery.min.js', false, true, false, false, $debug);
+		Html::_('stylesheet', 'jui/chosen.css', false, true);
 		JFactory::getDocument()->addScriptDeclaration("
 				jQuery(document).ready(function (){
 					jQuery('" . $selector . "').chosen(" . $options_str . ");
@@ -138,12 +142,12 @@ abstract class JHtmlFormbehavior
 			}
 
 			// Include jQuery
-			JHtml::_('jquery.framework');
+			Html::_('jquery.framework');
 
 			// Requires chosen to work
 			static::chosen($selector, $debug);
 
-			JHtml::_('script', 'jui/ajax-chosen.min.js', false, true, false, false, $debug);
+			Html::_('script', 'jui/ajax-chosen.min.js', false, true, false, false, $debug);
 			JFactory::getDocument()->addScriptDeclaration("
 				(function($){
 					$(document).ready(function () {

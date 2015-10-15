@@ -7,14 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JText;
+use JUri;
 
 /**
  * Utility class for JavaScript behaviors
  *
  * @since  1.5
  */
-abstract class JHtmlBehavior
+abstract class Behavior
 {
 	/**
 	 * Array containing information for loaded files
@@ -58,7 +64,7 @@ abstract class JHtmlBehavior
 			static::framework(false, $debug);
 		}
 
-		JHtml::_('script', 'system/mootools-' . $type . '.js', false, true, false, false, $debug);
+		Html::_('script', 'system/mootools-' . $type . '.js', false, true, false, false, $debug);
 
 		// Keep loading core.js for BC reasons
 		static::core();
@@ -85,7 +91,7 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		JHtml::_('script', 'system/core.js', false, true);
+		Html::_('script', 'system/core.js', false, true);
 		static::$loaded[__METHOD__] = true;
 
 		return;
@@ -109,9 +115,9 @@ abstract class JHtmlBehavior
 		}
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
-		JHtml::_('script', 'system/caption.js', false, true);
+		Html::_('script', 'system/caption.js', false, true);
 
 		// Attach caption to document
 		JFactory::getDocument()->addScriptDeclaration(
@@ -179,13 +185,13 @@ abstract class JHtmlBehavior
 		static::core();
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
 		// Add validate.js language strings
 		JText::script('JLIB_FORM_FIELD_INVALID');
 
-		JHtml::_('script', 'system/punycode.js', false, true);
-		JHtml::_('script', 'system/validate.js', false, true);
+		Html::_('script', 'system/punycode.js', false, true);
+		Html::_('script', 'system/validate.js', false, true);
 		static::$loaded[__METHOD__] = true;
 	}
 
@@ -205,9 +211,9 @@ abstract class JHtmlBehavior
 		}
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
-		JHtml::_('script', 'system/switcher.js', true, true);
+		Html::_('script', 'system/switcher.js', true, true);
 
 		$script = "
 			document.switcher = null;
@@ -242,7 +248,7 @@ abstract class JHtmlBehavior
 		// Include core
 		static::core();
 
-		JHtml::_('script', 'system/combobox.js', false, true);
+		Html::_('script', 'system/combobox.js', false, true);
 		static::$loaded[__METHOD__] = true;
 	}
 
@@ -296,10 +302,10 @@ abstract class JHtmlBehavior
 		$opt['onShow']    = (isset($params['onShow'])) ? '\\' . $params['onShow'] : null;
 		$opt['onHide']    = (isset($params['onHide'])) ? '\\' . $params['onHide'] : null;
 
-		$options = JHtml::getJSObject($opt);
+		$options = Html::getJSObject($opt);
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
 		// Attach tooltips to document
 		JFactory::getDocument()->addScriptDeclaration(
@@ -355,8 +361,8 @@ abstract class JHtmlBehavior
 			static::framework(true);
 
 			// Load the JavaScript and css
-			JHtml::_('script', 'system/modal.js', true, true);
-			JHtml::_('stylesheet', 'system/modal.css', array(), true);
+			Html::_('script', 'system/modal.js', true, true);
+			Html::_('stylesheet', 'system/modal.css', array(), true);
 		}
 
 		$sig = md5(serialize(array($selector, $params)));
@@ -386,14 +392,14 @@ abstract class JHtmlBehavior
 		$opt['onHide']        = (isset($params['onHide'])) ? $params['onHide'] : null;
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
 		if (isset($params['fullScreen']) && (bool) $params['fullScreen'])
 		{
 			$opt['size']      = array('x' => '\\jQuery(window).width() - 80', 'y' => '\\jQuery(window).height() - 80');
 		}
 
-		$options = JHtml::getJSObject($opt);
+		$options = Html::getJSObject($opt);
 
 		// Attach modal behavior to document
 		$document
@@ -437,9 +443,9 @@ abstract class JHtmlBehavior
 		static::core();
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
-		JHtml::_('script', 'system/multiselect.js', false, true);
+		Html::_('script', 'system/multiselect.js', false, true);
 
 		// Attach multiselect to document
 		JFactory::getDocument()->addScriptDeclaration(
@@ -470,8 +476,8 @@ abstract class JHtmlBehavior
 		// Include MooTools framework
 		static::framework();
 
-		JHtml::_('script', 'system/mootree.js', true, true, false, false);
-		JHtml::_('stylesheet', 'system/mootree.css', array(), true);
+		Html::_('script', 'system/mootree.js', true, true, false, false);
+		Html::_('stylesheet', 'system/mootree.css', array(), true);
 
 		if (isset(static::$loaded[__METHOD__][$id]))
 		{
@@ -479,13 +485,13 @@ abstract class JHtmlBehavior
 		}
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
 		// Setup options object
 		$opt['div']   = (array_key_exists('div', $params)) ? $params['div'] : $id . '_tree';
 		$opt['mode']  = (array_key_exists('mode', $params)) ? $params['mode'] : 'folders';
 		$opt['grid']  = (array_key_exists('grid', $params)) ? '\\' . $params['grid'] : true;
-		$opt['theme'] = (array_key_exists('theme', $params)) ? $params['theme'] : JHtml::_('image', 'system/mootree.gif', '', array(), true, true);
+		$opt['theme'] = (array_key_exists('theme', $params)) ? $params['theme'] : Html::_('image', 'system/mootree.gif', '', array(), true, true);
 
 		// Event handlers
 		$opt['onExpand'] = (array_key_exists('onExpand', $params)) ? '\\' . $params['onExpand'] : null;
@@ -493,7 +499,7 @@ abstract class JHtmlBehavior
 		$opt['onClick']  = (array_key_exists('onClick', $params)) ? '\\' . $params['onClick']
 		: '\\function(node){  window.open(node.data.url, node.data.target != null ? node.data.target : \'_self\'); }';
 
-		$options = JHtml::getJSObject($opt);
+		$options = Html::getJSObject($opt);
 
 		// Setup root node
 		$rt['text']     = (array_key_exists('text', $root)) ? $root['text'] : 'Root';
@@ -503,7 +509,7 @@ abstract class JHtmlBehavior
 		$rt['icon']     = (array_key_exists('icon', $root)) ? $root['icon'] : null;
 		$rt['openicon'] = (array_key_exists('openicon', $root)) ? $root['openicon'] : null;
 		$rt['data']     = (array_key_exists('data', $root)) ? $root['data'] : null;
-		$rootNode = JHtml::getJSObject($rt);
+		$rootNode = Html::getJSObject($rt);
 
 		$treeName = (array_key_exists('treeName', $params)) ? $params['treeName'] : '';
 
@@ -539,9 +545,9 @@ abstract class JHtmlBehavior
 		$document = JFactory::getDocument();
 		$tag = JFactory::getLanguage()->getTag();
 
-		JHtml::_('stylesheet', 'system/calendar-jos.css', array(' title' => JText::_('JLIB_HTML_BEHAVIOR_GREEN'), ' media' => 'all'), true);
-		JHtml::_('script', $tag . '/calendar.js', false, true);
-		JHtml::_('script', $tag . '/calendar-setup.js', false, true);
+		Html::_('stylesheet', 'system/calendar-jos.css', array(' title' => JText::_('JLIB_HTML_BEHAVIOR_GREEN'), ' media' => 'all'), true);
+		Html::_('script', $tag . '/calendar.js', false, true);
+		Html::_('script', $tag . '/calendar-setup.js', false, true);
 
 		$translation = static::calendartranslation();
 
@@ -569,10 +575,10 @@ abstract class JHtmlBehavior
 		}
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
-		JHtml::_('script', 'jui/jquery.minicolors.min.js', false, true);
-		JHtml::_('stylesheet', 'jui/jquery.minicolors.css', false, true);
+		Html::_('script', 'jui/jquery.minicolors.min.js', false, true);
+		Html::_('stylesheet', 'jui/jquery.minicolors.css', false, true);
 		JFactory::getDocument()->addScriptDeclaration("
 				jQuery(document).ready(function (){
 					jQuery('.minicolors').each(function() {
@@ -605,10 +611,10 @@ abstract class JHtmlBehavior
 		}
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
-		JHtml::_('script', 'jui/jquery.simplecolors.min.js', false, true);
-		JHtml::_('stylesheet', 'jui/jquery.simplecolors.css', false, true);
+		Html::_('script', 'jui/jquery.simplecolors.min.js', false, true);
+		Html::_('stylesheet', 'jui/jquery.simplecolors.css', false, true);
 		JFactory::getDocument()->addScriptDeclaration("
 				jQuery(document).ready(function (){
 					jQuery('select.simplecolors').simplecolors();
@@ -704,9 +710,9 @@ abstract class JHtmlBehavior
 		static::core();
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
-		JHtml::_('script', 'system/highlighter.js', false, true);
+		Html::_('script', 'system/highlighter.js', false, true);
 
 		$terms = str_replace('"', '\"', $terms);
 
@@ -754,7 +760,7 @@ abstract class JHtmlBehavior
 		static::core();
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
 		$js = "jQuery(function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
 			" else {top.location = self.location; }});";
@@ -775,13 +781,13 @@ abstract class JHtmlBehavior
 	 * @return  string  JavaScript object notation representation of the array
 	 *
 	 * @since       1.5
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use JHtml::getJSObject() instead.
+	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use Html::getJSObject() instead.
 	 */
 	protected static function _getJSObject($array = array())
 	{
-		JLog::add('JHtmlBehavior::_getJSObject() is deprecated. JHtml::getJSObject() instead..', JLog::WARNING, 'deprecated');
+		JLog::add('HtmlBehavior::_getJSObject() is deprecated. Html::getJSObject() instead..', JLog::WARNING, 'deprecated');
 
-		return JHtml::getJSObject($array);
+		return Html::getJSObject($array);
 	}
 
 	/**
@@ -893,8 +899,8 @@ abstract class JHtmlBehavior
 			return;
 		}
 		// Include jQuery
-		JHtml::_('jquery.framework');
-		JHtml::_('script', 'system/tabs-state.js', false, true);
+		Html::_('jquery.framework');
+		Html::_('script', 'system/tabs-state.js', false, true);
 		self::$loaded[__METHOD__] = true;
 	}
 }

@@ -7,17 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Layout\Helper as JLayoutHelper;
 use Joomla\CMS\Layout\File as JLayoutFile;
+use JFactory;
 
 /**
  * Utility class for Bootstrap elements.
  *
  * @since  3.0
  */
-abstract class JHtmlBootstrap
+abstract class Bootstrap
 {
 	/**
 	 * @var    array  Array containing information for loaded files
@@ -54,7 +57,7 @@ abstract class JHtmlBootstrap
 			// Setup options object
 			$opt['offset'] = isset($params['offset']) ? $params['offset'] : 10;
 
-			$options = JHtml::getJSObject($opt);
+			$options = Html::getJSObject($opt);
 
 			// Attach affix to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -162,7 +165,7 @@ abstract class JHtmlBootstrap
 			$opt['interval'] = isset($params['interval']) ? (int) $params['interval'] : 5000;
 			$opt['pause']    = isset($params['pause']) ? $params['pause'] : 'hover';
 
-			$options = JHtml::getJSObject($opt);
+			$options = Html::getJSObject($opt);
 
 			// Attach the carousel to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -230,7 +233,7 @@ abstract class JHtmlBootstrap
 		}
 
 		// Load jQuery
-		JHtml::_('jquery.framework');
+		Html::_('jquery.framework');
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
@@ -239,7 +242,7 @@ abstract class JHtmlBootstrap
 			$debug = (boolean) $config->get('debug');
 		}
 
-		JHtml::_('script', 'jui/bootstrap.min.js', false, true, false, false, $debug);
+		Html::_('script', 'jui/bootstrap.min.js', false, true, false, false, $debug);
 		static::$loaded[__METHOD__] = true;
 
 		return;
@@ -350,7 +353,7 @@ abstract class JHtmlBootstrap
 		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
 		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
 
-		$options = JHtml::getJSObject($opt);
+		$options = Html::getJSObject($opt);
 
 		// Attach the popover to the document
 		JFactory::getDocument()->addScriptDeclaration(
@@ -389,7 +392,7 @@ abstract class JHtmlBootstrap
 			// Setup options object
 			$opt['offset'] = isset($params['offset']) ? (int) $params['offset'] : 10;
 
-			$options = JHtml::getJSObject($opt);
+			$options = Html::getJSObject($opt);
 
 			// Attach ScrollSpy to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -452,7 +455,7 @@ abstract class JHtmlBootstrap
 			$onHide           = isset($params['onHide']) ? (string) $params['onHide'] : null;
 			$onHidden         = isset($params['onHidden']) ? (string) $params['onHidden'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = Html::getJSObject($opt);
 
 			// Build the script.
 			$script = array();
@@ -533,7 +536,7 @@ abstract class JHtmlBootstrap
 			$opt['updater']     = isset($params['updater']) ? (string) $params['updater'] : null;
 			$opt['highlighter'] = isset($params['highlighter']) ? (int) $params['highlighter'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = Html::getJSObject($opt);
 
 			// Attach typehead to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -560,12 +563,12 @@ abstract class JHtmlBootstrap
 	 *                                                 collapsible item is shown. (similar to traditional accordion behavior)
 	 *                             - toggle  boolean   Toggles the collapsible element on invocation
 	 *                             - active  string    Sets the active slide during load
-	 * 
+	 *
 	 *                             - onShow    function  This event fires immediately when the show instance method is called.
-	 *                             - onShown   function  This event is fired when a collapse element has been made visible to the user 
+	 *                             - onShown   function  This event is fired when a collapse element has been made visible to the user
 	 *                                                   (will wait for css transitions to complete).
 	 *                             - onHide    function  This event is fired immediately when the hide method has been called.
-	 *                             - onHidden  function  This event is fired when a collapse element has been hidden from the user 
+	 *                             - onHidden  function  This event is fired when a collapse element has been hidden from the user
 	 *                                                   (will wait for css transitions to complete).
 	 *
 	 * @return  string  HTML for the accordian
@@ -587,7 +590,7 @@ abstract class JHtmlBootstrap
 			$onHide = isset($params['onHide']) ? (string) $params['onHide'] : null;
 			$onHidden = isset($params['onHidden']) ? (string) $params['onHidden'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = Html::getJSObject($opt);
 
 			$opt['active'] = isset($params['active']) ? (string) $params['active'] : '';
 
@@ -752,7 +755,7 @@ abstract class JHtmlBootstrap
 		$tabScriptLayout = is_null($tabScriptLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
 		$tabLayout = is_null($tabLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtab') : $tabLayout;
 
-		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
+		$active = (static::$loaded['HtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
 		// Inject tab into UL
 		JFactory::getDocument()
@@ -786,13 +789,13 @@ abstract class JHtmlBootstrap
 	 * @return  string
 	 *
 	 * @since   3.0
-	 * @deprecated  4.0	Use JHtml::_('bootstrap.startTabSet') instead.
+	 * @deprecated  4.0	Use Html::_('bootstrap.startTabSet') instead.
 	 */
 	public static function startPane($selector = 'myTab', $params = array())
 	{
 		$sig = md5(serialize(array($selector, $params)));
 
-		if (!isset(static::$loaded['JHtmlBootstrap::startTabSet'][$sig]))
+		if (!isset(static::$loaded['HtmlBootstrap::startTabSet'][$sig]))
 		{
 			// Include Bootstrap framework
 			static::framework();
@@ -811,8 +814,8 @@ abstract class JHtmlBootstrap
 			);
 
 			// Set static array
-			static::$loaded['JHtmlBootstrap::startTabSet'][$sig] = true;
-			static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] = $opt['active'];
+			static::$loaded['HtmlBootstrap::startTabSet'][$sig] = true;
+			static::$loaded['HtmlBootstrap::startTabSet'][$selector]['active'] = $opt['active'];
 		}
 
 		return '<div class="tab-content" id="' . $selector . 'Content">';
@@ -824,7 +827,7 @@ abstract class JHtmlBootstrap
 	 * @return  string  HTML to close the pane
 	 *
 	 * @since   3.0
-	 * @deprecated  4.0	Use JHtml::_('bootstrap.endTabSet') instead.
+	 * @deprecated  4.0	Use Html::_('bootstrap.endTabSet') instead.
 	 */
 	public static function endPane()
 	{
@@ -840,11 +843,11 @@ abstract class JHtmlBootstrap
 	 * @return  string  HTML to start a new panel
 	 *
 	 * @since   3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.addTab') instead.
+	 * @deprecated  4.0 Use Html::_('bootstrap.addTab') instead.
 	 */
 	public static function addPanel($selector, $id)
 	{
-		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
+		$active = (static::$loaded['HtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
 		return '<div id="' . $id . '" class="tab-pane' . $active . '">';
 	}
@@ -855,7 +858,7 @@ abstract class JHtmlBootstrap
 	 * @return  string  HTML to close the pane
 	 *
 	 * @since   3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.endTab') instead.
+	 * @deprecated  4.0 Use Html::_('bootstrap.endTab') instead.
 	 */
 	public static function endPanel()
 	{
@@ -867,7 +870,7 @@ abstract class JHtmlBootstrap
 	 *
 	 * @param   boolean  $includeMainCss  If true, main bootstrap.css files are loaded
 	 * @param   string   $direction       rtl or ltr direction. If empty, ltr is assumed
-	 * @param   array    $attribs         Optional array of attributes to be passed to JHtml::_('stylesheet')
+	 * @param   array    $attribs         Optional array of attributes to be passed to Html::_('stylesheet')
 	 *
 	 * @return  void
 	 *
@@ -878,15 +881,15 @@ abstract class JHtmlBootstrap
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
-			JHtml::_('stylesheet', 'jui/bootstrap.min.css', $attribs, true);
-			JHtml::_('stylesheet', 'jui/bootstrap-responsive.min.css', $attribs, true);
-			JHtml::_('stylesheet', 'jui/bootstrap-extended.css', $attribs, true);
+			Html::_('stylesheet', 'jui/bootstrap.min.css', $attribs, true);
+			Html::_('stylesheet', 'jui/bootstrap-responsive.min.css', $attribs, true);
+			Html::_('stylesheet', 'jui/bootstrap-extended.css', $attribs, true);
 		}
 
 		// Load Bootstrap RTL CSS
 		if ($direction === 'rtl')
 		{
-			JHtml::_('stylesheet', 'jui/bootstrap-rtl.css', $attribs, true);
+			Html::_('stylesheet', 'jui/bootstrap-rtl.css', $attribs, true);
 		}
 	}
 }

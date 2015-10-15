@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Language\Associations as JLanguageAssociations;
 use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 

@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JSession;
 
 /**
  * Utility class for form elements
  *
  * @since  1.5
  */
-abstract class JHtmlForm
+abstract class Form
 {
 	/**
 	 * Displays a hidden token field to reduce the risk of CSRF exploits

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $app             = JFactory::getApplication();
 $doc             = JFactory::getDocument();
 $this->language  = $doc->language;
