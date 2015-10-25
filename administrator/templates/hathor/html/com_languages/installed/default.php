@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die;
 
-JHtmlBehavior::core();
+use Joomla\CMS\Html\Html as JHtml;
+
+JHtml::_('behavior.core');
 // Add specific helper files for html generation
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $user     = JFactory::getUser();

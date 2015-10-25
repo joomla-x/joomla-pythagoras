@@ -7,14 +7,22 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use DateTimeZone;
+use JDate;
+use JFactory;
+use Joomla\Utilities\ArrayHelper;
+use JText;
 
 /**
  * Utility class for creating HTML Grids
  *
  * @since  1.6
  */
-abstract class JHtmlJGrid
+abstract class JGrid
 {
 	/**
 	 * Returns an action on a grid
@@ -55,11 +63,11 @@ abstract class JHtmlJGrid
 
 		if ($tip)
 		{
-			JHtml::_('bootstrap.tooltip');
+			Html::_('bootstrap.tooltip');
 
 			$title = $enabled ? $active_title : $inactive_title;
 			$title = $translate ? JText::_($title) : $title;
-			$title = JHtml::tooltipText($title, '', 0);
+			$title = Html::tooltipText($title, '', 0);
 		}
 
 		if ($enabled)
@@ -122,7 +130,7 @@ abstract class JHtmlJGrid
 			$prefix = array_key_exists('prefix', $options) ? $options['prefix'] : '';
 		}
 
-		$state = JArrayHelper::getValue($states, (int) $value, $states[0]);
+		$state = ArrayHelper::getValue($states, (int) $value, $states[0]);
 		$task = array_key_exists('task', $state) ? $state['task'] : $state[0];
 		$text = array_key_exists('text', $state) ? $state['text'] : (array_key_exists(1, $state) ? $state[1] : '');
 		$active_title = array_key_exists('active_title', $state) ? $state['active_title'] : (array_key_exists(2, $state) ? $state[2] : '');
@@ -282,27 +290,27 @@ abstract class JHtmlJGrid
 
 		if (!array_key_exists('published', $config) || $config['published'])
 		{
-			$options[] = JHtml::_('select.option', '1', 'JPUBLISHED');
+			$options[] = Html::_('select.option', '1', 'JPUBLISHED');
 		}
 
 		if (!array_key_exists('unpublished', $config) || $config['unpublished'])
 		{
-			$options[] = JHtml::_('select.option', '0', 'JUNPUBLISHED');
+			$options[] = Html::_('select.option', '0', 'JUNPUBLISHED');
 		}
 
 		if (!array_key_exists('archived', $config) || $config['archived'])
 		{
-			$options[] = JHtml::_('select.option', '2', 'JARCHIVED');
+			$options[] = Html::_('select.option', '2', 'JARCHIVED');
 		}
 
 		if (!array_key_exists('trash', $config) || $config['trash'])
 		{
-			$options[] = JHtml::_('select.option', '-2', 'JTRASHED');
+			$options[] = Html::_('select.option', '-2', 'JTRASHED');
 		}
 
 		if (!array_key_exists('all', $config) || $config['all'])
 		{
-			$options[] = JHtml::_('select.option', '*', 'JALL');
+			$options[] = Html::_('select.option', '*', 'JALL');
 		}
 
 		return $options;
@@ -324,7 +332,7 @@ abstract class JHtmlJGrid
 	 */
 	public static function checkedout($i, $editorName, $time, $prefix = '', $enabled = false, $checkbox = 'cb')
 	{
-		JHtml::_('bootstrap.tooltip');
+		Html::_('bootstrap.tooltip');
 
 		if (is_array($prefix))
 		{
@@ -334,9 +342,9 @@ abstract class JHtmlJGrid
 			$prefix = array_key_exists('prefix', $options) ? $options['prefix'] : '';
 		}
 
-		$text = $editorName . '<br />' . JHtml::_('date', $time, JText::_('DATE_FORMAT_LC')) . '<br />' . JHtml::_('date', $time, 'H:i');
-		$active_title = JHtml::tooltipText(JText::_('JLIB_HTML_CHECKIN'), $text, 0);
-		$inactive_title = JHtml::tooltipText(JText::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
+		$text = $editorName . '<br />' . Html::_('date', $time, JText::_('DATE_FORMAT_LC')) . '<br />' . Html::_('date', $time, 'H:i');
+		$active_title = Html::tooltipText(JText::_('JLIB_HTML_CHECKIN'), $text, 0);
+		$inactive_title = Html::tooltipText(JText::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
 
 		return static::action(
 			$i, 'checkin', $prefix, JText::_('JLIB_HTML_CHECKED_OUT'), html_entity_decode($active_title, ENT_QUOTES, 'UTF-8'),
