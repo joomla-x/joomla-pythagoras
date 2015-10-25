@@ -7,7 +7,12 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use InvalidArgumentException;
+use JFactory;
 
 /**
  * HTML utility class for creating a sortable table list
@@ -53,10 +58,10 @@ abstract class JHtmlSortablelist
 		}
 
 		// Depends on jQuery UI
-		JHtml::_('jquery.ui', array('core', 'sortable'));
+		Html::_('jquery.ui', array('core', 'sortable'));
 
-		JHtml::_('script', 'jui/sortablelist.js', false, true);
-		JHtml::_('stylesheet', 'jui/sortablelist.css', false, true, false);
+		Html::_('script', 'jui/sortablelist.js', false, true);
+		Html::_('stylesheet', 'jui/sortablelist.css', false, true, false);
 
 		// Attach sortable to document
 		JFactory::getDocument()->addScriptDeclaration("
