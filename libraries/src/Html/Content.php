@@ -7,16 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
+use JObject;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
+use stdClass;
 
 /**
  * Utility class to fire onContentPrepare for non-article based content.
  *
  * @since  1.5
  */
-abstract class JHtmlContent
+abstract class Content
 {
 	/**
 	 * Fire onContentPrepare for content that isn't part of an article.

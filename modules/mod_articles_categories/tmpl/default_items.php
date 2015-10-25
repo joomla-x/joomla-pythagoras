@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Module\Helper as JModuleHelper;
 
 foreach ($list as $item) : ?>

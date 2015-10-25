@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $class = ' class="first"';
 if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 ?>
