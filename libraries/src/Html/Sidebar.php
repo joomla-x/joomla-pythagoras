@@ -7,16 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
 use Joomla\CMS\Layout\File as JLayoutFile;
+use stdClass;
 
 /**
  * Utility class to render a list view sidebar
  *
  * @since  3.0
  */
-abstract class JHtmlSidebar
+abstract class Sidebar
 {
 	/**
 	 * Menu entries

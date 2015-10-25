@@ -10,6 +10,8 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
 
 /**
  * View class for a list of template styles.

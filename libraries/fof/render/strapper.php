@@ -8,6 +8,7 @@
 defined('FOF_INCLUDED') or die;
 
 use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
 use Joomla\CMS\Version as JVersion;
 
 /**

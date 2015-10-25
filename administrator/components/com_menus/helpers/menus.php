@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 /**
  * Menus component helper.
  *

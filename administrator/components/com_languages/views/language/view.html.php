@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
+
 /**
  * HTML View class for the Languages component.
  *

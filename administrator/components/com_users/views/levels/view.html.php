@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
+
 /**
  * The HTML Users access levels view.
  *

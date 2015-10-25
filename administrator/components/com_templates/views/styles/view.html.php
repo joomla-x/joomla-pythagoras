@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 
 /**
