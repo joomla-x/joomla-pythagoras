@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 
 require_once JPATH_ROOT . '/components/com_contact/helpers/route.php';

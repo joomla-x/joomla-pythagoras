@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Form Field class for the Joomla Platform.
  * Supports a nested check box field listing user groups.

@@ -7,14 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JAccess;
+use JFactory;
+use JText;
 
 /**
  * Extended Utility class for all HTML drawing classes.
  *
  * @since  1.6
  */
-abstract class JHtmlAccess
+abstract class Access
 {
 	/**
 	 * A cached array of the asset groups
@@ -61,10 +67,10 @@ abstract class JHtmlAccess
 		// If all levels is allowed, push it into the array.
 		elseif ($params)
 		{
-			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+			array_unshift($options, Html::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 		}
 
-		return JHtml::_(
+		return Html::_(
 			'select.genericlist',
 			$options,
 			$name,
@@ -110,10 +116,10 @@ abstract class JHtmlAccess
 		// If all usergroups is allowed, push it into the array.
 		if ($allowAll)
 		{
-			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
+			array_unshift($options, Html::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
 		}
 
-		return JHtml::_('select.genericlist', $options, $name, array('list.attr' => $attribs, 'list.select' => $selected, 'id' => $id));
+		return Html::_('select.genericlist', $options, $name, array('list.attr' => $attribs, 'list.select' => $selected, 'id' => $id));
 	}
 
 	/**
@@ -278,10 +284,10 @@ abstract class JHtmlAccess
 
 		if (isset($config['title']))
 		{
-			array_unshift($options, JHtml::_('select.option', '', $config['title']));
+			array_unshift($options, Html::_('select.option', '', $config['title']));
 		}
 
-		return JHtml::_(
+		return Html::_(
 			'select.genericlist',
 			$options,
 			$name,
