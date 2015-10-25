@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 
 $com_path = JPATH_SITE . '/components/com_content/';

@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Tests for JHtmlString.
  *

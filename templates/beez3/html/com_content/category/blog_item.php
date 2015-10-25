@@ -8,6 +8,8 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $params =& $this->item->params;
 $images = json_decode($this->item->images);
 $app = JFactory::getApplication();

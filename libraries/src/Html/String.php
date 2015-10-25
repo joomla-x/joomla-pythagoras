@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use Joomla\String\StringHelper as JString;
 
 /**
  * HTML helper class for rendering manipulated strings.
  *
  * @since  1.6
  */
-abstract class JHtmlString
+abstract class String
 {
 	/**
 	 * Truncates text blocks over the specified character limit and closes
@@ -194,7 +198,7 @@ abstract class JHtmlString
 		}
 
 		// First get the truncated plain text string. This is the rendered text we want to end up with.
-		$ptString = JHtml::_('string.truncate', $html, $maxLength, $noSplit, $allowHtml = false);
+		$ptString = Html::_('string.truncate', $html, $maxLength, $noSplit, $allowHtml = false);
 
 		// It's all HTML, just return it.
 		if (strlen($ptString) == 0)
@@ -213,7 +217,7 @@ abstract class JHtmlString
 		if ($ptString == '...')
 		{
 			$stripped = substr(strip_tags($html), 0, $maxLength);
-			$ptString = JHtml::_('string.truncate', $stripped, $maxLength, $noSplit, $allowHtml = false);
+			$ptString = Html::_('string.truncate', $stripped, $maxLength, $noSplit, $allowHtml = false);
 		}
 
 		// We need to trim the ellipsis that truncate adds.
@@ -223,7 +227,7 @@ abstract class JHtmlString
 		while ($maxLength <= $baseLength)
 		{
 			// Get the truncated string assuming HTML is allowed.
-			$htmlString = JHtml::_('string.truncate', $html, $maxLength, $noSplit, $allowHtml = true);
+			$htmlString = Html::_('string.truncate', $html, $maxLength, $noSplit, $allowHtml = true);
 
 			if ($htmlString == '...' && strlen($ptString) + 3 > $maxLength)
 			{
@@ -233,7 +237,7 @@ abstract class JHtmlString
 			$htmlString = rtrim($htmlString, '.');
 
 			// Now get the plain text from the HTML string and trim it.
-			$htmlStringToPtString = JHtml::_('string.truncate', $htmlString, $maxLength, $noSplit, $allowHtml = false);
+			$htmlStringToPtString = Html::_('string.truncate', $htmlString, $maxLength, $noSplit, $allowHtml = false);
 			$htmlStringToPtString = rtrim($htmlStringToPtString, '.');
 
 			// If the new plain text string matches the original plain text string we are done.

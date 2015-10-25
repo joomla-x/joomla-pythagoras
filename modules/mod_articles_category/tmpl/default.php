@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <ul class="category-module<?php echo $moduleclass_sfx; ?>">
 	<?php if ($grouped) : ?>
