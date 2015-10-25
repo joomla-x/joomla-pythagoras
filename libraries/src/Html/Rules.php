@@ -7,16 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Html\Html as JHtml;
+use JAccess;
+use JFactory;
+use JText;
 
 /**
  * Extended Utility class for all HTML drawing classes.
  *
  * @since  1.6
  */
-abstract class JHtmlRules
+abstract class Rules
 {
 	/**
 	 * Creates the HTML for the permissions widget
@@ -48,8 +52,8 @@ abstract class JHtmlRules
 		$html = array();
 
 		$html[] = '<div class="acl-options">';
-		$html[] = JHtml::_('tabs.start', 'acl-rules-' . $assetId, array('useCookie' => 1));
-		$html[] = JHtml::_('tabs.panel', JText::_('JLIB_HTML_ACCESS_SUMMARY'), 'summary');
+		$html[] = Html::_('tabs.start', 'acl-rules-' . $assetId, array('useCookie' => 1));
+		$html[] = Html::_('tabs.panel', JText::_('JLIB_HTML_ACCESS_SUMMARY'), 'summary');
 		$html[] = '			<p>' . JText::_('JLIB_HTML_ACCESS_SUMMARY_DESC') . '</p>';
 		$html[] = '			<table class="aclsummary-table" summary="' . JText::_('JLIB_HTML_ACCESS_SUMMARY_DESC') . '">';
 		$html[] = '			<caption>' . JText::_('JLIB_HTML_ACCESS_SUMMARY_DESC_CAPTION') . '</caption>';
@@ -84,7 +88,7 @@ abstract class JHtmlRules
 		{
 			$actionTitle = JText::_($action->title);
 			$actionDesc = JText::_($action->description);
-			$html[] = JHtml::_('tabs.panel', $actionTitle, $action->name);
+			$html[] = Html::_('tabs.panel', $actionTitle, $action->name);
 			$html[] = '			<p>' . $actionDesc . '</p>';
 			$html[] = '			<table class="aclmodify-table" summary="' . strip_tags($actionDesc) . '">';
 			$html[] = '			<caption>' . JText::_('JLIB_HTML_ACCESS_MODIFY_DESC_CAPTION_ACL') . ' ' . $actionTitle . ' '
@@ -125,7 +129,7 @@ abstract class JHtmlRules
 			$html[] = '			</table>';
 		}
 
-		$html[] = JHtml::_('tabs.end');
+		$html[] = Html::_('tabs.end');
 
 		// Build the footer with legend and special purpose buttons.
 		$html[] = '	<div class="clr"></div>';
