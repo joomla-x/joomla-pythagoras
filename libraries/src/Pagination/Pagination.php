@@ -14,7 +14,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
 use JFactory;
 use Joomla\CMS\Layout\Helper as JLayoutHelper;
-use JHtml;
+use Joomla\CMS\Html\Html as JHtml;
 use JLog;
 use JRoute;
 use JText;

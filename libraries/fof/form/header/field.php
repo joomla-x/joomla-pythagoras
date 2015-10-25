@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Generic field header, without any filters
  *
@@ -31,7 +33,7 @@ class FOFFormHeaderField extends FOFFormHeader
 		{
 			$view = $this->form->getView();
 
-			return JHTML::_('grid.sort', $label, $this->name,
+			return JHtml::_('grid.sort', $label, $this->name,
 				$view->getLists()->order_Dir, $view->getLists()->order,
 				$this->form->getModel()->task
 			);

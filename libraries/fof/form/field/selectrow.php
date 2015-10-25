@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Form Field class for FOF
  * Renders the checkbox in browse views which allows you to select rows
@@ -119,6 +121,6 @@ class FOFFormFieldSelectrow extends JFormField implements FOFFormField
 		$key_id    = $this->item->$key_field;
 
 		// Get the HTML
-		return JHTML::_('grid.id', $this->rowid, $key_id, $checked_out);
+		return JHtml::_('grid.id', $this->rowid, $key_id, $checked_out);
 	}
 }

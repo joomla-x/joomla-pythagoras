@@ -7,14 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JTable;
+use JText;
 
 /**
  * Utility class for creating HTML Grids
  *
  * @since  1.5
  */
-abstract class JHtmlGrid
+abstract class Grid
 {
 	/**
 	 * Display a boolean setting widget.
@@ -32,11 +38,11 @@ abstract class JHtmlGrid
 	{
 		// Load the behavior.
 		static::behavior();
-		JHtml::_('bootstrap.tooltip');
+		Html::_('bootstrap.tooltip');
 
 		// Build the title.
 		$title = ($value) ? JText::_('JYES') : JText::_('JNO');
-		$title = JHtml::tooltipText($title, JText::_('JGLOBAL_CLICK_TO_TOGGLE_STATE'), 0);
+		$title = Html::tooltipText($title, JText::_('JGLOBAL_CLICK_TO_TOGGLE_STATE'), 0);
 
 		// Build the <a> tag.
 		$bool = ($value) ? 'true' : 'false';
@@ -71,8 +77,8 @@ abstract class JHtmlGrid
 	 */
 	public static function sort($title, $order, $direction = 'asc', $selected = '', $task = null, $new_direction = 'asc', $tip = '')
 	{
-		JHtml::_('behavior.core');
-		JHtml::_('bootstrap.tooltip');
+		Html::_('behavior.core');
+		Html::_('bootstrap.tooltip');
 
 		$direction = strtolower($direction);
 		$icon = array('arrow-up-3', 'arrow-down-3');
@@ -88,7 +94,7 @@ abstract class JHtmlGrid
 		}
 
 		$html = '<a href="#" onclick="Joomla.tableOrdering(\'' . $order . '\',\'' . $direction . '\',\'' . $task . '\');return false;"'
-			. ' class="hasTooltip" title="' . JHtml::tooltipText(($tip ? $tip : $title), 'JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
+			. ' class="hasTooltip" title="' . Html::tooltipText(($tip ? $tip : $title), 'JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
 
 		if (isset($title['0']) && $title['0'] == '<')
 		{
@@ -122,9 +128,9 @@ abstract class JHtmlGrid
 	 */
 	public static function checkall($name = 'checkall-toggle', $tip = 'JGLOBAL_CHECK_ALL', $action = 'Joomla.checkAll(this)')
 	{
-		JHtml::_('bootstrap.tooltip');
+		Html::_('bootstrap.tooltip');
 
-		return '<input type="checkbox" name="' . $name . '" value="" class="hasTooltip" title="' . JHtml::tooltipText($tip)
+		return '<input type="checkbox" name="' . $name . '" value="" class="hasTooltip" title="' . Html::tooltipText($tip)
 			. '" onclick="' . $action . '" />';
 	}
 
@@ -180,11 +186,11 @@ abstract class JHtmlGrid
 		{
 			if ($identifier == 'id')
 			{
-				return JHtml::_('grid.id', $i, $row->$identifier);
+				return Html::_('grid.id', $i, $row->$identifier);
 			}
 			else
 			{
-				return JHtml::_('grid.id', $i, $row->$identifier, $result, $identifier);
+				return Html::_('grid.id', $i, $row->$identifier, $result, $identifier);
 			}
 		}
 	}
@@ -215,7 +221,7 @@ abstract class JHtmlGrid
 		$action = $value ? JText::_('JLIB_HTML_UNPUBLISH_ITEM') : JText::_('JLIB_HTML_PUBLISH_ITEM');
 
 		return '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $prefix . $task . '\')" title="' . $action . '">'
-			. JHtml::_('image', 'admin/' . $img, $alt, null, true) . '</a>';
+			. Html::_('image', 'admin/' . $img, $alt, null, true) . '</a>';
 	}
 
 	/**
@@ -246,7 +252,7 @@ abstract class JHtmlGrid
 			$state['T'] = JText::_($trashed);
 		}
 
-		return JHtml::_(
+		return Html::_(
 			'select.genericlist',
 			$state,
 			'filter_state',
@@ -292,16 +298,16 @@ abstract class JHtmlGrid
 
 		if ($overlib)
 		{
-			JHtml::_('bootstrap.tooltip');
+			Html::_('bootstrap.tooltip');
 
-			$date = JHtml::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_LC1'));
-			$time = JHtml::_('date', $row->checked_out_time, 'H:i');
+			$date = Html::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_LC1'));
+			$time = Html::_('date', $row->checked_out_time, 'H:i');
 
-			$hover = '<span class="editlinktip hasTooltip" title="' . JHtml::tooltipText('JLIB_HTML_CHECKED_OUT', $row->editor) . '<br />' . $date . '<br />'
+			$hover = '<span class="editlinktip hasTooltip" title="' . Html::tooltipText('JLIB_HTML_CHECKED_OUT', $row->editor) . '<br />' . $date . '<br />'
 				. $time . '">';
 		}
 
-		return $hover . JHtml::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
+		return $hover . Html::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
 	}
 
 	/**
@@ -318,7 +324,7 @@ abstract class JHtmlGrid
 		if (!$loaded)
 		{
 			// Include jQuery
-			JHtml::_('jquery.framework');
+			Html::_('jquery.framework');
 
 			// Build the behavior script.
 			$js = '

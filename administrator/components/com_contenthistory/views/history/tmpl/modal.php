@@ -8,6 +8,9 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
+
 JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
