@@ -7,14 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use Joomla\Utilities\ArrayHelper;
+use JText;
 
 /**
  * Utility class for categories
  *
  * @since  1.5
  */
-abstract class JHtmlCategory
+abstract class Category
 {
 	/**
 	 * Cached array of the category items.
@@ -60,7 +66,7 @@ abstract class JHtmlCategory
 				}
 				elseif (is_array($config['filter.published']))
 				{
-					JArrayHelper::toInteger($config['filter.published']);
+					ArrayHelper::toInteger($config['filter.published']);
 					$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
 				}
 			}
@@ -95,7 +101,7 @@ abstract class JHtmlCategory
 			{
 				$repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
 				$item->title = str_repeat('- ', $repeat) . $item->title;
-				static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
+				static::$items[$hash][] = Html::_('select.option', $item->id, $item->title);
 			}
 		}
 
@@ -137,7 +143,7 @@ abstract class JHtmlCategory
 				}
 				elseif (is_array($config['filter.published']))
 				{
-					JArrayHelper::toInteger($config['filter.published']);
+					ArrayHelper::toInteger($config['filter.published']);
 					$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
 				}
 			}
@@ -154,10 +160,10 @@ abstract class JHtmlCategory
 			{
 				$repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
 				$item->title = str_repeat('- ', $repeat) . $item->title;
-				static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
+				static::$items[$hash][] = Html::_('select.option', $item->id, $item->title);
 			}
 			// Special "Add to root" option:
-			static::$items[$hash][] = JHtml::_('select.option', '1', JText::_('JLIB_HTML_ADD_TO_ROOT'));
+			static::$items[$hash][] = Html::_('select.option', '1', JText::_('JLIB_HTML_ADD_TO_ROOT'));
 		}
 
 		return static::$items[$hash];
