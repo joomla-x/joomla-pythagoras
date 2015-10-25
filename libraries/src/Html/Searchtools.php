@@ -7,17 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
 use Joomla\CMS\Layout\Helper as JLayoutHelper;
 use Joomla\Registry\Registry;
+use stdClass;
 
 /**
  * Searchtools elements.
  *
  * @since  3.2
  */
-abstract class JHtmlSearchtools
+abstract class Searchtools
 {
 	/**
 	 * @var    array  Array containing information for loaded files
@@ -40,12 +44,12 @@ abstract class JHtmlSearchtools
 			// Requires jQuery but allows to skip its loading
 			if ($loadJquery = (!isset($options['loadJquery']) || $options['loadJquery'] != 0))
 			{
-				JHtml::_('jquery.framework');
+				Html::_('jquery.framework');
 			}
 
 			// Load the jQuery plugin && CSS
-			JHtml::_('script', 'jui/jquery.searchtools.min.js', false, true);
-			JHtml::_('stylesheet', 'jui/jquery.searchtools.css', false, true);
+			Html::_('script', 'jui/jquery.searchtools.min.js', false, true);
+			Html::_('stylesheet', 'jui/jquery.searchtools.css', false, true);
 
 			static::$loaded[__METHOD__] = true;
 		}
