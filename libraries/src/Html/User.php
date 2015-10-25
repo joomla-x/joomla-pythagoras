@@ -7,14 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JAccess;
+use JFactory;
 
 /**
  * Utility class working with users
  *
  * @since  2.5
  */
-abstract class JHtmlUser
+abstract class User
 {
 	/**
 	 * Displays a list of user groups.
@@ -40,7 +45,7 @@ abstract class JHtmlUser
 		for ($i = 0, $n = count($options); $i < $n; $i++)
 		{
 			$options[$i]->text = str_repeat('- ', $options[$i]->level) . $options[$i]->text;
-			$groups[] = JHtml::_('select.option', $options[$i]->value, $options[$i]->text);
+			$groups[] = Html::_('select.option', $options[$i]->value, $options[$i]->text);
 		}
 
 		// Exclude super admin groups if requested
