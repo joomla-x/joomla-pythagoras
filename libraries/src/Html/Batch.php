@@ -7,16 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Html\Html as JHtml;
+use JFactory;
+use JText;
 
 /**
  * Extended Utility class for batch processing widgets.
  *
  * @since  1.7
  */
-abstract class JHtmlBatch
+abstract class Batch
 {
 	/**
 	 * Display a batch widget for the access level selector.
@@ -27,15 +30,15 @@ abstract class JHtmlBatch
 	 */
 	public static function access()
 	{
-		JHtml::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
+		Html::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
 
 		// Create the batch selector to change an access level on a selection list.
 		return
 			'<label id="batch-access-lbl" for="batch-access" class="modalTooltip" '
-			. 'title="' . JHtml::tooltipText('JLIB_HTML_BATCH_ACCESS_LABEL', 'JLIB_HTML_BATCH_ACCESS_LABEL_DESC') . '">'
+			. 'title="' . Html::tooltipText('JLIB_HTML_BATCH_ACCESS_LABEL', 'JLIB_HTML_BATCH_ACCESS_LABEL_DESC') . '">'
 			. JText::_('JLIB_HTML_BATCH_ACCESS_LABEL')
 			. '</label>'
-			. JHtml::_(
+			. Html::_(
 				'access.assetgrouplist',
 				'batch[assetgroup_id]', '',
 				'class="inputbox"',
@@ -59,8 +62,8 @@ abstract class JHtmlBatch
 	{
 		// Create the copy/move options.
 		$options = array(
-			JHtml::_('select.option', 'c', JText::_('JLIB_HTML_BATCH_COPY')),
-			JHtml::_('select.option', 'm', JText::_('JLIB_HTML_BATCH_MOVE'))
+			Html::_('select.option', 'c', JText::_('JLIB_HTML_BATCH_COPY')),
+			Html::_('select.option', 'm', JText::_('JLIB_HTML_BATCH_MOVE'))
 		);
 
 		// Create the batch selector to change select the category by which to move or copy.
@@ -69,12 +72,12 @@ abstract class JHtmlBatch
 			. '<div id="batch-choose-action" class="control-group">'
 			. '<select name="batch[category_id]" class="inputbox" id="batch-category-id">'
 			. '<option value="">' . JText::_('JLIB_HTML_BATCH_NO_CATEGORY') . '</option>'
-			. JHtml::_('select.options', JHtml::_('category.options', $extension))
+			. Html::_('select.options', Html::_('category.options', $extension))
 			. '</select>'
 			. '</div>'
 			. '<div id="batch-copy-move" class="control-group radio">'
 			. JText::_('JLIB_HTML_BATCH_MOVE_QUESTION')
-			. JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm')
+			. Html::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm')
 			. '</div>';
 	}
 
@@ -87,7 +90,7 @@ abstract class JHtmlBatch
 	 */
 	public static function language()
 	{
-		JHtml::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
+		Html::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
 
 		JFactory::getDocument()->addScriptDeclaration(
 			'
@@ -112,12 +115,12 @@ abstract class JHtmlBatch
 		// Create the batch selector to change the language on a selection list.
 		return
 			'<label id="batch-language-lbl" for="batch-language-id" class="modalTooltip"'
-			. ' title="' . JHtml::tooltipText('JLIB_HTML_BATCH_LANGUAGE_LABEL', 'JLIB_HTML_BATCH_LANGUAGE_LABEL_DESC') . '">'
+			. ' title="' . Html::tooltipText('JLIB_HTML_BATCH_LANGUAGE_LABEL', 'JLIB_HTML_BATCH_LANGUAGE_LABEL_DESC') . '">'
 			. JText::_('JLIB_HTML_BATCH_LANGUAGE_LABEL')
 			. '</label>'
 			. '<select name="batch[language_id]" class="inputbox" id="batch-language-id">'
 			. '<option value="">' . JText::_('JLIB_HTML_BATCH_LANGUAGE_NOCHANGE') . '</option>'
-			. JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text')
+			. Html::_('select.options', Html::_('contentlanguage.existing', true, true), 'value', 'text')
 			. '</select>';
 	}
 
@@ -132,7 +135,7 @@ abstract class JHtmlBatch
 	 */
 	public static function user($noUser = true)
 	{
-		JHtml::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
+		Html::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
 
 		$optionNo = '';
 
@@ -144,13 +147,13 @@ abstract class JHtmlBatch
 		// Create the batch selector to select a user on a selection list.
 		return
 			'<label id="batch-user-lbl" for="batch-user" class="modalTooltip"'
-			. ' title="' . JHtml::tooltipText('JLIB_HTML_BATCH_USER_LABEL', 'JLIB_HTML_BATCH_USER_LABEL_DESC') . '">'
+			. ' title="' . Html::tooltipText('JLIB_HTML_BATCH_USER_LABEL', 'JLIB_HTML_BATCH_USER_LABEL_DESC') . '">'
 			. JText::_('JLIB_HTML_BATCH_USER_LABEL')
 			. '</label>'
 			. '<select name="batch[user_id]" class="inputbox" id="batch-user-id">'
 			. '<option value="">' . JText::_('JLIB_HTML_BATCH_USER_NOCHANGE') . '</option>'
 			. $optionNo
-			. JHtml::_('select.options', JHtml::_('user.userlist'), 'value', 'text')
+			. Html::_('select.options', Html::_('user.userlist'), 'value', 'text')
 			. '</select>';
 	}
 
@@ -163,17 +166,17 @@ abstract class JHtmlBatch
 	 */
 	public static function tag()
 	{
-		JHtml::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
+		Html::_('bootstrap.tooltip', '.modalTooltip', array('container' => '.modal-body'));
 
 		// Create the batch selector to tag items on a selection list.
 		return
 			'<label id="batch-tag-lbl" for="batch-tag-id" class="modalTooltip"'
-			. ' title="' . JHtml::tooltipText('JLIB_HTML_BATCH_TAG_LABEL', 'JLIB_HTML_BATCH_TAG_LABEL_DESC') . '">'
+			. ' title="' . Html::tooltipText('JLIB_HTML_BATCH_TAG_LABEL', 'JLIB_HTML_BATCH_TAG_LABEL_DESC') . '">'
 			. JText::_('JLIB_HTML_BATCH_TAG_LABEL')
 			. '</label>'
 			. '<select name="batch[tag]" class="inputbox" id="batch-tag-id">'
 			. '<option value="">' . JText::_('JLIB_HTML_BATCH_TAG_NOCHANGE') . '</option>'
-			. JHtml::_('select.options', JHtml::_('tag.tags', array('filter.published' => array(1))), 'value', 'text')
+			. Html::_('select.options', Html::_('tag.tags', array('filter.published' => array(1))), 'value', 'text')
 			. '</select>';
 	}
 }

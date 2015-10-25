@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $clientId  = $this->state->get('filter.client_id');
 
 // Show only Module Positions of published Templates
