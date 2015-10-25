@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JText;
 
 /**
  * HTML utility class for building a dropdown menu
  *
  * @since  3.2
  */
-abstract class JHtmlActionsDropdown
+abstract class ActionsDropdown
 {
 	/**
 	 * @var    string  HTML markup for the dropdown list

@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JFormHelper::loadFieldClass('list');
 
 /**
