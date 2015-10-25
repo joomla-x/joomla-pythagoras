@@ -7,14 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JObject;
+use JText;
 
 /**
  * Utility class working with content language select lists
  *
  * @since  1.6
  */
-abstract class JHtmlContentLanguage
+abstract class ContentLanguage
 {
 	/**
 	 * Cached array of the content language items.
