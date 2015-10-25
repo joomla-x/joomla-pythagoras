@@ -7,8 +7,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
 use Joomla\CMS\Layout\File as JLayoutFile;
 
 /**
@@ -16,7 +19,7 @@ use Joomla\CMS\Layout\File as JLayoutFile;
  *
  * @since  3.2
  */
-abstract class JHtmlLinks
+abstract class Links
 {
 	/**
 	 * Method to generate html code for groups of lists of links
@@ -47,7 +50,7 @@ abstract class JHtmlLinks
 				$layout = new JLayoutFile('joomla.links.groupopen');
 				$htmlHeader = $layout->render($title);
 
-				$htmlLinks  = JHtml::_('links.links', $links);
+				$htmlLinks  = Html::_('links.links', $links);
 
 				if ($htmlLinks != '')
 				{
@@ -81,7 +84,7 @@ abstract class JHtmlLinks
 
 		foreach ($links as $link)
 		{
-			$html[] = JHtml::_('links.link', $link);
+			$html[] = Html::_('links.link', $link);
 		}
 
 		return implode($html);

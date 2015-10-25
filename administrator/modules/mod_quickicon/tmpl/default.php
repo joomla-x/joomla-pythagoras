@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $html = JHtml::_('links.linksgroups', ModQuickIconHelper::groupButtons($buttons));
 ?>
 <?php if (!empty($html)) : ?>
