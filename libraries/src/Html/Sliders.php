@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
 
 /**
  * Utility class for Sliders elements
  *
  * @since  1.6
  */
-abstract class JHtmlSliders
+abstract class Sliders
 {
 	/**
 	 * Creates a panes and loads the javascript behavior for it.
@@ -83,7 +87,7 @@ abstract class JHtmlSliders
 			$loaded[$group] = true;
 
 			// Include mootools framework.
-			JHtml::_('behavior.framework', true);
+			Html::_('behavior.framework', true);
 
 			$document = JFactory::getDocument();
 
@@ -106,7 +110,7 @@ abstract class JHtmlSliders
 			$opt['opacity'] = (isset($params['opacityTransition']) && ($params['opacityTransition'])) ? 'true' : 'false';
 			$opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';
 
-			$options = JHtml::getJSObject($opt);
+			$options = Html::getJSObject($opt);
 
 			$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#" . $group
 				. ".pane-sliders > .panel > h3.pane-toggler'), $$('div#" . $group . ".pane-sliders > .panel > div.pane-slider'), " . $options

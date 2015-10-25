@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $fieldSets = $this->form->getFieldsets('metadata');
 foreach ($fieldSets as $name => $fieldSet) :
 	echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name.'-options');
