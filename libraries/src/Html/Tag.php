@@ -7,17 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Utility class for tags
  *
  * @since  3.1
  */
-abstract class JHtmlTag
+abstract class Tag
 {
 	/**
 	 * Cached array of the tag items.
@@ -59,7 +63,7 @@ abstract class JHtmlTag
 				}
 				elseif (is_array($config['filter.published']))
 				{
-					JArrayHelper::toInteger($config['filter.published']);
+					ArrayHelper::toInteger($config['filter.published']);
 					$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
 				}
 			}
@@ -94,7 +98,7 @@ abstract class JHtmlTag
 			{
 				$repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
 				$item->title = str_repeat('- ', $repeat) . $item->title;
-				static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
+				static::$items[$hash][] = Html::_('select.option', $item->id, $item->title);
 			}
 		}
 
@@ -129,7 +133,7 @@ abstract class JHtmlTag
 			}
 			elseif (is_array($config['filter.published']))
 			{
-				JArrayHelper::toInteger($config['filter.published']);
+				ArrayHelper::toInteger($config['filter.published']);
 				$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
 			}
 		}
@@ -146,7 +150,7 @@ abstract class JHtmlTag
 		{
 			$repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
 			$item->title = str_repeat('- ', $repeat) . $item->title;
-			static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
+			static::$items[$hash][] = Html::_('select.option', $item->id, $item->title);
 		}
 
 		return static::$items[$hash];
@@ -179,7 +183,7 @@ abstract class JHtmlTag
 				'minTermLength' => $minTermLength
 			)
 		);
-		JHtml::_('formbehavior.ajaxchosen', $chosenAjaxSettings);
+		Html::_('formbehavior.ajaxchosen', $chosenAjaxSettings);
 
 		// Allow custom values ?
 		if ($allowCustom)
