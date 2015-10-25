@@ -7,14 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JText;
 
 /**
  * Utility class working with menu select lists
  *
  * @since  1.5
  */
-abstract class JHtmlMenu
+abstract class Menu
 {
 	/**
 	 * Cached array of the menus.
@@ -115,22 +120,22 @@ abstract class JHtmlMenu
 			foreach ($menus as &$menu)
 			{
 				// Start group:
-				static::$items[] = JHtml::_('select.optgroup', $menu->text);
+				static::$items[] = Html::_('select.optgroup', $menu->text);
 
 				// Special "Add to this Menu" option:
-				static::$items[] = JHtml::_('select.option', $menu->value . '.1', JText::_('JLIB_HTML_ADD_TO_THIS_MENU'));
+				static::$items[] = Html::_('select.option', $menu->value . '.1', JText::_('JLIB_HTML_ADD_TO_THIS_MENU'));
 
 				// Menu items:
 				if (isset($lookup[$menu->value]))
 				{
 					foreach ($lookup[$menu->value] as &$item)
 					{
-						static::$items[] = JHtml::_('select.option', $menu->value . '.' . $item->value, $item->text);
+						static::$items[] = Html::_('select.option', $menu->value . '.' . $item->value, $item->text);
 					}
 				}
 
 				// Finish group:
-				static::$items[] = JHtml::_('select.optgroup', $menu->text);
+				static::$items[] = Html::_('select.optgroup', $menu->text);
 			}
 		}
 
@@ -155,7 +160,7 @@ abstract class JHtmlMenu
 
 		$options = static::menuitems($config);
 
-		return JHtml::_(
+		return Html::_(
 			'select.genericlist', $options, $name,
 			array(
 				'id' => isset($config['id']) ? $config['id'] : 'assetgroups_' . (++$count),
@@ -188,8 +193,8 @@ abstract class JHtmlMenu
 				->where($db->quoteName('parent_id') . ' = ' . (int) $row->parent_id)
 				->where($db->quoteName('published') . ' != -2')
 				->order('ordering');
-			$order = JHtml::_('list.genericordering', $query);
-			$ordering = JHtml::_(
+			$order = Html::_('list.genericordering', $query);
+			$ordering = Html::_(
 				'select.genericlist', $order, 'ordering',
 				array('list.attr' => 'class="inputbox" size="1"', 'list.select' => (int) $row->ordering)
 			);
@@ -251,19 +256,19 @@ abstract class JHtmlMenu
 
 		if ($all | $unassigned)
 		{
-			$mitems[] = JHtml::_('select.option', '<OPTGROUP>', JText::_('JOPTION_MENUS'));
+			$mitems[] = Html::_('select.option', '<OPTGROUP>', JText::_('JOPTION_MENUS'));
 
 			if ($all)
 			{
-				$mitems[] = JHtml::_('select.option', 0, JText::_('JALL'));
+				$mitems[] = Html::_('select.option', 0, JText::_('JALL'));
 			}
 
 			if ($unassigned)
 			{
-				$mitems[] = JHtml::_('select.option', -1, JText::_('JOPTION_UNASSIGNED'));
+				$mitems[] = Html::_('select.option', -1, JText::_('JOPTION_UNASSIGNED'));
 			}
 
-			$mitems[] = JHtml::_('select.option', '</OPTGROUP>');
+			$mitems[] = Html::_('select.option', '</OPTGROUP>');
 		}
 
 		$lastMenuType = null;
@@ -275,20 +280,20 @@ abstract class JHtmlMenu
 			{
 				if ($tmpMenuType)
 				{
-					$mitems[] = JHtml::_('select.option', '</OPTGROUP>');
+					$mitems[] = Html::_('select.option', '</OPTGROUP>');
 				}
 
-				$mitems[] = JHtml::_('select.option', '<OPTGROUP>', $list_a->menutype);
+				$mitems[] = Html::_('select.option', '<OPTGROUP>', $list_a->menutype);
 				$lastMenuType = $list_a->menutype;
 				$tmpMenuType = $list_a->menutype;
 			}
 
-			$mitems[] = JHtml::_('select.option', $list_a->id, $list_a->title);
+			$mitems[] = Html::_('select.option', $list_a->id, $list_a->title);
 		}
 
 		if ($lastMenuType !== null)
 		{
-			$mitems[] = JHtml::_('select.option', '</OPTGROUP>');
+			$mitems[] = Html::_('select.option', '</OPTGROUP>');
 		}
 
 		return $mitems;
