@@ -7,8 +7,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
 use Joomla\CMS\Layout\File as JLayoutFile;
 
 /**
@@ -16,7 +19,7 @@ use Joomla\CMS\Layout\File as JLayoutFile;
  *
  * @since  2.5
  */
-abstract class JHtmlIcons
+abstract class Icons
 {
 	/**
 	 * Method to generate html code for a list of buttons
@@ -33,7 +36,7 @@ abstract class JHtmlIcons
 
 		foreach ($buttons as $button)
 		{
-			$html[] = JHtml::_('icons.button', $button);
+			$html[] = Html::_('icons.button', $button);
 		}
 
 		return implode($html);
