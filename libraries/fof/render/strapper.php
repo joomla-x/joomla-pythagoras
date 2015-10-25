@@ -7,6 +7,7 @@
  */
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Version as JVersion;
 
 /**
