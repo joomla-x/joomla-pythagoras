@@ -7,9 +7,14 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Helper;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
+use JFilterInput;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use JTable;
 
 /**
  * Versions helper class, provides methods to perform various tasks relevant
@@ -17,7 +22,7 @@ use Joomla\CMS\Component\Helper as JComponentHelper;
  *
  * @since  3.2
  */
-class JHelperContenthistory extends JHelper
+class Contenthistory extends Helper
 {
 	/**
 	 * Alias for storing type in versions table

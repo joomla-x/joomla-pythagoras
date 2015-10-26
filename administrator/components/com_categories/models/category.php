@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Helper\Tags as JHelperTags;
 use Joomla\CMS\Language\Associations as JLanguageAssociations;
 use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Joomla\CMS\Ucm\Type as JUcmType;

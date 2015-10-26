@@ -13,7 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use JArrayHelper;
 use JFactory;
-use JHelperTags;
+use Joomla\CMS\Helper\Tags as JHelperTags;
 use Joomla\CMS\Document\Document as JDocument;
 use Joomla\CMS\Document\Renderer as JDocumentRenderer;
 use JText;

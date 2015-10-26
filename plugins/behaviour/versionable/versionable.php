@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\Event\DispatcherInterface;
 use Joomla\Cms\Event as CmsEvent;
+use Joomla\CMS\Helper\Contenthistory as JHelperContenthistory;
 use Joomla\CMS\Plugin\Plugin as JPlugin;
 
 /**

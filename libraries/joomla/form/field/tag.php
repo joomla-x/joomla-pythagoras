@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 JFormHelper::loadFieldClass('list');
 
+use Joomla\CMS\Helper\Tags as JHelperTags;
 use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 

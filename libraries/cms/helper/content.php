@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Helper\Helper as JHelper;
 
 /**
  * Helper for standard content style extensions.

@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Media as JHelperMedia;
 use Joomla\CMS\Html\Html as JHtml;
 
 /**

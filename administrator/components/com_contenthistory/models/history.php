@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Helper\Helper as JHelper;
 
 /**
  * Methods supporting a list of contenthistory records.

@@ -7,8 +7,14 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Helper;
+
 defined('JPATH_PLATFORM') or die;
 
+use InvalidArgumentException;
+use JCategories;
+use JCategoryNode;
+use JFactory;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 
@@ -20,7 +26,7 @@ use Joomla\CMS\Language\Multilang as JLanguageMultilang;
  *
  * @since  3.1
  */
-class JHelperRoute
+class Route
 {
 	/**
 	 * @var    array  Holds the reverse lookup
@@ -240,7 +246,7 @@ class JHelperRoute
 		// Note: $extension is required but has to be an optional argument in the function call due to argument order
 		if (empty($extension))
 		{
-			throw new InvalidArgumentException('$extension is a required argument in JHelperRoute::getCategoryRoute');
+			throw new InvalidArgumentException('$extension is a required argument in \Joomla\CMS\Helper\Route::getCategoryRoute');
 		}
 
 		if ($catid instanceof JCategoryNode)

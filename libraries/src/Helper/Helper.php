@@ -7,17 +7,23 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Helper;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use JLanguageHelper;
+use JTableInterface;
+use stdClass;
 
 /**
  * Base Helper class.
  *
  * @since  3.2
  */
-class JHelper
+class Helper
 {
 	/**
 	 * Gets the current language

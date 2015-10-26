@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Tags as JHelperTags;
 use Joomla\Registry\Registry;
 
 /**

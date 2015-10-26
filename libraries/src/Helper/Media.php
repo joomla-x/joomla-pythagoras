@@ -7,16 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Helper;
+
 defined('JPATH_PLATFORM') or die;
 
+use JFactory;
+use JFile;
 use Joomla\CMS\Component\Helper as JComponentHelper;
+use JText;
 
 /**
  * Media helper class
  *
  * @since  3.2
  */
-class JHelperMedia
+class Media
 {
 	/**
 	 * Checks if the file is an image
