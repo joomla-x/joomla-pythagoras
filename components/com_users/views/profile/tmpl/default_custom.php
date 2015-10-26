@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JLoader::register('JHtmlUsers', JPATH_COMPONENT . '/helpers/html/users.php');
 JHtml::register('users.spacer', array('JHtmlUsers', 'spacer'));
 

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::addIncludePath(JPATH_SITE . '/components/com_finder/helpers/html');
 
 JHtml::_('jquery.framework');
