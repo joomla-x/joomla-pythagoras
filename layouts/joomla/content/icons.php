@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::_('bootstrap.framework');
 
 $canEdit = $displayData['params']->get('access-edit');
