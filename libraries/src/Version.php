@@ -13,6 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use JDate;
 use JFactory;
+use JLog;
 use Joomla\CMS\Library\Helper as JLibraryHelper;
 
 /**
@@ -122,7 +123,7 @@ final class Version
 	 */
 	public function __get($name)
 	{
-		if (defined("JVersion::$name"))
+		if (defined("\\Joomla\\CMS\\Version::$name"))
 		{
 			JLog::add(
 				'Accessing JVersion data through class member variables is deprecated, use the corresponding constant instead.',
@@ -130,7 +131,7 @@ final class Version
 				'deprecated'
 			);
 
-			return constant("JVersion::$name");
+			return constant("\\Joomla\\CMS\\Version::$name");
 		}
 
 		$trace = debug_backtrace();

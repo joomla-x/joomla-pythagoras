@@ -15,6 +15,7 @@ use JFactory;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
+use JUri;
 
 /**
  * Utility class for tags
