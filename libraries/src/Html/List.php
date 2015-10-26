@@ -7,14 +7,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use DirectoryIterator;
+use JFactory;
+use Joomla\String\StringHelper as JString;
+use JText;
 
 /**
  * Utility class for creating different select lists
  *
  * @since  1.5
  */
-abstract class JHtmlList
+abstract class List
 {
 	/**
 	 * Build the select list to choose an image
@@ -44,7 +51,7 @@ abstract class JHtmlList
 		}
 
 		$imageFiles = new DirectoryIterator(JPATH_SITE . '/' . $directory);
-		$images = array(JHtml::_('select.option', '', JText::_('JOPTION_SELECT_IMAGE')));
+		$images = array(Html::_('select.option', '', JText::_('JOPTION_SELECT_IMAGE')));
 
 		foreach ($imageFiles as $file)
 		{
@@ -57,11 +64,11 @@ abstract class JHtmlList
 
 			if (preg_match('#(' . $extensions . ')$#', $fileName))
 			{
-				$images[] = JHtml::_('select.option', $fileName);
+				$images[] = Html::_('select.option', $fileName);
 			}
 		}
 
-		$images = JHtml::_(
+		$images = Html::_(
 			'select.genericlist',
 			$images,
 			$name,
@@ -94,12 +101,12 @@ abstract class JHtmlList
 
 		if (empty($items))
 		{
-			$options[] = JHtml::_('select.option', 1, JText::_('JOPTION_ORDER_FIRST'));
+			$options[] = Html::_('select.option', 1, JText::_('JOPTION_ORDER_FIRST'));
 
 			return $options;
 		}
 
-		$options[] = JHtml::_('select.option', 0, '0 ' . JText::_('JOPTION_ORDER_FIRST'));
+		$options[] = Html::_('select.option', 0, '0 ' . JText::_('JOPTION_ORDER_FIRST'));
 
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
@@ -114,10 +121,10 @@ abstract class JHtmlList
 				$text = $items[$i]->text;
 			}
 
-			$options[] = JHtml::_('select.option', $items[$i]->value, $items[$i]->value . '. ' . $text);
+			$options[] = Html::_('select.option', $items[$i]->value, $items[$i]->value . '. ' . $text);
 		}
 
-		$options[] = JHtml::_('select.option', $items[$i - 1]->value + 1, ($items[$i - 1]->value + 1) . ' ' . JText::_('JOPTION_ORDER_LAST'));
+		$options[] = Html::_('select.option', $items[$i - 1]->value + 1, ($items[$i - 1]->value + 1) . ' ' . JText::_('JOPTION_ORDER_LAST'));
 
 		return $options;
 	}
@@ -144,8 +151,8 @@ abstract class JHtmlList
 
 		if (empty($neworder))
 		{
-			$orders = JHtml::_('list.genericordering', $query);
-			$html = JHtml::_('select.genericlist', $orders, $name, array('list.attr' => $attribs, 'list.select' => (int) $selected));
+			$orders = Html::_('list.genericordering', $query);
+			$html = Html::_('select.genericlist', $orders, $name, array('list.attr' => $attribs, 'list.select' => (int) $selected));
 		}
 		else
 		{
@@ -191,7 +198,7 @@ abstract class JHtmlList
 
 		if ($nouser)
 		{
-			$users[] = JHtml::_('select.option', '0', JText::_('JOPTION_NO_USER'));
+			$users[] = Html::_('select.option', '0', JText::_('JOPTION_NO_USER'));
 			$users = array_merge($users, $db->loadObjectList());
 		}
 		else
@@ -199,7 +206,7 @@ abstract class JHtmlList
 			$users = $db->loadObjectList();
 		}
 
-		$users = JHtml::_(
+		$users = Html::_(
 			'select.genericlist',
 			$users,
 			$name,
@@ -253,7 +260,7 @@ abstract class JHtmlList
 			$pos['right'] = JText::_('JGLOBAL_RIGHT');
 		}
 
-		$positions = JHtml::_(
+		$positions = Html::_(
 			'select.genericlist', $pos, $name,
 			array(
 				'id' => $id,

@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Form Field class for FOF
  * Renders the row ordering interface checkbox in browse views

@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Ucm\Type as JUcmType;
 
 /**
