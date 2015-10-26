@@ -8,6 +8,9 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::script('com_wrapper/iframe-height.min.js', false, true);
 ?>
 <iframe <?php echo $load; ?>
