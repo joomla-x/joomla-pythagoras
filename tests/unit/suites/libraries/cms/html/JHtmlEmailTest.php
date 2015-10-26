@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Html\Email as JHtmlEmail;
+
 /**
  * Test class for JHtmlEmail.
  *

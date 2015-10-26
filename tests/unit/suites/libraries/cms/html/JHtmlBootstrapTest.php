@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Html\Bootstrap as JHtmlBootstrap;
+
 require_once __DIR__ . '/stubs/JHtmlBootstrapInspector.php';
 require_once __DIR__ . '/stubs/JHtmlJqueryInspector.php';
 
