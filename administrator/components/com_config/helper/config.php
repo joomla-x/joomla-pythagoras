@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Content as JHelperContent;
+
 /**
  * Components helper for com_config
  *

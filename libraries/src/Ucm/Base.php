@@ -13,7 +13,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Exception;
 use JFactory;
-use JHelperContent;
+use Joomla\CMS\Helper\Content as JHelperContent;
 use JTable;
 use JTableInterface;
 use RuntimeException;

@@ -12,7 +12,7 @@ namespace Joomla\CMS\Ucm;
 defined('JPATH_PLATFORM') or die;
 
 use JFactory;
-use JHelperContent;
+use Joomla\CMS\Helper\Content as JHelperContent;
 use JTable;
 use JTableInterface;
 

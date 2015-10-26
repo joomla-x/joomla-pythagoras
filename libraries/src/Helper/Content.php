@@ -7,11 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\CMS\Helper;
+
 defined('JPATH_PLATFORM') or die;
 
+use JAccess;
+use JFactory;
+use JLanguageHelper;
+use JLog;
+use JObject;
 use Joomla\CMS\Application\Helper as JApplicationHelper;
 use Joomla\CMS\Component\Helper as JComponentHelper;
-use Joomla\CMS\Helper\Helper as JHelper;
+use JTable;
 
 /**
  * Helper for standard content style extensions.
@@ -19,7 +26,7 @@ use Joomla\CMS\Helper\Helper as JHelper;
  *
  * @since  3.1
  */
-class JHelperContent
+class Content
 {
 	/**
 	 * Configure the Linkbar. Must be implemented by each extension.
@@ -194,7 +201,7 @@ class JHelperContent
 	 */
 	public function getRowData(JTable $table)
 	{
-		$data = new JHelper;
+		$data = new Helper;
 
 		return $data->getRowData($table);
 	}

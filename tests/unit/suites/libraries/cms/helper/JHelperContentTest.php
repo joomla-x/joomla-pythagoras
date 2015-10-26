@@ -7,6 +7,8 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Helper\Content as JHelperContent;
+
 /**
  * Test class for JHelperCOntent.
  *
@@ -17,7 +19,7 @@
 class JHelperContentTest extends TestCaseDatabase
 {
 	/**
-	 * @var    JHelper
+	 * @var    JHelperContent
 	 * @since  3.2
 	 */
 	protected $object;
