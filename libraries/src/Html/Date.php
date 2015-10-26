@@ -7,14 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\CMS\Html;
+
 defined('JPATH_PLATFORM') or die;
+
+use JFactory;
+use JText;
 
 /**
  * Extended Utility class for handling date display.
  *
  * @since  2.5
  */
-abstract class JHtmlDate
+abstract class Date
 {
 	/**
 	 * Function to convert a static time into a relative measurement
@@ -82,6 +87,6 @@ abstract class JHtmlDate
 		}
 
 		// Over a month, return the absolute time
-		return JHtml::_('date', $date);
+		return Html::_('date', $date);
 	}
 }
