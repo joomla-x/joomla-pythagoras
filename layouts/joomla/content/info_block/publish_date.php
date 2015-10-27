@@ -8,6 +8,8 @@
  */
 
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 			<dd class="published">
 				<span class="icon-calendar"></span>

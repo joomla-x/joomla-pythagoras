@@ -43,7 +43,7 @@ JHtml::_('behavior.caption');
 
 	<?php if (!$useDefList && $this->print) : ?>
 		<div id="pop-print" class="btn hidden-print">
-			<?php echo JHtml::_('icon.print_screen', $this->item, $params); ?>
+			<?php echo JHtml::_('contentHtml.icon.print_screen', $this->item, $params); ?>
 		</div>
 		<div class="clearfix"> </div>
 	<?php endif; ?>
@@ -72,7 +72,7 @@ JHtml::_('behavior.caption');
 	<?php else : ?>
 		<?php if ($useDefList) : ?>
 			<div id="pop-print" class="btn hidden-print">
-				<?php echo JHtml::_('icon.print_screen', $this->item, $params); ?>
+				<?php echo JHtml::_('contentHtml.icon.print_screen', $this->item, $params); ?>
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>
