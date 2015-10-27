@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Load tooltips behavior
 JHtml::_('behavior.formvalidator');
 JHtml::_('bootstrap.tooltip');

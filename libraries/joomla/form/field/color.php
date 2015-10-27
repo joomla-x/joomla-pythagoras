@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Color Form Field class for the Joomla Platform.
  * This implementation is designed to be compatible with HTML5's <input type="color">
