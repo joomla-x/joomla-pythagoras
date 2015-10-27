@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $doc   = JFactory::getDocument();
 $color = $this->params->get('templatecolor');
 

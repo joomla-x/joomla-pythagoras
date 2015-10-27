@@ -10,6 +10,8 @@
 // No direct access.
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JLoader::import('joomla.filesystem.file');
 
 // Check modules
