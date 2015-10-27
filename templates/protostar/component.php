@@ -23,7 +23,7 @@ JHtml::_('bootstrap.framework');
 $doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/template.css');
 
 // Load optional rtl Bootstrap css and Bootstrap bugfixes
-JHtmlBootstrap::loadCss($includeMaincss = false, $this->direction);
+JHtml::_('bootstrap.loadCss', $includeMaincss = false, $this->direction);
 
 ?>
 <!DOCTYPE html>
