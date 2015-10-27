@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <?php
 	echo JHtml::_('bootstrap.startAccordion', 'menuOptions', array('active' => 'collapse0'));

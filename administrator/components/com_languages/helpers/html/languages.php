@@ -9,12 +9,14 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Utility class working with languages
  *
  * @since  1.6
  */
-abstract class JHtmlLanguages
+abstract class LanguagesHtmlLanguages
 {
 	/**
 	 * Method to generate an information about the default language.

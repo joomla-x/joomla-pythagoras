@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $input = JFactory::getApplication()->input;
 
 // Checking if loaded via index.php or component.php

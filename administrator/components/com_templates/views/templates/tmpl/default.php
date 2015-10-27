@@ -78,7 +78,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			<?php foreach ($this->items as $i => $item) : ?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td class="center hidden-phone">
-						<?php echo JHtml::_('templates.thumb', $item->element, $item->client_id); ?>
+						<?php echo JHtml::_('templatesHtml.templates.thumb', $item->element, $item->client_id); ?>
 					</td>
 					<td class="template-name">
 						<a href="<?php echo JRoute::_('index.php?option=com_templates&view=template&id=' . (int) $item->extension_id . '&file=' . $this->file); ?>">
@@ -118,7 +118,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<?php echo $this->escape($url); ?></a></p>
 						<?php endif; ?>
 					</td>
-					<?php echo JHtml::_('templates.thumbModal', $item->element, $item->client_id); ?>
+					<?php echo JHtml::_('templatesHtml.templates.thumbModal', $item->element, $item->client_id); ?>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>

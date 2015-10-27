@@ -11,7 +11,7 @@ namespace Joomla\CMS\Toolbar\Button;
 
 defined('JPATH_PLATFORM') or die;
 
-use JHtml;
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Layout\File as JLayoutFile;
 use Joomla\CMS\Toolbar\AbstractButton as JToolbarButton;
 use JText;

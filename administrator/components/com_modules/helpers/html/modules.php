@@ -16,7 +16,7 @@ use Joomla\CMS\Html\Html as JHtml;
  *
  * @since  1.6
  */
-abstract class JHtmlModules
+abstract class ModulesHtmlModules
 {
 	/**
 	 * Builds an array of template options

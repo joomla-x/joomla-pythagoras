@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JFormHelper::loadFieldClass('list');
 
 /**

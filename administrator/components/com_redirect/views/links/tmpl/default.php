@@ -114,7 +114,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td>
 						<td>
-							<?php echo JHtml::_('redirect.published', $item->published, $i); ?>
+							<?php echo JHtml::_('redirectHtml.redirect.published', $item->published, $i); ?>
 						</td>
 						<td class="break-word">
 							<?php if ($canEdit) : ?>

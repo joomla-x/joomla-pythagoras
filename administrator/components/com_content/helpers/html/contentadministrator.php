@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Language\Associations as JLanguageAssociations;
 use Joomla\CMS\Layout\Helper as JLayoutHelper;
 
@@ -19,7 +20,7 @@ JLoader::register('ContentHelper', JPATH_ADMINISTRATOR . '/components/com_conten
  *
  * @since  3.0
  */
-abstract class JHtmlContentAdministrator
+abstract class ContentHtmlContentAdministrator
 {
 	/**
 	 * Render the list of associated items

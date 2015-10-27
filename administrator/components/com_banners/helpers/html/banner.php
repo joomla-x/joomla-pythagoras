@@ -16,7 +16,7 @@ use Joomla\CMS\Html\Html as JHtml;
  *
  * @since  2.5
  */
-abstract class JHtmlBanner
+abstract class BannersHtmlBanner
 {
 	/**
 	 * Display a batch widget for the client selector.

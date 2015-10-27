@@ -159,7 +159,7 @@ if ($saveOrder)
 								</div>
 							</td>
 							<td class="center hidden-phone">
-								<?php echo JHtml::_('banner.pinned', $item->sticky, $i, $canChange); ?>
+								<?php echo JHtml::_('bannersHtml.banner.pinned', $item->sticky, $i, $canChange); ?>
 							</td>
 							<td class="small hidden-phone">
 								<?php echo $item->client_name; ?>

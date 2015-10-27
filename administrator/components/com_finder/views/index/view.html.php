@@ -110,13 +110,13 @@ class FinderViewIndex extends JViewLegacy
 		JHtmlSidebar::addFilter(
 			JText::_('COM_FINDER_INDEX_FILTER_BY_STATE'),
 			'filter_state',
-			JHtml::_('select.options', JHtml::_('finder.statelist'), 'value', 'text', $this->state->get('filter.state'))
+			JHtml::_('select.options', JHtml::_('finderHtml.finder.statelist'), 'value', 'text', $this->state->get('filter.state'))
 		);
 
 		JHtmlSidebar::addFilter(
 			JText::_('COM_FINDER_INDEX_TYPE_FILTER'),
 			'filter_type',
-			JHtml::_('select.options', JHtml::_('finder.typeslist'), 'value', 'text', $this->state->get('filter.type'))
+			JHtml::_('select.options', JHtml::_('finderHtml.finder.typeslist'), 'value', 'text', $this->state->get('filter.type'))
 		);
 	}
 }

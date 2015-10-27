@@ -170,7 +170,7 @@ $assoc      = JLanguageAssociations::isEnabled();
 							<?php endif; ?>
 						</td>
 						<td class="center hidden-phone">
-							<?php echo JHtml::_('contact.featured', $item->featured, $i, $canChange); ?>
+							<?php echo JHtml::_('contactHtml.contact.featured', $item->featured, $i, $canChange); ?>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $item->access_level; ?>
@@ -178,7 +178,7 @@ $assoc      = JLanguageAssociations::isEnabled();
 						<?php if ($assoc) : ?>
 						<td class="hidden-phone">
 							<?php if ($item->association) : ?>
-								<?php echo JHtml::_('contact.association', $item->id); ?>
+								<?php echo JHtml::_('contactHtml.contact.association', $item->id); ?>
 							<?php endif; ?>
 						</td>
 						<?php endif;?>

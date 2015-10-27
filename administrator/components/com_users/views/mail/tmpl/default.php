@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $script = "\t" . 'Joomla.submitbutton = function(pressbutton) {' . "\n";
 $script .= "\t\t" . 'var form = document.adminForm;' . "\n";
 $script .= "\t\t" . 'if (pressbutton == \'mail.cancel\') {' . "\n";

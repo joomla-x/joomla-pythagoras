@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\CMS\Helper\Content as JHelperContent;
 use Joomla\CMS\Helper\Tags as JHelperTags;
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Ucm\Type as JUcmType;
 
 /**

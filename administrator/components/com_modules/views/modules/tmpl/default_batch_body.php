@@ -15,7 +15,7 @@ $clientId  = $this->state->get('filter.client_id');
 
 // Show only Module Positions of published Templates
 $published = 1;
-$positions = JHtml::_('modules.positions', $clientId, $published);
+$positions = JHtml::_('modulesHtml.modules.positions', $clientId, $published);
 $positions['']['items'][] = ModulesHelper::createOption('nochange', JText::_('COM_MODULES_BATCH_POSITION_NOCHANGE'));
 $positions['']['items'][] = ModulesHelper::createOption('noposition', JText::_('COM_MODULES_BATCH_POSITION_NOPOSITION'));
 
@@ -56,7 +56,7 @@ $attr = array(
 				<div id="batch-choose-action" class="control-group">
 					<?php echo JHtml::_('select.groupedlist', $positions, 'batch[position_id]', $attr) ?>
 					<div id="batch-copy-move" class="control-group radio">
-						<?php echo JHtml::_('modules.batchOptions'); ?>
+						<?php echo JHtml::_('modulesHtml.modules.batchOptions'); ?>
 					</div>
 				</div>
 			</div>

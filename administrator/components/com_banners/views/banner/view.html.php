@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Helper\Content as JHelperContent;
+use Joomla\CMS\Html\Html as JHtml;
 
 JLoader::register('BannersHelper', JPATH_COMPONENT . '/helpers/banners.php');
 
