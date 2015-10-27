@@ -8,6 +8,8 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $user = JFactory::getUser();
 
 JHtml::_('bootstrap.tooltip');
