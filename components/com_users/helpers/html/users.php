@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-abstract class JHtmlUsers
+abstract class UsersHtmlUsers
 {
 	/**
 	 * Get the sanitized value
