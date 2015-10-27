@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 foreach ($this->fieldsets as $name => $fieldset)
 {
 	if (!isset($fieldset->repeat) || isset($fieldset->repeat) && $fieldset->repeat == false)

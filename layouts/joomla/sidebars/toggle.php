@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Set the tooltips
 JText::script('JTOGGLE_HIDE_SIDEBAR');
 JText::script('JTOGGLE_SHOW_SIDEBAR');
