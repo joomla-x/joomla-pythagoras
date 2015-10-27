@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Form Field class for the Joomla Platform.
  * Display a JSON loaded window with a repeatable set of sub fields
