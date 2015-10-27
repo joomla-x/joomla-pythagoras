@@ -755,7 +755,7 @@ abstract class Bootstrap
 		$tabScriptLayout = is_null($tabScriptLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
 		$tabLayout = is_null($tabLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtab') : $tabLayout;
 
-		$active = (static::$loaded['HtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
+		$active = (static::$loaded['Joomla\CMS\Html\Bootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
 		// Inject tab into UL
 		JFactory::getDocument()
@@ -795,7 +795,7 @@ abstract class Bootstrap
 	{
 		$sig = md5(serialize(array($selector, $params)));
 
-		if (!isset(static::$loaded['HtmlBootstrap::startTabSet'][$sig]))
+		if (!isset(static::$loaded['Joomla\CMS\Html\Bootstrap::startTabSet'][$sig]))
 		{
 			// Include Bootstrap framework
 			static::framework();
@@ -814,8 +814,8 @@ abstract class Bootstrap
 			);
 
 			// Set static array
-			static::$loaded['HtmlBootstrap::startTabSet'][$sig] = true;
-			static::$loaded['HtmlBootstrap::startTabSet'][$selector]['active'] = $opt['active'];
+			static::$loaded['Joomla\CMS\Html\Bootstrap::startTabSet'][$sig] = true;
+			static::$loaded['Joomla\CMS\Html\Bootstrap::startTabSet'][$selector]['active'] = $opt['active'];
 		}
 
 		return '<div class="tab-content" id="' . $selector . 'Content">';
