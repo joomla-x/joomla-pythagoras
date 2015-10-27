@@ -33,7 +33,7 @@ class UsersViewUsers extends JViewLegacy
 	/**
 	 * The pagination object.
 	 *
-	 * @var   JPagination
+	 * @var   \Joomla\CMS\Pagination\Pagination
 	 * @since 1.6
 	 */
 	protected $pagination;

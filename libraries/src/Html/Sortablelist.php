@@ -19,7 +19,7 @@ use JFactory;
  *
  * @since  3.0
  */
-abstract class JHtmlSortablelist
+abstract class Sortablelist
 {
 	/**
 	 * @var    array  Array containing information for loaded files
