@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_ADMIN_DIRECTORY_PERMISSIONS'); ?></legend>
@@ -31,10 +33,10 @@ defined('_JEXEC') or die;
 			<?php foreach ($this->directory as $dir => $info) : ?>
 				<tr>
 					<td>
-						<?php echo JHtml::_('directory.message', $dir, $info['message']); ?>
+						<?php echo JHtml::_('configHtml.directory.message', $dir, $info['message']); ?>
 					</td>
 					<td>
-						<?php echo JHtml::_('directory.writable', $info['writable']); ?>
+						<?php echo JHtml::_('configHtml.directory.writable', $info['writable']); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>
