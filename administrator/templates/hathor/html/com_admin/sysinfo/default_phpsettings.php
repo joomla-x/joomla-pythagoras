@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_ADMIN_RELEVANT_PHP_SETTINGS'); ?></legend>
@@ -34,7 +36,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_SAFE_MODE'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['safe_mode']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.boolean', $this->php_settings['safe_mode']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -42,7 +44,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_OPEN_BASEDIR'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.string', $this->php_settings['open_basedir']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.string', $this->php_settings['open_basedir']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -50,7 +52,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_DISPLAY_ERRORS'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['display_errors']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.boolean', $this->php_settings['display_errors']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -58,7 +60,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_SHORT_OPEN_TAGS'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['short_open_tag']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.boolean', $this->php_settings['short_open_tag']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -66,7 +68,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_FILE_UPLOADS'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['file_uploads']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.boolean', $this->php_settings['file_uploads']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -74,7 +76,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_MAGIC_QUOTES'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['magic_quotes_gpc']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.boolean', $this->php_settings['magic_quotes_gpc']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -82,7 +84,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_REGISTER_GLOBALS'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['register_globals']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.boolean', $this->php_settings['register_globals']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -90,7 +92,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_OUTPUT_BUFFERING'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['output_buffering']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.boolean', $this->php_settings['output_buffering']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -98,7 +100,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_SESSION_SAVE_PATH'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.string', $this->php_settings['session.save_path']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.string', $this->php_settings['session.save_path']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -106,7 +108,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_SESSION_AUTO_START'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.integer', $this->php_settings['session.auto_start']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.integer', $this->php_settings['session.auto_start']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -114,7 +116,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_XML_ENABLED'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['xml']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.set', $this->php_settings['xml']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -122,7 +124,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_ZLIB_ENABLED'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['zlib']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.set', $this->php_settings['zlib']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -130,7 +132,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_ZIP_ENABLED'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['zip']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.set', $this->php_settings['zip']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -138,7 +140,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_DISABLED_FUNCTIONS'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.string', $this->php_settings['disable_functions']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.string', $this->php_settings['disable_functions']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -146,7 +148,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_MBSTRING_ENABLED'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['mbstring']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.set', $this->php_settings['mbstring']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -154,7 +156,7 @@ defined('_JEXEC') or die;
 					<?php echo JText::_('COM_ADMIN_ICONV_AVAILABLE'); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['iconv']); ?>
+					<?php echo JHtml::_('configHtml.phpsetting.set', $this->php_settings['iconv']); ?>
 				</td>
 			</tr>
 		</tbody>

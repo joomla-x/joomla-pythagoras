@@ -157,7 +157,7 @@ $saveOrder = $listOrder == 'ordering';
 					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'banners.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('banner.pinned', $item->sticky, $i, $canChange);?>
+					<?php echo JHtml::_('bannersHtml.banner.pinned', $item->sticky, $i, $canChange);?>
 				</td>
 				<td class="center">
 					<?php echo $item->client_name;?>

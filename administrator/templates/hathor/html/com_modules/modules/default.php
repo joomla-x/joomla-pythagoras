@@ -165,7 +165,7 @@ $saveOrder = $listOrder == 'ordering';
 					<?php endif; ?>
 				</td>
                 <td class="center">
-					<?php echo JHtml::_('modules.state', $item->published, $i, $canChange, 'cb'); ?>
+					<?php echo JHtml::_('modulesHtml.modules.state', $item->published, $i, $canChange, 'cb'); ?>
 				</td>
 				<td class="center">
 					<?php echo $item->position; ?>

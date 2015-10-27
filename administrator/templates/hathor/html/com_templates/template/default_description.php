@@ -10,11 +10,12 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\Helper;
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 
 <div class="pull-left">
-	<?php echo JHtml::_('templates.thumb', $this->template->element, $this->template->client_id); ?>
-	<?php echo JHtml::_('templates.thumbModal', $this->template->element, $this->template->client_id); ?>
+	<?php echo JHtml::_('templatesHtml.templates.thumb', $this->template->element, $this->template->client_id); ?>
+	<?php echo JHtml::_('templatesHtml.templates.thumbModal', $this->template->element, $this->template->client_id); ?>
 </div>
 <h2><?php echo ucfirst($this->template->element); ?></h2>
 <?php $client = Helper::getClientInfo($this->template->client_id); ?>

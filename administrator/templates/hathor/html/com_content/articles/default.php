@@ -174,7 +174,7 @@ $n         = count($this->items);
 					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('contentadministrator.featured', $item->featured, $i, $canChange); ?>
+					<?php echo JHtml::_('contentHtml.contentadministrator.featured', $item->featured, $i, $canChange); ?>
 				</td>
 				<td class="center">
 					<?php echo $this->escape($item->category_title); ?>
@@ -202,7 +202,7 @@ $n         = count($this->items);
 				<?php if ($assoc) : ?>
 				<td class="center">
 					<?php if ($item->association):?>
-						<?php echo JHtml::_('contentadministrator.association', $item->id); ?>
+						<?php echo JHtml::_('contentHtml.contentadministrator.association', $item->id); ?>
 					<?php endif;?>
 				</td>
 				<?php endif;?>

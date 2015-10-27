@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_ADMIN_SYSTEM_INFORMATION'); ?></legend>
@@ -66,7 +68,7 @@ defined('_JEXEC') or die;
 					<strong><?php echo JText::_('COM_ADMIN_WEB_SERVER'); ?></strong>
 				</td>
 				<td>
-					<?php echo JHtml::_('system.server', $this->info['server']); ?>
+					<?php echo JHtml::_('configHtml.system.server', $this->info['server']); ?>
 				</td>
 			</tr>
 			<tr>

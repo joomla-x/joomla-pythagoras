@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\CMS\Layout\Helper as JLayoutHelper;
 
 JHtml::_('behavior.formvalidator');
@@ -81,7 +82,7 @@ JFactory::getDocument()->addStyleDeclaration(
 					<hr>
 				<?php endif; ?>
 
-				<?php echo JHtml::_('filter.slider', array('selected_nodes' => $this->filter->data)); ?>
+				<?php echo JHtml::_('finderHtml.filter.slider', array('selected_nodes' => $this->filter->data)); ?>
 			</div>
 			<div class="span3">
 				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
