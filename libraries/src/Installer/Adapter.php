@@ -123,7 +123,7 @@ abstract class Adapter extends JAdapterInstance
 	/**
 	 * Constructor
 	 *
-	 * @param   Installer       $parent   Parent object
+	 * @param   Installer        $parent   Parent object
 	 * @param   JDatabaseDriver  $db       Database object
 	 * @param   array            $options  Configuration Options
 	 *
