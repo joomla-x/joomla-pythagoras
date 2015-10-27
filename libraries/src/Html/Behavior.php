@@ -12,6 +12,7 @@ namespace Joomla\CMS\Html;
 defined('JPATH_PLATFORM') or die;
 
 use JFactory;
+use JLog;
 use JText;
 use JUri;
 
