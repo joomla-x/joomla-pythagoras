@@ -21,7 +21,7 @@ use JText;
  *
  * @since  1.5
  */
-abstract class List
+abstract class Lists
 {
 	/**
 	 * Build the select list to choose an image
@@ -151,7 +151,7 @@ abstract class List
 
 		if (empty($neworder))
 		{
-			$orders = Html::_('list.genericordering', $query);
+			$orders = static::genericordering($query);
 			$html = Html::_('select.genericlist', $orders, $name, array('list.attr' => $attribs, 'list.select' => (int) $selected));
 		}
 		else

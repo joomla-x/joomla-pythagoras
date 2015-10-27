@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-use Joomla\CMS\Html\List as JHtmlList;
+use Joomla\CMS\Html\Lists as JHtmlList;
 
 /**
  * Test class for JHtmlList.
@@ -16,7 +16,7 @@ use Joomla\CMS\Html\List as JHtmlList;
  * @subpackage  Html
  * @since       3.1
  */
-class JHtmlListTest extends TestCaseDatabase
+class JHtmlListsTest extends TestCaseDatabase
 {
 	/**
 	 * Gets the data set to be loaded into the database during setup
