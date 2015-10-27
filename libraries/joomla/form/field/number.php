@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Form Field class for the Joomla Platform.
  * Provides a one line text box with up-down handles to set a number in the field.
