@@ -1347,4 +1347,3 @@ class Component extends JInstallerAdapter
 		return $table->id;
 	}
 }
-
