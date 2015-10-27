@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Help\Help as JHelp;
+use Joomla\CMS\Html\Html as JHtml;
 
 JHtml::_('bootstrap.tooltip');
 ?>
