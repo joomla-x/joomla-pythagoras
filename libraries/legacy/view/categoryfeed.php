@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Helper\Route as JHelperRoute;
+use Joomla\CMS\Ucm\Type as JUcmType;
+
 /**
  * Base feed View class for a category
  *

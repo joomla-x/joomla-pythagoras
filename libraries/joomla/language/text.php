@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Text handling class.
  *

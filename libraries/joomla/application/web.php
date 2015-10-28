@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Document\Document as JDocument;
+use Joomla\CMS\Version as JVersion;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Registry\Registry;
 

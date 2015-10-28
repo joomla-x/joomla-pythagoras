@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Add specific helper files for html generation
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
@@ -83,7 +85,7 @@ $clientId = $this->state->get('filter.client_id', 0);
 			?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td width="20">
-						<?php echo JHtml::_('languages.id', $i, $row->language);?>
+						<?php echo JHtml::_('languagesHtml.languages.id', $i, $row->language);?>
 					</td>
 					<td width="25%">
 						<label for="cb<?php echo $i; ?>">

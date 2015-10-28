@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Get additional language strings prefixed with TPL_HATHOR
 // @todo: Do we realy need this?
 $lang = JFactory::getLanguage();

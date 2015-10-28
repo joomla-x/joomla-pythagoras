@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-abstract class JHtmlSystem
+abstract class ConfigHtmlSystem
 {
 	/**
 	 * Method to generate a string message for a value

@@ -9,12 +9,15 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * JHtml helper class.
  *
  * @since  1.6
  */
-class JHtmlTemplates
+class TemplatesHtmlTemplates
 {
 	/**
 	 * Display the thumb for the template.

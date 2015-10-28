@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::_('behavior.core');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::stylesheet('com_finder/finder.css', false, true, false);

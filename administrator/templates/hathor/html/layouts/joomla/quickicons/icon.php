@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $id      = empty($displayData['id']) ? '' : (' id="' . $displayData['id'] . '"');
 $target  = empty($displayData['target']) ? '' : (' target="' . $displayData['target'] . '"');
 $onclick = empty($displayData['onclick']) ? '' : (' onclick="' . $displayData['onclick'] . '"');

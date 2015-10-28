@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Helper\Tags as JHelperTags;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 
 /**
  * Newsfeeds Component Category Model

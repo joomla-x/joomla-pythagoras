@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Document\Document as JDocument;
+use Joomla\CMS\Document\Renderer as JDocumentRenderer;
+
 /**
  * Test class for JDocumentRenderer.
  */

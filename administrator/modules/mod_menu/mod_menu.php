@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 // Include the module helper classes.
 if (!class_exists('ModMenuHelper'))
 {

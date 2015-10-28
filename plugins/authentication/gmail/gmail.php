@@ -11,6 +11,8 @@ use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * GMail Authentication Plugin
  *

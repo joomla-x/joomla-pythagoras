@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 
 <?php if ($this->params->get('presentation_style') == 'sliders') : ?>

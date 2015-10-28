@@ -8,6 +8,9 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::_('behavior.tabstate');
 
 // Access checks are done internally because of different requirements for the two controllers.

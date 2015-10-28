@@ -379,7 +379,7 @@ class JModelListTest extends TestCaseDatabase
 
 		$paginationObject = $this->object->getPagination();
 
-		$this->assertInstanceOf('JPagination', $paginationObject);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Pagination\\Pagination', $paginationObject);
 		$this->assertSame(100, $paginationObject->total);
 		$this->assertSame(0, $paginationObject->limitstart);
 		$this->assertSame(30, $paginationObject->limit);
@@ -1074,7 +1074,7 @@ class JModelListTest extends TestCaseDatabase
 	 */
 	public function testGetuserstateUsesDefault()
 	{
-		// Set up a Mock for JApplicationCms
+		// Set up a Mock for AbstractCMS
 		$applicationMock = $this->getMockCmsApp();
 		$applicationMock->method('getUserState')
 			->with(
@@ -1106,7 +1106,7 @@ class JModelListTest extends TestCaseDatabase
 	 */
 	public function testGetuserstateUsesRequestData()
 	{
-		// Set up a Mock for JApplicationCms
+		// Set up a Mock for AbstractCMS
 		$applicationMock = $this->getMockCmsApp();
 		$applicationMock->method('getUserState')
 			->with(
@@ -1140,7 +1140,7 @@ class JModelListTest extends TestCaseDatabase
 	 */
 	public function testGetuserstateSupportsResetPage()
 	{
-		// Set up a Mock for JApplicationCms
+		// Set up a Mock for AbstractCMS
 		$applicationMock = $this->getMockCmsApp();
 		$applicationMock->method('getUserState')
 			->with(

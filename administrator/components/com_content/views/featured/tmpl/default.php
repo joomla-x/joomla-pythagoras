@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 JHtml::_('bootstrap.tooltip');
@@ -106,7 +109,7 @@ $saveOrder = $listOrder == 'fp.ordering';
 						<td class="center">
 							<div class="btn-group">
 								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-								<?php echo JHtml::_('contentadministrator.featured', $item->featured, $i, $canChange); ?>
+								<?php echo JHtml::_('contentHtml.contentadministrator.featured', $item->featured, $i, $canChange); ?>
 								<?php
 								// Create dropdown items
 								$action = $archived ? 'unarchive' : 'archive';

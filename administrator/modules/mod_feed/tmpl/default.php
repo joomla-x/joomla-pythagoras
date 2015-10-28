@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 if (!empty($feed) && is_string($feed))
 {
 	echo $feed;

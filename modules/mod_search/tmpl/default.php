@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Including fallback code for the placeholder attribute in the search field.
 JHtml::_('jquery.framework');
 JHtml::_('script', 'system/html5fallback.js', false, true);

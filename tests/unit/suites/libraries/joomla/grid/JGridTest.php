@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Grid\Grid as JGrid;
+
 /**
  * General inspector class for JGrid.
  *

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $user      = JFactory::getUser();
 $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
@@ -57,7 +59,7 @@ Joomla.submitbutton = function(pressbutton)
 			<label class="selectlabel" for="filter_state"><?php echo JText::_('COM_FINDER_INDEX_FILTER_BY_STATE'); ?></label>
 			<select name="filter_state" id="filter_state">
 				<option value=""><?php echo JText::_('COM_FINDER_INDEX_FILTER_BY_STATE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('finder.statelist'), 'value', 'text', $this->state->get('filter.state'));?>
+				<?php echo JHtml::_('select.options', JHtml::_('finderHtml.finder.statelist'), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 
 			<button type="submit" id="filter-go">

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 $document = JFactory::getDocument();
 $direction = $document->direction == 'rtl' ? 'pull-right' : '';
 require JModuleHelper::getLayoutPath('mod_menu', $enabled ? 'default_enabled' : 'default_disabled');

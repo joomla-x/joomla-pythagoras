@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Document\Document as JDocument;
+
 /**
  * Test class for JDocument.
  */
@@ -113,7 +115,7 @@ class JDocumentTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testRetrievingAnInstanceOfTheHtmlDocument()
 	{
-		$this->assertInstanceOf('JDocumentHTML', JDocument::getInstance());
+		$this->assertInstanceOf('\\Joomla\\CMS\\Document\\Html\\Html', JDocument::getInstance());
 	}
 
 	/**
@@ -122,7 +124,7 @@ class JDocumentTest extends PHPUnit_Framework_TestCase
 	public function testRetrievingANonExistantTypeFetchesARawDocument()
 	{
 		$doc = JDocument::getInstance('custom');
-		$this->assertInstanceOf('JDocumentRaw', $doc);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Document\\Raw\\Raw', $doc);
 		$this->assertAttributeSame('custom', '_type', $doc);
 	}
 
@@ -559,7 +561,7 @@ class JDocumentTest extends PHPUnit_Framework_TestCase
 	public function testEnsureLoadRendererReturnsCorrectObject()
 	{
 		$this->object->setType('html');
-		$this->assertInstanceOf('JDocumentRendererHead', $this->object->loadRenderer('head'));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Document\\Html\\Renderer\\Head', $this->object->loadRenderer('head'));
 	}
 
 	/**
@@ -572,7 +574,7 @@ class JDocumentTest extends PHPUnit_Framework_TestCase
 	public function testEnsureLoadRendererThrowsException()
 	{
 		$this->object->setType('html');
-		$this->assertInstanceOf('JDocumentRendererHead', $this->object->loadRenderer('unknown'));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Document\\Html\\Renderer\\Head', $this->object->loadRenderer('unknown'));
 	}
 
 	/**

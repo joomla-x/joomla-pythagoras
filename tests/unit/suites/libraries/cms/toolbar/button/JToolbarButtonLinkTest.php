@@ -7,6 +7,9 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Toolbar\Button\Link as JToolbarButtonLink;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * Test class for JToolbarButtonLink.
  *

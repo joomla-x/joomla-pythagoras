@@ -9,6 +9,12 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Content as JHelperContent;
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
+use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * View class for a list of users.
  *
@@ -27,7 +33,7 @@ class UsersViewUsers extends JViewLegacy
 	/**
 	 * The pagination object.
 	 *
-	 * @var   JPagination
+	 * @var   \Joomla\CMS\Pagination\Pagination
 	 * @since 1.6
 	 */
 	protected $pagination;

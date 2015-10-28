@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Router\Router as JRouter;
+
 /**
  * Test class for JRouter.
  *
@@ -93,7 +96,7 @@ class JRouterTest extends TestCase
 	 */
 	public function testProperTypeAndMode($client)
 	{
-		$cache = new ReflectionProperty('JRouter', 'instances');
+		$cache = new ReflectionProperty('\\Joomla\\CMS\\Router\\Router', 'instances');
 		$cache->setAccessible(true);
 		$cache->setValue(array());
 
@@ -101,7 +104,7 @@ class JRouterTest extends TestCase
 
 		$object = JRouter::getInstance($client, array('mode' => 'test'));
 
-		$expected = 'JRouter' . ucfirst($client);
+		$expected = '\\Joomla\\CMS\\Router\\' . ucfirst($client);
 
 		$this->assertInstanceOf($expected, $object);
 		$this->assertEquals('test', $object->getMode());
@@ -132,7 +135,7 @@ class JRouterTest extends TestCase
 			'path' => __DIR__ . '/data'
 		));
 
-		$this->assertInstanceOf('JRouter', JRouter::getInstance('tester'));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Router\\Router', JRouter::getInstance('tester'));
 	}
 
 	/**
@@ -807,7 +810,7 @@ class JRouterTest extends TestCase
 	{
 		$this->object->setVars($preset, false);
 
-		$createUriMethod = new ReflectionMethod('JRouter', 'createUri');
+		$createUriMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Router', 'createUri');
 		$createUriMethod->setAccessible(true);
 		$this->assertEquals($expected, (string)($createUriMethod->invoke($this->object, $url)));
 	}
@@ -836,7 +839,7 @@ class JRouterTest extends TestCase
 	 */
 	public function testEncodeSegments($segments, $expected)
 	{
-		$encodeSegmentsMethod = new ReflectionMethod('JRouter', 'encodeSegments');
+		$encodeSegmentsMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Router', 'encodeSegments');
 		$encodeSegmentsMethod->setAccessible(true);
 		$this->assertEquals($expected, $encodeSegmentsMethod->invoke($this->object, $segments));
 	}
@@ -865,7 +868,7 @@ class JRouterTest extends TestCase
 	 */
 	public function testDecodeSegments($encoded, $expected)
 	{
-		$decodeSegmentsMethod = new ReflectionMethod('JRouter', 'decodeSegments');
+		$decodeSegmentsMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Router', 'decodeSegments');
 		$decodeSegmentsMethod->setAccessible(true);
 		$this->assertEquals($expected, $decodeSegmentsMethod->invoke($this->object, $encoded));
 	}

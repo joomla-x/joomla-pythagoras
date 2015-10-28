@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-include_once JPATH_PLATFORM . '/joomla/document/html/renderer/message.php';
+use Joomla\CMS\Document\Html\Renderer\Message as JDocumentRendererMessage;
 
 /**
  * Test class for JDocumentRendererMessage

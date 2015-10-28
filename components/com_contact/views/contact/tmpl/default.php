@@ -9,6 +9,11 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 $cparams = JComponentHelper::getParams('com_media');
 
 jimport('joomla.html.html.bootstrap');

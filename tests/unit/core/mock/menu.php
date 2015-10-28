@@ -43,7 +43,7 @@ class TestMockMenu
 
 		// Create the mock.
 		$mockObject = $test->getMock(
-			'JMenu',
+			'\\Joomla\\CMS\\Menu\\Menu',
 			$methods,
 			// Constructor arguments.
 			array(),

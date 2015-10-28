@@ -7,8 +7,10 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Schema\Changeset as JSchemaChangeset;
+
 /**
- * Test class for JSchemaChangeset.
+ * Test class for \Joomla\CMS\Schema\Changeset.
  *
  * @package     Joomla.UnitTest
  * @subpackage  Schema

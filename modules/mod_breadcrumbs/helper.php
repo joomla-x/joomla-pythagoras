@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 /**
  * Helper for mod_breadcrumbs
  *
@@ -46,7 +49,7 @@ class ModBreadCrumbsHelper
 
 		$count = count($items);
 
-		// Don't use $items here as it references JPathway properties directly
+		// Don't use $items here as it references Pathway properties directly
 		$crumbs = array();
 
 		for ($i = 0; $i < $count; $i ++)

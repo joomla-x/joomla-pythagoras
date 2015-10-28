@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 $cparams = JComponentHelper::getParams('com_media');
 ?>
 <div class="contact<?php echo $this->pageclass_sfx?>">

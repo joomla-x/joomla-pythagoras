@@ -9,6 +9,13 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Menu\Menu as JMenu;
+use Joomla\CMS\Pathway\Pathway as JPathway;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+use Joomla\CMS\Router\Router as JRouter;
 use Joomla\Registry\Registry;
 
 JLog::add('JApplication is deprecated.', JLog::WARNING, 'deprecated');
@@ -802,12 +809,12 @@ class JApplication extends JApplicationBase
 	}
 
 	/**
-	 * Returns the application JRouter object.
+	 * Returns the application Router object.
 	 *
 	 * @param   string  $name     The name of the application.
 	 * @param   array   $options  An optional associative array of configuration settings.
 	 *
-	 * @return  JRouter|null  A JRouter object
+	 * @return  \Joomla\CMS\Router\Router|null  A Router object
 	 *
 	 * @since   11.1
 	 * @deprecated  4.0
@@ -842,7 +849,7 @@ class JApplication extends JApplicationBase
 	 * @return  string  Processed string
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationHelper::stringURLSafe instead
+	 * @deprecated  4.0  Use \Joomla\CMS\Application\Helper::stringURLSafe instead
 	 */
 	public static function stringURLSafe($string)
 	{
@@ -917,7 +924,7 @@ class JApplication extends JApplicationBase
 	 * @return  string  A secure hash
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationHelper::getHash instead
+	 * @deprecated  4.0  Use \Joomla\CMS\Application\Helper::getHash instead
 	 */
 	public static function getHash($seed)
 	{

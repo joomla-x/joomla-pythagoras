@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Pagination\Pagination as JPagination;
+
 /**
  * FrameworkOnFramework Model class. The Model is the workhorse. It performs all
  * of the business logic based on its state and then returns the raw (processed)

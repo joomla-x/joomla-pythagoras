@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
+
 $published = $this->state->get('filter.published');
 ?>
 

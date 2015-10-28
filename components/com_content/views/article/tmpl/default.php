@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 // Create shortcuts to some parameters.
@@ -39,7 +43,7 @@ JHtml::_('behavior.caption');
 
 	<?php if (!$useDefList && $this->print) : ?>
 		<div id="pop-print" class="btn hidden-print">
-			<?php echo JHtml::_('icon.print_screen', $this->item, $params); ?>
+			<?php echo JHtml::_('contentHtml.icon.print_screen', $this->item, $params); ?>
 		</div>
 		<div class="clearfix"> </div>
 	<?php endif; ?>
@@ -68,7 +72,7 @@ JHtml::_('behavior.caption');
 	<?php else : ?>
 		<?php if ($useDefList) : ?>
 			<div id="pop-print" class="btn hidden-print">
-				<?php echo JHtml::_('icon.print_screen', $this->item, $params); ?>
+				<?php echo JHtml::_('contentHtml.icon.print_screen', $this->item, $params); ?>
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>

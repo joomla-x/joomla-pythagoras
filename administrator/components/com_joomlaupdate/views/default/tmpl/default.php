@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Html\Html as JHtml;
+
 $ftpFieldsDisplay = $this->ftp['enabled'] ? '' : 'style = "display: none"';
 $params           = JComponentHelper::getParams('com_joomlaupdate');
 

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 JLoader::register('FinderIndexer', __DIR__ . '/indexer.php');
 JLoader::register('FinderIndexerHelper', __DIR__ . '/helper.php');
 JLoader::register('FinderIndexerResult', __DIR__ . '/result.php');

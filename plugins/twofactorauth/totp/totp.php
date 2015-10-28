@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * Joomla! Two Factor Authentication using Google Authenticator TOTP Plugin
  *

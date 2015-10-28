@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 $app = JFactory::getApplication();
 $templateparams = $app->getTemplate(true)->params;
 $images = json_decode($this->item->images);

@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Installer\Installer as JInstaller;
+
 /**
  * Test class for JInstaller.
  *
@@ -83,7 +85,7 @@ class JInstallerTest extends TestCaseDatabase
 		$object1 = JInstaller::getInstance();
 
 		$this->assertInstanceOf(
-			'JInstaller',
+			'\\Joomla\\CMS\\Installer\\Installer',
 			$object1
 		);
 

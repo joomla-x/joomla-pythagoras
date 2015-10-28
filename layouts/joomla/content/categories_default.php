@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <?php if ($displayData->params->get('show_page_heading')) : ?>
 <h1>

@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /* @var InstallationViewRemoveHtml $this */
 ?>
 <form action="index.php" method="post" id="adminForm" class="form-validate form-horizontal">

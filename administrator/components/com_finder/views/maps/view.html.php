@@ -9,6 +9,11 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Content as JHelperContent;
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 JLoader::register('FinderHelperLanguage', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/language.php');
 
 /**
@@ -98,14 +103,14 @@ class FinderViewMaps extends JViewLegacy
 		JHtmlSidebar::addFilter(
 			'',
 			'filter_branch',
-			JHtml::_('select.options', JHtml::_('finder.mapslist'), 'value', 'text', $this->state->get('filter.branch')),
+			JHtml::_('select.options', JHtml::_('finderHtml.finder.mapslist'), 'value', 'text', $this->state->get('filter.branch')),
 			true
 		);
 
 		JHtmlSidebar::addFilter(
 			JText::_('COM_FINDER_INDEX_FILTER_BY_STATE'),
 			'filter_state',
-			JHtml::_('select.options', JHtml::_('finder.statelist'), 'value', 'text', $this->state->get('filter.state'))
+			JHtml::_('select.options', JHtml::_('finderHtml.finder.statelist'), 'value', 'text', $this->state->get('filter.state'))
 		);
 	}
 }

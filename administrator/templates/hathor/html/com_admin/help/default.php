@@ -9,7 +9,8 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.language.help');
+use Joomla\CMS\Help\Help as JHelp;
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_admin&amp;view=help'); ?>" method="post" name="adminForm" id="adminForm">
 <div class="width-50 fltrt helplinks">

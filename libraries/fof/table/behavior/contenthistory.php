@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Helper\Contenthistory as JHelperContenthistory;
+
 /**
  * FrameworkOnFramework table behavior class for content History
  *

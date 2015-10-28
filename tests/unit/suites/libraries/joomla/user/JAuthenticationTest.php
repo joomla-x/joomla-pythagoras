@@ -64,7 +64,7 @@ class JAuthenticationTest extends TestCase
 		require_once __DIR__ . '/stubs/FakeAuthenticationPlugin.php';
 
 		// Inject the mocked plugin list.
-		TestReflection::setValue('JPluginHelper', 'plugins', array(
+		TestReflection::setValue('\\Joomla\\CMS\\Plugin\\Helper', 'plugins', array(
 				(object) array(
 					'type' => 'authentication',
 					'name' => 'fake'
@@ -91,7 +91,7 @@ class JAuthenticationTest extends TestCase
 	protected function tearDown()
 	{
 		// Reset the loaded plugins.
-		TestReflection::setValue('JPluginHelper', 'plugins', null);
+		TestReflection::setValue('\\Joomla\\CMS\\Plugin\\Helper', 'plugins', null);
 		$this->restoreFactoryState();
 
 		$_SERVER = $this->backupServer;

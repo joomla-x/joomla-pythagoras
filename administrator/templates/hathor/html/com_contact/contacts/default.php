@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
+
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 JHtml::_('behavior.multiselect');
@@ -170,7 +173,7 @@ $assoc     = JLanguageAssociations::isEnabled();
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'contacts.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('contact.featured', $item->featured, $i, $canChange); ?>
+					<?php echo JHtml::_('contactHtml.contact.featured', $item->featured, $i, $canChange); ?>
 				</td>
 				<td class="center">
 					<?php echo $item->category_title; ?>
@@ -198,7 +201,7 @@ $assoc     = JLanguageAssociations::isEnabled();
 				<?php if ($assoc) : ?>
 					<td class="center">
 						<?php if ($item->association) : ?>
-							<?php echo JHtml::_('contact.association', $item->id); ?>
+							<?php echo JHtml::_('contactHtml.contact.association', $item->id); ?>
 						<?php endif; ?>
 					</td>
 				<?php endif;?>

@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-class JHtmlRedirect
+class RedirectHtmlRedirect
 {
 	/**
 	 * Display the published or unpublished state of an item.

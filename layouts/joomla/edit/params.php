@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 $app       = JFactory::getApplication();
 $form      = $displayData->getForm();
 $fieldSets = $form->getFieldsets();

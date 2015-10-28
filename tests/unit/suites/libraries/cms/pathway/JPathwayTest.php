@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Pathway\Pathway as JPathway;
+
 /**
  * Test class for JPathway.
  *
@@ -73,7 +75,7 @@ class JPathwayTest extends TestCase
 	 */
 	public function testGetInstance()
 	{
-		$current = TestReflection::getValue('JApplicationHelper', '_clients');
+		$current = TestReflection::getValue('Joomla\\CMS\\Application\\Helper', '_clients');
 
 		// Test Client
 		$obj = new stdClass;
@@ -86,11 +88,11 @@ class JPathwayTest extends TestCase
 		$obj2->name = 'inspector2';
 		$obj2->path = __DIR__ . '/stubs';
 
-		TestReflection::setValue('JApplicationHelper', '_clients', array($obj, $obj2));
+		TestReflection::setValue('Joomla\\CMS\\Application\\Helper', '_clients', array($obj, $obj2));
 
 		$pathway = JPathway::getInstance('');
 
-		$this->assertInstanceOf('JPathway', $pathway);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Pathway\\Pathway', $pathway);
 
 		$pathway = JPathway::getInstance('Inspector2');
 
@@ -112,7 +114,7 @@ class JPathwayTest extends TestCase
 			$this->fail('JPathway did not throw a proper exception with a false client.');
 		}
 
-		TestReflection::setValue('JApplicationHelper', '_clients', $current);
+		TestReflection::setValue('Joomla\\CMS\\Application\\Helper', '_clients', $current);
 	}
 
 	/**

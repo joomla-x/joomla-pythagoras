@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">

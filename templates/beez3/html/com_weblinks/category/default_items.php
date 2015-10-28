@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 // Code to support edit links for weblinks
 // Create a shortcut for params.
 $params = &$this->item->params;

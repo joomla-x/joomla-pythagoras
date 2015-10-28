@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * This is a file to add template specific chrome to pagination rendering.
  *

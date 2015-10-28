@@ -7,6 +7,8 @@
  */
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Version as JVersion;
+
 /**
  * Default Joomla! 1.5, 1.7, 2.5 view renderer class
  *

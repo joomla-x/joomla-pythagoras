@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Form Field class for FOF
  * Renders the row ordering interface checkbox in browse views
@@ -93,13 +95,13 @@ class FOFFormFieldOrdering extends JFormField implements FOFFormField
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ($this->readonly)
 		{
-			$html[] = JHtml::_('list.ordering', '', $query, trim($attr), $this->value, $itemId ? 0 : 1);
+			$html[] = JHtml::_('lists.ordering', '', $query, trim($attr), $this->value, $itemId ? 0 : 1);
 			$html[] = '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '"/>';
 		}
 		else
 		{
 			// Create a regular list.
-			$html[] = JHtml::_('list.ordering', $this->name, $query, trim($attr), $this->value, $itemId ? 0 : 1);
+			$html[] = JHtml::_('lists.ordering', $this->name, $query, trim($attr), $this->value, $itemId ? 0 : 1);
 		}
 
 		return implode($html);

@@ -6,7 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-include_once JPATH_PLATFORM . '/joomla/document/html/html.php';
+use Joomla\CMS\Document\Document as JDocument;
+use Joomla\CMS\Document\Html\Html as JDocumentHTML;
 
 /**
  * Test class for JDocumentHTML

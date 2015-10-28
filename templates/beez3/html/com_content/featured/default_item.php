@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Create a shortcut for params.
 $canEdit = $this->item->params->get('access-edit');
 $params = &$this->item->params;

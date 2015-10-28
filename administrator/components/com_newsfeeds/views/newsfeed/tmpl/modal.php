@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 // Include the HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 

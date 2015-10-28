@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 $this->name = JText::_('COM_CONFIG_SERVER_SETTINGS');
 $this->fieldsname = 'server';
 echo JLayoutHelper::render('joomla.content.options_default', $this);

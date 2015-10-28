@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Helper\Tags as JHelperTags;
+
 /**
  * Base HTML View class for the a Category list
  *

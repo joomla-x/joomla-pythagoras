@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 echo JHtml::_('bootstrap.startAccordion', 'categoryOptions', array('active' => 'collapse0'));
 $fieldSets = $this->form->getFieldsets('params');
 $i = 0;

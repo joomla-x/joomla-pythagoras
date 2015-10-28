@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 require_once JPATH_ROOT . '/components/com_newsfeeds/helpers/route.php';
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');

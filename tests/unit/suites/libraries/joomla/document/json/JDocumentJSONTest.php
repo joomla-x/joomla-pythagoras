@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once JPATH_PLATFORM . '/joomla/document/json/json.php';
+use Joomla\CMS\Document\Json\Json as JDocumentJSON;
 
 /**
  * Test class for JDocumentJSON

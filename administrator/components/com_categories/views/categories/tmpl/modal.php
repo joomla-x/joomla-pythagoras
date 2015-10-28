@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 $app = JFactory::getApplication();
 
 if ($app->isSite())

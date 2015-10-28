@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Html\Html as JHtml;
+
 jimport('joomla.filesystem.folder');
 
 /**

@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Search\SearchHelper as JSearchHelper;
 
 /**
  * HTML View class for the search component

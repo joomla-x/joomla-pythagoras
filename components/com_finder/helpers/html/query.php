@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  2.5
  */
-abstract class JHtmlQuery
+abstract class FinderHtmlQuery
 {
 	/**
 	 * Method to get the explained (human-readable) search query.

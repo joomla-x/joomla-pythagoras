@@ -105,7 +105,7 @@ class JFactoryTest extends TestCaseDatabase
 		JFactory::$application = TestMockApplication::create($this);
 
 		$this->assertInstanceOf(
-			'JDocument',
+			'\\Joomla\\CMS\\Document\\Document',
 			JFactory::getDocument(),
 			'Line: ' . __LINE__
 		);

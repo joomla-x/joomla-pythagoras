@@ -9,6 +9,11 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 /**
  * Registration model class for Users.
  *

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 $this->name = JText::_('COM_CONFIG_TEXT_FILTER_SETTINGS');
 $this->fieldsname = 'filters';
 $this->description = JText::_('COM_CONFIG_TEXT_FILTERS_DESC');

@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
@@ -105,11 +108,11 @@ $loggeduser = JFactory::getUser();
 							<?php endif; ?>
 							</div>
 							<div class="btn-group">
-								<?php echo JHtml::_('users.filterNotes', $item->note_count, $item->id); ?>
-								<?php echo JHtml::_('users.notes', $item->note_count, $item->id); ?>
-								<?php echo JHtml::_('users.addNote', $item->id); ?>
+								<?php echo JHtml::_('usersHtml.users.filterNotes', $item->note_count, $item->id); ?>
+								<?php echo JHtml::_('usersHtml.users.notes', $item->note_count, $item->id); ?>
+								<?php echo JHtml::_('usersHtml.users.addNote', $item->id); ?>
 							</div>
-							<?php echo JHtml::_('users.notesModal', $item->note_count, $item->id); ?>
+							<?php echo JHtml::_('usersHtml.users.notesModal', $item->note_count, $item->id); ?>
 							<?php if ($item->requireReset == '1') : ?>
 								<span class="label label-warning"><?php echo JText::_('COM_USERS_PASSWORD_RESET_REQUIRED'); ?></span>
 							<?php endif; ?>
@@ -125,7 +128,7 @@ $loggeduser = JFactory::getUser();
 							<?php if ($canChange) : ?>
 								<?php
 								$self = $loggeduser->id == $item->id;
-								echo JHtml::_('jgrid.state', JHtmlUsers::blockStates($self), $item->block, $i, 'users.', !$self);
+								echo JHtml::_('jgrid.state', JHtml::_('usersHtml.users.blockStates', $self), $item->block, $i, 'users.', !$self);
 								?>
 							<?php else : ?>
 								<?php echo JText::_($item->block ? 'JNO' : 'JYES'); ?>
@@ -134,7 +137,7 @@ $loggeduser = JFactory::getUser();
 						<td class="center hidden-phone">
 							<?php
 							$activated = empty( $item->activation) ? 0 : 1;
-							echo JHtml::_('jgrid.state', JHtmlUsers::activateStates(), $activated, $i, 'users.', (boolean) $activated);
+							echo JHtml::_('jgrid.state', JHtml::_('usersHtml.users.activateStates'), $activated, $i, 'users.', (boolean) $activated);
 							?>
 						</td>
 						<td>

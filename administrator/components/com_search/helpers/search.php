@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Content as JHelperContent;
+use Joomla\CMS\Search\SearchHelper as JSearchHelper;
+
 /**
  * Search component helper.
  *

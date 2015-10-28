@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * Email cloack plugin class.
  *

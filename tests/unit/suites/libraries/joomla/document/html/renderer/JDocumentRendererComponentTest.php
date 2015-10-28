@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-include_once JPATH_PLATFORM . '/joomla/document/html/renderer/component.php';
+use Joomla\CMS\Document\Html\Renderer\Component as JDocumentRendererComponent;
 
 /**
  * Test class for JDocumentRendererComponent

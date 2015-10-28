@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <div class="contact-category<?php echo $this->pageclass_sfx;?>">
 <?php if ($this->params->get('show_page_heading')) : ?>

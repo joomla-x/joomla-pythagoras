@@ -9,6 +9,12 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Less\Less;
+use Joomla\CMS\Less\Formatter\Joomla;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 /**
  * Template model class.
  *
@@ -751,8 +757,8 @@ class TemplatesModelTemplate extends JModelForm
 			$fileName     = end($explodeArray);
 			$outFile      = reset(explode('.', $fileName));
 
-			$less = new JLess;
-			$less->setFormatter(new JLessFormatterJoomla);
+			$less = new Less;
+			$less->setFormatter(new Joomla);
 
 			try
 			{

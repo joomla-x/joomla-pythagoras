@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Note that there are certain parts of this layout used only when there is exactly one tag.
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');

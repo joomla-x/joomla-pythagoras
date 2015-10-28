@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Document\Document as JDocument;
 use Joomla\Registry\Registry;
 
 /**

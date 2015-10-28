@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Router\Router as JRouter;
+
 /**
  * Class to create and parse routes for the site application
  *

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $app = JFactory::getApplication();
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');

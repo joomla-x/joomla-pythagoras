@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\File as JLayoutFile;
+
 if (!empty($this->msg))
 {
 	echo $this->msg;

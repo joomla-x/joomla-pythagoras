@@ -1,0 +1,57 @@
+<?php
+/**
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ *
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
+
+namespace Joomla\CMS\Document\Raw;
+
+defined('JPATH_PLATFORM') or die;
+
+use Joomla\CMS\Document\Document as JDocument;
+
+/**
+ * DocumentRAW class, provides an easy interface to parse and display raw output
+ *
+ * @since  11.1
+ */
+class Raw extends JDocument
+{
+	/**
+	 * Class constructor
+	 *
+	 * @param   array  $options  Associative array of options
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($options = array())
+	{
+		parent::__construct($options);
+
+		// Set mime type
+		$this->_mime = 'text/html';
+
+		// Set document type
+		$this->_type = 'raw';
+	}
+
+	/**
+	 * Render the document.
+	 *
+	 * @param   boolean  $cache   If true, cache the output
+	 * @param   array    $params  Associative array of attributes
+	 *
+	 * @return  string  The rendered data
+	 *
+	 * @since   11.1
+	 */
+	public function render($cache = false, $params = array())
+	{
+		parent::render();
+
+		return $this->getBuffer();
+	}
+}

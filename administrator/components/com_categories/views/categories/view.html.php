@@ -9,6 +9,13 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Content as JHelperContent;
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Html\Sidebar as JHtmlSidebar;
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
  * Categories view class for the Category package.
  *

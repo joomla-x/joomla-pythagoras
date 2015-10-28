@@ -188,7 +188,7 @@ class JResponse
 	 * @return  string
 	 *
 	 * @since   11.1
-	 * @deprecated  4.0  Use JApplicationCms::toString() instead
+	 * @deprecated  4.0  Use Joomla\CMS\Application\AbstractCMS::toString() instead
 	 */
 	public static function toString($compress = false)
 	{

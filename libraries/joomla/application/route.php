@@ -19,7 +19,7 @@ class JRoute
 	/**
 	 * The route object so we don't have to keep fetching it.
 	 *
-	 * @var    JRouter
+	 * @var    \Joomla\CMS\Router\Router
 	 * @since  12.2
 	 */
 	private static $_router = null;

@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Response\Json as JResponseJson;
+
 require_once __DIR__ . '/stubs/mock.application.php';
 
 /**

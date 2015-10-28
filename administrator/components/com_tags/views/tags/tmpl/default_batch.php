@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $published = $this->state->get('filter.published');
 ?>
 <div class="modal hide fade" id="collapseModal">

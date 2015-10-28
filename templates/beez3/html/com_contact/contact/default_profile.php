@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 ?>
 <?php if (JPluginHelper::isEnabled('user', 'profile')) :
 	$fields = $this->item->profile->getFieldset('profile'); ?>

@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <div class="random-image<?php echo $moduleclass_sfx ?>">
 <?php if ($link) : ?>

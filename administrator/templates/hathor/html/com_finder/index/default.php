@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::_('bootstrap.tooltip');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
@@ -70,13 +72,13 @@ JFactory::getDocument()->addScriptDeclaration("
 			<label class="selectlabel" for="filter_type"><?php echo JText::_('COM_FINDER_INDEX_TYPE_FILTER'); ?></label>
 			<select name="filter_type" id="filter_type">
 				<option value=""><?php echo JText::_('COM_FINDER_INDEX_TYPE_FILTER'); ?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('finder.typeslist'), 'value', 'text', $this->state->get('filter.type'));?>
+				<?php echo JHtml::_('select.options', JHtml::_('finderHtml.finder.typeslist'), 'value', 'text', $this->state->get('filter.type'));?>
 			</select>
 
 			<label class="selectlabel" for="filter_state"><?php echo JText::_('COM_FINDER_INDEX_FILTER_BY_STATE'); ?></label>
 			<select name="filter_state" id="filter_state">
 				<option value=""><?php echo JText::_('COM_FINDER_INDEX_FILTER_BY_STATE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('finder.statelist'), 'value', 'text', $this->state->get('filter.state'));?>
+				<?php echo JHtml::_('select.options', JHtml::_('finderHtml.finder.statelist'), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 
 			<button type="submit" id="filter-go">

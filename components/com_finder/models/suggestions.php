@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 define('FINDER_PATH_INDEXER', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer');
 JLoader::register('FinderIndexerHelper', FINDER_PATH_INDEXER . '/helper.php');
 

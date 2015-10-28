@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Create the copy/move options.
 $options = array(
 	JHtml::_('select.option', 'add', JText::_('COM_USERS_BATCH_ADD')),

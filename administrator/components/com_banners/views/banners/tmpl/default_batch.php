@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $published = $this->state->get('filter.published');
 ?>
 <div class="modal hide fade" id="collapseModal">
@@ -28,7 +30,7 @@ $published = $this->state->get('filter.published');
 			</div>
 			<div class="control-group span6">
 				<div class="controls">
-					<?php echo JHtml::_('banner.clients'); ?>
+					<?php echo JHtml::_('bannersHtml.banner.clients'); ?>
 				</div>
 			</div>
 		</div>

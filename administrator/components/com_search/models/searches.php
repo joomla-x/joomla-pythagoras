@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 /**
  * Methods supporting a list of search terms.
  *

@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Helper\Tags as JHelperTags;
+
 JFormHelper::loadFieldClass('tag');
 
 /**

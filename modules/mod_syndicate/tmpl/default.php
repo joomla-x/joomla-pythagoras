@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 ?>
 <a href="<?php echo $link ?>" class="syndicate-module<?php echo $moduleclass_sfx ?>">
 	<?php echo JHtml::_('image', 'system/livemarks.png', 'feed-image', null, true); ?>

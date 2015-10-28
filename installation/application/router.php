@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Router\Router as JRouter;
+
 /**
  * Class to create and parse routes.
  *

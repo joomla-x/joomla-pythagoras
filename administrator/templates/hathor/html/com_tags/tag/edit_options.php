@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 if (isset($fieldSet->description) && trim($fieldSet->description)) :
 	echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
 endif;

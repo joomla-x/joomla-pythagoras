@@ -26,16 +26,16 @@ if (!class_exists('JLoader'))
 	throw new RuntimeException('Joomla Platform not loaded.');
 }
 
-// Register the library base path for CMS libraries.
-JLoader::registerPrefix('J', JPATH_PLATFORM . '/cms', false, true);
-
 // Create the Composer autoloader
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require JPATH_LIBRARIES . '/vendor/autoload.php';
 $loader->unregister();
 
+// TODO - Our autoloader is unregistered so we can't find the loader class right here
+require_once JPATH_LIBRARIES . '/src/ClassLoader/Loader.php';
+
 // Decorate Composer autoloader
-spl_autoload_register(array(new JClassLoader($loader), 'loadClass'), true, true);
+spl_autoload_register(array(new Joomla\CMS\ClassLoader\Loader($loader), 'loadClass'), true, true);
 
 // Allow classes of the Joomla namespace to also be loaded off the libraries/joomla folder
 $loader->addPsr4('Joomla\\', JPATH_LIBRARIES . '/joomla');
@@ -53,12 +53,12 @@ if (!class_exists('FOFAutoloaderFof'))
 }
 
 // Register a handler for uncaught exceptions that shows a pretty error page when possible
-set_exception_handler(array('JErrorPage', 'render'));
+set_exception_handler(array('\\Joomla\\CMS\\Error\\Page', 'render'));
 
 // Define the Joomla version if not already defined.
 if (!defined('JVERSION'))
 {
-	$jversion = new JVersion;
+	$jversion = new Joomla\CMS\Version;
 	define('JVERSION', $jversion->getShortVersion());
 }
 
@@ -83,7 +83,6 @@ JLoader::register('JInstallerModule',  JPATH_PLATFORM . '/cms/installer/adapter/
 JLoader::register('JInstallerPackage',  JPATH_PLATFORM . '/cms/installer/adapter/package.php');
 JLoader::register('JInstallerPlugin',  JPATH_PLATFORM . '/cms/installer/adapter/plugin.php');
 JLoader::register('JInstallerTemplate',  JPATH_PLATFORM . '/cms/installer/adapter/template.php');
+JLoader::registerAlias('JAdministrator', '\\Joomla\\CMS\\Application\\Administrator');
+JLoader::registerAlias('JSite', '\\Joomla\\CMS\\Application\\Site');
 JLoader::register('JToolBar', JPATH_PLATFORM . '/cms/toolbar/toolbar.php');
-
-JLoader::registerAlias('JAdministrator',  'JApplicationAdministrator');
-JLoader::registerAlias('JSite',  'JApplicationSite');

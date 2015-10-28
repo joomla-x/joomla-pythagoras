@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Toolbar\Toolbar as JToolbar;
+
 /**
 * View to edit a template style.
 *

@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * FrameworkOnFramework raw output class. It works like an HTML view, but the
  * output is bare HTML.

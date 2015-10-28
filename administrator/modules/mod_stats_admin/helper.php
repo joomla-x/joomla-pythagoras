@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Html\Html as JHtml;
+
 /**
  * Helper class for admin stats module
  *

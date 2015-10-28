@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 // If the page class is defined, add to class as suffix.

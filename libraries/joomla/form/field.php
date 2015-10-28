@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 /**
  * Abstract Form Field class for the Joomla Platform.
  *

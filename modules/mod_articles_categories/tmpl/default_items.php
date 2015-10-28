@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 foreach ($list as $item) : ?>
 	<li <?php if ($_SERVER['REQUEST_URI'] == JRoute::_(ContentHelperRoute::getCategoryRoute($item->id))) echo ' class="active"';?>> <?php $levelup = $item->level - $startLevel - 1; ?>
 		<h<?php echo $params->get('item_heading') + $levelup; ?>>

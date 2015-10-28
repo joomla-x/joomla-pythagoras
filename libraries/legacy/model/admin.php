@@ -9,6 +9,10 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+use Joomla\CMS\Ucm\Type as JUcmType;
 use Joomla\Registry\Registry;
 
 /**

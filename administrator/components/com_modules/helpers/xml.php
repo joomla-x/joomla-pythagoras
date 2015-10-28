@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Installer\Installer as JInstaller;
+
 JLog::add('ModulesHelperXML is deprecated. Do not use.', JLog::WARNING, 'deprecated');
 
 /**

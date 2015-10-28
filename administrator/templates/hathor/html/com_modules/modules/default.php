@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
@@ -163,7 +165,7 @@ $saveOrder = $listOrder == 'ordering';
 					<?php endif; ?>
 				</td>
                 <td class="center">
-					<?php echo JHtml::_('modules.state', $item->published, $i, $canChange, 'cb'); ?>
+					<?php echo JHtml::_('modulesHtml.modules.state', $item->published, $i, $canChange, 'cb'); ?>
 				</td>
 				<td class="center">
 					<?php echo $item->position; ?>

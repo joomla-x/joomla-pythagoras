@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 // Get the component title div
 if (isset(JFactory::getApplication()->JComponentTitle))
 {

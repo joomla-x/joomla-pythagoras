@@ -9,9 +9,10 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('JHtmlUsers', JPATH_COMPONENT . '/helpers/html/users.php');
-JHtml::register('users.spacer', array('JHtmlUsers', 'spacer'));
+use Joomla\CMS\Html\Html as JHtml;
 
+JLoader::register('UsersHtmlUsers', JPATH_COMPONENT . '/helpers/html/users.php');
+JHtml::register('usersHtml.users.spacer', array('UsersHtmlUsers', 'spacer'));
 
 $fieldsets = $this->form->getFieldsets();
 if (isset($fieldsets['core']))   unset($fieldsets['core']);
@@ -32,14 +33,14 @@ foreach ($fieldsets as $group => $fieldset): // Iterate through the form fieldse
 		if (!$field->hidden && $field->type != 'Spacer') : ?>
 		<dt><?php echo $field->title; ?></dt>
 		<dd>
-			<?php if (JHtml::isRegistered('users.' . $field->id)) : ?>
-				<?php echo JHtml::_('users.' . $field->id, $field->value); ?>
-			<?php elseif (JHtml::isRegistered('users.' . $field->fieldname)) : ?>
-				<?php echo JHtml::_('users.' . $field->fieldname, $field->value); ?>
-			<?php elseif (JHtml::isRegistered('users.' . $field->type)) : ?>
-				<?php echo JHtml::_('users.' . $field->type, $field->value); ?>
+			<?php if (JHtml::isRegistered('usersHtml.users.' . $field->id)) : ?>
+				<?php echo JHtml::_('usersHtml.users.' . $field->id, $field->value); ?>
+			<?php elseif (JHtml::isRegistered('usersHtml.users.' . $field->fieldname)) : ?>
+				<?php echo JHtml::_('usersHtml.users.' . $field->fieldname, $field->value); ?>
+			<?php elseif (JHtml::isRegistered('usersHtml.users.' . $field->type)) : ?>
+				<?php echo JHtml::_('usersHtml.users.' . $field->type, $field->value); ?>
 			<?php else : ?>
-				<?php echo JHtml::_('users.value', $field->value); ?>
+				<?php echo JHtml::_('usersHtml.users.value', $field->value); ?>
 			<?php endif; ?>
 		</dd>
 		<?php endif; ?>

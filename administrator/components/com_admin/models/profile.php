@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_users/models/user.php';
 
 /**

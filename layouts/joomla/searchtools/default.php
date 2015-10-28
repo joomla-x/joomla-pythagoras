@@ -9,6 +9,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 $data = $displayData;
 
 // Receive overridable options

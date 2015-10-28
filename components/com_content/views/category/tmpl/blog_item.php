@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 // Create a shortcut for params.
 $params = $this->item->params;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');

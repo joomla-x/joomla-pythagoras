@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 use Joomla\Registry\Registry;
 
 /**

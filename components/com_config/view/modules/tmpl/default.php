@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');

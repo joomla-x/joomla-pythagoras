@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-abstract class JHtmlDirectory
+abstract class ConfigHtmlDirectory
 {
 	/**
 	 * Method to generate a (un)writable message for directory

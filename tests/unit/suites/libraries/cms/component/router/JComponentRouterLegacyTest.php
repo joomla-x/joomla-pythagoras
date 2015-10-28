@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Component\Router\Legacy as JComponentRouterLegacy;
+
 require_once __DIR__ . '/stubs/componentrouter.php';
 
 /**
@@ -51,8 +53,8 @@ class JComponentRouterLegacyTest extends TestCase
 	 */
 	public function testConstruct()
 	{
-		$this->assertInstanceOf('JComponentRouterInterface', $this->object);
-		$this->assertInstanceOf('JComponentRouterLegacy', $this->object);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\RouterInterface', $this->object);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\Legacy', $this->object);
 	}
 
 	/**

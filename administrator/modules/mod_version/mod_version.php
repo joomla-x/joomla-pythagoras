@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 require_once __DIR__ . '/helper.php';
 
 $version = ModVersionHelper::getVersion($params);

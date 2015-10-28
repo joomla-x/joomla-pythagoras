@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Tags as JHelperTags;
+
 /**
  * Profile view class for Users.
  *

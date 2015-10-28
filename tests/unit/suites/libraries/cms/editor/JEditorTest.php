@@ -7,7 +7,7 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once __DIR__ . '/stubs/EditorObserver.php';
+use Joomla\CMS\Editor\Editor;
 
 /**
  * Test class for JEditor.
@@ -21,7 +21,7 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Object under test
 	 *
-	 * @var    JEditor
+	 * @var    Editor
 	 * @since  3.0
 	 */
 	protected $object;
@@ -36,7 +36,7 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$this->object = new JEditor;
+		$this->object = new Editor;
 	}
 
 	/**
@@ -45,13 +45,13 @@ class JEditorTest extends PHPUnit_Framework_TestCase
 	 * @return  void
 	 *
 	 * @since   3.0
-	 * @covers JEditor::getInstance
+	 * @covers  Editor::getInstance
 	 */
 	public function testGetInstance()
 	{
 		$this->assertInstanceOf(
-			'JEditor',
-			JEditor::getInstance('none')
+			'\\Joomla\\CMS\\Editor\\Editor',
+			Editor::getInstance('none')
 		);
 	}
 }

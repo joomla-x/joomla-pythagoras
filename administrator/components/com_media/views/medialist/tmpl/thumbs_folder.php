@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $user = JFactory::getUser();
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">

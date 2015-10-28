@@ -11,6 +11,8 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Module\Helper as JModuleHelper;
 
 echo JHtml::_('sliders.start', 'panel-sliders', array('useCookie' => '1'));
 if (JFactory::getUser()->authorise('core.manage', 'com_postinstall')) :

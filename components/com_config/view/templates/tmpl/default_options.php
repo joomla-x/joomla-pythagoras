@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 // Load chosen.css
 JHtml::_('formbehavior.chosen', 'select');
 

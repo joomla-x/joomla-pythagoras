@@ -6,6 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Application\AbstractCMS;
+
 /**
  * Abstract test case class for unit testing.
  *
@@ -173,14 +175,14 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	 * @param   array  $options      A set of options to configure the mock.
 	 * @param   array  $constructor  An array containing constructor arguments to inject into the mock.
 	 *
-	 * @return  JApplicationCms
+	 * @return  AbstractCMS
 	 *
 	 * @since   3.2
 	 */
 	public function getMockCmsApp($options = array(), $constructor = array())
 	{
 		// Attempt to load the real class first.
-		class_exists('JApplicationCms');
+		class_exists('Joomla\\CMS\\Application\\AbstractCMS');
 
 		return TestMockApplicationCms::create($this, $options, $constructor);
 	}
@@ -244,7 +246,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	public function getMockDocument()
 	{
 		// Attempt to load the real class first.
-		class_exists('JDocument');
+		class_exists('\\Joomla\\CMS\\Document\\Document');
 
 		return TestMockDocument::create($this);
 	}

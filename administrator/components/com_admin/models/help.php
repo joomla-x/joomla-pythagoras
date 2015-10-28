@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Help\Help as JHelp;
+
 /**
  * Admin Component Help Model
  *

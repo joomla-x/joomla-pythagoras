@@ -39,12 +39,13 @@ umask(022);
 
 // Import JVersion to set the version information
 define('JPATH_PLATFORM', 1);
-require_once dirname(__DIR__) . '/libraries/cms/version/version.php';
+require_once dirname(__DIR__) . '/libraries/src/Version.php';
+use Joomla\CMS\Version;
 
 // Set version information for the build
-$version     = JVersion::RELEASE;
-$release     = JVersion::DEV_LEVEL;
-$stability   = JVersion::DEV_STATUS;
+$version     = Version::RELEASE;
+$release     = Version::DEV_LEVEL;
+$stability   = Version::DEV_STATUS;
 $fullVersion = $version . '.' . $release;
 
 // Shortcut the paths to the repository root and build folder

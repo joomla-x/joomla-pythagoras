@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
 use Joomla\Registry\Registry;
 
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 // Create a shortcut for params.
 $params  = &$this->item->params;
 $images  = json_decode($this->item->images);

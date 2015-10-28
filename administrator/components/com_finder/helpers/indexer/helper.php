@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+use Joomla\CMS\Router\Router as JRouter;
 use Joomla\Registry\Registry;
 
 JLoader::register('FinderIndexerParser', __DIR__ . '/parser.php');

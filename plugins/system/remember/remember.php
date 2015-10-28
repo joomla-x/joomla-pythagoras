@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * Joomla! System Remember Me Plugin
  *

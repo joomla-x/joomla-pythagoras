@@ -10,6 +10,8 @@
 require_once __DIR__ . '/stubs/PlgSystemBase.php';
 require_once __DIR__ . '/stubs/PlgSystemJoomla.php';
 
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * Test class for JPlugin.
  *

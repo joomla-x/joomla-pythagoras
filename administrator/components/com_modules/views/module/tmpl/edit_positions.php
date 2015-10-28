@@ -9,13 +9,15 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 require_once JPATH_ADMINISTRATOR . '/components/com_templates/helpers/templates.php';
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 $clientId       = $this->item->client_id;
 $state          = 1;
 $selectedPosition = $this->item->position;
-$positions = JHtml::_('modules.positions', $clientId, $state, $selectedPosition);
+$positions = JHtml::_('modulesHtml.modules.positions', $clientId, $state, $selectedPosition);
 
 
 // Add custom position to options

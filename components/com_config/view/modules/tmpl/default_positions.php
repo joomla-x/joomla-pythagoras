@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $positions = $this->model->getPositions();
 
 echo JHtml::_('select.genericlist', $positions, 'jform[position]', '', '', '', $this->item['position']);

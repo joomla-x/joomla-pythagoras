@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Helper\Tags as JHelperTags;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
 use Joomla\Registry\Registry;
 
 /**
@@ -366,14 +370,11 @@ class ContactModelContact extends JModelForm
 		JPluginHelper::importPlugin('user');
 		$form = new JForm('com_users.profile');
 
-		// Get the dispatcher.
-		$dispatcher = JEventDispatcher::getInstance();
-
 		// Trigger the form preparation event.
-		$dispatcher->trigger('onContentPrepareForm', array($form, $data));
+		JFactory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
 
 		// Trigger the data preparation event.
-		$dispatcher->trigger('onContentPrepareData', array('com_users.profile', $data));
+		JFactory::getApplication()->triggerEvent('onContentPrepareData', array('com_users.profile', $data));
 
 		// Load the data into the form after the plugins have operated.
 		$form->bind($data);

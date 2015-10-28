@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * System plugin to highlight terms.
  *

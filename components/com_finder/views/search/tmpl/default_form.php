@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 if ($this->params->get('show_advanced', 1) || $this->params->get('show_autosuggest', 1))
 {
 	JHtml::_('jquery.framework');
@@ -95,7 +97,7 @@ jQuery(function() {";
 				<hr />
 			<?php endif; ?>
 			<div id="finder-filter-window">
-				<?php echo JHtml::_('filter.select', $this->query, $this->params); ?>
+				<?php echo JHtml::_('finderHtml.filter.select', $this->query, $this->params); ?>
 			</div>
 		</div>
 	<?php endif; ?>

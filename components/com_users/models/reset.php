@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+
 /**
  * Rest model class for Users.
  *

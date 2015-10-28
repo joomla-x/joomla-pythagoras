@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::_('formbehavior.chosen', 'select');
 
 $options = array(

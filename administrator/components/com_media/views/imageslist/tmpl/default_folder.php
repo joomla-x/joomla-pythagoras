@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 $input = JFactory::getApplication()->input;
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">

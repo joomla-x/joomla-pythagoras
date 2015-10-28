@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Tags as JHelperTags;
+use Joomla\CMS\Layout\File as JLayoutFile;
+use Joomla\CMS\Plugin\Helper as JPluginHelper;
+
 /**
  * HTML Article View class for the Content component
  *

@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
 use Joomla\Registry\Registry;
 
 /**
@@ -16,7 +17,7 @@ use Joomla\Registry\Registry;
  *
  * @since  1.5
  */
-abstract class JHtmlIcon
+abstract class ContentHtmlIcon
 {
 	/**
 	 * Method to generate a link to the create item page for the given category

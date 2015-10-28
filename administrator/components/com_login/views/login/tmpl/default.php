@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 JHtml::_('behavior.noframes');
 
 /**

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * Recaptcha Plugin.
  * Based on the official recaptcha library( https://developers.google.com/recaptcha/docs/php )

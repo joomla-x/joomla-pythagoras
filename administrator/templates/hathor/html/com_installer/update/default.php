@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::_('behavior.multiselect');
 JHtml::_('bootstrap.tooltip');
 

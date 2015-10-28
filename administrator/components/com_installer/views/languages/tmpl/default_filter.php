@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+
 JHtml::_('bootstrap.tooltip');
 ?>
 <div id="filter-bar" class="btn-toolbar">

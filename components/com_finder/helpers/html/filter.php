@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Multilang as JLanguageMultilang;
 use Joomla\Registry\Registry;
 
 JLoader::register('FinderHelperLanguage', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/language.php');
@@ -18,7 +20,7 @@ JLoader::register('FinderHelperLanguage', JPATH_ADMINISTRATOR . '/components/com
  *
  * @since  2.5
  */
-abstract class JHtmlFilter
+abstract class FinderHtmlFilter
 {
 	/**
 	 * Method to generate filters using the slider widget and decorated

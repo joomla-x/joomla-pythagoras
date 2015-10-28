@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 JHtml::_('bootstrap.tooltip');
@@ -166,7 +170,7 @@ $assoc      = JLanguageAssociations::isEnabled();
 							<?php endif; ?>
 						</td>
 						<td class="center hidden-phone">
-							<?php echo JHtml::_('contact.featured', $item->featured, $i, $canChange); ?>
+							<?php echo JHtml::_('contactHtml.contact.featured', $item->featured, $i, $canChange); ?>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $item->access_level; ?>
@@ -174,7 +178,7 @@ $assoc      = JLanguageAssociations::isEnabled();
 						<?php if ($assoc) : ?>
 						<td class="hidden-phone">
 							<?php if ($item->association) : ?>
-								<?php echo JHtml::_('contact.association', $item->id); ?>
+								<?php echo JHtml::_('contactHtml.contact.association', $item->id); ?>
 							<?php endif; ?>
 						</td>
 						<?php endif;?>

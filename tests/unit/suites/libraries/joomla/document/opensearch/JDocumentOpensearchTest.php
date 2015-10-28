@@ -7,7 +7,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once JPATH_PLATFORM . '/joomla/document/opensearch/opensearch.php';
+use Joomla\CMS\Document\Document as JDocument;
+use Joomla\CMS\Document\Opensearch\Opensearch as JDocumentOpensearch;
+use Joomla\CMS\Document\Opensearch\Image as JOpenSearchImage;
+use Joomla\CMS\Document\Opensearch\Url as JOpenSearchUrl;
 
 /**
  * Test class for JDocumentOpensearch

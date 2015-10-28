@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\Helper as JComponentHelper;
+use Joomla\CMS\Helper\Content as JHelperContent;
+
 /**
  * Helper for mod_tags_popular
  *

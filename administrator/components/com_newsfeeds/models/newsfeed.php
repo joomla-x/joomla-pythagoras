@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\Helper as JApplicationHelper;
+use Joomla\CMS\Helper\Tags as JHelperTags;
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
 use Joomla\Registry\Registry;
 
 JLoader::register('NewsfeedsHelper', JPATH_ADMINISTRATOR . '/components/com_newsfeeds/helpers/newsfeeds.php');

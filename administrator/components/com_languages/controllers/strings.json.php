@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Response\Json as JResponseJson;
+
 /**
  * Languages Strings JSON Controller
  *

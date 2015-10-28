@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Language\Associations as JLanguageAssociations;
+use Joomla\CMS\Layout\Helper as JLayoutHelper;
+
 JLoader::register('ContactHelper', JPATH_ADMINISTRATOR . '/components/com_contact/helpers/contact.php');
 
 /**
@@ -18,7 +22,7 @@ JLoader::register('ContactHelper', JPATH_ADMINISTRATOR . '/components/com_contac
  * @subpackage  com_contact
  * @since       1.6
  */
-abstract class JHtmlContact
+abstract class ContactHtmlContact
 {
 	/**
 	 * Get the associated language flags

@@ -22,7 +22,7 @@ JError::setErrorHandling(E_ERROR, 'message', array('JError', 'customErrorPage'))
 // Bootstrap the CMS libraries.
 require_once JPATH_LIBRARIES . '/cms.php';
 
-$version = new JVersion;
+$version = new Joomla\CMS\Version;
 
 // Installation check, and check on removal of the install directory.
 if (!file_exists(JPATH_CONFIGURATION . '/configuration.php')

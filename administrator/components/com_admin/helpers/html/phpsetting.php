@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-abstract class JHtmlPhpSetting
+abstract class ConfigHtmlPhpSetting
 {
 	/**
 	 * Method to generate a boolean message for a value

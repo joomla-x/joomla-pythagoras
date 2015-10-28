@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AbstractCMS as JApplicationCms;
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Plugin\Plugin as JPlugin;
+
 /**
  * Joomla! Debug plugin.
  *

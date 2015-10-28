@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Route as JHelperRoute;
 ?>
 <?php JLoader::register('TagsHelperRoute', JPATH_BASE . '/components/com_tags/helpers/route.php'); ?>
 <div class="tagssimilar<?php echo $moduleclass_sfx; ?>">

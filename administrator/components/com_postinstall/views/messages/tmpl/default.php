@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\CMS\Module\Helper as JModuleHelper;
+
 $renderer = JFactory::getDocument()->loadRenderer('module');
 $options  = array('style' => 'raw');
 $mod      = JModuleHelper::getModule('mod_feed');

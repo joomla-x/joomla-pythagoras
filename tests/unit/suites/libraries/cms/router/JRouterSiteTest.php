@@ -8,7 +8,8 @@
  */
 
 require_once __DIR__ . '/data/TestRouter.php';
-jimport('cms.router.router');
+
+use Joomla\CMS\Router\Site as JRouterSite;
 
 /**
  * Test class for JRouterSite.
@@ -77,7 +78,7 @@ class JRouterSiteTest extends TestCase
 			TestMockMenu::create($this)
 		);
 
-		$this->assertInstanceOf('JRouter', $object);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Router\\Router', $object);
 	}
 
 	/**
@@ -937,7 +938,7 @@ class JRouterSiteTest extends TestCase
 			TestMockMenu::create($this)
 		);
 
-		$buildRawRouteMethod = new ReflectionMethod('JRouterSite', 'buildRawRoute');
+		$buildRawRouteMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'buildRawRoute');
 		$buildRawRouteMethod->setAccessible(true);
 
 		$buildRawRouteMethod->invokeArgs($object, array(&$uri));
@@ -961,7 +962,7 @@ class JRouterSiteTest extends TestCase
 			TestMockMenu::create($this)
 		);
 
-		$buildRawRouteMethod = new ReflectionMethod('JRouterSite', 'buildRawRoute');
+		$buildRawRouteMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'buildRawRoute');
 		$buildRawRouteMethod->setAccessible(true);
 
 		$uri->setVar('option', 'com_test');
@@ -986,7 +987,7 @@ class JRouterSiteTest extends TestCase
 			TestMockMenu::create($this)
 		);
 
-		$buildRawRouteMethod = new ReflectionMethod('JRouterSite', 'buildRawRoute');
+		$buildRawRouteMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'buildRawRoute');
 		$buildRawRouteMethod->setAccessible(true);
 
 		$uri->setVar('option', 'com_ te?st');
@@ -1012,7 +1013,7 @@ class JRouterSiteTest extends TestCase
 			TestMockMenu::create($this)
 		);
 
-		$buildRawRouteMethod = new ReflectionMethod('JRouterSite', 'buildRawRoute');
+		$buildRawRouteMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'buildRawRoute');
 		$buildRawRouteMethod->setAccessible(true);
 
 		$uri->setVar('option', 'com_test3');
@@ -1096,7 +1097,7 @@ class JRouterSiteTest extends TestCase
 			TestMockMenu::create($this)
 		);
 
-		$buildSefRouteMethod = new ReflectionMethod('JRouterSite', 'buildSefRoute');
+		$buildSefRouteMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'buildSefRoute');
 		$buildSefRouteMethod->setAccessible(true);
 		$buildSefRouteMethod->invokeArgs($object, array(&$uri));
 
@@ -1121,7 +1122,7 @@ class JRouterSiteTest extends TestCase
 		);
 		$object->setMode(JROUTER_MODE_SEF);
 
-		$processParseRulesMethod = new ReflectionMethod('JRouterSite', 'processParseRules');
+		$processParseRulesMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'processParseRules');
 		$processParseRulesMethod->setAccessible(true);
 
 		$vars = $processParseRulesMethod->invokeArgs($object, array(&$uri));
@@ -1199,7 +1200,7 @@ class JRouterSiteTest extends TestCase
 		);
 		$object->setMode($mode);
 
-		$processBuildRulesMethod = new ReflectionMethod('JRouterSite', 'processBuildRules');
+		$processBuildRulesMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'processBuildRules');
 		$processBuildRulesMethod->setAccessible(true);
 
 		$processBuildRulesMethod->invokeArgs($object, array(&$uri));
@@ -1290,7 +1291,7 @@ class JRouterSiteTest extends TestCase
 		);
 		$object->setVars($preset);
 
-		$createUriMethod = new ReflectionMethod('JRouterSite', 'createUri');
+		$createUriMethod = new ReflectionMethod('\\Joomla\\CMS\\Router\\Site', 'createUri');
 		$createUriMethod->setAccessible(true);
 
 		$uri = $createUriMethod->invoke($object, $url);
@@ -1333,7 +1334,7 @@ class JRouterSiteTest extends TestCase
 		 * Check if an instance of JComponentRouterLegacy
 		 * is returned for non-existing routers
 		 */
-		$this->assertInstanceOf('JComponentRouterLegacy', $object->getComponentRouter('com_legacy'));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\Legacy', $object->getComponentRouter('com_legacy'));
 	}
 
 	/**

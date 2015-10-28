@@ -7,6 +7,8 @@
  * @license	    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Layout\Base as JLayoutBase;
+
 /**
  * Test class for JLayoutBase.
  */
@@ -32,7 +34,7 @@ class JLayoutBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testJlayoutbaseSetOptionsReturnsAJlayoutbaseInstanceWithEmptyParameter()
 	{
-		$this->assertInstanceOf('JLayoutBase', $this->layoutBase->setOptions());
+		$this->assertInstanceOf('\\Joomla\\CMS\\Layout\\Base', $this->layoutBase->setOptions());
 	}
 
 	/**
@@ -42,7 +44,7 @@ class JLayoutBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testJlayoutbaseSetOptionsReturnsAJlayoutbaseInstanceWithJregistryParameter()
 	{
-		$this->assertInstanceOf('JLayoutBase', $this->layoutBase->setOptions(new JRegistry));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Layout\\Base', $this->layoutBase->setOptions(new JRegistry));
 	}
 
 	/**
@@ -52,7 +54,7 @@ class JLayoutBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testJlayoutbaseSetOptionsReturnsAJlayoutbaseInstanceWithAnArrayParameter()
 	{
-		$this->assertInstanceOf('JLayoutBase', $this->layoutBase->setOptions(array()));
+		$this->assertInstanceOf('\\Joomla\\CMS\\Layout\\Base', $this->layoutBase->setOptions(array()));
 	}
 
 	/**
@@ -211,6 +213,6 @@ class JLayoutBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testRenderReturnsAnEmptyString()
 	{
-		$this->assertEquals('', $this->layoutBase->render('Data'), 'JLayoutBase::render does not render an output');
+		$this->assertEquals('', $this->layoutBase->render('Data'), '\\Joomla\\CMS\\Layout\\Base::render does not render an output');
 	}
 }

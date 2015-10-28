@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\CMS\Component\Router\Viewconfiguration as JComponentRouterViewconfiguration;
+
 /**
  * Test class for JComponentRouterViewconfiguration
  *
@@ -49,7 +51,7 @@ class JComponentRouterViewconfigurationTest extends TestCase
 	 */
 	public function testConstruct()
 	{
-		$this->assertInstanceOf('JComponentRouterViewconfiguration', $this->object);
+		$this->assertInstanceOf('\\Joomla\\CMS\\Component\\Router\\Viewconfiguration', $this->object);
 		$this->assertEquals('test', $this->object->name);
 		$this->assertEquals(array('test'), $this->object->path);
 	}

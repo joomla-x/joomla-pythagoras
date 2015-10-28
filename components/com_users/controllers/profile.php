@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\Tags as JHelperTags;
+
 require_once JPATH_COMPONENT . '/controller.php';
 
 /**

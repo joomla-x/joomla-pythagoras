@@ -9,11 +9,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Html\Html as JHtml;
+use Joomla\Registry\Registry;
+
 // Including fallback code for HTML5 non supported browsers.
 JHtml::_('jquery.framework');
 JHtml::_('script', 'system/html5fallback.js', false, true);
 
-$data = new JRegistry($displayData);
+$data = new Registry($displayData);
 
 // Always use the 'checkboxes' class.
 $classes   = $data->get('classes', array());

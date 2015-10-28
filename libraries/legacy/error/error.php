@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Document\Document as JDocument;
+
 // Error Definition: Illegal Options
 const JERROR_ILLEGAL_OPTIONS = 1;
 
