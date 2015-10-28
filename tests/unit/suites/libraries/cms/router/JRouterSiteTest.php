@@ -9,8 +9,6 @@
 
 require_once __DIR__ . '/data/TestRouter.php';
 
-// Router is used to autoload the constants JROUTER_MODE_RAW and JROUTER_MODE_SEF
-use Joomla\CMS\Router\Router;
 use Joomla\CMS\Router\Site as JRouterSite;
 
 /**
