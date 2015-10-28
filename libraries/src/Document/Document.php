@@ -1013,11 +1013,12 @@ class Document
 	public function loadRenderer($type)
 	{
 		$type  = ucfirst(strtolower($type));
-		$class = '\\Joomla\\CMS\\Document\\' . $this->getType() . '\\Renderer\\' . $type;
+		$documentType = ucfirst(strtolower($this->getType()));
+		$class = '\\Joomla\\CMS\\Document\\' . $documentType . '\\Renderer\\' . $type;
 
 		if (!class_exists($class))
 		{
-			$path = __DIR__ . '/' . $this->getType() . '/renderer/' . $type . '.php';
+			$path = __DIR__ . '/' . $documentType . '/Renderer/' . $type . '.php';
 
 			if (file_exists($path))
 			{
