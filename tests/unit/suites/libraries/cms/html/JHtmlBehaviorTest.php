@@ -79,12 +79,12 @@ class JHtmlBehaviorTest extends TestCase
 	public function getFrameworkData()
 	{
 		$data = array(
-			array(array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true))),
-			array(array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true)), true),
-			array(array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true)), false, false),
-			array(array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true)), false, true),
-			array(array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true)), true, false),
-			array(array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true)), true, true)
+			array(array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true))),
+			array(array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true)), true),
+			array(array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true)), false, false),
+			array(array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true)), false, true),
+			array(array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true)), true, false),
+			array(array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true)), true, true)
 		);
 
 		return $data;
@@ -136,8 +136,8 @@ class JHtmlBehaviorTest extends TestCase
 	public function getCaptionData()
 	{
 		$data = array(
-			array(array('\\Joomla\\CMS\\Html\\Behavior::caption' => array('img.caption' => true))),
-			array(array('\\Joomla\\CMS\\Html\\Behavior::caption' => array('img.caption2' => true)), 'img.caption2'),
+			array(array('Joomla\\CMS\\Html\\Behavior::caption' => array('img.caption' => true))),
+			array(array('Joomla\\CMS\\Html\\Behavior::caption' => array('img.caption2' => true)), 'img.caption2'),
 		);
 
 		return $data;
@@ -204,7 +204,7 @@ class JHtmlBehaviorTest extends TestCase
 
 		JHtmlBehaviorInspector::formvalidation();
 		$this->assertEquals(
-			array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true), '\\Joomla\\CMS\\Html\\Behavior::formvalidator' => true),
+			array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true), 'Joomla\\CMS\\Html\\Behavior::formvalidator' => true),
 			JHtmlBehaviorInspector::getLoaded()
 		);
 	}
@@ -235,7 +235,7 @@ class JHtmlBehaviorTest extends TestCase
 
 		JHtmlBehaviorInspector::switcher();
 		$this->assertEquals(
-			array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true), '\\Joomla\\CMS\\Html\\Behavior::switcher' => true),
+			array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true), 'Joomla\\CMS\\Html\\Behavior::switcher' => true),
 			JHtmlBehaviorInspector::getLoaded()
 		);
 	}
@@ -266,7 +266,7 @@ class JHtmlBehaviorTest extends TestCase
 
 		JHtmlBehaviorInspector::combobox();
 		$this->assertEquals(
-			array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::combobox' => true),
+			array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::combobox' => true),
 			JHtmlBehaviorInspector::getLoaded()
 		);
 	}
@@ -283,18 +283,18 @@ class JHtmlBehaviorTest extends TestCase
 		$data = array(
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
-					'\\Joomla\\CMS\\Html\\Behavior::tooltip' => array(
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
+					'Joomla\\CMS\\Html\\Behavior::tooltip' => array(
 						md5(serialize(array('.hasTooltip', array()))) => true
 					),
 				),
 			),
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
-					'\\Joomla\\CMS\\Html\\Behavior::tooltip' => array(
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
+					'Joomla\\CMS\\Html\\Behavior::tooltip' => array(
 						md5(serialize(array('.hasTooltip2', array()))) => true
 					),
 				),
@@ -302,9 +302,9 @@ class JHtmlBehaviorTest extends TestCase
 			),
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
-					'\\Joomla\\CMS\\Html\\Behavior::tooltip' => array(
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
+					'Joomla\\CMS\\Html\\Behavior::tooltip' => array(
 						md5(serialize(array('.hasTooltip2', array('showDelay' => 1000)))) => true
 					),
 				),
@@ -364,18 +364,18 @@ class JHtmlBehaviorTest extends TestCase
 		$data = array(
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
-					'\\Joomla\\CMS\\Html\\Behavior::modal' => array(
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
+					'Joomla\\CMS\\Html\\Behavior::modal' => array(
 						md5(serialize(array('a.modal', array()))) => true
 					)
 				)
 			),
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
-					'\\Joomla\\CMS\\Html\\Behavior::modal' => array(
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
+					'Joomla\\CMS\\Html\\Behavior::modal' => array(
 						md5(serialize(array('a.modal2', array()))) => true
 					)
 				),
@@ -383,9 +383,9 @@ class JHtmlBehaviorTest extends TestCase
 			),
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
-					'\\Joomla\\CMS\\Html\\Behavior::modal' => array(
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true, 'more' => true),
+					'Joomla\\CMS\\Html\\Behavior::modal' => array(
 						md5(serialize(array('a.modal2', array('size' => 1000)))) => true
 					)
 				),
@@ -445,14 +445,14 @@ class JHtmlBehaviorTest extends TestCase
 		$data = array(
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::multiselect' => array('adminForm' => true),
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::multiselect' => array('adminForm' => true),
 				)
 			),
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::multiselect' => array('adminForm2' => true),
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::multiselect' => array('adminForm2' => true),
 				),
 				'adminForm2'
 			),
@@ -508,9 +508,9 @@ class JHtmlBehaviorTest extends TestCase
 		$data = array(
 			array(
 				array(
-					'\\Joomla\\CMS\\Html\\Behavior::core' => true,
-					'\\Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true),
-					'\\Joomla\\CMS\\Html\\Behavior::tree' => array('myid' => true)
+					'Joomla\\CMS\\Html\\Behavior::core' => true,
+					'Joomla\\CMS\\Html\\Behavior::framework' => array('core' => true),
+					'Joomla\\CMS\\Html\\Behavior::tree' => array('myid' => true)
 				),
 				'myid'
 			),
@@ -582,7 +582,7 @@ class JHtmlBehaviorTest extends TestCase
 
 		JHtmlBehaviorInspector::calendar();
 		$this->assertEquals(
-			array('\\Joomla\\CMS\\Html\\Behavior::calendar' => true),
+			array('Joomla\\CMS\\Html\\Behavior::calendar' => true),
 			JHtmlBehaviorInspector::getLoaded()
 		);
 	}
@@ -613,7 +613,7 @@ class JHtmlBehaviorTest extends TestCase
 
 		JHtmlBehaviorInspector::colorpicker();
 		$this->assertEquals(
-			array('\\Joomla\\CMS\\Html\\Behavior::colorpicker' => true),
+			array('Joomla\\CMS\\Html\\Behavior::colorpicker' => true),
 			JHtmlBehaviorInspector::getLoaded()
 		);
 	}
@@ -637,7 +637,7 @@ class JHtmlBehaviorTest extends TestCase
 
 		JHtmlBehaviorInspector::keepalive();
 		$this->assertEquals(
-			array('\\Joomla\\CMS\\Html\\Behavior::keepalive' => true),
+			array('Joomla\\CMS\\Html\\Behavior::keepalive' => true),
 			JHtmlBehaviorInspector::getLoaded()
 		);
 	}
@@ -668,7 +668,7 @@ class JHtmlBehaviorTest extends TestCase
 
 		JHtmlBehaviorInspector::noframes();
 		$this->assertEquals(
-			array('\\Joomla\\CMS\\Html\\Behavior::core' => true, '\\Joomla\\CMS\\Html\\Behavior::noframes' => true),
+			array('Joomla\\CMS\\Html\\Behavior::core' => true, 'Joomla\\CMS\\Html\\Behavior::noframes' => true),
 			JHtmlBehaviorInspector::getLoaded()
 		);
 	}
