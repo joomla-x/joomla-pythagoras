@@ -35,6 +35,9 @@
     "autoload": {
         "psr-4": {
             "Joomla\\CMS\\": "libraries/src/"
-        }
+        },
+        "classmap": [
+            "libraries/src/Router/Router.php"
+        ]
     }
 }

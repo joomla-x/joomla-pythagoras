@@ -7,6 +7,7 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     'CallbackFilterIterator' => $vendorDir . '/joomla/compat/src/CallbackFilterIterator.php',
+    'Joomla\\CMS\\Router\\Router' => $baseDir . '/libraries/src/Router/Router.php',
     'JsonSerializable' => $vendorDir . '/joomla/compat/src/JsonSerializable.php',
     'PHPMailer' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
     'POP3' => $vendorDir . '/phpmailer/phpmailer/class.pop3.php',
