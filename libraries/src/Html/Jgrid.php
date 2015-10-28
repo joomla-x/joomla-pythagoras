@@ -22,7 +22,7 @@ use JText;
  *
  * @since  1.6
  */
-abstract class JGrid
+abstract class Jgrid
 {
 	/**
 	 * Returns an action on a grid
