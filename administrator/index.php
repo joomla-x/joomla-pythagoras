@@ -37,11 +37,21 @@ require_once JPATH_BASE . '/includes/framework.php';
 require_once JPATH_BASE . '/includes/helper.php';
 require_once JPATH_BASE . '/includes/toolbar.php';
 
+$container = new Joomla\DI\Container();
+$container->registerServiceProvider(new Joomla\Provider\InputProvider());
+$container->registerServiceProvider(new Joomla\Provider\LanguageProvider());
+$container->registerServiceProvider(new Joomla\Provider\DatabaseProvider());
+$container->registerServiceProvider(new Joomla\Provider\DocumentProvider());
+$container->registerServiceProvider(new Joomla\Provider\DispatcherProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\ConfigurationProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\SessionProvider());
+$container->registerServiceProvider(new Joomla\Cms\Provider\ApplicationProvider());
+
 // Mark afterLoad in the profiler.
 JDEBUG ? $_PROFILER->mark('afterLoad') : null;
 
 // Instantiate the application.
-$app = JFactory::getApplication('administrator');
+$app = $container->get('JApplicationAdministrator');
 
 // Execute the application.
 $app->execute();

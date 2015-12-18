@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 /**
  * Joomla! Installation Application class.
@@ -23,7 +24,7 @@ final class InstallationApplicationWeb extends JApplicationCms
 	 *
 	 * @since   3.1
 	 */
-	public function __construct()
+	public function __construct(Input $input = null, Registry $config = null)
 	{
 		// Register the application name.
 		$this->_name = 'installation';
@@ -32,21 +33,10 @@ final class InstallationApplicationWeb extends JApplicationCms
 		$this->_clientId = 2;
 
 		// Run the parent constructor.
-		parent::__construct();
+		parent::__construct($input, $config);
 
 		// Store the debug value to config based on the JDEBUG flag.
 		$this->config->set('debug', JDEBUG);
-
-		// Register the config to JFactory.
-		JFactory::$config = $this->config;
-
-		// Register the application to JFactory.
-		JFactory::$application = $this;
-
-		// Set the root in the URI one level up.
-		$parts = explode('/', JUri::base(true));
-		array_pop($parts);
-		JUri::root(null, implode('/', $parts));
 	}
 
 	/**
@@ -134,14 +124,8 @@ final class InstallationApplicationWeb extends JApplicationCms
 	{
 		try
 		{
-			// Load the document to the API.
-			$this->loadDocument();
-
 			// Set up the params
 			$document = $this->getDocument();
-
-			// Register the document object with JFactory.
-			JFactory::$document = $document;
 
 			if ($document->getType() == 'html')
 			{
@@ -444,81 +428,18 @@ final class InstallationApplicationWeb extends JApplicationCms
 		$this->config->set('debug_lang', $forced['debug']);
 		$this->config->set('sampledata', $forced['sampledata']);
 		$this->config->set('helpurl', $options['helpurl']);
+
+		// Set the root in the URI one level up.
+		$parts = explode('/', JUri::base(true));
+		array_pop($parts);
+		JUri::root(null, implode('/', $parts));
 	}
 
-	/**
-	 * Allows the application to load a custom or default document.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a document,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JDocument  $document  An optional document object. If omitted, the factory document is created.
-	 *
-	 * @return  InstallationApplicationWeb This method is chainable.
-	 *
-	 * @since   3.2
-	 */
-	public function loadDocument(JDocument $document = null)
+	public function setSession(JSession $session)
 	{
-		if ($document === null)
-		{
-			$lang = JFactory::getLanguage();
+		// Set the session object.
+		$this->session = $session;
 
-			$type = $this->input->get('format', 'html', 'word');
-
-			$attributes = array(
-				'charset' => 'utf-8',
-				'lineend' => 'unix',
-				'tab' => '  ',
-				'language' => $lang->getTag(),
-				'direction' => $lang->isRtl() ? 'rtl' : 'ltr'
-			);
-
-			$document = JDocument::getInstance($type, $attributes);
-
-			// Register the instance to JFactory.
-			JFactory::$document = $document;
-		}
-
-		$this->document = $document;
-
-		return $this;
-	}
-
-	/**
-	 * Allows the application to load a custom or default session.
-	 *
-	 * The logic and options for creating this object are adequately generic for default cases
-	 * but for many applications it will make sense to override this method and create a session,
-	 * if required, based on more specific needs.
-	 *
-	 * @param   JSession  $session  An optional session object. If omitted, the session is created.
-	 *
-	 * @return  InstallationApplicationWeb  This method is chainable.
-	 *
-	 * @since   3.1
-	 */
-	public function loadSession(JSession $session = null)
-	{
-		// Generate a session name.
-		$name = md5($this->get('secret') . $this->get('session_name', get_class($this)));
-
-		// Calculate the session lifetime.
-		$lifetime = (($this->get('lifetime')) ? $this->get('lifetime') * 60 : 900);
-
-		// Get the session handler from the configuration.
-		$handler = $this->get('session_handler', 'none');
-
-		// Initialize the options for JSession.
-		$options = array(
-			'name' => $name,
-			'expire' => $lifetime,
-			'force_ssl' => $this->get('force_ssl')
-		);
-
-		// Instantiate the session object.
-		$session = JSession::getInstance($handler, $options);
 		$session->initialise($this->input, $this->dispatcher);
 
 		if ($session->getState() == 'expired')
@@ -535,12 +456,6 @@ final class InstallationApplicationWeb extends JApplicationCms
 			// Registry has been corrupted somehow.
 			$session->set('registry', new Registry('session'));
 		}
-
-		// Set the session object.
-		$this->session = $session;
-
-		// Register the session with JFactory.
-		JFactory::$session = $session;
 
 		return $this;
 	}
