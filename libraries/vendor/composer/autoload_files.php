@@ -6,5 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    $vendorDir . '/ircmaxell/password-compat/lib/password.php',
+    'f5b3ada715b2e75e9a702d70d0eeca62' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+    '025bea19df83471e989e01acafc2c4ae' => $vendorDir . '/guzzlehttp/psr7/src/functions_include.php',
+    'b12accd861ed682ce314297046b7e8de' => $vendorDir . '/guzzlehttp/promises/src/functions_include.php',
+    'fa32ece6c8db8a379982ca0b929df511' => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php',
+    '05669301f06448944ce5eb260126f84e' => $vendorDir . '/ircmaxell/password-compat/lib/password.php',
 );
