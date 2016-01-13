@@ -8,6 +8,7 @@ php:
   - 7.0
 
 services:
+  - mysql
   - docker
   - memcached
   - redis-server
