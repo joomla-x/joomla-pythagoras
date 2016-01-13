@@ -9,6 +9,7 @@ php:
 
 services:
   - mysql
+  - postgresql
   - docker
   - memcached
   - redis-server
@@ -17,8 +18,8 @@ before_script:
   # Make sure all dev dependencies are installed
   - composer install
   # Set up databases for testing
-  - mysql -e 'create database joomla_ut;'
-  - mysql joomla_ut < tests.phpunit/unit/schema/mysql.sql
+  - mysql -u root -p '' -e 'create database joomla_ut;'
+  - mysql -u root -p '' joomla_ut < tests.phpunit/unit/schema/mysql.sql
   - psql -c 'create database joomla_ut;' -U postgres
   - psql -d joomla_ut -a -f tests.phpunit/unit/schema/postgresql.sql
   # Set up Apache
