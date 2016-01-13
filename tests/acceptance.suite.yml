@@ -7,7 +7,12 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser:
-            url: http://localhost/myapp
+        - WebDriver:
+           url: 'http://localhost/'
+           browser: firefox
+           window_size: 1024x768
+           wait: 10
+           capabilities:
+               unexpectedAlertBehaviour: 'accept'
         - \Helper\Acceptance
 error_reporting: E_ALL

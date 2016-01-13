@@ -9,11 +9,11 @@ use Joomla\Tests\Page\PageFactory;
 class CPanelCest
 {
     /** @var  Page */
-    private $page;
+    private $page = '/';
 
     public function _before(AcceptanceTester $I)
     {
-        $this->page = (new PageFactory($I, 'Hathor'))->create('CPanelPage');
+        #$this->page = (new PageFactory($I, 'Hathor'))->create('CPanelPage');
     }
 
     public function _after(AcceptanceTester $I)
@@ -23,5 +23,6 @@ class CPanelCest
     public function tryToTest(AcceptanceTester $I)
     {
         $I->amOnPage($this->page);
+        $I->seeInTitle('Hello world!');
     }
 }
