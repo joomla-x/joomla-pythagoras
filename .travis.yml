@@ -14,20 +14,16 @@ services:
   - memcached
   - redis-server
 
+install:
+  - "sudo apt-get install mysql-server"
+
 before_script:
-  # Make sure all dev dependencies are installed
   - composer install
-  # Set up databases for testing
-  - mysql -u root -e 'create database joomla_ut;'
+  - mysql -e 'create database joomla_ut;' -u root
   - mysql joomla_ut < tests.phpunit/unit/schema/mysql.sql
   - psql -c 'create database joomla_ut;' -U postgres
   - psql -d joomla_ut -a -f tests.phpunit/unit/schema/postgresql.sql
-  # Set up Apache
-  # - ./build/travis/php-apache.sh
-  # Enable additional PHP extensions
   - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/travis/phpenv/memcached.ini; fi
-  # PHP 5.5+ use APCu
-  #- if [ $TRAVIS_PHP_VERSION == "5.5" ] || [ $TRAVIS_PHP_VERSION == "5.6" ]; then printf "\n" | pecl install apcu; fi
   - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/travis/phpenv/redis.ini; fi
 
 script:
