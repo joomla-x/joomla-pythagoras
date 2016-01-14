@@ -27,7 +27,7 @@ before_script:
   - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/travis/phpenv/redis.ini; fi
 
 script:
-  - libraries/vendor/bin/phpunit --configuration travisci-phpunit.xml
+  - libraries/vendor/bin/phpunit --testdox --configuration travisci-phpunit.xml
   - tests/acceptance/runtests.sh
   - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then libraries/vendor/bin/phpcs --report=full --extensions=php --ignore=tests.phpunit -p --standard=build/phpcs/Joomla .; fi
 
