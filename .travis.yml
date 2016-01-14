@@ -8,7 +8,6 @@ php:
   - 7.0
 
 services:
-  - mysql
   - postgresql
   - docker
   - memcached
@@ -20,7 +19,7 @@ install:
 
 before_script:
   - composer install
-  - mysql -e 'create database joomla_ut;' -u root
+  - mysql -e 'create database joomla_ut;'
   - mysql joomla_ut < tests.phpunit/unit/schema/mysql.sql
   - psql -c 'create database joomla_ut;' -U postgres
   - psql -d joomla_ut -a -f tests.phpunit/unit/schema/postgresql.sql
