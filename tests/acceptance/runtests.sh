@@ -9,6 +9,7 @@ sleep 1
 cd ../..
 
 libraries/vendor/bin/codecept run -c codeception.yml.dist acceptance
+status=$?
 
 cd tests/acceptance
 
@@ -16,3 +17,5 @@ docker-compose stop
 docker-compose rm --force
 
 cd ../..
+
+exit $status
