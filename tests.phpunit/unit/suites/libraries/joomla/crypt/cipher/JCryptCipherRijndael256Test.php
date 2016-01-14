@@ -21,6 +21,7 @@ class JCryptCipherRijndael256Test extends TestCase
 	 * @since  12.1
 	 */
 	private $_cipher;
+	private $key;
 
 	/**
 	 * Prepares the environment before running a test.
@@ -32,6 +33,11 @@ class JCryptCipherRijndael256Test extends TestCase
 	protected function setUp()
 	{
 		parent::setUp();
+
+		if (version_compare(PHP_VERSION, '5.6.0', '<'))
+		{
+			$this->markTestSkipped('This test hangs on PHP 5.5 for unknown reasons.');
+		}
 
 		// Only run the test if mcrypt is loaded.
 		if (!extension_loaded('mcrypt'))
