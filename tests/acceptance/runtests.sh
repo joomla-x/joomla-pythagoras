@@ -8,7 +8,7 @@ CURRENT=`pwd`
 
 cd ../..
 
-./libraries/vendor/bin/codecept run acceptance
+./libraries/vendor/bin/codecept run -c codeception.yml.dist acceptance
 
 cd $CURRENT
 
