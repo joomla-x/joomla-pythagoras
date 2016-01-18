@@ -6,12 +6,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\System\Page\Joomla3\Hathor;
+namespace Joomla\Tests\System\Page\Joomla3\Installer;
 
 use Joomla\Tests\Page\Page;
 
-class CPanelPage extends Page
+class InstallerPage extends Page
 {
     /** @var  string */
-    protected $url = '/administrator/';
+    protected $url = '/installation/index.php';
 }

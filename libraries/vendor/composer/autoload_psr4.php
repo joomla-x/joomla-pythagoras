@@ -41,6 +41,7 @@ return array(
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Facebook\\WebDriver\\' => array($vendorDir . '/facebook/webdriver/lib'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+    'Codeception\\Module\\' => array($vendorDir . '/joomla-projects/joomla-browser/src'),
     'Codeception\\Extension\\' => array($vendorDir . '/codeception/codeception/ext'),
     'Codeception\\' => array($vendorDir . '/codeception/codeception/src/Codeception'),
 );

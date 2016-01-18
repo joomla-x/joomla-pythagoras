@@ -1,3 +1,19 @@
+web:
+  image: php:5-apache
+  volumes:
+    - ../..:/var/www/html
+  ports:
+    - 8080:80
+  links:
+    - db:db
+
+db:
+  image: mysql
+  volumes:
+    - ../../tests/_envs/sql:/var/lib/mysql
+  ports:
+    - 3306:3306
+
 hub:
   image: selenium/hub
   ports:
@@ -10,9 +26,9 @@ firefox:
   links:
     - hub:hub
 
-chrome:
-  image: selenium/node-chrome-debug
-  ports:
-    - 5900
-  links:
-    - hub:hub
+#chrome:
+#  image: selenium/node-chrome-debug
+#  ports:
+#    - 5900
+#  links:
+#    - hub:hub

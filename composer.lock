@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "da46e1dc14a487bd12164c92851015d7",
-    "content-hash": "9a28678ad846151c878e2135a930a9fb",
+    "hash": "3a78421399908caaf282fe7e8ceab4fc",
+    "content-hash": "4cf6c55f53e545d5a893616681a64b9a",
     "packages": [
         {
             "name": "ircmaxell/password-compat",
@@ -1092,6 +1092,54 @@
                 "uri"
             ],
             "time": "2015-11-03 01:34:55"
+        },
+        {
+            "name": "joomla-projects/joomla-browser",
+            "version": "v1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-projects/joomla-browser.git",
+                "reference": "a52d91922b670ba918087a9b98ef51a23bb3489f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/a52d91922b670ba918087a9b98ef51a23bb3489f",
+                "reference": "a52d91922b670ba918087a9b98ef51a23bb3489f",
+                "shasum": ""
+            },
+            "require": {
+                "codeception/codeception": "2.*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codeception\\Module\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Puneet Kala",
+                    "email": "puneet.kala@community.joomla.org"
+                },
+                {
+                    "name": "Javier Gomez",
+                    "email": "javier.gomez@community.joomla.org"
+                }
+            ],
+            "description": "joomla-browser Codeception Module",
+            "homepage": "https://docs.joomla.org/Testing_Joomla_Extensions_with_Codeception",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "acceptance testing",
+                "joomla"
+            ],
+            "time": "2015-05-04 12:18:27"
         },
         {
             "name": "pear/cache_lite",

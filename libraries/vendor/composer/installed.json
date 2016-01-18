@@ -2652,5 +2652,55 @@
             "phpcs",
             "standards"
         ]
+    },
+    {
+        "name": "joomla-projects/joomla-browser",
+        "version": "v1.2",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-projects/joomla-browser.git",
+            "reference": "a52d91922b670ba918087a9b98ef51a23bb3489f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/a52d91922b670ba918087a9b98ef51a23bb3489f",
+            "reference": "a52d91922b670ba918087a9b98ef51a23bb3489f",
+            "shasum": ""
+        },
+        "require": {
+            "codeception/codeception": "2.*",
+            "php": ">=5.3.0"
+        },
+        "time": "2015-05-04 12:18:27",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Codeception\\Module\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Puneet Kala",
+                "email": "puneet.kala@community.joomla.org"
+            },
+            {
+                "name": "Javier Gomez",
+                "email": "javier.gomez@community.joomla.org"
+            }
+        ],
+        "description": "joomla-browser Codeception Module",
+        "homepage": "https://docs.joomla.org/Testing_Joomla_Extensions_with_Codeception",
+        "keywords": [
+            "BDD",
+            "TDD",
+            "acceptance testing",
+            "joomla"
+        ]
     }
 ]
