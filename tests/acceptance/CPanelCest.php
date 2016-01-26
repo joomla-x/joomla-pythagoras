@@ -14,15 +14,11 @@ class CPanelCest
     use Asserts;
     use DumpTrait;
 
-    /** @var  WebDriver */
-    private $driver;
-
     /** @var  Page */
     private $page;
 
     public function _before(AcceptanceTester $I)
     {
-        $this->driver = $I->getWebDriver();
         $this->page = (new PageFactory($I, 'Hathor'))->create('CPanelPage');
     }
 
@@ -33,8 +29,7 @@ class CPanelCest
     public function tryToTest(AcceptanceTester $I)
     {
         $I->amOnPage((string) $this->page);
-
-        $this->assertTrue($this->page->isCurrent(), 'Expected to be on ' . (string)$this->page . ', but actually on ' . $this->driver->getCurrentURL());
+        $I->assertCurrent($this->page);
 
         $this->dumpPage(__METHOD__);
     }

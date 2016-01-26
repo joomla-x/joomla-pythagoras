@@ -15,15 +15,11 @@ class InstallerCest
     use Asserts;
     use DumpTrait;
 
-    /** @var  WebDriver */
-    private $driver;
-
     /** @var  Page */
     private $page;
 
     public function _before(AcceptanceTester $I)
     {
-        $this->driver = $I->getWebDriver();
         $this->page = (new PageFactory($I, 'Installer'))->create('InstallerPage');
     }
 
@@ -34,8 +30,7 @@ class InstallerCest
     public function tryToTest(AcceptanceTester $I)
     {
         $I->amOnPage((string) $this->page);
-
-        $this->assertTrue($this->page->isCurrent(), 'Expected to be on ' . (string)$this->page . ', but actually on ' . $this->driver->getCurrentURL());
+        $I->assertCurrent($this->page);
 
         $I->seeInTitle('Joomla! Web Installer');
 
