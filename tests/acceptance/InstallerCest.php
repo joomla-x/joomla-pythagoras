@@ -13,7 +13,6 @@ use Joomla\Tests\Page\PageFactory;
 class InstallerCest
 {
     use Asserts;
-    use DumpTrait;
 
     /** @var  Page */
     private $page;
@@ -34,6 +33,6 @@ class InstallerCest
 
         $I->seeInTitle('Joomla! Web Installer');
 
-        $this->dumpPage(__METHOD__);
+        $this->page->dump(__METHOD__);
     }
 }

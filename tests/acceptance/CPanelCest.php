@@ -12,7 +12,6 @@ use Joomla\Tests\Page\PageFactory;
 class CPanelCest
 {
     use Asserts;
-    use DumpTrait;
 
     /** @var  Page */
     private $page;
@@ -31,6 +30,6 @@ class CPanelCest
         $I->amOnPage((string) $this->page);
         $I->assertCurrent($this->page);
 
-        $this->dumpPage(__METHOD__);
+        $this->page->dump(__METHOD__);
     }
 }
