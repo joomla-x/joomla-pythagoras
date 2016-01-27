@@ -75,6 +75,6 @@ class PageFactory
 	 */
 	private function getPrefix()
 	{
-		return '\\Joomla\\Tests\\System\\Page\\' . $this->version . '\\' . $this->template . '\\';
+		return '\\Joomla\\Tests\\Page\\' . $this->version . '\\' . $this->template . '\\';
 	}
 }

@@ -205,6 +205,10 @@
 	<target name="system-test" description="Perform the system tests">
 		<exec executable="libraries/vendor/bin/codecept" resolveexecutable="true" dir="${basedir}">
 			<arg value="run"/>
+			<arg value="installation"/>
+		</exec>
+		<exec executable="libraries/vendor/bin/codecept" resolveexecutable="true" dir="${basedir}">
+			<arg value="run"/>
 			<arg value="acceptance"/>
 		</exec>
 	</target>

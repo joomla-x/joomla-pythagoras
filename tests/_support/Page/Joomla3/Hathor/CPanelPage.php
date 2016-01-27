@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\System\Page\Joomla3\Hathor;
+namespace Joomla\Tests\Page\Joomla3\Hathor;
 
 use Joomla\Tests\Page\Page;
 
