@@ -156,4 +156,64 @@
 	</target>
 
 	<target name="build" depends="clean,phpunit,parallelTasks" />
+
+	<!-- System test related targets -->
+
+	<property name="dockyard-rel" value="build/dockyard"/>
+	<property name="dockyard" value="${basedir}/${dockyard-rel}"/>
+
+	<target name="clear-aut" description="Remove Application Under Test from the test directory">
+		<delete dir="${dockyard}" includeemptydirs="true" failonerror="false"/>
+	</target>
+
+	<target name="reset-aut" depends="clear-aut" description="Reset Application Under Test in the test directory">
+		<mkdir dir="${dockyard}"/>
+		<antcall target="copy-aut"/>
+	</target>
+
+	<target name="copy-aut" description="Copy the Application Under Test to the test directory">
+		<mkdir dir="${dockyard}/aut"/>
+		<mkdir dir="${dockyard}/sql"/>
+		<exec executable="rsync">
+			<arg value="--recursive"/>
+			<arg value="--links"/>
+			<arg value="--exclude=.git"/>
+			<arg value="--exclude=${dockyard-rel}"/>
+			<arg value="${source}/"/>
+			<arg path="${dockyard}/aut"/>
+		</exec>
+	</target>
+
+	<target name="docker-start" description="Start the Docker based test environment">
+		<exec executable="docker-compose">
+			<arg value="up"/>
+			<arg value="-d"/>
+		</exec>
+		<sleep seconds="1"/>
+	</target>
+
+	<target name="docker-stop" description="Stop the Docker based test environment">
+		<exec executable="docker-compose">
+			<arg value="stop"/>
+		</exec>
+		<exec executable="docker-compose">
+			<arg value="rm"/>
+			<arg value="--force"/>
+		</exec>
+	</target>
+
+	<target name="system-test" description="Perform the system tests">
+		<exec executable="libraries/vendor/bin/codecept" resolveexecutable="true" dir="${basedir}">
+			<arg value="run"/>
+			<arg value="acceptance"/>
+		</exec>
+	</target>
+
+	<target name="run-system-test" depends="copy-aut" description="Perform the system tests, including setup">
+		<delete dir="${basedir}/tests/_output"/>
+		<mkdir dir="${basedir}/tests/_output"/>
+		<antcall target="docker-start"/>
+		<antcall target="system-test"/>
+		<antcall target="docker-stop"/>
+	</target>
 </project>

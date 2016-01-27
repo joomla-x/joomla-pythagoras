@@ -49,5 +49,6 @@ Desktop.ini
 # Extra files installed by Composer
 libraries/vendor
 
+build/dockyard
 tests/_output/*
-tests/_envs/sql
+tests/_envs/*
