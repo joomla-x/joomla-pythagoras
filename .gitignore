@@ -1,3 +1,5 @@
+/codeception.yml
+/tests/_output
 # IDE & System Related Files #
 .buildpath
 .project
