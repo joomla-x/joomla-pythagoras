@@ -189,7 +189,6 @@
 			<arg value="up"/>
 			<arg value="-d"/>
 		</exec>
-		<sleep seconds="1"/>
 	</target>
 
 	<target name="docker-stop" description="Stop the Docker based test environment">
@@ -203,11 +202,11 @@
 	</target>
 
 	<target name="system-test" description="Perform the system tests">
-		<exec executable="libraries/vendor/bin/codecept" resolveexecutable="true" dir="${basedir}">
+		<exec executable="libraries/vendor/bin/codecept" dir="${basedir}">
 			<arg value="run"/>
 			<arg value="installation"/>
 		</exec>
-		<exec executable="libraries/vendor/bin/codecept" resolveexecutable="true" dir="${basedir}">
+		<exec executable="libraries/vendor/bin/codecept" dir="${basedir}">
 			<arg value="run"/>
 			<arg value="acceptance"/>
 		</exec>
@@ -217,6 +216,7 @@
 		<delete dir="${basedir}/tests/_output"/>
 		<mkdir dir="${basedir}/tests/_output"/>
 		<antcall target="docker-start"/>
+		<sleep seconds="3"/>
 		<antcall target="system-test"/>
 		<antcall target="docker-stop"/>
 	</target>

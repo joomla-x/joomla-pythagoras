@@ -27,7 +27,7 @@ class PageFactory
 	public function __construct(AcceptanceTester $I, $template, $version = 'Joomla3')
 	{
 		$this->tester = $I;
-		$this->driver = $I->getWebDriver();
+		$this->driver = $I->getBrowser();
 		$this->template = $template;
 		$this->version = $version;
 	}

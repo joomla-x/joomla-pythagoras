@@ -5,22 +5,30 @@ namespace Helper;
 // all public methods declared in helper class will be available in $I
 
 use Codeception\Exception\ModuleException;
-use Facebook\WebDriver\WebDriver;
 
 class Acceptance extends \Codeception\Module
 {
 	/**
-	 * @return WebDriver
+	 * @return \Codeception\Module\WebDriver
+	 * @throws ModuleException
+	 */
+	public function getBrowser()
+	{
+		foreach (['JoomlaBrowser', 'WebDriver', 'PhpBrowser'] as $name) {
+			if ($this->hasModule($name)) {
+				return parent::getModule($name);
+			}
+		}
+		throw new ModuleException('Acceptance Helper', 'No WebDriver compatible module found');
+	}
+
+	/**
+	 * @return \Facebook\WebDriver\WebDriver
 	 * @throws ModuleException
 	 */
 	public function getWebDriver()
 	{
-		foreach (['JoomlaBrowser', 'WebDriver', 'PhpBrowser'] as $name) {
-			if ($this->hasModule($name)) {
-				return parent::getModule($name)->webDriver;
-			}
-		}
-		throw new ModuleException('Acceptance Hepler', 'No WebDriver compatible module found');
+		return $this->getBrowser()->webDriver;
 	}
 
 	/**

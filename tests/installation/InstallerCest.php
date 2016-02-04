@@ -3,36 +3,35 @@
 namespace Joomla\Tests\System;
 
 use AcceptanceTester;
-use Codeception\Configuration;
 use Codeception\Util\Shared\Asserts;
-use Facebook\WebDriver\WebDriver;
-use Joomla\Tests\Page\DumpTrait;
-use Joomla\Tests\Page\Page;
+use Joomla\Tests\Page\Joomla3\Installer\InstallerPage;
 use Joomla\Tests\Page\PageFactory;
 
 class InstallerCest
 {
     use Asserts;
 
-    /** @var  Page */
+    /** @var  InstallerPage */
     private $page;
 
     public function _before(AcceptanceTester $I)
     {
         $this->page = (new PageFactory($I, 'Installer'))->create('InstallerPage');
+
+        $I->amOnPage((string)$this->page);
+        $I->assertCurrent($this->page);
     }
 
     public function _after(AcceptanceTester $I)
     {
     }
 
-    public function tryToTest(AcceptanceTester $I)
+    public function InstallationLanguageIsSelectable(AcceptanceTester $I)
     {
-        $I->amOnPage((string) $this->page);
-        $I->assertCurrent($this->page);
+        $this->assertNotEquals('en-GB', $this->page->getLanguage());
 
-        $I->seeInTitle('Joomla! Web Installer');
+        $this->page->setLanguage('en-GB');
 
-        $this->page->dump(__METHOD__);
+        $this->assertEquals('en-GB', $this->page->getLanguage());
     }
 }
