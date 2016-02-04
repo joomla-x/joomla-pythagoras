@@ -1,19 +1,17 @@
 {
-    "name": "nibra/joomla-next",
-    "description": "This is how Joomla! 4 would look like without the restriction of incremental development",
+    "name": "joomla/joomla-cms",
     "type": "application",
-    "keywords": ["joomla", "cms", "content management"],
-    "homepage": "https://github.com/nibralab/joomla-next",
+    "description": "Joomla CMS",
+    "keywords": [
+        "joomla",
+        "cms",
+        "content management"
+    ],
+    "homepage": "https://github.com/joomla/joomla-cms",
     "license": "GPL-2.0+",
     "config": {
         "vendor-dir": "libraries/vendor"
     },
-    "authors": [
-        {
-            "name": "Niels Braczek",
-            "email": "nbraczek@bsds.de"
-        }
-    ],
     "require": {
         "league/flysystem": "^1.0",
         "doctrine/dbal": "^2.5",
