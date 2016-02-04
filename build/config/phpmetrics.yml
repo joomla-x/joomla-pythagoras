@@ -1,0 +1,23 @@
+myconfig:
+    path:
+        extensions: php
+        exclude: build|docs|etc|logs|tests|tmp|vendor
+
+    logging:
+        report:
+            xml:    ./build/reports/phpmetrics.xml
+            html:   ./build/reports/phpmetrics.html
+            #csv:    ./build/reports/phpmetrics.csv
+        violations:
+            #xml:    ./build/reports/violations.xml
+        chart:
+            #bubbles: ./build/reports/bubbles.svg
+
+    # condition of failure
+    #failure: average.maintainabilityIndex < 50 or sum.loc > 10000
+
+    # rules used for color ([ critical, warning, good ])
+    rules:
+        #cyclomaticComplexity: [ 10, 6, 2 ]
+        #maintainabilityIndex: [ 0, 69, 85 ]
+        #[...]

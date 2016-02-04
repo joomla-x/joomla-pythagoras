@@ -1,0 +1,18 @@
+source: .
+accessLevels:
+  - public
+baseUrl: .
+deprecated: yes
+todo: no
+internal: no
+php: no
+main: Joomla
+sourceCode: no
+title: "Joomla! Next (4) API Documentation"
+tree: yes
+exclude:
+  - build
+  - tests
+  - vendor
+templateTheme: bootstrap
+destination: ./build/docs/api

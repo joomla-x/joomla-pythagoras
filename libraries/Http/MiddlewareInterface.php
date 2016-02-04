@@ -1,0 +1,35 @@
+<?php
+/**
+ * Part of the Joomla Framework HTTP Package
+ *
+ * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
+ */
+
+namespace Joomla\Http;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+/**
+ * Interface MiddlewareInterface
+ *
+ * @package joomla/http
+ *
+ * @since  1.0
+ */
+interface MiddlewareInterface
+{
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request
+     * @param   ResponseInterface $response
+     * @param   callable $next
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next);
+}

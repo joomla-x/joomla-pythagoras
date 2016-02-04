@@ -1,0 +1,19 @@
+source: .
+accessLevels:
+  - public
+  - protected
+baseUrl: .
+deprecated: yes
+todo: yes
+internal: yes
+php: yes
+main: Joomla
+sourceCode: yes
+title: "Joomla! Next (4) Developer Documentation"
+tree: yes
+exclude:
+  - build
+  - tests
+  - vendor
+templateTheme: bootstrap
+destination: ./build/docs/full

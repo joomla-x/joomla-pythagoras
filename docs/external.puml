@@ -1,0 +1,98 @@
+@startuml
+
+frame PHP {
+    [ext-fileinfo]
+    [ext-amqp]
+    [ext-mongo]
+    [ext-apc]
+    [ext-couchbase]
+    [ext-memcached]
+    [ext-redis]
+    [ext-pdo]
+}
+
+frame "PHP-FIG PSRs" {
+    () "PSR-3\nLogging" as psr3
+    () "PSR-6\nCaching" as psr6
+    () "PSR-7\nHTTP Message" as psr7
+}
+
+frame "Library" as library {
+    [joomla/joomla-orm]
+    [joomla/joomla-cache]
+    [joomla/joomla-http]
+}
+
+[joomla/joomla-next] --> [league/flysystem]
+[joomla/joomla-next] --> [joomla/joomla-orm]
+[joomla/joomla-next] --> [league/tactician]
+[joomla/joomla-next] --> psr3
+[joomla/joomla-next] --> psr6
+[joomla/joomla-next] --> psr7
+
+[league/flysystem] ..> [ext-fileinfo]
+
+frame "FlySystem Adapters" as FlySystemAdapters {
+    [league/flysystem-eventable-filesystem]
+    [league/flysystem-rackspace]
+    [league/flysystem-copy]
+    [league/flysystem-azure]
+    [league/flysystem-webdav]
+    [league/flysystem-aws-s3-v2]
+    [league/flysystem-aws-s3-v3]
+    [league/flysystem-dropbox]
+    [league/flysystem-cached-adapter]
+    [league/flysystem-sftp]
+    [league/flysystem-ziparchive]
+}
+
+[league/flysystem] ...> FlySystemAdapters
+
+[joomla/joomla-orm] --> [doctrine/dbal]
+
+[doctrine/dbal] --> [doctrine/common]
+[doctrine/dbal] ..> [symfony/console]
+
+[doctrine/common] --> [doctrine/inflector]
+[doctrine/common] --> [doctrine/cache]
+[doctrine/common] --> [doctrine/collections]
+[doctrine/common] --> [doctrine/lexer]
+[doctrine/common] --> [doctrine/annotations]
+
+[doctrine/annotations] --> [doctrine/lexer]
+
+psr3 --> [monolog/monolog]
+
+frame "Monolog Drivers" as MonologDrivers {
+    [graylog2/gelf-php]
+    [raven/raven]
+    [doctrine/couchdb]
+    [ruflin/elastica]
+    [videlalvaro/php-amqplib]
+    [aws/aws-sdk-php]
+    [rollbar/rollbar]
+    [php-console/php-console]
+}
+
+[monolog/monolog] ..> [ext-amqp]
+[monolog/monolog] ..> [ext-mongo]
+[monolog/monolog] ...> MonologDrivers
+
+psr6 --> [joomla/joomla-cache]
+[joomla/joomla-cache] -->  [matthiasmullie/scrapbook]
+
+[matthiasmullie/scrapbook] ..> [ext-apc]
+[matthiasmullie/scrapbook] ..> [ext-couchbase]
+[matthiasmullie/scrapbook] ..> [ext-memcached]
+[matthiasmullie/scrapbook] ..> [ext-redis]
+[matthiasmullie/scrapbook] ..> [ext-pdo]
+[matthiasmullie/scrapbook] ..> [league/flysystem]
+
+psr7 --> [joomla/joomla-http]
+[joomla/joomla-http] -> [guzzlehttp/guzzle]
+
+[guzzlehttp/guzzle] --> [guzzlehttp/psr7]
+[guzzlehttp/guzzle] --> [guzzlehttp/promises]
+
+
+@enduml
