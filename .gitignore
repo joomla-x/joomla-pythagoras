@@ -52,3 +52,4 @@ libraries/vendor
 build/dockyard
 tests/_output/*
 tests/_envs/*
+tests/_support/_generated/*
