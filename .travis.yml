@@ -24,10 +24,10 @@ before_script:
   # Set up Apache
   # - ./build/travis/php-apache.sh
   # Enable additional PHP extensions
-  - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/travis/phpenv/memcached.ini; fi
+  - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/config/travis/phpenv/memcached.ini; fi
   # PHP 5.5+ use APCu
   - if [ $TRAVIS_PHP_VERSION == "5.5" ] || [ $TRAVIS_PHP_VERSION == "5.6" ]; then printf "\n" | pecl install apcu-beta; fi
-  - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/travis/phpenv/redis.ini; fi
+  - if [ $TRAVIS_PHP_VERSION != "7.0" ]; then phpenv config-add build/config/travis/phpenv/redis.ini; fi
 
 script:
   - libraries/vendor/bin/codecept run -c travisci-codeception.yml
