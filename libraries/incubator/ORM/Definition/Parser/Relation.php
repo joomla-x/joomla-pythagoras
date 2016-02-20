@@ -11,20 +11,20 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class Relation
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class Relation extends Element
 {
-    /** @var  string  The relation name */
-    public $name = null;
+	/** @var  string  The relation name */
+	public $name = null;
 
-    /** @var  string  The relation type */
-    public $type = 'belongsTo';
+	/** @var  string  The relation type */
+	public $type = 'belongsTo';
 
-    /** @var  Entity  The related Entity */
-    public $entity;
+	/** @var  Entity  The related Entity */
+	public $entity;
 
-    /** @var  string  Key name in related entity */
-    public $reference;
+	/** @var  string  Key name in related entity */
+	public $reference;
 }

@@ -11,10 +11,11 @@ namespace Joomla\Renderer;
 /**
  * Class PlainRenderer
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class PlainRenderer extends Renderer
 {
-    protected $mediatype = 'text/plain';
+	/** @var string The MIME type */
+	protected $mediatype = 'text/plain';
 }

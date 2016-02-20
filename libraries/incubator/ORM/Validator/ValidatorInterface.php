@@ -13,26 +13,26 @@ use Joomla\ORM\Entity\EntityInterface;
 /**
  * Interface ValidatorInterface
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 interface ValidatorInterface
 {
-    /**
-     * Validate an entity.
-     *
-     * @param   EntityInterface $entity The entity to validate
-     *
-     * @return  boolean
-     */
-    public function check(EntityInterface $entity);
+	/**
+	 * Validate an entity.
+	 *
+	 * @param   EntityInterface $entity The entity to validate
+	 *
+	 * @return  boolean
+	 */
+	public function check(EntityInterface $entity);
 
-    /**
-     * Sanitise an entity.
-     *
-     * @param   EntityInterface $entity The entity to sanitise
-     *
-     * @return  boolean
-     */
-    public function sanitise(EntityInterface $entity);
+	/**
+	 * Sanitise an entity.
+	 *
+	 * @param   EntityInterface $entity The entity to sanitise
+	 *
+	 * @return  boolean
+	 */
+	public function sanitise(EntityInterface $entity);
 }

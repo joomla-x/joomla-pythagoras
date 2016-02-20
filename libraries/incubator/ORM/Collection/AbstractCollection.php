@@ -11,7 +11,7 @@ namespace Joomla\ORM\Collection;
 /**
  * Class AbstractCollection
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 abstract class AbstractCollection implements \ArrayAccess, \Iterator, \Countable

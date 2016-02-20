@@ -18,13 +18,13 @@ use Joomla\DI\Container;
  */
 class ServiceBase implements Service
 {
-	// Dependency injection container.
+	/** @var Container  Dependency injection container. */
 	private $container = null;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param   Container  $container  A dependency injection container
+	 * @param   Container $container A dependency injection container
 	 *
 	 * @since   __DEPLOY__
 	 */
@@ -36,7 +36,7 @@ class ServiceBase implements Service
 	/**
 	 * Handle a command or query.
 	 *
-	 * @param   object  $command  A Command or Query object.
+	 * @param   object $command A Command or Query object.
 	 *
 	 * @return  boolean
 	 *

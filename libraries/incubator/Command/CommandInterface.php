@@ -11,9 +11,9 @@ namespace Joomla\Command;
 /**
  * Interface CommandInterface
  *
- * @package joomla/command
+ * @package  Joomla/command
  *
- * @since  1.0
+ * @since    1.0
  */
 interface CommandInterface
 {

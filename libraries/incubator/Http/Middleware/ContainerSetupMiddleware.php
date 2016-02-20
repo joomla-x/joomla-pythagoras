@@ -45,25 +45,33 @@ use Psr\Http\Message\ServerRequestInterface;
  * }
  * ```
  *
- * @package joomla/http
- * @see [Interop/Container](https://github.com/container-interop/container-interop)
+ * @package  Joomla/http
+ * @see      [Interop/Container](https://github.com/container-interop/container-interop)
  *
- * @since  1.0
+ * @since    1.0
  */
 class ContainerSetupMiddleware implements MiddlewareInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
-    {
-        $container = new Container;
+	/**
+	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+	 *
+	 * @internal
+	 *
+	 * @param   ServerRequestInterface $request  The request object
+	 * @param   ResponseInterface      $response The response object
+	 * @param   callable               $next     The next middleware handler
+	 *
+	 * @return  ResponseInterface
+	 */
+	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+	{
+		$container = new Container;
 
-        $response = $next(
-            $request->withAttribute('container', $container),
-            $response
-        );
+		$response = $next(
+			$request->withAttribute('container', $container),
+			$response
+		);
 
-        return $response;
-    }
+		return $response;
+	}
 }

@@ -14,21 +14,19 @@ use League\Tactician\Middleware;
 
 /**
  * Tactician middleware for dispatching domain events.
- * 
+ *
  * @since  __DEPLOY__
  */
 class DomainEventMiddleware implements Middleware
 {
-	/**
-	 * Dependency injection container.
-	 */
+	/** @var Container  Dependency injection container */
 	protected $container = null;
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param   Container          $container   A dependency injection container.
-	 * 
+	 *
+	 * @param   Container $container A dependency injection container.
+	 *
 	 * @since   __DEPLOY__
 	 */
 	public function __construct(Container $container)
@@ -38,7 +36,7 @@ class DomainEventMiddleware implements Middleware
 
 	/**
 	 * Decorator.
-	 * 
+	 *
 	 * Calls the inner handler then dispatches any domain events raised.
 	 *
 	 * Suppose there is a DomainEvent with the class name 'PrefixEventSuffix',
@@ -49,14 +47,14 @@ class DomainEventMiddleware implements Middleware
 	 *          $container->get('dispatcher')->register('onPrefixEventSuffix', array('MyClass', 'MyMethod'));
 	 *   3. A preloaded or autoloadable class called 'PrefixEventListenerSuffix' with a method called 'onPrefixEventSuffix'.
 	 *   4. An installed and enabled Joomla plugin in the 'domainevent' group, with a method called 'onPrefixEventSuffix'.
-	 * 
+	 *
 	 * In all cases the method called will be passed two arguments: the event object and the dependency injection container.
-	 * 
-	 * @param   Command   $command  Command object.
-	 * @param   callable  $next     Inner middleware object being decorated.
-	 * 
-	 * @return  void
-	 * 
+	 *
+	 * @param   Command  $command Command object.
+	 * @param   callable $next    Inner middleware object being decorated.
+	 *
+	 * @return  array
+	 *
 	 * @since   __DEPLOY__
 	 */
 	public function execute($command, callable $next)
@@ -82,7 +80,6 @@ class DomainEventMiddleware implements Middleware
 			// Publish the events.
 			$events = $this->innerEventLoop($events);
 		}
-
 		while (!empty($events));
 
 		// Bubble the events up to the next outer layer of middleware.
@@ -91,14 +88,14 @@ class DomainEventMiddleware implements Middleware
 
 	/**
 	 * Inner event loop.
-	 * 
+	 *
 	 * Each event listener might raise further events which need
 	 * to be passed back into the event loop for publishing.
-	 * 
-	 * @param   array  $events  Array of domain event objects.
-	 * 
+	 *
+	 * @param   array $events Array of domain event objects.
+	 *
 	 * @return  array of newly-raised domain event objects.
-	 * 
+	 *
 	 * @since   __DEPLOY__
 	 */
 	private function innerEventLoop($events)
@@ -118,7 +115,7 @@ class DomainEventMiddleware implements Middleware
 
 			// Get the name of the event.
 			$eventClassReflection = new \ReflectionClass($event);
-			$eventClassName = $eventClassReflection->getShortName();
+			$eventClassName       = $eventClassReflection->getShortName();
 
 			// Determine the event name.
 			$eventName = 'on' . $eventClassName;
@@ -141,15 +138,15 @@ class DomainEventMiddleware implements Middleware
 
 	/**
 	 * Register a domain event listener by convention.
-	 * 
+	 *
 	 * Replaces "Event" by "EventListener" in the domain event class name
 	 * and registers that class as a listener.
-	 * 
-	 * @param   string  $eventClassName  Name of the domain event class.
-	 * @param   string  $eventName       Name of the event trigger.
-	 * 
+	 *
+	 * @param   string $eventClassName Name of the domain event class.
+	 * @param   string $eventName      Name of the event trigger.
+	 *
 	 * @return  void
-	 * 
+	 *
 	 * @since   __DEPLOY__
 	 */
 	private function registerByConvention($eventClassName, $eventName)

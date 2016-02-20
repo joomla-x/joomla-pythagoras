@@ -11,10 +11,11 @@ namespace Joomla\Renderer;
 /**
  * Class AnsiRenderer
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class AnsiRenderer extends Renderer
 {
-    protected $mediatype = 'text/ansi';
+	/** @var string The MIME type */
+	protected $mediatype = 'text/ansi';
 }

@@ -11,7 +11,7 @@ namespace Joomla\Service;
 
 /**
  * Value object trait.
- * 
+ *
  * Implemented as an abstract class here because traits are PHP 5.4 minimum.
  *
  * @since  __DEPLOY__
@@ -20,13 +20,13 @@ abstract class Value extends Immutable
 {
 	/**
 	 * Check for equality of this value against another value.
-	 * 
+	 *
 	 * Note: This is a generic test for equality and doesn't cover everything.
 	 *       For example, $other may have additional properties and this would
 	 *       still return true.  If this is important then override this method.
-	 * 
-	 * @param   Value  $other  Another value object to compare with this one.
-	 * 
+	 *
+	 * @param   Value $other Another value object to compare with this one.
+	 *
 	 * @return  boolean
 	 */
 	public function equals(Value $other)
@@ -46,10 +46,10 @@ abstract class Value extends Immutable
 
 	/**
 	 * Check for equality recursively.
-	 * 
-	 * @param   mixed  $thing1  A thing to compare for equality against $thing2.
-	 * @param   mixed  $thing2  A thing to compare for equality against $thing1.
-	 * 
+	 *
+	 * @param   mixed $thing1 A thing to compare for equality against $thing2.
+	 * @param   mixed $thing2 A thing to compare for equality against $thing1.
+	 *
 	 * @return  boolean
 	 */
 	private function equalsRecursive($thing1, $thing2)
@@ -63,8 +63,10 @@ abstract class Value extends Immutable
 		// Values must match.
 		switch (gettype($thing1))
 		{
-			case 'array':  return $this->equalsArrays($thing1, $thing2);
-			case 'object': return $this->equalsObjects($thing1, $thing2);
+			case 'array':
+				return $this->equalsArrays($thing1, $thing2);
+			case 'object':
+				return $this->equalsObjects($thing1, $thing2);
 
 			default:
 				if ($thing1 != $thing2)
@@ -78,10 +80,10 @@ abstract class Value extends Immutable
 
 	/**
 	 * Checks arrays for equality recursively.
-	 * 
-	 * @param   array  $thing1  An array to compare for equality against $thing2.
-	 * @param   array  $thing2  An array to compare for equality against $thing1.
-	 * 
+	 *
+	 * @param   array $thing1 An array to compare for equality against $thing2.
+	 * @param   array $thing2 An array to compare for equality against $thing1.
+	 *
 	 * @return  boolean
 	 */
 	private function equalsArrays($thing1, $thing2)
@@ -100,10 +102,10 @@ abstract class Value extends Immutable
 
 	/**
 	 * Check objects for equality recursively.
-	 * 
-	 * @param   object  $thing1  An object to compare for equality against $thing2.
-	 * @param   object  $thing2  An object to compare for equality against $thing1.
-	 * 
+	 *
+	 * @param   object $thing1 An object to compare for equality against $thing2.
+	 * @param   object $thing2 An object to compare for equality against $thing1.
+	 *
 	 * @return  boolean
 	 */
 	private function equalsObjects($thing1, $thing2)

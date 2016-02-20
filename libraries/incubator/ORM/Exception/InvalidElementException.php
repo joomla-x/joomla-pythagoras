@@ -11,10 +11,9 @@ namespace Joomla\ORM\Exception;
 /**
  * Class InvalidElementException
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class InvalidElementException extends \UnexpectedValueException
 {
-
 }

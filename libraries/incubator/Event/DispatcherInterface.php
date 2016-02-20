@@ -18,7 +18,7 @@ interface DispatcherInterface
 	/**
 	 * Trigger an event.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  EventInterface  The event after being passed through all listeners.
 	 *

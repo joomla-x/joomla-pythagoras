@@ -15,66 +15,72 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Class Application
  *
- * @package joomla/http
+ * @package  Joomla/http
  *
- * @since  1.0
+ * @since    1.0
  */
 class Application
 {
-    /** @var MiddlewareInterface[] */
-    private $stack;
+	/** @var MiddlewareInterface[] */
+	private $stack;
 
-    /**
-     * Application constructor.
-     *
-     * @param   MiddlewareInterface[] $stack
-     */
-    public function __construct(array $stack = [])
-    {
-        $this->stack = $stack;
-    }
+	/**
+	 * Application constructor.
+	 *
+	 * @param   MiddlewareInterface[] $stack The middleware stack
+	 */
+	public function __construct(array $stack = [])
+	{
+		$this->stack = $stack;
+	}
 
-    /**
-     * @param   ServerRequestInterface $request
-     *
-     * @return  ResponseInterface
-     */
-    public function run(ServerRequestInterface $request)
-    {
-        return $this->buildCallChain()->__invoke($request, new Response);
-    }
+	/**
+	 * @param   ServerRequestInterface $request The request object
+	 *
+	 * @return  ResponseInterface
+	 */
+	public function run(ServerRequestInterface $request)
+	{
+		return $this->buildCallChain()->__invoke($request, new Response);
+	}
 
-    /**
-     * @return  \Closure
-     */
-    private function buildCallChain()
-    {
-        /** @var callable|MiddlewareInterface $middleware */
+	/**
+	 * @return  \Closure
+	 */
+	private function buildCallChain()
+	{
+		$next = function ($request, $response) {
+			return $response;
+		};
 
-        $next = function ($request, $response) {
-            return $response;
-        };
+		foreach (array_reverse($this->stack) as $middleware)
+		{
+			if ($middleware instanceof MiddlewareInterface)
+			{
+				$next = function ($request, $response) use ($middleware, $next) {
+					return $middleware->handle($request, $response, $next);
+				};
+			}
+			elseif ($middleware instanceof \Closure)
+			{
+				$next = function ($request, $response) use ($middleware, $next) {
+					return $middleware($request, $response, $next);
+				};
+			}
+			elseif (is_callable($middleware))
+			{
+				$next = function ($request, $response) use ($middleware, $next) {
+					return call_user_func($middleware, $request, $response, $next);
+				};
+			}
+			else
+			{
+				throw new UnsupportedMiddlewareException(
+					"HTTP middleware of type '" . get_class($middleware) . "' is not supported"
+				);
+			}
+		}
 
-        foreach (array_reverse($this->stack) as $middleware) {
-            if ($middleware instanceof MiddlewareInterface) {
-                $next = function ($request, $response) use ($middleware, $next) {
-                    return $middleware->handle($request, $response, $next);
-                };
-            } elseif ($middleware instanceof \Closure) {
-                $next = function ($request, $response) use ($middleware, $next) {
-                    return $middleware($request, $response, $next);
-                };
-            } elseif (is_callable($middleware)) {
-                $next = function ($request, $response) use ($middleware, $next) {
-                    return call_user_func($middleware, $request, $response, $next);
-                };
-            } else {
-                throw new UnsupportedMiddlewareException(
-                    "HTTP middleware of type '" . get_class($middleware) . "' is not supported"
-                );
-            }
-        }
-
-        return $next;
-    }
+		return $next;
+	}
 }

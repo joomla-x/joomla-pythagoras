@@ -11,17 +11,17 @@ namespace Joomla\ORM\Definition\Locator\Strategy;
 /**
  * Interface StrategyInterface
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 interface StrategyInterface
 {
-    /**
-     * Locate a definition file
-     *
-     * @param   string $filename The name of the XML file
-     *
-     * @return  string|null  The path, if found, null else
-     */
-    public function locate($filename);
+	/**
+	 * Locate a definition file
+	 *
+	 * @param   string $filename The name of the XML file
+	 *
+	 * @return  string|null  The path, if found, null else
+	 */
+	public function locate($filename);
 }

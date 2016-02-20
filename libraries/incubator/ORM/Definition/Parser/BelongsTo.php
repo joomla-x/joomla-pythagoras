@@ -11,7 +11,7 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class BelongsTo
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class BelongsTo extends Relation

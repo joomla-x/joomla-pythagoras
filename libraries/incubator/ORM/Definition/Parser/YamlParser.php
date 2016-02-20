@@ -13,21 +13,24 @@ use Joomla\ORM\Definition\Locator\LocatorInterface;
 /**
  * Class YamlParser
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class YamlParser
 {
-    /**
-     * Parse the entity XML.
-     *
-     * @param   Callable[] $callbacks Hooks for pre- and postprocessing of elements
-     * @param   LocatorInterface $locator The XML description file locator
-     *
-     * @return  Entity
-     */
-    public function parse($callbacks, LocatorInterface $locator)
-    {
-        // @TODO: Implement parse() method
-    }
+	/**
+	 * Parse the entity XML.
+	 *
+	 * @param   Callable[]       $callbacks Hooks for pre- and postprocessing of elements
+	 * @param   LocatorInterface $locator   The XML description file locator
+	 *
+	 * @return  Entity
+	 */
+	public function parse($callbacks, LocatorInterface $locator)
+	{
+		// @TODO: Implement parse() method
+		$className = __NAMESPACE__ . '\\Element';
+
+		return new $className;
+	}
 }

@@ -14,22 +14,22 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Interface MiddlewareInterface
  *
- * @package joomla/http
+ * @package  Joomla/http
  *
- * @since  1.0
+ * @since    1.0
  */
 interface MiddlewareInterface
 {
-    /**
-     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-     *
-     * @internal
-     *
-     * @param   ServerRequestInterface $request
-     * @param   ResponseInterface $response
-     * @param   callable $next
-     *
-     * @return  ResponseInterface
-     */
-    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next);
+	/**
+	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+	 *
+	 * @internal
+	 *
+	 * @param   ServerRequestInterface $request   The request object
+	 * @param   ResponseInterface      $response  The response object
+	 * @param   callable               $next      The next middleware handler
+	 *
+	 * @return  ResponseInterface
+	 */
+	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next);
 }

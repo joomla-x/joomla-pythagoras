@@ -19,25 +19,34 @@ use Psr\Http\Message\ServerRequestInterface;
  * The renderer is chosen to be suitable for the current request.
  * If the request does not specify a preferred mimetype, `text/plain` is rendered.
  *
- * @package joomla/renderer
+ * @package  Joomla/renderer
  *
- * @since  1.0
+ * @since    1.0
  */
 class RendererMiddleware implements MiddlewareInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-    {
-        $acceptHeader = $request->getHeaderLine('Accept');
+	/**
+	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+	 *
+	 * @internal
+	 *
+	 * @param   ServerRequestInterface $request  The request object
+	 * @param   ResponseInterface      $response The response object
+	 * @param   callable               $next     The next middleware handler
+	 *
+	 * @return  ResponseInterface
+	 */
+	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+	{
+		$acceptHeader = $request->getHeaderLine('Accept');
 
-        if (empty($acceptHeader)) {
-            $acceptHeader = 'text/plain';
-        }
+		if (empty($acceptHeader))
+		{
+			$acceptHeader = 'text/plain';
+		}
 
-        $renderer = (new RendererFactory)->create($acceptHeader);
+		$renderer = (new RendererFactory)->create($acceptHeader);
 
-        return $response->withBody($renderer);
-    }
+		return $response->withBody($renderer);
+	}
 }

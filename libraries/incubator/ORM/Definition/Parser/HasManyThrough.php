@@ -11,14 +11,14 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class HasManyThrough
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class HasManyThrough extends Relation
 {
-    /** @var  string  Name of the joining table */
-    public $joinTable;
+	/** @var  string  Name of the joining table */
+	public $joinTable;
 
-    /** @var  string  Name of the field in the joinTable with the remote id */
-    public $joinRef;
+	/** @var  string  Name of the field in the joinTable with the remote id */
+	public $joinRef;
 }

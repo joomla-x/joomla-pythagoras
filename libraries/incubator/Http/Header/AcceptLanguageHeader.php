@@ -11,19 +11,19 @@ namespace Joomla\Http\Header;
 /**
  * Class AcceptLanguageHeader
  *
- * @package joomla/http
+ * @package  Joomla/http
  *
- * @since  1.0
+ * @since    1.0
  */
 class AcceptLanguageHeader extends QualifiedHeader
 {
-    /**
-     * AcceptLanguageHeader constructor.
-     *
-     * @param $header
-     */
-    public function __construct($header)
-    {
-        parent::__construct($header, '-', '');
-    }
+	/**
+	 * AcceptLanguageHeader constructor.
+	 *
+	 * @param   string  $header  The 'Accept-Language' header
+	 */
+	public function __construct($header)
+	{
+		parent::__construct($header, '-', '');
+	}
 }

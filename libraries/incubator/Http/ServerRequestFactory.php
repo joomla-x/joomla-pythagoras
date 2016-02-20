@@ -11,11 +11,10 @@ namespace Joomla\Http;
 /**
  * Class ServerRequestFactory
  *
- * @package joomla/http
+ * @package  Joomla/http
  *
- * @since  1.0
+ * @since    1.0
  */
 class ServerRequestFactory extends \Zend\Diactoros\ServerRequestFactory
 {
-
 }

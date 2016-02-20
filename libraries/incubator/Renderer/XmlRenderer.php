@@ -11,10 +11,11 @@ namespace Joomla\Renderer;
 /**
  * Class XmlRenderer
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class XmlRenderer extends Renderer
 {
-    protected $mediatype = 'application/xml';
+	/** @var string The MIME type */
+	protected $mediatype = 'application/xml';
 }

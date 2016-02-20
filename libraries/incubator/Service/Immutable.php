@@ -18,10 +18,10 @@ namespace Joomla\Service;
  */
 abstract class Immutable
 {
-	// Flag indicating object construction completed.
+	/** @var bool Flag indicating object construction completed */
 	private $constructed = false;
 
-	// Array of command arguments.
+	/** @var array Array of command arguments */
 	private $args = array();
 
 	/**
@@ -38,11 +38,11 @@ abstract class Immutable
 
 		// Save the name of the class as a property.
 		$reflectionClass = new \ReflectionClass($this);
-		$this->name = $reflectionClass->getShortName();
+		$this->name      = $reflectionClass->getShortName();
 
 		// Save time of object construction as a property.
 		// Convert microtime to string to avoid loss of precision due to overflow.
-		$parts = explode(' ', microtime());
+		$parts             = explode(' ', microtime());
 		$this->requestedon = sprintf('%d%03d', $parts[1], $parts[0] * 1000);
 
 		// Flag object construction completed.
@@ -55,8 +55,8 @@ abstract class Immutable
 	 * Method names starting with "get" are treated as property getters.
 	 * All other (non-existant) methods will throw an exception.
 	 *
-	 * @param   string  $name  Name of the method being called.
-	 * @param   array   $args  Array of arguments passed to the method.
+	 * @param   string $name Name of the method being called.
+	 * @param   array  $args Array of arguments passed to the method.
 	 *
 	 * @return  mixed
 	 *
@@ -89,7 +89,7 @@ abstract class Immutable
 	 * If the property exists, it will return its value;
 	 * otherwise it will throw an exception.
 	 *
-	 * @param   string  $key  Property name (case-insensitive).
+	 * @param   string $key Property name (case-insensitive).
 	 *
 	 * @return  mixed
 	 *
@@ -112,8 +112,8 @@ abstract class Immutable
 	 * Since the object is immutable, this always throws an exception
 	 * once object creation has been completed.
 	 *
-	 * @param   string  $key    Property name (case-insensitive).
-	 * @param   mixed   $value  Property value.
+	 * @param   string $key   Property name (case-insensitive).
+	 * @param   mixed  $value Property value.
 	 *
 	 * @return  void
 	 *

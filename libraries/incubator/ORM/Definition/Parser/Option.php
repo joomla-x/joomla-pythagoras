@@ -11,21 +11,21 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class Option
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class Option extends Element
 {
-    /**
-     * Constructor
-     *
-     * @param   array $attributes The data to populate the element with
-     */
-    public function __construct($attributes)
-    {
-        $attributes['label'] = $attributes['#text'];
-        unset($attributes['#text']);
+	/**
+	 * Constructor
+	 *
+	 * @param   array $attributes The data to populate the element with
+	 */
+	public function __construct($attributes)
+	{
+		$attributes['label'] = $attributes['#text'];
+		unset($attributes['#text']);
 
-        parent::__construct($attributes);
-    }
+		parent::__construct($attributes);
+	}
 }

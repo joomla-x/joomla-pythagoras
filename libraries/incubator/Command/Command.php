@@ -15,24 +15,21 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Class Command
  *
- * @package joomla/command
+ * @package  Joomla/command
  *
- * @since  1.0
+ * @since    1.0
  */
 class Command implements CommandInterface
 {
-    /**
-     * @param   ServerRequestInterface $request
-     * @param   ResponseInterface $response
-     * @param   ContainerInterface $container
-     *
-     * @return  Command
-     */
-    public static function fromRequest(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        ContainerInterface $container
-    ) {
-        return new self;
-    }
+	/**
+	 * @param   ServerRequestInterface $request   The request object
+	 * @param   ResponseInterface      $response  The response object
+	 * @param   ContainerInterface     $container The Dependency Injection Container
+	 *
+	 * @return  Command
+	 */
+	public static function fromRequest(ServerRequestInterface $request, ResponseInterface $response, ContainerInterface $container)
+	{
+		return new self;
+	}
 }

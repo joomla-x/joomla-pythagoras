@@ -13,31 +13,31 @@ use Interop\Container\Exception\ContainerException;
 /**
  * Defines the interface for a Container Aware class.
  *
- * @package joomla/di
+ * @package  Joomla/di
  *
- * @since  1.0
+ * @since    1.0
  */
 interface ContainerAwareInterface
 {
-    /**
-     * Get the DI container.
-     *
-     * @return  Container
-     *
-     * @since   1.0
-     *
-     * @throws  ContainerException May be thrown if the container has not been set.
-     */
-    public function getContainer();
+	/**
+	 * Get the DI container.
+	 *
+	 * @return  Container
+	 *
+	 * @since   1.0
+	 *
+	 * @throws  ContainerException May be thrown if the container has not been set.
+	 */
+	public function getContainer();
 
-    /**
-     * Set the DI container.
-     *
-     * @param   Container $container The DI container.
-     *
-     * @return  mixed
-     *
-     * @since   1.0
-     */
-    public function setContainer(Container $container);
+	/**
+	 * Set the DI container.
+	 *
+	 * @param   Container $container The DI container.
+	 *
+	 * @return  mixed
+	 *
+	 * @since   1.0
+	 */
+	public function setContainer(Container $container);
 }

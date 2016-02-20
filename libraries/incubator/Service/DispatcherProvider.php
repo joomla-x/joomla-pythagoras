@@ -23,7 +23,7 @@ class DispatcherProvider implements ServiceProviderInterface
 	/**
 	 * Registers the domain event publisher service provider.
 	 *
-	 * @param   Container  $container  A dependency injection container.
+	 * @param   Container $container A dependency injection container.
 	 *
 	 * @return  void
 	 *
@@ -33,8 +33,8 @@ class DispatcherProvider implements ServiceProviderInterface
 	{
 		$container->share(
 			'dispatcher',
-			function(Container $container)
-			{
+			function (Container $container) {
+
 				return new Dispatcher;
 			},
 			true

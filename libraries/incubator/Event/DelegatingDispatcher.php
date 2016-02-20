@@ -27,7 +27,7 @@ final class DelegatingDispatcher implements DispatcherInterface
 	/**
 	 * Constructor.
 	 *
-	 * @param   DispatcherInterface  $dispatcher  The delegated dispatcher.
+	 * @param   DispatcherInterface $dispatcher The delegated dispatcher.
 	 *
 	 * @since   1.0
 	 */
@@ -39,7 +39,7 @@ final class DelegatingDispatcher implements DispatcherInterface
 	/**
 	 * Trigger an event.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  EventInterface  The event after being passed through all listeners.
 	 *

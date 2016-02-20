@@ -11,10 +11,11 @@ namespace Joomla\Renderer;
 /**
  * Class DocbookRenderer
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class DocbookRenderer extends Renderer
 {
-    protected $mediatype = 'application/docbook+xml';
+	/** @var string The MIME type */
+	protected $mediatype = 'application/docbook+xml';
 }

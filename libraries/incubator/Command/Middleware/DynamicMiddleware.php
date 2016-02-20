@@ -16,11 +16,11 @@ use Joomla\Di\ContainerAwareTrait;
  * DynamicMiddleware looks into the database for installed middleware extensions
  * and executes them in asc order before calling `$next`, and in desc order after that.
  *
- * @package joomla/command
+ * @package  Joomla/command
  *
- * @since  1.0
+ * @since    1.0
  */
 class DynamicMiddleware
 {
-    use ContainerAwareTrait;
+	use ContainerAwareTrait;
 }

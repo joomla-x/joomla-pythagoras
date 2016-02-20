@@ -11,9 +11,9 @@ namespace Joomla\Http;
 /**
  * Class Response
  *
- * @package joomla/http
+ * @package  Joomla/http
  *
- * @since  1.0
+ * @since    1.0
  */
 class Response extends \Zend\Diactoros\Response
 {

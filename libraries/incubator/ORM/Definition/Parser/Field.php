@@ -11,53 +11,55 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class Field
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class Field extends Element
 {
-    /** @var  string  The field name */
-    public $name = 'unknown';
+	/** @var  string  The field name */
+	public $name = 'unknown';
 
-    /** @var  string  The data type */
-    public $type;
+	/** @var  string  The data type */
+	public $type;
 
-    /** @var  array  A list of validation rules */
-    public $validation = [];
+	/** @var  array  A list of validation rules */
+	public $validation = [];
 
-    /** @var  array  A list of selectable values */
-    public $options = [];
+	/** @var  array  A list of selectable values */
+	public $options = [];
 
-    /** @var  mixed  The value of the field */
-    public $value;
+	/** @var  mixed  The value of the field */
+	public $value;
 
-    /**
-     * Set the validation rules
-     *
-     * @param   array $values The validation rules
-     *
-     * @return  void
-     */
-    protected function setValidation($values)
-    {
-        foreach ($values as $validation) {
-            $value = isset($validation->value) ? $validation->value : true;
+	/**
+	 * Set the validation rules
+	 *
+	 * @param   array $values The validation rules
+	 *
+	 * @return  void
+	 */
+	protected function setValidation($values)
+	{
+		foreach ($values as $validation)
+		{
+			$value = isset($validation->value) ? $validation->value : true;
 
-            $this->validation[$validation->rule] = $value;
-        }
-    }
+			$this->validation[$validation->rule] = $value;
+		}
+	}
 
-    /**
-     * Set the options
-     *
-     * @param   array $values The options
-     *
-     * @return  void
-     */
-    protected function setOption($values)
-    {
-        foreach ($values as $option) {
-            $this->options[$option->value] = $option->label;
-        }
-    }
+	/**
+	 * Set the options
+	 *
+	 * @param   array $values The options
+	 *
+	 * @return  void
+	 */
+	protected function setOption($values)
+	{
+		foreach ($values as $option)
+		{
+			$this->options[$option->value] = $option->label;
+		}
+	}
 }

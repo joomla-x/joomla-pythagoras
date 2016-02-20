@@ -18,57 +18,57 @@ use Joomla\ORM\Validator\ValidatorInterface;
 /**
  * Interface RepositoryInterface
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 interface RepositoryInterface
 {
-    /**
-     * Create a new entity.
-     *
-     * @return  EntityInterface  A new instance of the entity
-     */
-    public function create();
+	/**
+	 * Create a new entity.
+	 *
+	 * @return  EntityInterface  A new instance of the entity
+	 */
+	public function create();
 
-    /**
-     * Find an entity using its id.
-     *
-     * findById() is a convenience method, It is equivalent to
-     * ->findOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
-     *
-     * @param   mixed $id The id value
-     *
-     * @return  EntityInterface  The requested entity
-     *
-     * @throws  EntityNotFoundException  if the entity does not exist
-     */
-    public function findById($id);
+	/**
+	 * Find an entity using its id.
+	 *
+	 * findById() is a convenience method, It is equivalent to
+	 * ->findOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
+	 *
+	 * @param   mixed $id The id value
+	 *
+	 * @return  EntityInterface  The requested entity
+	 *
+	 * @throws  EntityNotFoundException  if the entity does not exist
+	 */
+	public function findById($id);
 
-    /**
-     * Find a single entity.
-     *
-     * @return  EntityFinderInterface  The responsible Finder object
-     */
-    public function findOne();
+	/**
+	 * Find a single entity.
+	 *
+	 * @return  EntityFinderInterface  The responsible Finder object
+	 */
+	public function findOne();
 
-    /**
-     * Find multiple entities.
-     *
-     * @return  CollectionFinderInterface  The responsible Finder object
-     */
-    public function findAll();
+	/**
+	 * Find multiple entities.
+	 *
+	 * @return  CollectionFinderInterface  The responsible Finder object
+	 */
+	public function findAll();
 
-    /**
-     * Get the validator
-     *
-     * @return  ValidatorInterface
-     */
-    public function validator();
+	/**
+	 * Get the validator
+	 *
+	 * @return  ValidatorInterface
+	 */
+	public function validator();
 
-    /**
-     * Get the persistor
-     *
-     * @return  PersistorInterface
-     */
-    public function persistor();
+	/**
+	 * Get the persistor
+	 *
+	 * @return  PersistorInterface
+	 */
+	public function persistor();
 }

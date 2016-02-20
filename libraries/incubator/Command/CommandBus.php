@@ -14,30 +14,31 @@ use Joomla\Di\ContainerAwareTrait;
 /**
  * Class CommandBus
  *
- * @package joomla/command
+ * @package  Joomla/command
  *
- * @since  1.0
+ * @since    1.0
  */
 class CommandBus
 {
-    use ContainerAwareTrait;
+	use ContainerAwareTrait;
 
-    /**
-     * CommandBus constructor.
-     *
-     * @param   array $middleware
-     * @param   Container $container
-     */
-    public function __construct(array $middleware, Container $container)
-    {
-        $this->setContainer($container);
-    }
+	/**
+	 * CommandBus constructor.
+	 *
+	 * @param   array     $middleware  List of command middleware
+	 * @param   Container $container   Dependency Injection Container
+	 */
+	public function __construct(array $middleware, Container $container)
+	{
+		$this->setContainer($container);
+	}
 
-    /**
-     * @param   CommandInterface $command
-     */
-    public function handle(CommandInterface $command)
-    {
-
-    }
+	/**
+	 * @param   CommandInterface $command The command
+	 *
+	 * @return  void
+	 */
+	public function handle(CommandInterface $command)
+	{
+	}
 }

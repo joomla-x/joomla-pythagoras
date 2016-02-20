@@ -8,10 +8,10 @@
 
 namespace Joomla\Event;
 
-use SplPriorityQueue;
-use SplObjectStorage;
-use IteratorAggregate;
 use Countable;
+use IteratorAggregate;
+use SplObjectStorage;
+use SplPriorityQueue;
 
 /**
  * A class containing an inner listeners priority queue that can be iterated multiple times.
@@ -60,15 +60,15 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	 */
 	public function __construct()
 	{
-		$this->queue = new SplPriorityQueue;
+		$this->queue   = new SplPriorityQueue;
 		$this->storage = new SplObjectStorage;
 	}
 
 	/**
 	 * Add a listener with the given priority only if not already present.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
-	 * @param   integer          $priority  The listener priority.
+	 * @param   \Closure|object $listener The listener.
+	 * @param   integer         $priority The listener priority.
 	 *
 	 * @return  ListenersPriorityQueue  This method is chainable.
 	 *
@@ -91,7 +91,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	/**
 	 * Remove a listener from the queue.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
+	 * @param   \Closure|object $listener The listener.
 	 *
 	 * @return  ListenersPriorityQueue  This method is chainable.
 	 *
@@ -119,7 +119,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	/**
 	 * Tell if the listener exists in the queue.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
+	 * @param   \Closure|object $listener The listener.
 	 *
 	 * @return  boolean  True if it exists, false otherwise.
 	 *
@@ -133,8 +133,8 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	/**
 	 * Get the priority of the given listener.
 	 *
-	 * @param   \Closure|object  $listener  The listener.
-	 * @param   mixed            $default   The default value to return if the listener doesn't exist.
+	 * @param   \Closure|object $listener The listener.
+	 * @param   mixed           $default  The default value to return if the listener doesn't exist.
 	 *
 	 * @return  mixed  The listener priority if it exists, null otherwise.
 	 *

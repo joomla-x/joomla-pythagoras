@@ -11,10 +11,11 @@ namespace Joomla\Renderer;
 /**
  * Class PdfRenderer
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class PdfRenderer extends Renderer
 {
-    protected $mediatype = 'application/pdf';
+	/** @var string The MIME type */
+	protected $mediatype = 'application/pdf';
 }

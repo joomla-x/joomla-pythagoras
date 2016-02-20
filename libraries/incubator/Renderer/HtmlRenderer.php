@@ -11,32 +11,35 @@ namespace Joomla\Renderer;
 /**
  * Class HtmlRenderer
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class HtmlRenderer extends Renderer
 {
-    protected $mediatype = 'text/html';
+	/** @var string The MIME type */
+	protected $mediatype = 'text/html';
 
-    /** @var  ScriptStrategyInterface */
-    private $clientScript;
+	/** @var  ScriptStrategyInterface */
+	private $clientScript;
 
-    /**
-     * @param   ScriptStrategyInterface $strategy
-     */
-    public function setScriptStrategy(ScriptStrategyInterface $strategy)
-    {
-        $this->clientScript = $strategy;
-    }
+	/**
+	 * @param   ScriptStrategyInterface  $strategy  The scripting startegy (library) to use
+	 *
+	 * @return  void
+	 */
+	public function setScriptStrategy(ScriptStrategyInterface $strategy)
+	{
+		$this->clientScript = $strategy;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function collectMetadata()
-    {
-        $metaData = parent::collectMetadata();
-        $metaData['wrapper_data']['client_script'] = empty($this->clientScript) ? null : get_class($this->clientScript);
+	/**
+	 * @return  array
+	 */
+	protected function collectMetadata()
+	{
+		$metaData                                  = parent::collectMetadata();
+		$metaData['wrapper_data']['client_script'] = empty($this->clientScript) ? null : get_class($this->clientScript);
 
-        return $metaData;
-    }
+		return $metaData;
+	}
 }

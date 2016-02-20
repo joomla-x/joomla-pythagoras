@@ -11,10 +11,11 @@ namespace Joomla\Renderer;
 /**
  * Class JsonRenderer
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class JsonRenderer extends Renderer
 {
-    protected $mediatype = 'application/json';
+	/** @var string The MIME type */
+	protected $mediatype = 'application/json';
 }

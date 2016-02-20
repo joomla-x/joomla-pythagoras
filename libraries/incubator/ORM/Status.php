@@ -11,20 +11,20 @@ namespace Joomla\ORM;
 /**
  * Class Status
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 abstract class Status
 {
-    /** Denotes, that the object represents the persisted data */
-    const CLEAN = 0;
+	/** Denotes, that the object represents the persisted data */
+	const CLEAN = 0;
 
-    /** Denotes, that the object is not yet persisted */
-    const CREATED = 1;
+	/** Denotes, that the object is not yet persisted */
+	const CREATED = 1;
 
-    /** Denotes, that the object differs from the persisted data */
-    const CHANGED = 2;
+	/** Denotes, that the object differs from the persisted data */
+	const CHANGED = 2;
 
-    /** Denotes, that the object not longer is persisted */
-    const ERASED = 3;
+	/** Denotes, that the object not longer is persisted */
+	const ERASED = 3;
 }

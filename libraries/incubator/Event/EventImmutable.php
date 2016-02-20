@@ -35,8 +35,8 @@ final class EventImmutable extends AbstractEvent
 	/**
 	 * Constructor.
 	 *
-	 * @param   string  $name       The event name.
-	 * @param   array   $arguments  The event arguments.
+	 * @param   string $name      The event name.
+	 * @param   array  $arguments The event arguments.
 	 *
 	 * @throws  BadMethodCallException
 	 *
@@ -59,8 +59,8 @@ final class EventImmutable extends AbstractEvent
 	/**
 	 * Set the value of an event argument.
 	 *
-	 * @param   string  $name   The argument name.
-	 * @param   mixed   $value  The argument value.
+	 * @param   string $name  The argument name.
+	 * @param   mixed  $value The argument value.
 	 *
 	 * @return  void
 	 *
@@ -82,7 +82,7 @@ final class EventImmutable extends AbstractEvent
 	/**
 	 * Remove an event argument.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   string $name The argument name.
 	 *
 	 * @return  void
 	 *

@@ -11,18 +11,18 @@ namespace Joomla\Service;
 
 /**
  * Command Bus interface.
- * 
+ *
  * @since  __DEPLOY__
  */
 interface CommandBus
 {
 	/**
 	 * Handle a command.
-	 * 
-	 * @param   Command  $command  A command object.
-	 * 
+	 *
+	 * @param   Command $command A command object.
+	 *
 	 * @return  mixed
-	 * 
+	 *
 	 * @since   __DEPLOY__
 	 */
 	public function handle(Command $command);

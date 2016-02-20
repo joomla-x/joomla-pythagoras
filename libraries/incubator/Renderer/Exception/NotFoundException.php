@@ -11,7 +11,7 @@ namespace Joomla\Renderer\Exception;
 /**
  * Class NotFoundException
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class NotFoundException extends \InvalidArgumentException

@@ -8,8 +8,8 @@
 
 namespace Joomla\Event;
 
-use InvalidArgumentException;
 use Closure;
+use InvalidArgumentException;
 
 /**
  * Implementation of a DispatcherInterface supporting
@@ -52,7 +52,7 @@ class Dispatcher implements DispatcherInterface
 	 * Set an event to the dispatcher.
 	 * It will replace any event with the same name.
 	 *
-	 * @param   EventInterface  $event  The event.
+	 * @param   EventInterface $event The event.
 	 *
 	 * @return  Dispatcher  This method is chainable.
 	 *
@@ -68,7 +68,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Sets a regular expression to filter the class methods when adding a listener.
 	 *
-	 * @param   string  $regex  A regular expression (for example '^on' will only register methods starting with "on").
+	 * @param   string $regex A regular expression (for example '^on' will only register methods starting with "on").
 	 *
 	 * @return  Dispatcher  This method is chainable.
 	 *
@@ -85,7 +85,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Add an event to this dispatcher, only if it is not existing.
 	 *
-	 * @param   EventInterface  $event  The event.
+	 * @param   EventInterface $event The event.
 	 *
 	 * @return  Dispatcher  This method is chainable.
 	 *
@@ -104,7 +104,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Tell if the given event has been added to this dispatcher.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  boolean  True if the listener has the given event, false otherwise.
 	 *
@@ -123,8 +123,8 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Get the event object identified by the given name.
 	 *
-	 * @param   string  $name     The event name.
-	 * @param   mixed   $default  The default value if the event was not registered.
+	 * @param   string $name    The event name.
+	 * @param   mixed  $default The default value if the event was not registered.
 	 *
 	 * @return  EventInterface|mixed  The event of the default value.
 	 *
@@ -144,7 +144,7 @@ class Dispatcher implements DispatcherInterface
 	 * Remove an event from this dispatcher.
 	 * The registered listeners will remain.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  Dispatcher  This method is chainable.
 	 *
@@ -186,7 +186,7 @@ class Dispatcher implements DispatcherInterface
 	 */
 	public function clearEvents()
 	{
-		$events = $this->events;
+		$events       = $this->events;
 		$this->events = array();
 
 		return $events;
@@ -209,8 +209,8 @@ class Dispatcher implements DispatcherInterface
 	 * If no events are specified, it will be registered to all events matching it's methods name.
 	 * In the case of a closure, you must specify at least one event name.
 	 *
-	 * @param   object|Closure  $listener  The listener
-	 * @param   array           $events    An associative array of event names as keys
+	 * @param   object|Closure $listener   The listener
+	 * @param   array          $events     An associative array of event names as keys
 	 *                                     and the corresponding listener priority as values.
 	 *
 	 * @return  Dispatcher  This method is chainable.
@@ -231,8 +231,7 @@ class Dispatcher implements DispatcherInterface
 		{
 			if (empty($events))
 			{
-				throw new InvalidArgumentException('No event name(s) and priority
-				specified for the Closure listener.');
+				throw new InvalidArgumentException('No event name(s) and priority specified for the Closure listener.');
 			}
 
 			foreach ($events as $name => $priority)
@@ -282,8 +281,8 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Get the priority of the given listener for the given event.
 	 *
-	 * @param   object|Closure         $listener  The listener.
-	 * @param   EventInterface|string  $event     The event object or name.
+	 * @param   object|Closure        $listener The listener.
+	 * @param   EventInterface|string $event    The event object or name.
 	 *
 	 * @return  mixed  The listener priority or null if the listener doesn't exist.
 	 *
@@ -307,7 +306,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Get the listeners registered to the given event.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  object[]  An array of registered listeners sorted according to their priorities.
 	 *
@@ -332,8 +331,8 @@ class Dispatcher implements DispatcherInterface
 	 * Tell if the given listener has been added.
 	 * If an event is specified, it will tell if the listener is registered for that event.
 	 *
-	 * @param   object|Closure         $listener  The listener.
-	 * @param   EventInterface|string  $event     The event object or name.
+	 * @param   object|Closure        $listener The listener.
+	 * @param   EventInterface|string $event    The event object or name.
 	 *
 	 * @return  boolean  True if the listener is registered, false otherwise.
 	 *
@@ -371,8 +370,8 @@ class Dispatcher implements DispatcherInterface
 	 * Remove the given listener from this dispatcher.
 	 * If no event is specified, it will be removed from all events it is listening to.
 	 *
-	 * @param   object|Closure         $listener  The listener to remove.
-	 * @param   EventInterface|string  $event     The event object or name.
+	 * @param   object|Closure        $listener The listener to remove.
+	 * @param   EventInterface|string $event    The event object or name.
 	 *
 	 * @return  Dispatcher  This method is chainable.
 	 *
@@ -408,7 +407,7 @@ class Dispatcher implements DispatcherInterface
 	 * Clear the listeners in this dispatcher.
 	 * If an event is specified, the listeners will be cleared only for that event.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  Dispatcher  This method is chainable.
 	 *
@@ -440,7 +439,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Count the number of registered listeners for the given event.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  integer  The number of registered listeners for the given event.
 	 *
@@ -459,7 +458,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Trigger an event.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  EventInterface  The event after being passed through all listeners.
 	 *

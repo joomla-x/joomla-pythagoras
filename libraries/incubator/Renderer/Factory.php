@@ -14,47 +14,49 @@ use Joomla\Renderer\Exception\NotFoundException;
 /**
  * Class Factory
  *
- * @package  joomla/renderer
+ * @package  Joomla/renderer
  * @since    1.0
  */
 class Factory
 {
-    protected $mediaTypeMap = [
-        // CLI formats
-        'text/plain' => 'PlainRenderer',
-        'text/ansi' => 'AnsiRenderer',
+	/** @var array Mapping of MIME types to matching renderers */
+	protected $mediaTypeMap = [
+		// CLI formats
+		'text/plain'                        => 'PlainRenderer',
+		'text/ansi'                         => 'AnsiRenderer',
 
-        // REST formats
-        'application/xml' => 'XmlRenderer',
-        'application/json' => 'JsonRenderer',
+		// REST formats
+		'application/xml'                   => 'XmlRenderer',
+		'application/json'                  => 'JsonRenderer',
 
-        // Web/Office formats
-        'text/html' => 'HtmlRenderer',
-        'application/pdf' => 'PdfRenderer',
+		// Web/Office formats
+		'text/html'                         => 'HtmlRenderer',
+		'application/pdf'                   => 'PdfRenderer',
 
-        // The DocBook format seems not to be registered. @link http://wiki.docbook.org/DocBookMimeType
-        'application/docbook+xml' => 'DocbookRenderer',
-        'application/vnd.oasis.docbook+xml' => 'DocbookRenderer',
-        'application/x-docbook' => 'DocbookRenderer',
-    ];
+		// The DocBook format seems not to be registered. @link http://wiki.docbook.org/DocBookMimeType
+		'application/docbook+xml'           => 'DocbookRenderer',
+		'application/vnd.oasis.docbook+xml' => 'DocbookRenderer',
+		'application/x-docbook'             => 'DocbookRenderer',
+	];
 
-    /**
-     * @param   string $acceptHeader
-     *
-     * @return  mixed
-     */
-    public function create($acceptHeader = '*/*')
-    {
-        $header = new AcceptHeader($acceptHeader);
+	/**
+	 * @param   string  $acceptHeader  The 'Accept' header
+	 *
+	 * @return  mixed
+	 */
+	public function create($acceptHeader = '*/*')
+	{
+		$header = new AcceptHeader($acceptHeader);
 
-        $match = $header->getBestMatch(array_keys($this->mediaTypeMap));
+		$match = $header->getBestMatch(array_keys($this->mediaTypeMap));
 
-        if (!isset($match['token'])) {
-            throw(new NotFoundException("No matching renderer found for\n\t$acceptHeader"));
-        }
+		if (!isset($match['token']))
+		{
+			throw(new NotFoundException("No matching renderer found for\n\t$acceptHeader"));
+		}
 
-        $classname = __NAMESPACE__ . '\\' . $this->mediaTypeMap[$match['token']];
+		$classname = __NAMESPACE__ . '\\' . $this->mediaTypeMap[$match['token']];
 
-        return new $classname($match);
-    }
+		return new $classname($match);
+	}
 }

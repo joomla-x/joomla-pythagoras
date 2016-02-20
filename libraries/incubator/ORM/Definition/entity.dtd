@@ -1,88 +1,88 @@
 <!ELEMENT entity ((storage)?, fields, (relations)?)>
-        <!ATTLIST entity
-                name NMTOKEN #REQUIRED>
+    <!ATTLIST entity
+        name NMTOKEN #REQUIRED>
 
-        <!ELEMENT storage (default|api|special)>
+    <!ELEMENT storage (default|api|special)>
 
-        <!ELEMENT default EMPTY>
-        <!ATTLIST default
-                table NMTOKEN #REQUIRED>
+    <!ELEMENT default EMPTY>
+    <!ATTLIST default
+        table NMTOKEN #REQUIRED>
 
-        <!ELEMENT api EMPTY>
-        <!ATTLIST api
-                base-url CDATA #IMPLIED
-                handler CDATA #REQUIRED>
+    <!ELEMENT api EMPTY>
+    <!ATTLIST api
+        base-url CDATA #IMPLIED
+        handler CDATA #REQUIRED>
 
-        <!ELEMENT special EMPTY>
-        <!ATTLIST special
-                dsn CDATA #REQUIRED>
+    <!ELEMENT special EMPTY>
+    <!ATTLIST special
+        dsn CDATA #REQUIRED>
 
-        <!ELEMENT fields (field|fieldset)+>
+    <!ELEMENT fields (field|fieldset)+>
 
-        <!ELEMENT fieldset (field)+>
-        <!ATTLIST fieldset
-                description CDATA #IMPLIED
-                label CDATA #IMPLIED
-                name ID #REQUIRED
-                filter CDATA #IMPLIED
-                required (true|false) "false"
-                type NMTOKEN #REQUIRED>
+    <!ELEMENT fieldset (field)+>
+    <!ATTLIST fieldset
+        description CDATA #IMPLIED
+        label CDATA #IMPLIED
+        name ID #REQUIRED
+        filter CDATA #IMPLIED
+        required (true|false) "false"
+        type NMTOKEN #REQUIRED>
 
-        <!ELEMENT field (validation|option)*>
-        <!ATTLIST field
-                default CDATA #IMPLIED
-                description CDATA #IMPLIED
-                label CDATA #IMPLIED
-                hint CDATA #IMPLIED
-                name ID #REQUIRED
-                filter CDATA #IMPLIED
-                required (true|false) "false"
-                type NMTOKEN #REQUIRED>
+    <!ELEMENT field (validation|option)*>
+    <!ATTLIST field
+        default CDATA #IMPLIED
+        description CDATA #IMPLIED
+        label CDATA #IMPLIED
+        hint CDATA #IMPLIED
+        name ID #REQUIRED
+        filter CDATA #IMPLIED
+        required (true|false) "false"
+        type NMTOKEN #REQUIRED>
 
-        <!ELEMENT validation EMPTY>
-        <!ATTLIST validation
-                rule NMTOKEN #REQUIRED
-                value CDATA #IMPLIED>
+    <!ELEMENT validation EMPTY>
+    <!ATTLIST validation
+        rule NMTOKEN #REQUIRED
+        value CDATA #IMPLIED>
 
-        <!ELEMENT option (#PCDATA)>
-        <!ATTLIST option
-                value CDATA #IMPLIED>
+    <!ELEMENT option (#PCDATA)>
+    <!ATTLIST option
+        value CDATA #IMPLIED>
 
-        <!ELEMENT relations (belongsTo|hasOne|hasMany|hasManyThrough)+>
+    <!ELEMENT relations (belongsTo|hasOne|hasMany|hasManyThrough)+>
 
-        <!ELEMENT belongsTo EMPTY>
-        <!ATTLIST belongsTo
-                name ID #REQUIRED
-                entity NMTOKEN #REQUIRED
-                label CDATA #IMPLIED
-                description CDATA #IMPLIED
-                default CDATA #IMPLIED>
+    <!ELEMENT belongsTo EMPTY>
+    <!ATTLIST belongsTo
+        name ID #REQUIRED
+        entity NMTOKEN #REQUIRED
+        label CDATA #IMPLIED
+        description CDATA #IMPLIED
+        default CDATA #IMPLIED>
 
-        <!ELEMENT hasOne EMPTY>
-        <!ATTLIST hasOne
-                name ID #REQUIRED
-                entity NMTOKEN #REQUIRED
-                reference NMTOKEN #REQUIRED
-                label CDATA #IMPLIED
-                description CDATA #IMPLIED
-                default CDATA #IMPLIED>
+    <!ELEMENT hasOne EMPTY>
+    <!ATTLIST hasOne
+        name ID #REQUIRED
+        entity NMTOKEN #REQUIRED
+        reference NMTOKEN #REQUIRED
+        label CDATA #IMPLIED
+        description CDATA #IMPLIED
+        default CDATA #IMPLIED>
 
-        <!ELEMENT hasMany EMPTY>
-        <!ATTLIST hasMany
-                name ID #REQUIRED
-                entity NMTOKEN #REQUIRED
-                reference NMTOKEN #REQUIRED
-                label CDATA #IMPLIED
-                description CDATA #IMPLIED
-                default CDATA #IMPLIED>
+    <!ELEMENT hasMany EMPTY>
+    <!ATTLIST hasMany
+        name ID #REQUIRED
+        entity NMTOKEN #REQUIRED
+        reference NMTOKEN #REQUIRED
+        label CDATA #IMPLIED
+        description CDATA #IMPLIED
+        default CDATA #IMPLIED>
 
-        <!ELEMENT hasManyThrough EMPTY>
-        <!ATTLIST hasManyThrough
-                name ID #REQUIRED
-                entity NMTOKEN #REQUIRED
-                reference NMTOKEN #REQUIRED
-                joinTable NMTOKEN #REQUIRED
-                joinRef NMTOKEN #REQUIRED
-                label CDATA #IMPLIED
-                description CDATA #IMPLIED
-                default CDATA #IMPLIED>
+    <!ELEMENT hasManyThrough EMPTY>
+    <!ATTLIST hasManyThrough
+        name ID #REQUIRED
+        entity NMTOKEN #REQUIRED
+        reference NMTOKEN #REQUIRED
+        joinTable NMTOKEN #REQUIRED
+        joinRef NMTOKEN #REQUIRED
+        label CDATA #IMPLIED
+        description CDATA #IMPLIED
+        default CDATA #IMPLIED>

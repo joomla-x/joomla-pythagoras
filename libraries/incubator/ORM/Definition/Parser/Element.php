@@ -11,26 +11,30 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class Element
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class Element
 {
-    /**
-     * Constructor
-     *
-     * @param   array $attributes The data to populate the element with
-     */
-    public function __construct($attributes)
-    {
-        foreach ($attributes as $name => $value) {
-            $method = 'set' . ucfirst($name);
+	/**
+	 * Constructor
+	 *
+	 * @param   array $attributes The data to populate the element with
+	 */
+	public function __construct($attributes)
+	{
+		foreach ($attributes as $name => $value)
+		{
+			$method = 'set' . ucfirst($name);
 
-            if (is_callable([$this, $method])) {
-                $this->$method($value);
-            } else {
-                $this->$name = $value;
-            }
-        }
-    }
+			if (is_callable([$this, $method]))
+			{
+				$this->$method($value);
+			}
+			else
+			{
+				$this->$name = $value;
+			}
+		}
+	}
 }

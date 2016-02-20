@@ -9,7 +9,6 @@
 namespace Joomla\Http\Middleware;
 
 use Dotenv\Dotenv;
-use Joomla\Di\Container;
 use Joomla\Http\MiddlewareInterface;
 use Joomla\Registry\Registry;
 use Psr\Http\Message\ResponseInterface;
@@ -26,39 +25,49 @@ use Psr\Http\Message\ServerRequestInterface;
  *     $container = $request->getAttribute('container');
  *     $config    = $container->get('config');
  *
- * @package joomla/http
+ * @package  Joomla/http
  *
- * @since  1.0
+ * @since    1.0
  */
 class ConfigurationMiddleware implements MiddlewareInterface
 {
-    private $path;
+	/** @var string Path to `.env` file */
+	private $path;
 
-    private $file;
+	/** @var string Name of the `.env` file */
+	private $file;
 
-    /**
-     * ConfigurationMiddleware constructor.
-     *
-     * @param   string $path Path to `.env` file
-     */
-    public function __construct($path, $file = '.env')
-    {
-        $this->path = $path;
-        $this->file = $file;
-    }
+	/**
+	 * ConfigurationMiddleware constructor.
+	 *
+	 * @param   string  $path  Path to `.env` file
+	 * @param   string  $file  Name of the `.env` file
+	 */
+	public function __construct($path, $file = '.env')
+	{
+		$this->path = $path;
+		$this->file = $file;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
-    {
-        $dotenv = new Dotenv($this->path, $this->file);
-        $dotenv->overload();
+	/**
+	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+	 *
+	 * @internal
+	 *
+	 * @param   ServerRequestInterface $request  The request object
+	 * @param   ResponseInterface      $response The response object
+	 * @param   callable               $next     The next middleware handler
+	 *
+	 * @return  ResponseInterface
+	 */
+	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+	{
+		$dotenv = new Dotenv($this->path, $this->file);
+		$dotenv->overload();
 
-        /** @var Container $container */
-        $container = $request->getAttribute('container');
-        $container->set('config', new Registry($_ENV), true);
+		$container = $request->getAttribute('container');
+		$container->set('config', new Registry($_ENV), true);
 
-        return $next($request, $response);
-    }
+		return $next($request, $response);
+	}
 }

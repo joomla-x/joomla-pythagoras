@@ -11,25 +11,26 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class Fieldset
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 class Fieldset extends Field
 {
-    /** @var  Field[]  The field list */
-    public $fields = [];
+	/** @var  Field[]  The field list */
+	public $fields = [];
 
-    /**
-     * Set the fields
-     *
-     * @param   Field[] $values The fields
-     *
-     * @return  void
-     */
-    protected function setField($values)
-    {
-        foreach ($values as $name => $field) {
-            $this->fields[$name] = $field;
-        }
-    }
+	/**
+	 * Set the fields
+	 *
+	 * @param   Field[] $values The fields
+	 *
+	 * @return  void
+	 */
+	protected function setField($values)
+	{
+		foreach ($values as $name => $field)
+		{
+			$this->fields[$name] = $field;
+		}
+	}
 }

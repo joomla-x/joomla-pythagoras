@@ -13,9 +13,9 @@ use Interop\Container\Exception\ContainerException;
 /**
  * Exception class for handling errors in resolving a dependency
  *
- * @package joomla/di
+ * @package  Joomla/di
  *
- * @since  1.0
+ * @since    1.0
  */
 class DependencyResolutionException extends \RuntimeException implements ContainerException
 {

@@ -15,17 +15,25 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Class CommandBusMiddleware
  *
- * @package joomla/command
+ * @package  Joomla/command
  *
- * @since  1.0
+ * @since    1.0
  */
 class CommandBusMiddleware implements MiddlewareInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-    {
-        return $response;
-    }
+	/**
+	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+	 *
+	 * @internal
+	 *
+	 * @param   ServerRequestInterface $request  The request object
+	 * @param   ResponseInterface      $response The response object
+	 * @param   callable               $next     The next middleware handler
+	 *
+	 * @return  ResponseInterface
+	 */
+	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+	{
+		return $response;
+	}
 }

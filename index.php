@@ -15,12 +15,14 @@ use Joomla\Http\ServerRequestFactory;
 
 require_once 'libraries/vendor/autoload.php';
 
-$app = new Application([
-    new ContainerSetupMiddleware,
-    new ConfigurationMiddleware(dirname(__DIR__)),
-    new RendererMiddleware,
-    new CommandBusMiddleware,
-]);
+$app = new Application(
+	[
+		new ContainerSetupMiddleware,
+		new ConfigurationMiddleware(dirname(__DIR__)),
+		new RendererMiddleware,
+		new CommandBusMiddleware,
+	]
+);
 
 $response = $app->run(ServerRequestFactory::fromGlobals()->withHeader('Accept', 'text/html'));
 print_r($response->getBody()->getMetadata());

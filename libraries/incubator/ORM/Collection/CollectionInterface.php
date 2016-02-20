@@ -11,24 +11,24 @@ namespace Joomla\ORM\Collection;
 /**
  * Interface CollectionInterface
  *
- * @package  joomla/orm
+ * @package  Joomla/orm
  * @since    1.0
  */
 interface CollectionInterface
 {
-    /**
-     * Get the status of the collection.
-     *
-     * @return  int  The status, one of the \Joomla\ORM\Status constants
-     *
-     * @see     \Joomla\ORM\Status
-     */
-    public function status();
+	/**
+	 * Get the status of the collection.
+	 *
+	 * @return  int  The status, one of the \Joomla\ORM\Status constants
+	 *
+	 * @see     \Joomla\ORM\Status
+	 */
+	public function status();
 
-    /**
-     * Get the ids of the collection items
-     *
-     * @return  array  List of ids
-     */
-    public function getIds();
+	/**
+	 * Get the ids of the collection items
+	 *
+	 * @return  array  List of ids
+	 */
+	public function getIds();
 }

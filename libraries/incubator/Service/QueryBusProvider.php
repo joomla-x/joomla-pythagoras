@@ -11,15 +11,14 @@ namespace Joomla\Service;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\Locator\CallableLocator;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Plugins\LockingMiddleware;
 
 /**
  * Registers a query bus service provider.
- * 
+ *
  * @since  __DEPLOY__
  */
 class QueryBusProvider implements ServiceProviderInterface
@@ -27,23 +26,23 @@ class QueryBusProvider implements ServiceProviderInterface
 	/**
 	 * Registers the query bus service provider.
 	 *
-	 * @param   Container  $container  A dependency injection container.
+	 * @param   Container $container A dependency injection container.
 	 *
 	 * @return  void
-	 * 
+	 *
 	 * @since   __DEPLOY__
 	 */
 	public function register(Container $container)
 	{
 		$container->share(
 			'querybus',
-			function(Container $container)
-			{
+			function (Container $container) {
+
 				$handlerMiddleware = new CommandHandlerMiddleware(
 					new ClassNameExtractor,
 					new CallableLocator(
-						function($queryName) use ($container)
-						{
+						function ($queryName) use ($container) {
+
 							// Break apart the fully-qualified class name.
 							// We do this so that the namespace path is not modified.
 							$parts = explode('\\', $queryName);

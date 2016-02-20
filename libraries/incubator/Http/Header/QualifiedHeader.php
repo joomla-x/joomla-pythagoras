@@ -11,131 +11,145 @@ namespace Joomla\Http\Header;
 /**
  * Class QualifiedHeader
  *
- * @package joomla/http
+ * @package  Joomla/http
  *
- * @since  1.0
+ * @since    1.0
  */
 class QualifiedHeader
 {
-    private $header;
+	/** @var string The header content */
+	private $header;
 
-    private $separator;
+	/** @var string Subtype separator */
+	private $separator;
 
-    private $wildcard;
+	/** @var string Wildcard character */
+	private $wildcard;
 
-    /**
-     * QualifiedHeader constructor.
-     *
-     * @param  string $header
-     * @param  string $separator
-     * @param  string $wildcard
-     */
-    public function __construct($header, $separator, $wildcard)
-    {
-        if (preg_match('~^[\w-]+:\s+(.*)$~i', $header, $match)) {
-            $header = $match[1];
-        }
+	/**
+	 * QualifiedHeader constructor.
+	 *
+	 * @param   string $header     The header content
+	 * @param   string $separator  Subtype separator
+	 * @param   string $wildcard   Wildcard character
+	 */
+	public function __construct($header, $separator, $wildcard)
+	{
+		if (preg_match('~^[\w-]+:\s+(.*)$~i', $header, $match))
+		{
+			$header = $match[1];
+		}
 
-        $this->header = $header;
-        $this->separator = '~' . preg_quote($separator) . '~';
-        $this->wildcard = $wildcard;
-    }
+		$this->header    = $header;
+		$this->separator = '~' . preg_quote($separator) . '~';
+		$this->wildcard  = $wildcard;
+	}
 
-    /**
-     * @param   string $header
-     *
-     * @return  array
-     */
-    private function parseHeader($header)
-    {
-        $directives = preg_split('~\s*,\s*~', $header);
-        $acceptedRanges = [];
+	/**
+	 * @param   array $availableRanges Available ranges
+	 *
+	 * @return  mixed
+	 */
+	public function getBestMatch($availableRanges)
+	{
+		$acceptedRanges = $this->parseHeader($this->header);
 
-        foreach ($directives as $directive) {
-            $parts = preg_split('~\s*;\s*~', $directive);
-            $spec = ['token' => array_shift($parts)];
+		$matching = ['q' => 0.0];
 
-            while (!empty($parts)) {
-                $parts2 = preg_split('~\s*=\s*~', array_shift($parts));
+		foreach ($availableRanges as $range)
+		{
+			$available = $this->split($range);
 
-                if (!isset($parts2[1])) {
-                    $parts2[1] = true;
-                }
+			foreach ($acceptedRanges as $acceptedRange)
+			{
+				$accepted = $this->split($acceptedRange['token']);
 
-                $spec[$parts2[0]] = $parts2[1];
-            }
+				if (!$this->match($available[0], $accepted[0]))
+				{
+					continue;
+				}
 
-            if (!isset($spec['q'])) {
-                $spec['q'] = 1.0;
-            }
+				if (!$this->match($available[1], $accepted[1]))
+				{
+					continue;
+				}
 
-            $spec['q'] += count($spec) / 100;
+				if ($matching['q'] < $acceptedRange['q'])
+				{
+					$matching          = $acceptedRange;
+					$matching['token'] = $range;
+				}
+			}
+		}
 
-            $acceptedRanges[] = $spec;
-        }
+		return $matching;
+	}
 
-        return $acceptedRanges;
-    }
+	/**
+	 * @param   string $header The header content
+	 *
+	 * @return  array
+	 */
+	private function parseHeader($header)
+	{
+		$directives     = preg_split('~\s*,\s*~', $header);
+		$acceptedRanges = [];
 
-    /**
-     * @param $availableRanges
-     *
-     * @return mixed
-     */
-    public function getBestMatch($availableRanges)
-    {
-        $acceptedRanges = $this->parseHeader($this->header);
+		foreach ($directives as $directive)
+		{
+			$parts = preg_split('~\s*;\s*~', $directive);
+			$spec  = ['token' => array_shift($parts)];
 
-        $matching = ['q' => 0.0];
+			while (!empty($parts))
+			{
+				$parts2 = preg_split('~\s*=\s*~', array_shift($parts));
 
-        foreach ($availableRanges as $range) {
-            $available = $this->split($range);
+				if (!isset($parts2[1]))
+				{
+					$parts2[1] = true;
+				}
 
-            foreach ($acceptedRanges as $acceptedRange) {
-                $accepted = $this->split($acceptedRange['token']);
+				$spec[$parts2[0]] = $parts2[1];
+			}
 
-                if (!$this->match($available[0], $accepted[0])) {
-                    continue;
-                }
+			if (!isset($spec['q']))
+			{
+				$spec['q'] = 1.0;
+			}
 
-                if (!$this->match($available[1], $accepted[1])) {
-                    continue;
-                }
+			$spec['q'] += count($spec) / 100;
 
-                if ($matching['q'] < $acceptedRange['q']) {
-                    $matching = $acceptedRange;
-                    $matching['token'] = $range;
-                }
-            }
-        }
+			$acceptedRanges[] = $spec;
+		}
 
-        return $matching;
-    }
+		return $acceptedRanges;
+	}
 
-    /**
-     * @param $value
-     *
-     * @return array
-     */
-    private function split($value)
-    {
-        $result = preg_split($this->separator, $value, 2);
+	/**
+	 * @param   string  $value  A token
+	 *
+	 * @return  array
+	 */
+	private function split($value)
+	{
+		$result = preg_split($this->separator, $value, 2);
 
-        if (!isset($result[1])) {
-            $result[1] = $this->wildcard;
-        }
+		if (!isset($result[1]))
+		{
+			$result[1] = $this->wildcard;
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 
-    /**
-     * @param   string $var1
-     * @param   string $var2
-     *
-     * @return  boolean
-     */
-    private function match($var1, $var2)
-    {
-        return $var1 == $this->wildcard || $var2 == $this->wildcard || $var1 == $var2;
-    }
+	/**
+	 * @param   string $var1 First string
+	 * @param   string $var2 Second string
+	 *
+	 * @return  boolean
+	 */
+	private function match($var1, $var2)
+	{
+		return $var1 == $this->wildcard || $var2 == $this->wildcard || $var1 == $var2;
+	}
 }

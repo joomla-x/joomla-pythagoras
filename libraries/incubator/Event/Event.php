@@ -20,8 +20,8 @@ class Event extends AbstractEvent
 	/**
 	 * Add an event argument, only if it is not existing.
 	 *
-	 * @param   string  $name   The argument name.
-	 * @param   mixed   $value  The argument value.
+	 * @param   string $name  The argument name.
+	 * @param   mixed  $value The argument value.
 	 *
 	 * @return  Event  This method is chainable.
 	 *
@@ -38,46 +38,6 @@ class Event extends AbstractEvent
 	}
 
 	/**
-	 * Set the value of an event argument.
-	 * If the argument already exists, it will be overridden.
-	 *
-	 * @param   string  $name   The argument name.
-	 * @param   mixed   $value  The argument value.
-	 *
-	 * @return  Event  This method is chainable.
-	 *
-	 * @since   1.0
-	 */
-	public function setArgument($name, $value)
-	{
-		$this->arguments[$name] = $value;
-
-		return $this;
-	}
-
-	/**
-	 * Remove an event argument.
-	 *
-	 * @param   string  $name  The argument name.
-	 *
-	 * @return  mixed  The old argument value or null if it is not existing.
-	 *
-	 * @since   1.0
-	 */
-	public function removeArgument($name)
-	{
-		$return = null;
-
-		if (isset($this->arguments[$name]))
-		{
-			$return = $this->arguments[$name];
-			unset($this->arguments[$name]);
-		}
-
-		return $return;
-	}
-
-	/**
 	 * Clear all event arguments.
 	 *
 	 * @return  array  The old arguments.
@@ -86,7 +46,7 @@ class Event extends AbstractEvent
 	 */
 	public function clearArguments()
 	{
-		$arguments = $this->arguments;
+		$arguments       = $this->arguments;
 		$this->arguments = array();
 
 		return $arguments;
@@ -107,8 +67,8 @@ class Event extends AbstractEvent
 	/**
 	 * Set the value of an event argument.
 	 *
-	 * @param   string  $name   The argument name.
-	 * @param   mixed   $value  The argument value.
+	 * @param   string $name  The argument name.
+	 * @param   mixed  $value The argument value.
 	 *
 	 * @return  void
 	 *
@@ -127,9 +87,27 @@ class Event extends AbstractEvent
 	}
 
 	/**
+	 * Set the value of an event argument.
+	 * If the argument already exists, it will be overridden.
+	 *
+	 * @param   string $name  The argument name.
+	 * @param   mixed  $value The argument value.
+	 *
+	 * @return  Event  This method is chainable.
+	 *
+	 * @since   1.0
+	 */
+	public function setArgument($name, $value)
+	{
+		$this->arguments[$name] = $value;
+
+		return $this;
+	}
+
+	/**
 	 * Remove an event argument.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   string $name The argument name.
 	 *
 	 * @return  void
 	 *
@@ -138,5 +116,27 @@ class Event extends AbstractEvent
 	public function offsetUnset($name)
 	{
 		$this->removeArgument($name);
+	}
+
+	/**
+	 * Remove an event argument.
+	 *
+	 * @param   string $name The argument name.
+	 *
+	 * @return  mixed  The old argument value or null if it is not existing.
+	 *
+	 * @since   1.0
+	 */
+	public function removeArgument($name)
+	{
+		$return = null;
+
+		if (isset($this->arguments[$name]))
+		{
+			$return = $this->arguments[$name];
+			unset($this->arguments[$name]);
+		}
+
+		return $return;
 	}
 }

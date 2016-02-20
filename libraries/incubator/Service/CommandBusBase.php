@@ -11,23 +11,24 @@ namespace Joomla\Service;
 
 /**
  * Request Bus proxy class.
- * 
+ *
  * This is just a proxy to the actual command bus implementation.
  * The League Tactician command bus currently proxied requires PHP 5.5 minimum
  * and so cannot be used across all Joomla 3.x sites.  This needs to be
  * resolved before release.
- * 
+ *
  * @since  __DEPLOY__
  */
 class CommandBusBase implements CommandBus
 {
+	/** @var \League\Tactician\CommandBus Command bus */
 	private $commandBus = null;
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param   array  $middleware  Array of middleware decorators.
-	 * 
+	 *
+	 * @param   array $middleware Array of middleware decorators.
+	 *
 	 * @since   __DEPLOY__
 	 */
 	public function __construct(array $middleware)
@@ -37,11 +38,11 @@ class CommandBusBase implements CommandBus
 
 	/**
 	 * Handle a command.
-	 * 
-	 * @param   Command  $command  A command object.
-	 * 
+	 *
+	 * @param   Command $command A command object.
+	 *
 	 * @return  mixed
-	 * 
+	 *
 	 * @since   __DEPLOY__
 	 */
 	public function handle(Command $command)
