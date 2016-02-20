@@ -160,7 +160,7 @@ class RoboFile extends \Robo\Tasks
     public function documentApi()
     {
         $this->init();
-        $this->taskApiGen()
+        $this->taskApiGen($this->binDir . '/apigen')
             ->arg('generate')
             ->config($this->config['toolcfg'] . '/apigen.api.yml')
             ->arg('--title="' . $this->config['title'] . ' API Documentation"')
@@ -175,7 +175,7 @@ class RoboFile extends \Robo\Tasks
     public function documentFull()
     {
         $this->init();
-        $this->taskApiGen()
+        $this->taskApiGen($this->binDir . '/apigen')
             ->arg('generate')
             ->config($this->config['toolcfg'] . '/apigen.full.yml')
             ->arg('--title="' . $this->config['title'] . ' Developer Documentation"')
