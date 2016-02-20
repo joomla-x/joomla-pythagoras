@@ -37,12 +37,25 @@ class RoboFile extends \Robo\Tasks
         'RoboFile.php',
     ];
 
+    private $binDir;
+
     use \Robo\Task\Testing\loadTasks;
+
+    public function __construct()
+    {
+        $config = json_decode(file_get_contents(__DIR__ . '/composer.json'), true);
+        if (isset($config['config']['vendor-dir']))
+        {
+            $this->binDir = __DIR__ . '/' . $config['config']['vendor-dir'] . '/bin';
+        }
+        else
+        {
+            $this->binDir = __DIR__ . '/vendor/bin';
+        }
+    }
 
     private function init()
     {
-        // Load config
-
         if (!file_exists($this->config['apidocs'])) {
             $this->_mkdir($this->config['apidocs']);
         }
@@ -57,7 +70,7 @@ class RoboFile extends \Robo\Tasks
     public function checkLoc()
     {
         $this->init();
-        $phploc = $this->taskExec('phploc')
+        $phploc = $this->taskExec($this->binDir . '/phploc')
             ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
             ->arg('--log-xml=' . $this->config['reports'] . '/phploc.xml');
 
@@ -74,7 +87,7 @@ class RoboFile extends \Robo\Tasks
     public function checkCpd()
     {
         $this->init();
-        $phploc = $this->taskExec('phpcpd')
+        $phploc = $this->taskExec($this->binDir . '/phpcpd')
             ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
             ->arg('--log-pmd=' . $this->config['reports'] . '/pmd-cpd.xml')
             ->arg('--fuzzy');
@@ -92,7 +105,7 @@ class RoboFile extends \Robo\Tasks
     public function checkDepend()
     {
         $this->init();
-        $pdepend = $this->taskExec('pdepend')
+        $pdepend = $this->taskExec($this->binDir . '/pdepend')
             ->arg('--dependency-xml=' . $this->config['reports'] . '/dependency.xml')
             ->arg('--jdepend-chart=' . $this->config['reports'] . '/jdepend.svg')
             ->arg('--jdepend-xml=' . $this->config['reports'] . '/jdepend.xml')
@@ -110,7 +123,7 @@ class RoboFile extends \Robo\Tasks
     protected function checkMd()
     {
         $this->init();
-        $this->taskExec('phpmd')
+        $this->taskExec($this->binDir . '/phpmd')
             ->arg(__DIR__)
             ->arg('xml')
             ->arg($this->config['toolcfg'] . '/phpmd.xml')
@@ -125,7 +138,7 @@ class RoboFile extends \Robo\Tasks
     public function checkStyle()
     {
         $this->init();
-        $this->taskStyle('phpcs')
+        $this->taskStyle($this->binDir . '/phpcs')
             ->arg('--report=full')
             ->arg('--report-checkstyle=' . $this->config['reports'] . '/checkstyle.xml')
             ->run();
@@ -176,7 +189,7 @@ class RoboFile extends \Robo\Tasks
      */
     public function documentStyle()
     {
-        $this->taskStyle('phpcs')
+        $this->taskStyle($this->binDir . '/phpcs')
             ->arg('--generator=Markdown')
             ->arg('> "' . $this->config['apidocs'] . '/coding-standard.md"')
             ->run();
@@ -188,7 +201,7 @@ class RoboFile extends \Robo\Tasks
     public function fixStyle()
     {
         $this->init();
-        $this->taskStyle('phpcbf')
+        $this->taskStyle($this->binDir . '/phpcbf')
             ->run();
     }
 
@@ -198,7 +211,7 @@ class RoboFile extends \Robo\Tasks
     public function reportCb()
     {
         $this->init();
-        $phpcb = $this->taskExec('phpcb')
+        $phpcb = $this->taskExec($this->binDir . '/phpcb')
             ->arg('--log "' . $this->config['reports'] . '"')
             ->arg('--source .')
             ->arg('--extensions ".php"')
@@ -219,9 +232,9 @@ class RoboFile extends \Robo\Tasks
     public function reportMetrics()
     {
         $this->init();
-        $this->taskExec('phpmetrics')
+        $this->taskExec($this->binDir . '/phpmetrics')
             ->arg('--config="' . $this->config['toolcfg'] . '/phpmetrics.yml"')
-            ->arg('--template-title="' . $this->config['title'] . ' Metrics Report"')
+            #->arg('--template-title="' . $this->config['title'] . ' Metrics Report"')
             ->arg('.')
             ->run();
     }
@@ -279,7 +292,7 @@ class RoboFile extends \Robo\Tasks
         $tempConfigFile = $this->buildConfig($this->config['toolcfg'], $option['coverage']);
 
         try {
-            $codecept = $this->taskCodecept()
+            $codecept = $this->taskCodecept($this->binDir . '/codecept')
                 ->configFile($tempConfigFile)
                 ->html($suite . '-test-results.html');
 
