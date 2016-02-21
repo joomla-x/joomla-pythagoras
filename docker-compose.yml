@@ -1,0 +1,30 @@
+web:
+  image: php:5-apache
+  volumes:
+    - .:/var/www/html
+  ports:
+    - "8080:80"
+  links:
+    - db:db
+
+db:
+  image: mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
+  ports:
+    - "3306:3306"
+
+hub:
+  image: selenium/hub
+  ports:
+    - "4444:4444"
+
+firefox:
+  image: selenium/node-firefox-debug
+  links:
+    - hub:hub
+    - web:web
+  ports:
+    - "5900:5900"
+  expose:
+    - "5555"
