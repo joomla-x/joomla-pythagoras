@@ -34,6 +34,8 @@ class CommandBusMiddleware implements MiddlewareInterface
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
 	{
+		$response = $next($request, $response);
+
 		return $response;
 	}
 }

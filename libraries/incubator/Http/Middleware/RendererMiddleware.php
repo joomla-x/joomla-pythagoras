@@ -47,6 +47,8 @@ class RendererMiddleware implements MiddlewareInterface
 
 		$renderer = (new RendererFactory)->create($acceptHeader);
 
-		return $response->withBody($renderer);
+		$response = $next($request, $response->withBody($renderer));
+
+		return $response;
 	}
 }
