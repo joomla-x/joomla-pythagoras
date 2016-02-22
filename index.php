@@ -13,6 +13,7 @@ use Joomla\Http\Middleware\ContainerSetupMiddleware;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\RendererMiddleware;
 use Joomla\Http\Middleware\ResponseSenderMiddleware;
+use Joomla\Http\Middleware\RouterMiddleware;
 use Joomla\Http\ServerRequestFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -25,10 +26,11 @@ $app = new Application(
 		new ContainerSetupMiddleware,
 		new ConfigurationMiddleware(__DIR__),
 		new RendererMiddleware,
+		new RouterMiddleware,
 		new CommandBusMiddleware,
 		function (ServerRequestInterface $request, ResponseInterface $response, callable $next) {
 			$body = new BufferStream();
-			$body->write('<h1>Welcome to the Prototype!</h1>');
+			$body->write('<h1>Welcome to the Prototype!</h1><pre>' . print_r($request->getAttributes(), true) . '</pre>');
 
 			return $next($request, $response->withBody($body));
 		},
