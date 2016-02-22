@@ -21,6 +21,7 @@ require_once 'libraries/vendor/autoload.php';
 
 $app = new Application(
 	[
+		new ResponseSenderMiddleware,
 		new ContainerSetupMiddleware,
 		new ConfigurationMiddleware(__DIR__),
 		new RendererMiddleware,
@@ -31,7 +32,6 @@ $app = new Application(
 
 			return $next($request, $response->withBody($body));
 		},
-		new ResponseSenderMiddleware,
 	]
 );
 
