@@ -8,6 +8,8 @@
 
 namespace Joomla\Command;
 
+use Psr\Http\Message\StreamInterface;
+
 /**
  * Interface CommandInterface
  *
@@ -17,4 +19,11 @@ namespace Joomla\Command;
  */
 interface CommandInterface
 {
+	/**
+	 * @param array $input Attributes derived from the request.
+	 * @param StreamInterface $output The output stream
+	 *
+	 * @return void
+	 */
+	public function execute($input, $output);
 }

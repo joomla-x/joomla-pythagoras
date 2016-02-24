@@ -220,12 +220,9 @@ abstract class Renderer implements StreamInterface
 	 */
 	public function write($string)
 	{
-		if (empty($string))
-		{
-			return 0;
-		}
+		$this->output .= $string;
 
-		throw new \RuntimeException('Unable to write to the renderer directly. Use the visit() method.');
+		return strlen($string);
 	}
 
 	/**
@@ -330,7 +327,7 @@ abstract class Renderer implements StreamInterface
 	 */
 	public function isWritable()
 	{
-		return false;
+		return true;
 	}
 
 	/**

@@ -34,9 +34,6 @@ class EntityBuilder
 	/** @var  LocatorInterface  The XML definition file locator */
 	private $locator;
 
-	/** @var  EntityInterface[]  List of already built entity prototypes */
-	private $prototypes = [];
-
 	/** @var  string  Prefix for language file keys */
 	private $prefix;
 
@@ -65,17 +62,12 @@ class EntityBuilder
 	 */
 	public function create($entityName)
 	{
-		if (!isset($this->prototypes[$entityName]))
-		{
-			$this->entity    = new Entity;
-			$this->reflector = new EntityReflector($this->entity);
+		$entity          = new Entity;
+		$this->reflector = new EntityReflector($entity);
 
-			$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityName)));
+		$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityName)));
 
-			$this->prototypes[$entityName] = $this->entity;
-		}
-
-		return clone $this->prototypes[$entityName];
+		return $entity;
 	}
 
 	/**
@@ -280,7 +272,6 @@ class EntityBuilder
 			// Records from {$relation->entity} with {$relation->reference}={$id}
 			$repository = new Repository($relation->entity, $locator);
 			$entities   = $repository->findAll()->with($relation->reference, Operator::EQUAL, $id)->get();
-
 			$this->reflector->addField(new Field([
 				'name'  => $basename,
 				'type'  => 'relationData',

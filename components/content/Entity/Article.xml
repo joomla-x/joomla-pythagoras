@@ -60,6 +60,10 @@
 				   label="JFIELD_PARENT_LABEL"
 				   description="JFIELD_PARENT_DESC"
 		/>
+		<hasMany name="children"
+				 entity="article"
+				 reference="parent_id"
+		/>
 	</relations>
 
 </entity>

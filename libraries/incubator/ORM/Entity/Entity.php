@@ -11,7 +11,7 @@ namespace Joomla\ORM\Entity;
 use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Exception\PropertyNotFoundException;
 use Joomla\ORM\Exception\WriteOnImmutableException;
-use Joomla\ORM\Repository\StorageProviderInterface;
+use Joomla\ORM\Storage\StorageProviderInterface;
 use Joomla\ORM\Status;
 
 /**
@@ -212,6 +212,7 @@ class Entity implements EntityInterface
 	 * Get the storage provider
 	 *
 	 * @return  StorageProviderInterface  The storage provider
+	 *
 	 */
 	public function getStorage()
 	{

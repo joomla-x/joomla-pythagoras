@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\ORM\Repository;
+namespace Joomla\ORM\Storage;
 
 use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;

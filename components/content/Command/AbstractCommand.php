@@ -13,20 +13,12 @@ abstract class AbstractCommand implements CommandInterface
 	/** @var Repository  */
 	protected $repository;
 
-	/** @var  array */
-	protected $input;
-
-	/** @var  Renderer */
-	protected $renderer;
-
-	public function __construct($input, $renderer)
+	public function __construct()
 	{
 		$locator = new Locator([
 			new RecursiveDirectoryStrategy(dirname(__DIR__) . '/Entity'),
 		]);
 
 		$this->repository = new Repository('Article', $locator);
-		$this->input      = $input;
-		$this->renderer   = $renderer;
 	}
 }

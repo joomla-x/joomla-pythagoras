@@ -28,12 +28,12 @@ $app = new Application(
 		new RendererMiddleware,
 		new RouterMiddleware,
 		new CommandBusMiddleware,
-		function (ServerRequestInterface $request, ResponseInterface $response, callable $next) {
-			$body = new BufferStream();
-			$body->write('<h1>Welcome to the Prototype!</h1><pre>' . print_r($request->getAttributes(), true) . '</pre>');
-
-			return $next($request, $response->withBody($body));
-		},
+		#function (ServerRequestInterface $request, ResponseInterface $response, callable $next) {
+		#	$body = new BufferStream();
+		#	$body->write('<h1>Welcome to the Prototype!</h1><pre>' . print_r($request->getAttributes(), true) . '</pre>');
+		#
+		#	return $next($request, $response->withBody($body));
+		#},
 	]
 );
 

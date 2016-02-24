@@ -59,13 +59,6 @@ interface RepositoryInterface
 	public function findAll();
 
 	/**
-	 * Get the validator
-	 *
-	 * @return  ValidatorInterface
-	 */
-	public function validator();
-
-	/**
 	 * Get the persistor
 	 *
 	 * @return  PersistorInterface
