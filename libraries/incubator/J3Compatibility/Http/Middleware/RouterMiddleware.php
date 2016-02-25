@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Http\Middleware;
+namespace Joomla\J3Compatibility\Http\Middleware;
 
 use Joomla\Http\MiddlewareInterface;
 use Joomla\Registry\Registry;
@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @package  Joomla/renderer
+ * @package  Joomla.J3Compatibility
  *
  * @since    1.0
  */
@@ -35,30 +35,20 @@ class RouterMiddleware implements MiddlewareInterface
 	{
 		$attributes = $request->getAttributes();
 
-		if (!isset($attributes['command']))
+		if (!isset($attributes['command']) && $this->isLegacy())
 		{
-			switch (strtoupper($request->getMethod()))
-			{
-				case 'GET':
-					$params = new Registry($request->getQueryParams());
-					break;
-
-				case 'POST':
-				default:
-					$params = new Registry($request->getAttributes());
-					break;
-			}
-
-			$command = [
-				'component' => $params->get('option', 'error'),
-				'command'   => $params->get('task', 'display'),
-				'id'        => $params->get('id', null),
-			];
-			$request = $request->withAttribute('command', $command);
 
 			// @todo Emit afterRouting event
 		}
 
 		return $next($request, $response);
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function isLegacy()
+	{
+		return isset($_REQUEST['option']) && preg_match('~^com_~', $_REQUEST['option']);
 	}
 }

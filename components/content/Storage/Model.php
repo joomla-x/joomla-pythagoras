@@ -4,7 +4,6 @@ namespace Joomla\Component\Content\Storage;
 
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
-use Joomla\ORM\Entity\Entity;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Finder\CollectionFinderInterface;
