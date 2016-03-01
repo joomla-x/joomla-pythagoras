@@ -373,6 +373,11 @@ class EntityBuilder
 					$param   = 'table';
 					break;
 
+				case 'csv':
+					$handler = '\Joomla\ORM\Storage\CsvProvider';
+					$param   = 'file';
+					break;
+
 				case 'api':
 					$handler = $info[0]->handler;
 					$param   = 'base-url';

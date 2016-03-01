@@ -1,6 +1,6 @@
 <?php
 
-namespace Joomla\Component\Content\Storage;
+namespace Joomla\ORM\Storage;
 
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
@@ -11,7 +11,7 @@ use Joomla\ORM\Finder\EntityFinderInterface;
 use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Persistor\PersistorInterface;
 
-class Model implements EntityFinderInterface, CollectionFinderInterface, PersistorInterface
+class CsvModel implements EntityFinderInterface, CollectionFinderInterface, PersistorInterface
 {
 	const ENTITY = 0;
 	const COLLECTION = 1;
@@ -24,12 +24,15 @@ class Model implements EntityFinderInterface, CollectionFinderInterface, Persist
 
 	private $builder;
 
-	public function __construct($mode)
+	private $dataFile;
+
+	public function __construct($dataFile, $mode)
 	{
-		$this->mode = $mode;
+		$this->dataFile = $dataFile;
+		$this->mode     = $mode;
 
 		$locator = new Locator([
-			new RecursiveDirectoryStrategy(dirname(__DIR__) . '/Entity'),
+			new RecursiveDirectoryStrategy(getcwd() . '/components'),
 		]);
 		$this->builder = new EntityBuilder($locator);
 	}
@@ -199,8 +202,7 @@ class Model implements EntityFinderInterface, CollectionFinderInterface, Persist
 
 	protected function loadData()
 	{
-		$filename = __DIR__ . '/data/articles.csv';
-		$fh       = fopen($filename, 'r');
+		$fh       = fopen($this->dataFile, 'r');
 		$keys     = fgetcsv($fh);
 
 		$this->rows = [];

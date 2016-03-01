@@ -4,7 +4,7 @@
 <entity name="article">
 
 	<storage>
-		<api handler="\Joomla\Component\Content\Storage\Factory"/>
+		<csv file="components/content/data/articles.csv"/>
 	</storage>
 
 	<fields>
