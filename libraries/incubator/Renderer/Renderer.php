@@ -8,15 +8,13 @@
 
 namespace Joomla\Renderer;
 
-use Psr\Http\Message\StreamInterface;
-
 /**
  * Class Renderer
  *
  * @package  Joomla/renderer
  * @since    1.0
  */
-abstract class Renderer implements StreamInterface
+abstract class Renderer implements RendererInterface
 {
 	/** @var string The MIME type */
 	protected $mediatype = 'application/binary';
