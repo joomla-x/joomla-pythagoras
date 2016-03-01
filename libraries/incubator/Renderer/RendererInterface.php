@@ -8,6 +8,10 @@
 
 namespace Joomla\Renderer;
 
+use Joomla\Content\Type\Attribution;
+use Joomla\Content\Type\Compound;
+use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\Paragraph;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -25,4 +29,9 @@ interface RendererInterface extends StreamInterface
 	 * @return  void
 	 */
 	public function registerContentType($type, callable $handler);
+
+	public function visitHeadline(Headline $headline);
+	public function visitCompound(Compound $compound);
+	public function visitAttribution(Attribution $attribution);
+	public function visitParagraph(Paragraph $paragraph);
 }

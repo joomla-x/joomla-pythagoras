@@ -8,6 +8,9 @@
 
 namespace Joomla\Renderer;
 
+use Joomla\Content\ContentTypeInterface;
+use Joomla\Content\Type\Compound;
+
 /**
  * Class Renderer
  *
@@ -211,16 +214,24 @@ abstract class Renderer implements RendererInterface
 	/**
 	 * Write data to the stream.
 	 *
-	 * @param   string  $string  The string that is to be written.
+	 * @param   ContentTypeInterface|string $content The string that is to be written.
 	 *
 	 * @return  integer  Returns the number of bytes written to the stream.
 	 * @throws  \RuntimeException on failure.
 	 */
-	public function write($string)
+	public function write($content)
 	{
-		$this->output .= $string;
+		if ($content instanceof ContentTypeInterface)
+		{
+			$len = $content->accept($this);
+		}
+		else
+		{
+			$this->output .= $content;
+			$len = strlen($content);
+		}
 
-		return strlen($string);
+		return $len;
 	}
 
 	/**

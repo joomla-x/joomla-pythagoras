@@ -8,6 +8,11 @@
 
 namespace Joomla\Renderer;
 
+use Joomla\Content\Type\Attribution;
+use Joomla\Content\Type\Compound;
+use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\Paragraph;
+
 /**
  * Class HtmlRenderer
  *
@@ -41,5 +46,42 @@ class HtmlRenderer extends Renderer
 		$metaData['wrapper_data']['client_script'] = empty($this->clientScript) ? null : get_class($this->clientScript);
 
 		return $metaData;
+	}
+
+	public function visitHeadline(Headline $headline)
+	{
+		return $this->write("<h{$headline->level}>{$headline->text}</h{$headline->level}>\n");
+	}
+
+	public function visitAttribution(Attribution $attribution)
+	{
+		return $this->write("<p><small>{$attribution->label} {$attribution->name}</small></p>\n");
+	}
+
+	public function visitParagraph(Paragraph $paragraph)
+	{
+		$text = $paragraph->text;
+
+		switch ($paragraph->variant)
+		{
+			case Paragraph::EMPHASISED:
+				$text = "<em>{$text}</em>";
+				break;
+		}
+
+		return $this->write("<p>{$text}</p>\n");
+	}
+
+	public function visitCompound(Compound $compound)
+	{
+		$len = 0;
+		$len += $this->write("<{$compound->type}>\n");
+		foreach ($compound->items as $item)
+		{
+			$len += $item->accept($this);
+		}
+		$len += $this->write("</{$compound->type}>\n");
+
+		return $len;
 	}
 }

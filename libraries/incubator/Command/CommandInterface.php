@@ -8,7 +8,7 @@
 
 namespace Joomla\Command;
 
-use Psr\Http\Message\StreamInterface;
+use Joomla\Renderer\RendererInterface;
 
 /**
  * Interface CommandInterface
@@ -21,7 +21,7 @@ interface CommandInterface
 {
 	/**
 	 * @param array $input Attributes derived from the request.
-	 * @param StreamInterface $output The output stream
+	 * @param RendererInterface $output The output stream
 	 *
 	 * @return void
 	 */
