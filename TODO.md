@@ -10,10 +10,14 @@ or to Niels Braczek via email (nbraczek@bsds.de).
   - The connection of the ORM (`EntityFinder`, `CollectionFinder`, and `Persistor`) to the 
     Doctrine2 DBAL needs to be implemented.
     
+  - Implement `store()` asnd `delete()` in `Joomla\ORM\Storage\CsvModel`.
+    
 ## Renderer
 
   - A list of ContentTypes must be provided. Decision has to be made about, which types have to be
     implemented by the renderers.
+    
+  - Complete inline documentation (DocBlocks).
     
 ## Repository
 
