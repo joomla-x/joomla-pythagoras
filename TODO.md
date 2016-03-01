@@ -2,7 +2,8 @@
 
 This is a non-complete list of tasks, that needs some work.
 Feel free to pick one to work on. In order to avoid confusion,
-it is appreciated if you give a short notice on the "Joomla 4 Working Group" channel on Glip.
+it is appreciated if you give a short notice on the "Joomla 4 Working Group" channel on Glip
+or to Niels Braczek via email (nbraczek@bsds.de).
 
 ## ORM
 
