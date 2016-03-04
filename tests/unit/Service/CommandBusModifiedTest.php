@@ -42,6 +42,8 @@ class CommandBusModifiedTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheCommandBusHasAnExecuteMethodThatTakesACommandAsAParameter()
 	{
+		$this->expectOutputString(sprintf("LOG: Starting %1\$s\nLOG: Ending %1\$s\n", "Joomla\\Tests\\Unit\\Service\\Stubs\\SimpleCommand"));
+
 		$this->assertTrue($this->commandBus->handle(new SimpleCommand));
 	}
 
@@ -50,6 +52,8 @@ class CommandBusModifiedTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheCommandBusHasAnExecuteMethodThatTakesAQueryAsAParameter()
 	{
+		$this->expectOutputString(sprintf("LOG: Starting %1\$s\nLOG: Ending %1\$s\n", "Joomla\\Tests\\Unit\\Service\\Stubs\\SimpleQuery"));
+
 		$this->assertEquals('XSome contentY', $this->commandBus->handle((new SimpleQuery('Some content'))));
 	}
 }
