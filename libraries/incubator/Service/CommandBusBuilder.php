@@ -21,9 +21,9 @@ use League\Tactician\Plugins\LockingMiddleware;
 
 /**
  * Command Bus Builder.
- * 
+ *
  * Builds a command bus with the specified configuration and middleware.
- * 
+ *
  * Unless overridden, this will return a default command bus with the following configuration:-
  * 		Command name extractor:	ClassNameExtractor
  * 		Handler locator:		Callable which replaces "Command" with "CommandHandler" and
@@ -32,9 +32,9 @@ use League\Tactician\Plugins\LockingMiddleware;
  * 		Middleware stack:		CommandLockingMiddleware which locks only for Commands, not Queries.
  * 								DomainEventMiddleware which publishes all DomainEvents, provided
  * 								that a dispatcher was specified when the builder was instantiated.
- * 
+ *
  * This class also helps isolate our dependency on a particular command bus implementation.
- * 
+ *
  * @since  __DEPLOY_VERSION__
  */
 class CommandBusBuilder
@@ -53,9 +53,9 @@ class CommandBusBuilder
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param   object  $dispatcher  Optional domain event dispatcher.
-	 * 
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function __construct($dispatcher = null)
@@ -72,7 +72,7 @@ class CommandBusBuilder
 				$parts = explode('\\', $commandName);
 
 				// Get the class name only.
-				$className = array_pop($parts);	
+				$className = array_pop($parts);
 
 				// Determine the handler class name from the command class name.
 				$handlerName = str_replace('Command', 'CommandHandler', $className);
@@ -106,9 +106,9 @@ class CommandBusBuilder
 
 	/**
 	 * Builds and returns the specified command bus.
-	 * 
+	 *
 	 * @return  CommandBus
-	 * 
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function getCommandBus()
@@ -128,11 +128,11 @@ class CommandBusBuilder
 
 	/**
 	 * Get the middleware stack.
-	 * 
+	 *
 	 * This allows the building program to manipulate the default stack, for example.
-	 * 
+	 *
 	 * @return  Middleware[]
-	 * 
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function getMiddleware()
@@ -142,11 +142,11 @@ class CommandBusBuilder
 
 	/**
 	 * Set the command name extractor, overriding the default.
-	 * 
+	 *
 	 * @param   CommandNameExtractor  $commandNameExtractor  Command name extractor.
-	 * 
-	 * @return  This object for method chaining.
-	 * 
+	 *
+	 * @return  CommandBusBuilder  This object for method chaining.
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setCommandNameExtractor(CommandNameExtractor $commandNameExtractor)
@@ -158,11 +158,11 @@ class CommandBusBuilder
 
 	/**
 	 * Set the handler locator, overriding the default.
-	 * 
+	 *
 	 * @param   HandlerLocator  $handlerLocator  Handler locator.
-	 * 
-	 * @return  This object for method chaining.
-	 * 
+	 *
+	 * @return  CommandBusBuilder  This object for method chaining.
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setHandlerLocator(HandlerLocator $handlerLocator)
@@ -174,11 +174,11 @@ class CommandBusBuilder
 
 	/**
 	 * Set the method name inflector, overriding the default.
-	 * 
+	 *
 	 * @param   MethodNameInflector  $methodNameInflector  Method name inflector.
-	 * 
-	 * @return  This object for method chaining.
-	 * 
+	 *
+	 * @return  CommandBusBuilder  This object for method chaining.
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setMethodNameInflector(MethodNameInflector $methodNameInflector)
@@ -190,11 +190,11 @@ class CommandBusBuilder
 
 	/**
 	 * Set the middleware stack, overriding or modifying the default stack.
-	 * 
+	 *
 	 * @param   Middleware[]  $middleware  An array of Middleware objects.
-	 * 
-	 * @return  This object for method chaining.
-	 * 
+	 *
+	 * @return  CommandBusBuilder  This object for method chaining.
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function setMiddleware(array $middleware = [])

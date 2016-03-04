@@ -61,28 +61,28 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
 
 	/**
-	 * @testdox The getRequestedOn method does not throw an exception
+	 * @testdox The getRaisedOn method does not throw an exception
 	 */
-	public function testTheGetrequestedonMethodDoesNotThrowAnException()
+	public function testTheGetraisedonMethodDoesNotThrowAnException()
 	{
-		$this->assertNotEmpty((new SimpleCommand)->getRequestedOn());
+		$this->assertNotEmpty((new SimpleCommand)->getRaisedOn());
 	}
 
 
 	/**
 	 * @testdox Accessing the requestedOn property does not throw an exception
 	 */
-	public function testAccessingTheRequestedonPropertyDoesNotThrowAnException()
+	public function testAccessingTheRaisedonPropertyDoesNotThrowAnException()
 	{
-		$this->assertNotEmpty((new SimpleCommand)->requestedOn);
+		$this->assertNotEmpty((new SimpleCommand)->raisedOn);
 	}
 
 
 	/**
-	 * @expectedException \RuntimeException
-	 * @testdox Throws a RuntimeException when trying to change the requestedOn time.
+	 * @expectedException \InvalidArgumentException
+	 * @testdox Throws a InvalidArgumentException when trying to change the requestedOn time.
 	 */
-	public function testThrowsARuntimeexceptionWhenTryingToChangeTheRequestedonTime()
+	public function testThrowsAnInvalidArgumentExceptionWhenTryingToChangeTheRequestedonTime()
 	{
 		$command = new SimpleCommand;
 		$command->requestedon = 'something';

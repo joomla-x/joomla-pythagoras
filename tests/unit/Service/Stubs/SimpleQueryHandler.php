@@ -1,9 +1,9 @@
 <?php
 namespace Joomla\Tests\Unit\Service\Stubs;
 
-use Joomla\Service\QueryHandlerBase;
+use Joomla\Service\QueryHandler;
 
-final class SimpleQueryHandler extends QueryHandlerBase
+final class SimpleQueryHandler extends QueryHandler
 {
 	public function handle(SimpleQuery $query)
 	{

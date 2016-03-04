@@ -61,31 +61,31 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
 
 	/**
-	 * @testdox The getRequestedOn method does not throw an exception
+	 * @testdox The getRaisedOn method does not throw an exception
 	 */
-	public function testTheGetrequestedonMethodDoesNotThrowAnException()
+	public function testTheGetraisedonMethodDoesNotThrowAnException()
 	{
-		$this->assertNotEmpty((new SimpleQuery)->getRequestedOn());
+		$this->assertNotEmpty((new SimpleQuery)->getRaisedOn());
 	}
 
 
 	/**
-	 * @testdox Accessing the requestedOn property does not throw an exception
+	 * @testdox Accessing the getRaisedOn property does not throw an exception
 	 */
-	public function testAccessingTheRequestedonPropertyDoesNotThrowAnException()
+	public function testAccessingTheRaisedonPropertyDoesNotThrowAnException()
 	{
-		$this->assertNotEmpty((new SimpleQuery)->requestedOn);
+		$this->assertNotEmpty((new SimpleQuery)->raisedOn);
 	}
 
 
 	/**
-	 * @expectedException \RuntimeException
-	 * @testdox Throws a \RuntimeException when trying to change the requestedOn time.
+	 * @expectedException \InvalidArgumentException
+	 * @testdox Throws a \InvalidArgumentException when trying to change the raisedOn time.
 	 */
-	public function testThrowsARuntimeexceptionWhenTryingToChangeTheRequestedonTime()
+	public function testThrowsAnInvalidArgumentExceptionWhenTryingToChangeTheRaisedonTime()
 	{
 		$query = new SimpleQuery;
-		$query->requestedon = 'something';
+		$query->raisedOn = 'something';
 	}
 
 
