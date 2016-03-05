@@ -11,6 +11,8 @@ namespace Joomla\Event;
 /**
  * Interface to be implemented by classes depending on a dispatcher.
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 interface DispatcherAwareInterface

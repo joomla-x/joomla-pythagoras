@@ -13,6 +13,8 @@ use InvalidArgumentException;
 /**
  * Default Event class.
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 class Event extends AbstractEvent

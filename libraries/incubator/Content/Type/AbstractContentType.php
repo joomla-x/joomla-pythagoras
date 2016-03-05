@@ -15,12 +15,16 @@ use Joomla\Content\ContentTypeInterface;
  *
  * @package  Joomla/Content
  * @since    1.0
- *
- * @property string $text
- * @property integer $level
  */
-abstract class abstractContentType implements ContentTypeInterface
+abstract class AbstractContentType implements ContentTypeInterface
 {
+	/**
+	 * Magic getter.
+	 *
+	 * @param   string  $var  Name of the property
+	 *
+	 * @return  mixed
+	 */
 	public function __get($var)
 	{
 		if (isset($this->$var))

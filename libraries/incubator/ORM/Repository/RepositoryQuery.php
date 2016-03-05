@@ -14,10 +14,16 @@ use Joomla\Service\Query;
  * Repository Query
  *
  * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class RepositoryQuery extends Query
 {
+	/**
+	 * RepositoryQuery constructor.
+	 *
+	 * @param   string  $entityName  The name of the requested entity
+	 */
 	public function __construct($entityName)
 	{
 		$this->entityName = $entityName;

@@ -15,7 +15,8 @@ use Joomla\ORM\Persistor\PersistorInterface;
 /**
  * Interface StorageProviderInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface StorageProviderInterface
@@ -23,7 +24,7 @@ interface StorageProviderInterface
 	/**
 	 * Get an EntityFinder.
 	 *
-	 * @param   string $entityName The name of the entity
+	 * @param   string  $entityName  The name of the entity
 	 *
 	 * @return  EntityFinderInterface  The finder
 	 */
@@ -32,16 +33,16 @@ interface StorageProviderInterface
 	/**
 	 * Get a CollectionFinder.
 	 *
-	 * @param   string $entityName The name of the entity
+	 * @param   string  $entityName  The name of the entity
 	 *
-	 * @return   CollectionFinderInterface
+	 * @return  CollectionFinderInterface
 	 */
 	public function getCollectionFinder($entityName);
 
 	/**
 	 * Get a Persistor.
 	 *
-	 * @param   string $entityName The name of the entity
+	 * @param   string  $entityName  The name of the entity
 	 *
 	 * @return  PersistorInterface
 	 */

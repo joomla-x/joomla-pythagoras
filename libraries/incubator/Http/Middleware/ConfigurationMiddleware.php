@@ -25,7 +25,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *     $container = $request->getAttribute('container');
  *     $config    = $container->get('config');
  *
- * @package  Joomla/http
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */
@@ -45,6 +45,8 @@ class ConfigurationMiddleware implements MiddlewareInterface
 	 */
 	public function __construct($path, $file = '.env')
 	{
+		define('JPATH_ROOT', $path);
+
 		$this->path = $path;
 		$this->file = $file;
 	}

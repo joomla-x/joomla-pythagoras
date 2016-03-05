@@ -17,6 +17,8 @@ use SplPriorityQueue;
  * A class containing an inner listeners priority queue that can be iterated multiple times.
  * One instance of ListenersPriorityQueue is used per Event in the Dispatcher.
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 class ListenersPriorityQueue implements IteratorAggregate, Countable

@@ -15,11 +15,19 @@ use Joomla\Service\QueryHandler;
 /**
  * Class Repository
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class RepositoryQueryHandler extends QueryHandler
 {
+	/**
+	 * Handle the query.
+	 *
+	 * @param   RepositoryQuery  $query  The query
+	 *
+	 * @return  Repository
+	 */
 	public function handle(RepositoryQuery $query)
 	{
 		$strategies = [

@@ -16,7 +16,8 @@ use Joomla\Content\Type\Paragraph;
 /**
  * Class HtmlRenderer
  *
- * @package  Joomla/renderer
+ * @package  Joomla/Renderer
+ *
  * @since    1.0
  */
 class HtmlRenderer extends Renderer
@@ -48,16 +49,37 @@ class HtmlRenderer extends Renderer
 		return $metaData;
 	}
 
+	/**
+	 * Render a headline.
+	 *
+	 * @param   Headline $headline The headline
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitHeadline(Headline $headline)
 	{
 		return $this->write("<h{$headline->level}>{$headline->text}</h{$headline->level}>\n");
 	}
 
+	/**
+	 * Render an attribution to an author
+	 *
+	 * @param   Attribution $attribution The attribution
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitAttribution(Attribution $attribution)
 	{
 		return $this->write("<p><small>{$attribution->label} {$attribution->name}</small></p>\n");
 	}
 
+	/**
+	 * Render a paragraph
+	 *
+	 * @param   Paragraph $paragraph The paragraph
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitParagraph(Paragraph $paragraph)
 	{
 		$text = $paragraph->text;
@@ -72,14 +94,23 @@ class HtmlRenderer extends Renderer
 		return $this->write("<p>{$text}</p>\n");
 	}
 
+	/**
+	 * Render a compound (block) element
+	 *
+	 * @param   Compound $compound The compound
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitCompound(Compound $compound)
 	{
 		$len = 0;
 		$len += $this->write("<{$compound->type}>\n");
+
 		foreach ($compound->items as $item)
 		{
 			$len += $item->accept($this);
 		}
+
 		$len += $this->write("</{$compound->type}>\n");
 
 		return $len;

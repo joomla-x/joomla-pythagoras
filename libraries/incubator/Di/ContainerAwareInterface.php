@@ -13,7 +13,7 @@ use Interop\Container\Exception\ContainerException;
 /**
  * Defines the interface for a Container Aware class.
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    1.0
  */

@@ -15,6 +15,8 @@ use InvalidArgumentException;
  * Implementation of a DispatcherInterface supporting
  * prioritized listeners.
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 class Dispatcher implements DispatcherInterface

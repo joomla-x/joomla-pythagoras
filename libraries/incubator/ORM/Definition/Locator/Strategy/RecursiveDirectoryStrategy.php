@@ -11,7 +11,8 @@ namespace Joomla\ORM\Definition\Locator\Strategy;
 /**
  * Class RecursiveDirectoryStrategy
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class RecursiveDirectoryStrategy implements StrategyInterface

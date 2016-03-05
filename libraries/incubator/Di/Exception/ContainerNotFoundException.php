@@ -11,7 +11,7 @@ namespace Joomla\Di\Exception;
 /**
  * No container is available.
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    2.0
  */

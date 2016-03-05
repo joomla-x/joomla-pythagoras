@@ -11,7 +11,7 @@ namespace Joomla\Di\Exception;
 /**
  * Attempt to set the value of a protected key, which already is set
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    2.0
  */

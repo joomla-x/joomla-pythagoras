@@ -22,14 +22,11 @@ use Joomla\Renderer\RendererInterface;
  */
 class Compound extends AbstractContentType
 {
-	protected $type;
-	protected $items = [];
-
 	/**
-	 * Constructor.
+	 * Compound constructor.
 	 *
-	 * @param string                 $type
-	 * @param ContentTypeInterface[] $items
+	 * @param   string                  $type   The type represented by this class. In HTML, it is rendered as enclosing tag.
+	 * @param   ContentTypeInterface[]  $items  The items enclosed by this tag
 	 */
 	public function __construct($type, $items)
 	{
@@ -37,11 +34,25 @@ class Compound extends AbstractContentType
 		$this->items = array_filter($items);
 	}
 
+	/**
+	 * Add content items to the compound.
+	 *
+	 * @param   ContentTypeInterface  $content  The content to add
+	 *
+	 * @return  void
+	 */
 	public function add(ContentTypeInterface $content)
 	{
 		$this->items[] = $content;
 	}
 
+	/**
+	 * Render the output
+	 *
+	 * @param   RendererInterface  $renderer  The Renderer
+	 *
+	 * @return  integer  Length of rendered content
+	 */
 	public function accept(RendererInterface $renderer)
 	{
 		return $renderer->visitCompound($this);

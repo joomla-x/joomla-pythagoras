@@ -18,13 +18,12 @@ use Joomla\J3Compatibility\Http\Middleware\RouterMiddleware as LegacyRouterMiddl
 
 require_once 'libraries/vendor/autoload.php';
 
-define('JPATH_ROOT', __DIR__);
-
-$app = new Application(
+$root = __DIR__;
+$app  = new Application(
 	[
 		new ResponseSenderMiddleware,
 		new ContainerSetupMiddleware,
-		new ConfigurationMiddleware(__DIR__),
+		new ConfigurationMiddleware($root),
 		new RendererMiddleware,
 		new RouterMiddleware,
 		new LegacyRouterMiddleware,

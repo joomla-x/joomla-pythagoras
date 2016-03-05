@@ -11,9 +11,11 @@ namespace Joomla\Service;
 
 /**
  * Message interface.
- * 
+ *
  * Adds the notion of a "raised on" time to an immutable value object.
  * Implemented as an abstract class here because traits are PHP 5.4 minimum.
+ *
+ * @package  Joomla/Service
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -21,7 +23,7 @@ abstract class Message extends Value
 {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function __construct()
@@ -36,9 +38,9 @@ abstract class Message extends Value
 
 	/**
 	 * Get the properties of the object.
-	 * 
+	 *
 	 * @return  array of key-value pairs.
-	 * 
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function getProperties()
@@ -53,9 +55,9 @@ abstract class Message extends Value
 
 	/**
 	 * Get the timestamp indicating when this message was raised.
-	 * 
+	 *
 	 * @return  string
-	 * 
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function getRaisedOn()

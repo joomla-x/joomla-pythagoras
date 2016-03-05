@@ -11,7 +11,7 @@ namespace Joomla\Di\Exception;
 /**
  * No entry was found in the container.
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    2.0
  */

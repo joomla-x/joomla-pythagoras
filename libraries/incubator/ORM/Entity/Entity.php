@@ -17,7 +17,8 @@ use Joomla\ORM\Status;
 /**
  * Class Entity
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class Entity implements EntityInterface

@@ -11,7 +11,8 @@ namespace Joomla\ORM\Definition\Locator\Strategy;
 /**
  * Interface StrategyInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface StrategyInterface

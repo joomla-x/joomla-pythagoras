@@ -13,7 +13,7 @@ use Joomla\Di\Exception\ContainerNotFoundException;
 /**
  * Defines the trait for a Container Aware Class.
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    2.0
  */

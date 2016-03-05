@@ -13,8 +13,10 @@ use League\Tactician\Plugins\LockingMiddleware;
 
 /**
  * Conditional locking middleware.
- * 
+ *
  * Provides locking for Commands only; Queries are ignored.
+ *
+ * @package  Joomla/Service
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -22,12 +24,12 @@ class CommandLockingMiddleware extends LockingMiddleware
 {
 	/**
 	 * Execute the given command.
-	 * 
+	 *
 	 * @param   object    $message  The Command or Query to execute.
 	 * @param   callable  $next     The next middleware object to be called.
-	 * 
+	 *
 	 * @return  mixed|void
-	 * 
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function execute($message, callable $next)

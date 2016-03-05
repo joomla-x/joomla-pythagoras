@@ -17,7 +17,8 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Renderer Interface
  *
- * @package  Joomla/renderer
+ * @package  Joomla/Renderer
+ *
  * @since    1.0
  */
 interface RendererInterface extends StreamInterface
@@ -30,8 +31,39 @@ interface RendererInterface extends StreamInterface
 	 */
 	public function registerContentType($type, callable $handler);
 
+	/**
+	 * Render a headline.
+	 *
+	 * @param   Headline  $headline  The headline
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitHeadline(Headline $headline);
+
+	/**
+	 * Render a compound (block) element
+	 *
+	 * @param   Compound  $compound  The compound
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitCompound(Compound $compound);
+
+	/**
+	 * Render an attribution to an author
+	 *
+	 * @param   Attribution  $attribution  The attribution
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitAttribution(Attribution $attribution);
+
+	/**
+	 * Render a paragraph
+	 *
+	 * @param   Paragraph  $paragraph  The paragraph
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
 	public function visitParagraph(Paragraph $paragraph);
 }

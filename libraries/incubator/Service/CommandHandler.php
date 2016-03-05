@@ -11,25 +11,27 @@ namespace Joomla\Service;
 
 /**
  * Abstract base class for command handlers.
- * 
+ *
  * Supports handling of domain events.  This would be better implemented
  * as a trait, but traits are not implemented until PHP 5.4.0.
- * 
+ *
+ * @package  Joomla/Service
+ *
  * @since  __DEPLOY_VERSION__
  */
 abstract class CommandHandler
 {
-	// Command bus.
+	/** @var CommandBus The command bus */
 	private $commandBus = null;
 
-	// Domain events.
+	/** @var array The domain events */
 	private $pendingEvents = array();
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param   CommandBus  $commandBus  A command bus.
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function __construct(CommandBus $commandBus)
@@ -39,7 +41,7 @@ abstract class CommandHandler
 
 	/**
 	 * Get the command bus.
-	 * 
+	 *
 	 * @return   CommandBus
 	 */
 	public function getCommandBus()
@@ -49,11 +51,11 @@ abstract class CommandHandler
 
 	/**
 	 * Raise a domain event.
-	 * 
+	 *
 	 * @param   DomainEvent  $event  Domain event object.
-	 * 
+	 *
 	 * @return  void
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function raiseEvent(DomainEvent $event)
@@ -63,13 +65,13 @@ abstract class CommandHandler
 
 	/**
 	 * Release all pending domain events.
-	 * 
+	 *
 	 * As a convenience, a new event can also be raised at the same time.
-	 * 
+	 *
 	 * @param   DomainEvent  $event  An event to be raised.
-	 * 
+	 *
 	 * @return  array of DomainEvent objects.
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function releaseEvents($event = null)

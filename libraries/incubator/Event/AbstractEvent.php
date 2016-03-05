@@ -15,6 +15,8 @@ use Serializable;
 /**
  * Implementation of EventInterface.
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 abstract class AbstractEvent implements EventInterface, ArrayAccess, Serializable, Countable

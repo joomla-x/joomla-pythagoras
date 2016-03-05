@@ -11,7 +11,7 @@ namespace Joomla\Di;
 /**
  * Defines the representation of a resource.
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    2.0
  */

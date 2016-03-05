@@ -14,7 +14,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @package  Joomla/renderer
+ * Determines the command to be executed.
+ *
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */
@@ -56,12 +58,11 @@ class RouterMiddleware implements MiddlewareInterface
 
 			$commandClass = "\\Joomla\\Component\\{$component}\\Command\\{$action}Command";
 
-			#if (class_exists($commandClass))
+			if (class_exists($commandClass))
 			{
 				$command = new $commandClass($entity, $id, $response->getBody());
 				$request = $request->withAttribute('command', $command);
 			}
-
 
 			// @todo Emit afterRouting event
 		}

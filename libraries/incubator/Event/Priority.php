@@ -12,6 +12,8 @@ namespace Joomla\Event;
  * An enumeration of priorities for event listeners,
  * that you are encouraged to use when adding them in the Dispatcher.
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 final class Priority

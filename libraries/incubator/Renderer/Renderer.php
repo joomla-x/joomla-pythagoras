@@ -14,7 +14,8 @@ use Joomla\Content\Type\Compound;
 /**
  * Class Renderer
  *
- * @package  Joomla/renderer
+ * @package  Joomla/Renderer
+ *
  * @since    1.0
  */
 abstract class Renderer implements RendererInterface

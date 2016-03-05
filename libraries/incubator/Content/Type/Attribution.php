@@ -21,15 +21,25 @@ use Joomla\Renderer\RendererInterface;
  */
 class Attribution extends AbstractContentType
 {
-	protected $label;
-	protected $name;
-
+	/**
+	 * Attribution constructor.
+	 *
+	 * @param   string  $label  The text before the author's name
+	 * @param   string  $name   The author's name
+	 */
 	public function __construct($label, $name)
 	{
 		$this->label = $label;
 		$this->name  = $name;
 	}
 
+	/**
+	 * Render the output
+	 *
+	 * @param   RendererInterface  $renderer  The Renderer
+	 *
+	 * @return  integer  Length of rendered content
+	 */
 	public function accept(RendererInterface $renderer)
 	{
 		return $renderer->visitAttribution($this);

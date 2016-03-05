@@ -14,7 +14,8 @@ use Joomla\Renderer\Exception\NotFoundException;
 /**
  * Class Factory
  *
- * @package  Joomla/renderer
+ * @package  Joomla/Renderer
+ *
  * @since    1.0
  */
 class Factory

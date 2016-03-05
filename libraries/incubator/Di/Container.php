@@ -16,7 +16,7 @@ use Joomla\Di\Exception\ProtectedKeyException;
 /**
  * The Container class.
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    1.0
  */

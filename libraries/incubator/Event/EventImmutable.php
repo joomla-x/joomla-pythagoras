@@ -20,6 +20,8 @@ use BadMethodCallException;
  * You may want to use this event when you want to ensure that
  * the listeners won't manipulate it.
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 final class EventImmutable extends AbstractEvent

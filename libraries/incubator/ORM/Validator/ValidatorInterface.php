@@ -13,7 +13,8 @@ use Joomla\ORM\Entity\EntityInterface;
 /**
  * Interface ValidatorInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface ValidatorInterface

@@ -24,14 +24,25 @@ class Paragraph extends AbstractContentType
 	const PLAIN = 0;
 	const EMPHASISED = 1;
 
-	protected $text;
-
+	/**
+	 * Paragraph constructor.
+	 *
+	 * @param   string   $text     The copy of the paragraph
+	 * @param   integer  $variant  Emphasis variant, see class constants
+	 */
 	public function __construct($text, $variant = self::PLAIN)
 	{
-		$this->text = $text;
+		$this->text    = $text;
 		$this->variant = $variant;
 	}
 
+	/**
+	 * Render the output
+	 *
+	 * @param   RendererInterface  $renderer  The Renderer
+	 *
+	 * @return  integer  Length of rendered content
+	 */
 	public function accept(RendererInterface $renderer)
 	{
 		return $renderer->visitParagraph($this);

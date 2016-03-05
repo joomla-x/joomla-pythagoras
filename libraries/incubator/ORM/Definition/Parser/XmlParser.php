@@ -14,7 +14,8 @@ use Joomla\ORM\Exception\InvalidElementException;
 /**
  * Class XmlParser
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class XmlParser extends \XMLReader

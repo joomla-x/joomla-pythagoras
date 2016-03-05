@@ -13,7 +13,8 @@ use Joomla\ORM\Entity\EntityInterface;
 /**
  * Interface PersistorInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface PersistorInterface
@@ -21,7 +22,7 @@ interface PersistorInterface
 	/**
 	 * Store an entity.
 	 *
-	 * @param   EntityInterface $entity The entity to store
+	 * @param   EntityInterface  $entity  The entity to store
 	 *
 	 * @return  void
 	 */
@@ -30,7 +31,7 @@ interface PersistorInterface
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   EntityInterface $entity The entity to sanitise
+	 * @param   EntityInterface  $entity  The entity to sanitise
 	 *
 	 * @return  void
 	 */

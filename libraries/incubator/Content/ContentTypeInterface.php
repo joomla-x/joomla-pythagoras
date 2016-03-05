@@ -19,9 +19,11 @@ use Joomla\Renderer\RendererInterface;
 interface ContentTypeInterface
 {
 	/**
-	 * @param RendererInterface $renderer
+	 * Render the output
 	 *
-	 * @return integer Length of rendered content
+	 * @param   RendererInterface $renderer The Renderer
+	 *
+	 * @return  integer  Length of rendered content
 	 */
 	public function accept(RendererInterface $renderer);
 }

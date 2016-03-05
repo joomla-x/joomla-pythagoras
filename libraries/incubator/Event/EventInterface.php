@@ -12,6 +12,8 @@ namespace Joomla\Event;
  * Interface for events.
  * An event has a name and its propagation can be stopped (if the implementation supports it).
  *
+ * @package  Joomla/Event
+ *
  * @since  1.0
  */
 interface EventInterface

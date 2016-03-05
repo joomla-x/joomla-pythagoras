@@ -45,7 +45,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * }
  * ```
  *
- * @package  Joomla/http
+ * @package  Joomla/HTTP
  * @see      [Interop/Container](https://github.com/container-interop/container-interop)
  *
  * @since    1.0

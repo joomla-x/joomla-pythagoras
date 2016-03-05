@@ -13,7 +13,7 @@ use Interop\Container\Exception\ContainerException;
 /**
  * Exception class for handling errors in resolving a dependency
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    1.0
  */

@@ -21,15 +21,25 @@ use Joomla\Renderer\RendererInterface;
  */
 class Headline extends AbstractContentType
 {
-	protected $text;
-	protected $level = 1;
-
+	/**
+	 * Headline constructor.
+	 *
+	 * @param   string   $text   The copy of the headline
+	 * @param   integer  $level  The Level of the headline
+	 */
 	public function __construct($text, $level = 1)
 	{
-		$this->text = $text;
+		$this->text  = $text;
 		$this->level = $level;
 	}
 
+	/**
+	 * Render the output
+	 *
+	 * @param   RendererInterface  $renderer  The Renderer
+	 *
+	 * @return  integer  Length of rendered content
+	 */
 	public function accept(RendererInterface $renderer)
 	{
 		return $renderer->visitHeadline($this);

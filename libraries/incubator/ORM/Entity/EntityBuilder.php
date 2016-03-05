@@ -26,7 +26,8 @@ use Joomla\ORM\Repository\Repository;
 /**
  * Class EntityBuilder
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class EntityBuilder

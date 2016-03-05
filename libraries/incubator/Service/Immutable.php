@@ -11,22 +11,24 @@ namespace Joomla\Service;
 
 /**
  * Immutable trait.
- * 
+ *
  * Implemented as an abstract class here because traits are PHP 5.4 minimum.
+ *
+ * @package  Joomla/Service
  *
  * @since  __DEPLOY_VERSION__
  */
 abstract class Immutable
 {
-	// Flag indicating object construction completed.
+	/** @var bool Flag indicating object construction completed */
 	private $constructed = false;
 
-	// Array of command arguments.
+	/** @var array Array of command arguments */
 	private $args = array();
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function __construct()
@@ -46,15 +48,15 @@ abstract class Immutable
 
 	/**
 	 * Magic call method.
-	 * 
+	 *
 	 * Method names starting with "get" are treated as property getters.
 	 * All other (non-existant) methods will throw an exception.
-	 * 
+	 *
 	 * @param   string  $name  Name of the method being called.
 	 * @param   array   $args  Array of arguments passed to the method.
-	 * 
+	 *
 	 * @return  mixed
-	 * 
+	 *
 	 * @throws  \InvalidArgumentException
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -80,14 +82,14 @@ abstract class Immutable
 
 	/**
 	 * Magic getter.
-	 * 
+	 *
 	 * If the property exists, it will return its value;
 	 * otherwise it will throw an exception.
-	 * 
+	 *
 	 * @param   string  $key  Property name (case-insensitive).
-	 * 
+	 *
 	 * @return  mixed
-	 * 
+	 *
 	 * @throws  \InvalidArgumentException
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -103,15 +105,15 @@ abstract class Immutable
 
 	/**
 	 * Magic setter.
-	 * 
+	 *
 	 * Since the object is immutable, this always throws an exception
 	 * once object creation has been completed.
-	 * 
+	 *
 	 * @param   string  $key    Property name (case-insensitive).
 	 * @param   mixed   $value  Property value.
-	 * 
+	 *
 	 * @return  void
-	 * 
+	 *
 	 * @throws  \InvalidArgumentException
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -128,9 +130,9 @@ abstract class Immutable
 
 	/**
 	 * Get the properties of the object.
-	 * 
+	 *
 	 * @return  array of key-value pairs.
-	 * 
+	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function getProperties()

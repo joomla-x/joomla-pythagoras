@@ -11,7 +11,7 @@ namespace Joomla\Di;
 /**
  * Defines the interface for a Service Provider.
  *
- * @package  Joomla/di
+ * @package  Joomla/DI
  *
  * @since    1.0
  */

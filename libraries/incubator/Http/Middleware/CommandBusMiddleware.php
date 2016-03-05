@@ -18,7 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Class CommandBusMiddleware
  *
- * @package  Joomla/command
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */

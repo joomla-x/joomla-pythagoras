@@ -11,7 +11,7 @@ namespace Joomla\Http;
 /**
  * Class ServerRequestFactory
  *
- * @package  Joomla/http
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */

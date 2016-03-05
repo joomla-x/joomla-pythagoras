@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * The renderer is chosen to be suitable for the current request.
  * If the request does not specify a preferred mimetype, `text/plain` is rendered.
  *
- * @package  Joomla/renderer
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */

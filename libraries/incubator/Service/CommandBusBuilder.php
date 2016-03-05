@@ -35,6 +35,8 @@ use League\Tactician\Plugins\LockingMiddleware;
  *
  * This class also helps isolate our dependency on a particular command bus implementation.
  *
+ * @package  Joomla/Service
+ *
  * @since  __DEPLOY_VERSION__
  */
 class CommandBusBuilder

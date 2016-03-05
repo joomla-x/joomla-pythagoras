@@ -15,7 +15,8 @@ use Joomla\ORM\Storage\StorageProviderInterface;
 /**
  * Class EntityReflector
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class EntityReflector

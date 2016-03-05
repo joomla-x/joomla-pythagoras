@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * @package  Joomla.J3Compatibility
+ * @package  Joomla/J3Compatibility
  *
  * @since    1.0
  */
@@ -37,7 +37,6 @@ class RouterMiddleware implements MiddlewareInterface
 
 		if (!isset($attributes['command']) && $this->isLegacy())
 		{
-
 			// @todo Emit afterRouting event
 		}
 
@@ -45,7 +44,9 @@ class RouterMiddleware implements MiddlewareInterface
 	}
 
 	/**
-	 * @return bool
+	 * Check if the requested option belongs to a legacy component
+	 *
+	 * @return boolean
 	 */
 	private function isLegacy()
 	{

@@ -18,7 +18,8 @@ use Joomla\ORM\Validator\ValidatorInterface;
 /**
  * Interface RepositoryInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface RepositoryInterface

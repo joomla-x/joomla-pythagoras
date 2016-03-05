@@ -13,38 +13,38 @@ use League\Tactician\Middleware;
 
 /**
  * Tactician middleware for dispatching domain events.
- * 
+ *
+ * @package  Joomla/Service
+ *
  * @since  __DEPLOY_VERSION__
  */
 class DomainEventMiddleware implements Middleware
 {
-	/**
-	 * Dispatcher.
-	 */
+	/** @var object The dispatcher */
 	private $dispatcher = null;
 
 	/**
 	 * Command bus callable.
-	 * 
+	 *
 	 * This is needed because the command bus has not been built
 	 * at the time this middleware object is constructed.
+	 *
+	 * @var callable
 	 */
 	private $commandBusCallable = null;
 
-	/**
-	 * Command bus
-	 */
+	/** @var CommandBus */
 	private $commandBus = null;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * Note that we take a closure that will return the command bus because at
 	 * the time this object is constructed the command bus has not be built.
-	 * 
+	 *
 	 * @param   object    $dispatcher          An event dispatcher.
 	 * @param   callable  $commandBusCallable  A closure that will return the command bus.
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function __construct($dispatcher, callable $commandBusCallable)
@@ -55,7 +55,7 @@ class DomainEventMiddleware implements Middleware
 
 	/**
 	 * Decorator.
-	 * 
+	 *
 	 * Calls the inner handler then dispatches any domain events raised.
 	 *
 	 * Suppose there is a DomainEvent with the class name 'PrefixEventSuffix',
@@ -66,14 +66,14 @@ class DomainEventMiddleware implements Middleware
 	 *          $dispatcher->register('onPrefixEventSuffix', array('MyClass', 'MyMethod'));
 	 *   3. A preloaded or autoloadable class called 'PrefixEventListenerSuffix' with a method called 'onPrefixEventSuffix'.
 	 *   4. An installed and enabled Joomla plugin in the 'domainevent' group, with a method called 'onPrefixEventSuffix'.
-	 * 
+	 *
 	 * In all cases the method called will be passed the event object as its only argument.
-	 * 
+	 *
 	 * @param   object    $message  A message object (Command or Query).
 	 * @param   callable  $next     Inner middleware object being decorated.
-	 * 
+	 *
 	 * @return  mixed
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function execute($message, callable $next)
@@ -83,17 +83,21 @@ class DomainEventMiddleware implements Middleware
 		// Pass the message to the next inner layer of middleware.
 		$return = $next($message);
 
-		// Only publish domain events after completion of a Command.
-		// This is so that queries may be executed during Command execution
-		// without inadvertently publishing raised Domain Events before the
-		// Command has finished executing.
+		/*
+		 * Only publish domain events after completion of a Command.
+		 * This is so that queries may be executed during Command execution
+		 * without inadvertently publishing raised Domain Events before the
+		 * Command has finished executing.
+		 */
 		if (!($message instanceof Command))
 		{
 			return $return;
 		}
 
-		// Normally, we expect a possibly empty array of events,
-		// but if we don't get an array, then bubble an empty array up.
+		/*
+		 * Normally, we expect a possibly empty array of events,
+		 * but if we don't get an array, then bubble an empty array up.
+		 */
 		if (!is_array($return))
 		{
 			return $accumulatedEvents;
@@ -118,14 +122,14 @@ class DomainEventMiddleware implements Middleware
 
 	/**
 	 * Inner event loop.
-	 * 
+	 *
 	 * Each event listener might raise further events which need
 	 * to be passed back into the event loop for publishing.
-	 * 
+	 *
 	 * @param   array  $events  Array of domain event objects.
-	 * 
+	 *
 	 * @return  array of newly-raised domain event objects.
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	private function innerEventLoop($events)
@@ -168,15 +172,15 @@ class DomainEventMiddleware implements Middleware
 
 	/**
 	 * Register a domain event listener by convention.
-	 * 
+	 *
 	 * Replaces "Event" by "EventListener" in the domain event class name
 	 * and registers that class as a listener.
-	 * 
+	 *
 	 * @param   string  $eventClassName  Name of the domain event class.
 	 * @param   string  $eventName       Name of the event trigger.
-	 * 
+	 *
 	 * @return  void
-	 * 
+	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	private function registerByConvention($eventClassName, $eventName)

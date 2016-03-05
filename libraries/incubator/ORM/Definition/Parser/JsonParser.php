@@ -13,7 +13,8 @@ use Joomla\ORM\Definition\Locator\LocatorInterface;
 /**
  * Class JsonParser
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class JsonParser
