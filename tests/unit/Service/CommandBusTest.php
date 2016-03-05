@@ -1,6 +1,7 @@
 <?php
 namespace Joomla\Tests\Unit\Service;
 
+use Joomla\Service\CommandBus;
 use Joomla\Service\CommandBusBuilder;
 use Joomla\Tests\Unit\Service\Stubs\MockEventDispatcher;
 use Joomla\Tests\Unit\Service\Stubs\SimpleCommand;
@@ -8,6 +9,7 @@ use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
 
 class CommandBusTest extends \PHPUnit_Framework_TestCase
 {
+	/** @var  CommandBus */
 	private $commandBus;
 
 	public function setUp()

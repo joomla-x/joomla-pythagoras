@@ -49,12 +49,19 @@ class RouterMiddleware implements MiddlewareInterface
 					break;
 			}
 
-			$command = [
-				'component' => $params->get('option', 'error'),
-				'command'   => $params->get('task', 'display'),
-				'id'        => $params->get('id', null),
-			];
-			$request = $request->withAttribute('command', $command);
+			$component = ucfirst(strtolower($params->get('option', 'content')));
+			$action  = ucfirst(strtolower($params->get('task', 'display')));
+			$entity  = $params->get('entity', 'error');
+			$id      = $params->get('id', null);
+
+			$commandClass = "\\Joomla\\Component\\{$component}\\Command\\{$action}Command";
+
+			#if (class_exists($commandClass))
+			{
+				$command = new $commandClass($entity, $id, $response->getBody());
+				$request = $request->withAttribute('command', $command);
+			}
+
 
 			// @todo Emit afterRouting event
 		}
