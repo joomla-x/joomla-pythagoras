@@ -370,32 +370,32 @@ class EntityBuilder
 			{
 				case 'default':
 					$handler = '\Joomla\ORM\Storage\DefaultProvider';
-					$param   = 'table';
-					break;
-
-				case 'csv':
-					$handler = '\Joomla\ORM\Storage\CsvProvider';
-					$param   = 'file';
+					$param = $info[0]->table;
 					break;
 
 				case 'api':
 					$handler = $info[0]->handler;
-					$param   = 'base-url';
+					$param = $info[0]->{'base-url'};
 					break;
 
 				case 'special':
-					$handler = '\Joomla\ORM\Storage\DsnProvider';
-					$param   = 'dsn';
+					$parts = explode('://', $info[0]->dsn);
+					switch ($parts[0])
+					{
+						case 'csv':
+							$handler = '\Joomla\ORM\Storage\CsvProvider';
+							$param   = $parts[1];
+							break;
+						default:
+							$handler = '\Joomla\ORM\Storage\DsnProvider';
+							$param   = $info[0]->dsn;
+							break;
+					}
 					break;
 
 				default:
 					throw new \Exception("Unknown storage type ''");
 					break;
-			}
-
-			if (!is_null($param) && isset($info[0]->$param))
-			{
-				$param = $info[0]->$param;
 			}
 
 			$this->reflector->setStorageProvider(new $handler($param));

@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-	"/home/nibra/Development/nibralab/joomla-architecture/code/Joomla/ORM/Definition/entity.dtd">
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
 <entity name="article">
 
-	<storage>
-		<csv file="components/content/data/articles.csv"/>
-	</storage>
+    <storage>
+        <special dsn="csv://components/content/data/articles.csv"/>
+    </storage>
 
-	<fields>
-		<field name="id"
-			   type="id"
-			   label="JGLOBAL_FIELD_ID_LABEL"
-			   description="JGLOBAL_FIELD_ID_DESC"
-			   default="null"
-		>
-			<validation rule="positive"/>
-			<validation rule="integer"/>
-		</field>
+    <fields>
+        <field name="id"
+               type="id"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               default="null"
+        >
+            <validation rule="positive"/>
+            <validation rule="integer"/>
+        </field>
 
-		<field name="title"
-			   type="title"
-			   label="JGLOBAL_TITLE"
-		>
-			<validation rule="maxlen" value="64"/>
-		</field>
+        <field name="title"
+               type="title"
+               label="JGLOBAL_TITLE"
+        >
+            <validation rule="maxlen" value="64"/>
+        </field>
 
-		<field name="teaser"
-			   type="richtext"
-			   label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
-			   description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
-		/>
+        <field name="teaser"
+               type="richtext"
+               label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
+               description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
+        />
 
-		<field name="body"
-			   type="richtext"
-			   label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
-			   description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
-		/>
+        <field name="body"
+               type="richtext"
+               label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
+               description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
+        />
 
-		<field name="author"
-			   type="text"
-			   label="COM_CONTENT_FIELD_CREATED_BY_ALIAS_LABEL"
-			   description="COM_CONTENT_FIELD_CREATED_BY_ALIAS_DESC"
-			   default=""
-		/>
+        <field name="author"
+               type="text"
+               label="COM_CONTENT_FIELD_CREATED_BY_ALIAS_LABEL"
+               description="COM_CONTENT_FIELD_CREATED_BY_ALIAS_DESC"
+               default=""
+        />
 
-		<field name="license"
-			   type="text"
-			   label="JFIELD_META_RIGHTS_LABEL"
-			   description="JFIELD_META_RIGHTS_DESC"
-		>
-			<validation rule="regex" value="copy(right|left)"/>
-		</field>
+        <field name="license"
+               type="text"
+               label="JFIELD_META_RIGHTS_LABEL"
+               description="JFIELD_META_RIGHTS_DESC"
+        >
+            <validation rule="regex" value="copy(right|left)"/>
+        </field>
 
-	</fields>
+    </fields>
 
-	<relations>
-		<belongsTo name="parent_id"
-				   entity="article"
-				   label="JFIELD_PARENT_LABEL"
-				   description="JFIELD_PARENT_DESC"
-		/>
-		<hasMany name="children"
-				 entity="article"
-				 reference="parent_id"
-		/>
-	</relations>
+    <relations>
+        <belongsTo name="parent_id"
+                   entity="article"
+                   label="JFIELD_PARENT_LABEL"
+                   description="JFIELD_PARENT_DESC"
+        />
+        <hasMany name="children"
+                 entity="article"
+                 reference="parent_id"
+        />
+    </relations>
 
 </entity>
