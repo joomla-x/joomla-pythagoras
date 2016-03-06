@@ -23,21 +23,21 @@ class Factory
 	/** @var array Mapping of MIME types to matching renderers */
 	protected $mediaTypeMap = [
 		// CLI formats
-		'text/plain'                        => 'PlainRenderer',
-		'text/ansi'                         => 'AnsiRenderer',
+		'text/plain'                        => 'Joomla\Renderer\PlainRenderer',
+		'text/ansi'                         => 'Joomla\Renderer\AnsiRenderer',
 
 		// REST formats
-		'application/xml'                   => 'XmlRenderer',
-		'application/json'                  => 'JsonRenderer',
+		'application/xml'                   => 'Joomla\Renderer\XmlRenderer',
+		'application/json'                  => 'Joomla\Renderer\JsonRenderer',
 
 		// Web/Office formats
-		'text/html'                         => 'HtmlRenderer',
-		'application/pdf'                   => 'PdfRenderer',
+		'text/html'                         => 'Joomla\Renderer\HtmlRenderer',
+		'application/pdf'                   => 'Joomla\Renderer\PdfRenderer',
 
 		// The DocBook format seems not to be registered. @link http://wiki.docbook.org/DocBookMimeType
-		'application/docbook+xml'           => 'DocbookRenderer',
-		'application/vnd.oasis.docbook+xml' => 'DocbookRenderer',
-		'application/x-docbook'             => 'DocbookRenderer',
+		'application/docbook+xml'           => 'Joomla\Renderer\DocbookRenderer',
+		'application/vnd.oasis.docbook+xml' => 'Joomla\Renderer\DocbookRenderer',
+		'application/x-docbook'             => 'Joomla\Renderer\DocbookRenderer',
 	];
 
 	/**
@@ -56,7 +56,7 @@ class Factory
 			throw(new NotFoundException("No matching renderer found for\n\t$acceptHeader"));
 		}
 
-		$classname = __NAMESPACE__ . '\\' . $this->mediaTypeMap[$match['token']];
+		$classname = $this->mediaTypeMap[$match['token']];
 
 		return new $classname($match);
 	}
