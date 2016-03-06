@@ -45,8 +45,6 @@ class ConfigurationMiddleware implements MiddlewareInterface
 	 */
 	public function __construct($path, $file = '.env')
 	{
-		define('JPATH_ROOT', $path);
-
 		$this->path = $path;
 		$this->file = $file;
 	}
@@ -69,6 +67,11 @@ class ConfigurationMiddleware implements MiddlewareInterface
 
 		$container = $request->getAttribute('container');
 		$container->set('config', new Registry($_ENV), true);
+
+		if (!defined('JPATH_ROOT'))
+		{
+			define('JPATH_ROOT', $container->get('config')->get('JPATH_ROOT', $this->path));
+		}
 
 		return $next($request, $response);
 	}
