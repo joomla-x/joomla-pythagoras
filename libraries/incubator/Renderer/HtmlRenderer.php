@@ -8,6 +8,7 @@
 
 namespace Joomla\Renderer;
 
+use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
@@ -24,6 +25,8 @@ class HtmlRenderer extends Renderer
 {
 	/** @var string The MIME type */
 	protected $mediatype = 'text/html';
+
+	protected $layoutDirectory = 'html';
 
 	/** @var  ScriptStrategyInterface */
 	private $clientScript;
@@ -58,7 +61,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitHeadline(Headline $headline)
 	{
-		return $this->write("<h{$headline->level}>{$headline->text}</h{$headline->level}>\n");
+		return $this->applyLayout('headline.php', $headline);
 	}
 
 	/**
@@ -70,7 +73,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitAttribution(Attribution $attribution)
 	{
-		return $this->write("<p><small>{$attribution->label} {$attribution->name}</small></p>\n");
+		return $this->applyLayout('attribution.php', $attribution);
 	}
 
 	/**
@@ -82,16 +85,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitParagraph(Paragraph $paragraph)
 	{
-		$text = $paragraph->text;
-
-		switch ($paragraph->variant)
-		{
-			case Paragraph::EMPHASISED:
-				$text = "<em>{$text}</em>";
-				break;
-		}
-
-		return $this->write("<p>{$text}</p>\n");
+		return $this->applyLayout('paragraph.php', $paragraph);
 	}
 
 	/**
@@ -114,5 +108,21 @@ class HtmlRenderer extends Renderer
 		$len += $this->write("</{$compound->type}>\n");
 
 		return $len;
+	}
+
+	/**
+	 * Apply a layout
+	 *
+	 * @param   string                $filename  The filename of the layout file
+	 * @param   ContentTypeInterface  $content   The content
+	 *
+	 * @return int
+	 */
+	private function applyLayout($filename, $content)
+	{
+		ob_start();
+		include JPATH_ROOT . '/layouts/' . $this->layoutDirectory . '/' . $filename;
+
+		return $this->write(ob_get_clean());
 	}
 }
