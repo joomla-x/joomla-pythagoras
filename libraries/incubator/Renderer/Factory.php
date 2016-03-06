@@ -21,24 +21,17 @@ use Joomla\Renderer\Exception\NotFoundException;
 class Factory
 {
 	/** @var array Mapping of MIME types to matching renderers */
-	protected $mediaTypeMap = [
-		// CLI formats
-		'text/plain'                        => 'Joomla\Renderer\PlainRenderer',
-		'text/ansi'                         => 'Joomla\Renderer\AnsiRenderer',
+	protected $mediaTypeMap;
 
-		// REST formats
-		'application/xml'                   => 'Joomla\Renderer\XmlRenderer',
-		'application/json'                  => 'Joomla\Renderer\JsonRenderer',
-
-		// Web/Office formats
-		'text/html'                         => 'Joomla\Renderer\HtmlRenderer',
-		'application/pdf'                   => 'Joomla\Renderer\PdfRenderer',
-
-		// The DocBook format seems not to be registered. @link http://wiki.docbook.org/DocBookMimeType
-		'application/docbook+xml'           => 'Joomla\Renderer\DocbookRenderer',
-		'application/vnd.oasis.docbook+xml' => 'Joomla\Renderer\DocbookRenderer',
-		'application/x-docbook'             => 'Joomla\Renderer\DocbookRenderer',
-	];
+	/**
+	 * Factory constructor.
+	 *
+	 * @param   array  $mapping  An associative array mapping mime types to renderer classes
+	 */
+	public function __construct(array $mapping)
+	{
+		$this->mediaTypeMap = $mapping;
+	}
 
 	/**
 	 * @param   string  $acceptHeader  The 'Accept' header

@@ -45,7 +45,9 @@ class RendererMiddleware implements MiddlewareInterface
 			$acceptHeader = 'text/plain';
 		}
 
-		$renderer = (new RendererFactory)->create($acceptHeader);
+		$mapping = parse_ini_file(JPATH_ROOT . '/config/renderer.ini');
+
+		$renderer = (new RendererFactory($mapping))->create($acceptHeader);
 
 		$response = $next($request, $response->withBody($renderer));
 
