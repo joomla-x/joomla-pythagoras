@@ -6,14 +6,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Di\Exception;
+namespace Joomla\DI\Exception;
 
 /**
  * Attempt to set the value of a protected key, which already is set
  *
- * @package  Joomla/DI
- *
- * @since    2.0
+ * @since  __DEPLOY_VERSION__
  */
 class ProtectedKeyException extends \OutOfBoundsException implements \Interop\Container\Exception\ContainerException
 {

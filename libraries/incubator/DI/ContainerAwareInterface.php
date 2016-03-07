@@ -2,20 +2,18 @@
 /**
  * Part of the Joomla Framework DI Package
  *
- * @copyright  Copyright (C) 2013 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2013 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Di;
+namespace Joomla\DI;
 
 use Interop\Container\Exception\ContainerException;
 
 /**
  * Defines the interface for a Container Aware class.
  *
- * @package  Joomla/DI
- *
- * @since    1.0
+ * @since  1.0
  */
 interface ContainerAwareInterface
 {
@@ -25,7 +23,6 @@ interface ContainerAwareInterface
 	 * @return  Container
 	 *
 	 * @since   1.0
-	 *
 	 * @throws  ContainerException May be thrown if the container has not been set.
 	 */
 	public function getContainer();
@@ -33,7 +30,7 @@ interface ContainerAwareInterface
 	/**
 	 * Set the DI container.
 	 *
-	 * @param   Container $container The DI container.
+	 * @param   Container  $container  The DI container.
 	 *
 	 * @return  mixed
 	 *

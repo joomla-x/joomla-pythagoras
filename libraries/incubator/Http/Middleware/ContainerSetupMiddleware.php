@@ -8,7 +8,7 @@
 
 namespace Joomla\Http\Middleware;
 
-use Joomla\Di\Container;
+use Joomla\DI\Container;
 use Joomla\Http\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

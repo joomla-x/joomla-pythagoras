@@ -6,15 +6,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Di\Exception;
+namespace Joomla\DI\Exception;
 
 /**
- * No container is available.
+ * No entry was found in the container.
  *
- * @package  Joomla/DI
- *
- * @since    2.0
+ * @since  __DEPLOY_VERSION__
  */
-class ContainerNotFoundException extends \RuntimeException implements \Interop\Container\Exception\ContainerException
+class KeyNotFoundException extends \InvalidArgumentException implements \Interop\Container\Exception\NotFoundException
 {
 }
