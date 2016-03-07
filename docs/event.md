@@ -1,4 +1,4 @@
-# The Event Package [![Build Status](https://travis-ci.org/joomla-framework/event.png?branch=master)](https://travis-ci.org/joomla-framework/event)
+# The Joomla/Event Package
 
 The event package provides foundations to build event systems and an implementation supporting prioritized listeners.
 
@@ -151,17 +151,6 @@ $dispatcher->addListener(
 );
 ```
 As you noticed, it is possible to specify a listener's priority for a given Event. It is also possible to do so with "object" Listeners.
-
-### Filtering Listeners
-
-DEPRECATED
-
-Listeners class can become quite complex, and may support public methods other than those required for event handling. The `setListenerFilter` method can be used to set a regular expression that is used to check the method names of objects being added as listeners.
-
-```php
-// Ensure the dispatcher only registers "on*" methods.
-$dispatcher->setListenerFilter('^on');
-```
 
 ### Registration with Priority
 
