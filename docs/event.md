@@ -36,9 +36,9 @@ $event->stop();
 
 An event listener can listen to one or more Events.
 
-You can create two types of listeners : using a class or a closure (anonymous function).
+You can create two types of listeners: using a class or a closure (anonymous function).
 
-**The functions MUST take an EventInterface (or children) as unique parameter.**
+> The functions MUST take an EventInterface (or children) as unique parameter.
 
 ### Classes
 
@@ -54,21 +54,21 @@ use Joomla\Event\EventInterface;
  */
 class ContentListener
 {
-	/**
-	 * Listens to the onBeforeContentSave event.
-	 */
-	public function onBeforeContentSave(EventInterface $event)
-	{
-		// Do something with the event, you might want to inspect its arguments.
-	}
+    /**
+     * Listens to the onBeforeContentSave event.
+     */
+    public function onBeforeContentSave(EventInterface $event)
+    {
+        // Do something with the event, you might want to inspect its arguments.
+    }
 
-	/**
-	 * Listens to the onAfterContentSave event.
-	 */
-	public function onAfterContentSave(EventInterface $event)
-	{
+    /**
+     * Listens to the onAfterContentSave event.
+     */
+    public function onAfterContentSave(EventInterface $event)
+    {
 
-	}
+    }
 }
 ```
 
@@ -82,12 +82,13 @@ namespace MyApp;
 use Joomla\Event\EventInterface;
 
 $listener = function (EventInterface $event) {
-	// Do something with the event, you might want to inspect its arguments.
+    // Do something with the event, you might want to inspect its arguments.
 };
 ```
 ## The Dispatcher
 
-The Dispatcher is the central point of the Event system, it manages the registration of Events, listeners and the triggering of Events.
+The Dispatcher is the central point of the Event system.
+It manages the registration of Events, listeners and the triggering of Events.
 
 ### Registering Object Listeners
 
@@ -103,7 +104,7 @@ $dispatcher = new Dispatcher;
 
 /**
  * Adding the ContentListener to the Dispatcher.
- * By default, it will be registered to all events matching it's method names.
+ * By default, it will be registered to all events matching its method names.
  * So, it will be registered to the onBeforeContentSave and onAfterContentSave events.
  */
 $dispatcher->addListener(new ContentListener);
@@ -146,10 +147,11 @@ $dispatcher = new Dispatcher;
  * Here, we register it for the onContentSave event with a normal Priority.
  */
 $dispatcher->addListener(
-	$listener,
-	array('onContentSave' => Priority::NORMAL)
+    $listener,
+    array('onContentSave' => Priority::NORMAL)
 );
 ```
+
 As you noticed, it is possible to specify a listener's priority for a given Event. It is also possible to do so with "object" Listeners.
 
 ### Registration with Priority
@@ -166,11 +168,11 @@ use Joomla\Event\Priority;
  * an "Above normal" priority for the onAfterContentSave event.
  */
 $dispatcher->addListener(
-	new ContentListener,
-	array(
-		'onBeforeContentSave' => Priority::HIGH,
-		'onAfterContentSave' => Priority::ABOVE_NORMAL
-	)
+    new ContentListener,
+    array(
+        'onBeforeContentSave' => Priority::HIGH,
+        'onAfterContentSave' => Priority::ABOVE_NORMAL
+    )
 );
 ```
 
@@ -186,12 +188,12 @@ When you add an "object" Listener without specifying the event names, it is regi
  * If you specify a priority for an Event,
  * then you must specify the priority for all Events.
  *
- * It is good pracctice to do so, it will avoid to register the listener
+ * It is good practice to do so, since it will avoid to register the listener
  * to "useless" events and by consequence save a bit of memory.
  */
 $dispatcher->addListener(
-	new ContentListener,
-	array('onBeforeContentSave' => Priority::NORMAL)
+    new ContentListener,
+    array('onBeforeContentSave' => Priority::NORMAL)
 );
 ```
 
@@ -262,11 +264,11 @@ use Joomla\Event\Event;
 
 class ContentListener
 {
-	public function onBeforeContentSave(Event $event)
-	{
-		// Stopping the Event propagation.
-		$event->stop();
-	}
+    public function onBeforeContentSave(Event $event)
+    {
+        // Stopping the Event propagation.
+        $event->stop();
+    }
 }
 ```
 
@@ -287,42 +289,42 @@ use Joomla\Event\Event;
 
 class ContentModel implements DispatcherAwareInterface
 {
-	const ON_BEFORE_SAVE_EVENT = 'onBeforeSaveEvent';
-	const ON_AFTER_SAVE_EVENT = 'onAfterSaveEvent';
+    const ON_BEFORE_SAVE_EVENT = 'onBeforeSaveEvent';
+    const ON_AFTER_SAVE_EVENT = 'onAfterSaveEvent';
 
-	/**
-	 * The underlying dispatcher.
-	 *
-	 * @var  DispatcherInterface
-	 */
-	protected $dispatcher;
+    /**
+     * The underlying dispatcher.
+     *
+     * @var  DispatcherInterface
+     */
+    protected $dispatcher;
 
-	public function save()
-	{
-		$this->dispatcher->triggerEvent(self::ON_BEFORE_SAVE_EVENT);
+    public function save()
+    {
+        $this->dispatcher->triggerEvent(self::ON_BEFORE_SAVE_EVENT);
 
-		// Perform the saving.
+        // Perform the saving.
 
-		$this->dispatcher->triggerEvent(self::ON_AFTER_SAVE_EVENT);
-	}
+        $this->dispatcher->triggerEvent(self::ON_AFTER_SAVE_EVENT);
+    }
 
-	/**
-	 * Set the dispatcher to use.
-	 *
-	 * @param   DispatcherInterface  $dispatcher  The dispatcher to use.
-	 *
-	 * @return  DispatcherAwareInterface  This method is chainable.
-	 */
-	public function setDispatcher(DispatcherInterface $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
-	}
+    /**
+     * Set the dispatcher to use.
+     *
+     * @param   DispatcherInterface  $dispatcher  The dispatcher to use.
+     *
+     * @return  DispatcherAwareInterface  This method is chainable.
+     */
+    public function setDispatcher(DispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
 }
 ```
 
 ## Immutable Events
 
-An immutable event cannot be modified after its instanciation:
+An immutable event cannot be modified after its instantiation:
 
 - its arguments cannot be modified
 - its propagation can't be stopped
@@ -352,7 +354,7 @@ $dispatcher = new Dispatcher;
 
 // Here you add you listeners and your events....
 
-// Instanciating a delegating dispatcher.
+// Instantiating a delegating dispatcher.
 $delegatingDispatcher = new DelegatingDispatcher($dispatcher);
 
 // Now you inject this dispatcher in your system, and it has only the triggerEvent method.
@@ -362,18 +364,18 @@ This is useful when you want to make sure that 3rd party applications, won't reg
 
 ## Installation via Composer
 
-Add `"joomla/event": "2.0.*@dev"` to the require block in your composer.json and then run `composer install`.
-
-```json
-{
-	"require": {
-		"joomla/event": "2.0.*@dev"
-	}
-}
-```
-
-Alternatively, you can simply run the following from the command line:
+Simply run the following from the command line:
 
 ```sh
 composer require joomla/event "2.0.*@dev"
+```
+
+Alternatively, you can add `"joomla/event": "2.0.*@dev"` to the require block in your composer.json and then run `composer install`.
+
+```json
+{
+    "require": {
+        "joomla/event": "2.0.*@dev"
+    }
+}
 ```
