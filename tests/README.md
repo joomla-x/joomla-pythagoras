@@ -99,13 +99,13 @@ The `build.xml` provides some `ant` tasks to support testing.
  
 A fresh copy of the application under test (AUT) is created using the command 
 
-´´´bash
+```bash
 $ ant reset-aut
 ```
 
 You can refresh the copy at any time (eg., after modifications) with
 
-´´´bash
+```bash
 $ ant copy-aut
 ```
 
