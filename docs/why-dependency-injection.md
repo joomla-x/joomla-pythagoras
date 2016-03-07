@@ -170,6 +170,4 @@ $ioc->set('warrior', function ()
 }, false);
 ```
 
-```
-Note: The samurai concept came from a DI/IoC video about using Ninject in .NET. I've expanded upon the concept here.
-```
+> Note: The samurai concept came from a DI/IoC video about using Ninject in .NET. It was expanded upon the concept here.

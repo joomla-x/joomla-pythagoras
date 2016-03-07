@@ -268,7 +268,7 @@ class ContainerSetupTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The setting an object and then setting it again as null should remove the object
+	 * @testdox Setting an object and then setting it again as null removes the object
 	 * @expectedException  \Joomla\DI\Exception\KeyNotFoundException
 	 */
 	public function testSettingNullUnsetsAResource()

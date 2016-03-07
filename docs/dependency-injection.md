@@ -8,7 +8,7 @@ in this documentation.
 Use this as an example on how to turn test documentation into user documentation.
 Of course that requires a good testbase.
 
-To reproduce the test results, run `phpunit --testdox`
+To reproduce the test results, run `phpunit --testdox --bootstrap=libraries/vendor/autoload.php tests`
 -->
 The Joomla! Dependency Injection package provides a simple `container-interop` (upcoming `PSR-11`) compatible
 Inversion of Control (IoC) Container for your application.
@@ -540,6 +540,25 @@ If you try to extend an item that does not exist, an `\InvalidArgumentException`
 
 <!-- [x] A protected resource can not be extended -->
 > When extending an item, normal rules apply. A protected object cannot be overwritten, so you also can not extend them.
+
+### Removing an Item
+
+<!-- [x] Setting an object and then setting it again as null removes the object -->
+Any resource can be removed from the container by assigning `null` to it.
+
+```php
+$container->set(
+	'foo',
+	function ()
+	{
+		return 'original';
+	}
+);
+$container->get('foo'); // 'original'
+
+$container->set('foo', null);
+$container->get('foo'); // KeyNotFoundException
+```
 
 ### Service Providers
 
