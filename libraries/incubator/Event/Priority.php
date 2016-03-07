@@ -9,10 +9,7 @@
 namespace Joomla\Event;
 
 /**
- * An enumeration of priorities for event listeners,
- * that you are encouraged to use when adding them in the Dispatcher.
- *
- * @package  Joomla/Event
+ * An enumeration of priorities for event listeners that you are encouraged to use when adding them in the Dispatcher.
  *
  * @since  1.0
  */
@@ -25,4 +22,13 @@ final class Priority
 	const ABOVE_NORMAL = 1;
 	const HIGH = 2;
 	const MAX = 3;
+
+	/**
+	 * Disallow instantiation of this class
+	 *
+	 * @since   1.0
+	 */
+	private function __construct()
+	{
+	}
 }

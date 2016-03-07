@@ -7,8 +7,6 @@
 namespace Joomla\Tests\Unit\Event;
 
 use Joomla\Event\DelegatingDispatcher;
-use Joomla\Event\DispatcherInterface;
-use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * Tests for the DelegatingDispatcher class.
@@ -28,8 +26,7 @@ class DelegatingDispatcherTest extends \PHPUnit_Framework_TestCase
 	{
 		$event = 'onTest';
 
-		/** @var DispatcherInterface|PHPUnit_Framework_MockObject_MockObject $mockedDispatcher */
-		$mockedDispatcher = $this->getMock('Joomla\Event\DispatcherInterface');
+		$mockedDispatcher = $this->getMock('Joomla\Event\Dispatcher');
 		$mockedDispatcher->expects($this->once())
 			->method('triggerEvent')
 			->with($event);

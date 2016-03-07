@@ -11,8 +11,6 @@ namespace Joomla\Event;
 /**
  * Defines the trait for a Dispatcher Aware Class.
  *
- * @package  Joomla/Event
- *
  * @since  __DEPLOY_VERSION__
  */
 trait DispatcherAwareTrait
@@ -46,7 +44,7 @@ trait DispatcherAwareTrait
 	/**
 	 * Set the dispatcher to use.
 	 *
-	 * @param   DispatcherInterface $dispatcher The dispatcher to use.
+	 * @param   DispatcherInterface  $dispatcher  The dispatcher to use.
 	 *
 	 * @return  $this
 	 *

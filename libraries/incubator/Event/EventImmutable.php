@@ -20,8 +20,6 @@ use BadMethodCallException;
  * You may want to use this event when you want to ensure that
  * the listeners won't manipulate it.
  *
- * @package  Joomla/Event
- *
  * @since  1.0
  */
 final class EventImmutable extends AbstractEvent
@@ -37,8 +35,8 @@ final class EventImmutable extends AbstractEvent
 	/**
 	 * Constructor.
 	 *
-	 * @param   string $name      The event name.
-	 * @param   array  $arguments The event arguments.
+	 * @param   string  $name       The event name.
+	 * @param   array   $arguments  The event arguments.
 	 *
 	 * @throws  BadMethodCallException
 	 *
@@ -61,14 +59,13 @@ final class EventImmutable extends AbstractEvent
 	/**
 	 * Set the value of an event argument.
 	 *
-	 * @param   string $name  The argument name.
-	 * @param   mixed  $value The argument value.
+	 * @param   string  $name   The argument name.
+	 * @param   mixed   $value  The argument value.
 	 *
 	 * @return  void
 	 *
-	 * @throws  BadMethodCallException
-	 *
 	 * @since   1.0
+	 * @throws  BadMethodCallException
 	 */
 	public function offsetSet($name, $value)
 	{
@@ -84,7 +81,7 @@ final class EventImmutable extends AbstractEvent
 	/**
 	 * Remove an event argument.
 	 *
-	 * @param   string $name The argument name.
+	 * @param   string  $name  The argument name.
 	 *
 	 * @return  void
 	 *
