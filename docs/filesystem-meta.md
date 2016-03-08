@@ -170,9 +170,12 @@ A path mapper will be added to allow virtual path reconfiguration.**
 
 The path mapper will be implemented as a decorator for League\Flysystem\Filesystem.
 
-## Consequences
+## Tasks
 
-The Joomla! filesystem related classes must be refactored to use Flysystem under the hood.
+  - The Joomla! filesystem related classes must be refactored to use Flysystem under the hood.
+  - The path mapper must be implemented as a decorator for League\Flysystem\Filesystem.
+
+## Consequences
 
 **3PD** MUST use the Joomla! filesystem classes to access files and directories.
 Otherwise, it cannot be guaranteed, that all paths will work after an update.
