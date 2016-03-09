@@ -1,7 +1,7 @@
 web:
   image: php:5-apache
   volumes:
-    - build/dockyard/aut:/var/www/html
+    - ${PWD}/build/dockyard/aut:/var/www/html
   ports:
     - "8080:80"
   links:
@@ -10,7 +10,7 @@ web:
 db:
   image: mysql
   volumes:
-    - build/dockyard/sql:/var/lib/mysql
+    - ${PWD}/build/dockyard/sql:/var/lib/mysql
   environment:
     - MYSQL_ROOT_PASSWORD=root
   ports:
