@@ -12,6 +12,7 @@ use Joomla\DI\Container;
 use Joomla\Http\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Joomla\Service\EventDispatcherServiceProvider;
 
 /**
  * Adds a Dependency Injection Container.
@@ -66,6 +67,7 @@ class ContainerSetupMiddleware implements MiddlewareInterface
 	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
 	{
 		$container = new Container;
+		$container->registerServiceProvider(new EventDispatcherServiceProvider());
 
 		$response = $next(
 			$request->withAttribute('container', $container),
