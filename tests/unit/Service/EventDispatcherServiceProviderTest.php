@@ -10,36 +10,15 @@ use Joomla\Event\DispatcherInterface;
 class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @testdox The test dispatcher ervice provider implements the ServiceProviderInterface interface
+	 * @testdox The EventDispatcherServiceProvider implements the ServiceProviderInterface interface
 	 */
-	public function testTheTestEventDispatcherServiceProviderImplementsTheCommandInterface()
+	public function testTheTestEventDispatcherServiceProviderImplementsTheServiceProviderInterface()
 	{
 		$this->assertInstanceOf(ServiceProviderInterface::class, new EventDispatcherServiceProvider());
 	}
 
 	/**
-	 * @testdox The test EventDispatcherServiceProvider has registered EventDispatcher service
-	 */
-	public function testContainerHasDispatcherServiceRegistered()
-	{
-		$container = $this->getMockBuilder(Container::class)->getMock();
-		$container->expects($this->once())->method('set')->with(
-			$this->equalTo('EventDispatcher'),
-			$this->callback(function ($callable)
-				{
-					return is_callable($callable);
-				}
-			),
-			$this->equalTo(true),
-			$this->equalTo(true)
-		);
-
-		$service = new EventDispatcherServiceProvider();
-		$service->register($container);
-	}
-
-	/**
-	 * @testdox The test EventDispatcherServiceProvider creates Dispatcher
+	 * @testdox The EventDispatcherServiceProvider adds an EventDispatcher to a container
 	 */
 	public function testEventDispatcherServiceProviderCreatesDispatcher()
 	{
