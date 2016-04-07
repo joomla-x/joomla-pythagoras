@@ -9,6 +9,7 @@
 namespace Joomla\Tests\Unit\Http;
 
 use Interop\Container\ContainerInterface;
+use Joomla\Event\DispatcherInterface;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\ContainerSetupMiddleware;
 use Psr\Http\Message\ResponseInterface;
@@ -18,26 +19,49 @@ use Zend\Diactoros\ServerRequest;
 
 class ContainerSetupCest
 {
-    public function _before(UnitTester $I)
-    {
-    }
+	public function _before(UnitTester $I)
+	{
+	}
 
-    public function _after(UnitTester $I)
-    {
-    }
+	public function _after(UnitTester $I)
+	{
+	}
 
-    public function ContainerSetupInjectsAnInteropContainer(UnitTester $I)
-    {
-        $app = new Application([
-            new ContainerSetupMiddleware,
-            function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I) {
-                $I->assertTrue($request->getAttribute('container') instanceof ContainerInterface);
+	/**
+	 * @testdox  ContainerSetup injects an InteropContainer
+	 */
+	public function ContainerSetupInjectsAnInteropContainer(UnitTester $I)
+	{
+		$app = new Application([
+			new ContainerSetupMiddleware,
+			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
+			{
+				$I->assertTrue($request->getAttribute('container') instanceof ContainerInterface);
 
-                return $next($request, $response);
-            }
-        ]);
+				return $next($request, $response);
+			}
+		]);
 
-        $request = new ServerRequest();
-        $app->run($request);
-    }
+		$request = new ServerRequest();
+		$app->run($request);
+	}
+
+	/**
+	 * @testdox  Container provides an EventDispatcher
+	 */
+	public function ContainerProvidesAnEventDispatcher(UnitTester $I)
+	{
+		$app = new Application([
+			new ContainerSetupMiddleware,
+			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
+			{
+				$I->assertTrue($request->getAttribute('container')->get('EventDispatcher') instanceof DispatcherInterface);
+
+				return $next($request, $response);
+			}
+		]);
+
+		$request = new ServerRequest();
+		$app->run($request);
+	}
 }
