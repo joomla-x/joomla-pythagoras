@@ -44,7 +44,17 @@ class CommandBusMiddleware implements MiddlewareInterface
 			throw new \RuntimeException('No command provided');
 		}
 
-		$dispatcher       = new Dispatcher;
+		$dispatcher = null;
+
+		if ($container = $request->getAttribute('container') && $container->has('EventDispatcher'))
+		{
+			$dispatcher = $container->get('EventDispatcher');
+		}
+		else
+		{
+			$dispatcher = new Dispatcher();
+		}
+
 		$commandBus = (new CommandBusBuilder($dispatcher))->getCommandBus();
 
 		$commandBus->handle($command);
