@@ -2,3 +2,6 @@
 /libraries/vendor
 /logs/*
 /tmp/*
+/.settings/
+/.buildpath
+/.project
