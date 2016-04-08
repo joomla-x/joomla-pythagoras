@@ -8,11 +8,12 @@
 
 namespace Joomla\ORM\Storage;
 
-use Joomla\ORM\Collection\CollectionInterface;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
+use Joomla\ORM\Entity\Entity;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityInterface;
+use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;
 use Joomla\ORM\Finder\Operator;
@@ -54,15 +55,15 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * CsvModel constructor.
 	 *
-	 * @param   string   $dataFile  The name of the data file
-	 * @param   integer  $mode      The finder mode, see class constants
+	 * @param   string  $dataFile The name of the data file
+	 * @param   integer $mode     The finder mode, see class constants
 	 */
 	public function __construct($dataFile, $mode)
 	{
 		$this->dataFile = $dataFile;
 		$this->mode     = $mode;
 
-		$locator = new Locator(
+		$locator       = new Locator(
 			[
 				new RecursiveDirectoryStrategy(getcwd() . '/components'),
 			]
@@ -73,8 +74,8 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Set the ordering.
 	 *
-	 * @param   string  $column     The name of the ordering column
-	 * @param   string  $direction  One of 'ASC' (ascending) or 'DESC' (descending)
+	 * @param   string $column    The name of the ordering column
+	 * @param   string $direction One of 'ASC' (ascending) or 'DESC' (descending)
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
@@ -95,13 +96,18 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Define the columns to be retrieved.
 	 *
-	 * @param   array  $columns  The column names
+	 * @param   array $columns The column names
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
 	public function columns($columns)
 	{
-		$this->columns = preg_split('~\s*,\s*~', trim($columns));
+		if (!is_array($columns))
+		{
+			$columns = preg_split('~\s*,\s*~', trim($columns));
+		}
+
+		$this->columns = $columns;
 
 		return $this;
 	}
@@ -109,9 +115,9 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Define a condition.
 	 *
-	 * @param   mixed   $lValue  The left value for the comparision
-	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
-	 * @param   mixed   $rValue  The right value for the comparision
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   mixed  $rValue The right value for the comparision
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
@@ -129,10 +135,10 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Fetch the entity
 	 *
-	 * @param   integer  $count  The number of matching entities to retrieve (collection mode only)
-	 * @param   integer  $start  The index of the first entity to retrieve (collection mode only)
+	 * @param   integer $count The number of matching entities to retrieve (collection mode only)
+	 * @param   integer $start The index of the first entity to retrieve (collection mode only)
 	 *
-	 * @return  EntityInterface|CollectionInterface
+	 * @return  Entity|array
 	 */
 	public function get($count = null, $start = 0)
 	{
@@ -141,24 +147,38 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 			$this->loadData();
 		}
 
-		if (empty($this->rows))
-		{
-			return [];
-		}
-
 		$matches = $this->rows;
 		$matches = $this->applyConditions($matches);
 		$matches = $this->applyOrdering($matches);
-		$matches = $this->applyColumns($matches);
-		$entities = $this->castToEntity($matches);
 
-		return $this->mode == self::ENTITY ? array_shift($entities) : array_slice($entities, $start, $count);
+		if (!empty($this->columns))
+		{
+			$result = $this->applyColumns($matches);
+		}
+		else
+		{
+			$result = $this->castToEntity($matches);
+		}
+
+		if ($this->mode == self::ENTITY)
+		{
+			if (empty($result))
+			{
+				throw new EntityNotFoundException;
+			}
+
+			return array_shift($result);
+		}
+		else
+		{
+			return array_slice($result, $start, $count);
+		}
 	}
 
 	/**
 	 * Store an entity.
 	 *
-	 * @param   EntityInterface  $entity  The entity to store
+	 * @param   EntityInterface $entity The entity to store
 	 *
 	 * @return  void
 	 */
@@ -171,7 +191,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   EntityInterface  $entity  The entity to sanitise
+	 * @param   EntityInterface $entity The entity to sanitise
 	 *
 	 * @return  void
 	 */
@@ -184,8 +204,8 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Apply a condition to a record set
 	 *
-	 * @param   array  $rows       The data rows
-	 * @param   array  $condition  The filter condition
+	 * @param   array $rows      The data rows
+	 * @param   array $condition The filter condition
 	 *
 	 * @return array
 	 */
@@ -288,8 +308,8 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	 */
 	protected function loadData()
 	{
-		$fh       = fopen($this->dataFile, 'r');
-		$keys     = fgetcsv($fh);
+		$fh   = fopen($this->dataFile, 'r');
+		$keys = fgetcsv($fh);
 
 		$this->rows = [];
 
@@ -311,7 +331,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Apply the conditions
 	 *
-	 * @param   array  $matches  The records
+	 * @param   array $matches The records
 	 *
 	 * @return  array
 	 */
@@ -328,7 +348,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Apply the ordering
 	 *
-	 * @param   array  $matches  The records
+	 * @param   array $matches The records
 	 *
 	 * @return  array
 	 */
@@ -338,7 +358,8 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 		{
 			usort(
 				$matches,
-				function ($aRow, $bRow) use ($ordering) {
+				function ($aRow, $bRow) use ($ordering)
+				{
 					$a = $aRow[$ordering['column']];
 					$b = $bRow[$ordering['column']];
 
@@ -353,7 +374,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Apply the columns
 	 *
-	 * @param   array  $matches  The records
+	 * @param   array $matches The records
 	 *
 	 * @return  array
 	 */
@@ -381,7 +402,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Cast array to entity
 	 *
-	 * @param   array  $matches  The records
+	 * @param   array $matches The records
 	 *
 	 * @return  array
 	 */

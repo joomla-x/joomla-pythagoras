@@ -8,7 +8,7 @@
 
 namespace Joomla\ORM\Finder;
 
-use Joomla\ORM\Collection\CollectionInterface;
+use Joomla\ORM\Entity\Entity;
 
 /**
  * Interface CollectionFinderInterface
@@ -55,7 +55,7 @@ interface CollectionFinderInterface
 	 * @param   int $count The number of matching entities to retrieve
 	 * @param   int $start The index of the first entity to retrieve
 	 *
-	 * @return  CollectionInterface
+	 * @return  Entity|array
 	 */
 	public function get($count = null, $start = 0);
 }
