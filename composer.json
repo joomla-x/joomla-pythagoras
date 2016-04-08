@@ -26,7 +26,7 @@
         "php": ">=5.5.9"
     },
     "require-dev": {
-        "codeception/codeception": "^2.1",
+        "codeception/codeception": "~2",
         "codegyre/robo": "^0.6.0",
         "slim/csrf": "^0.6.0",
         "greencape/coding-standards": "^1.0",
