@@ -9,7 +9,7 @@
 namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
-use Joomla\Content\Type\Compound;
+use Joomla\Renderer\Exception\NotFoundException;
 
 /**
  * Class Renderer
@@ -47,12 +47,25 @@ abstract class Renderer implements RendererInterface
 
 	/**
 	 * @param   string   $type     The content type
-	 * @param   callable $handler  The handler for that type
+	 * @param   callable|array|string $handler The handler for that type
 	 *
 	 * @return  void
 	 */
-	public function registerContentType($type, callable $handler)
+	public function registerContentType($type, $handler)
 	{
+		if (is_string($handler))
+		{
+			$handler = function(ContentTypeInterface $contentItem) use ($handler) {
+				return call_user_func([$contentItem, $handler]);
+			};
+		}
+		elseif (is_array($handler))
+		{
+			$handler = function (ContentTypeInterface $contentItem) use ($handler)
+			{
+				return call_user_func($handler, $contentItem);
+			};
+		}
 		$this->handlers[strtolower($type)] = $handler;
 	}
 
@@ -80,7 +93,7 @@ abstract class Renderer implements RendererInterface
 			}
 			else
 			{
-				echo "\nLogWarn: Unknown content type {$match[1]}, no default\n";
+				throw new NotFoundException("Unknown content type {$match[1]}, no default\n");
 			}
 		}
 	}
@@ -102,7 +115,7 @@ abstract class Renderer implements RendererInterface
 	 */
 	public function __toString()
 	{
-		return get_class($this);
+		return $this->output;
 	}
 
 	/**
@@ -185,8 +198,9 @@ abstract class Renderer implements RendererInterface
 	 * @param   int   $offset  Stream offset
 	 * @param   int   $whence  Specifies how the cursor position will be calculated
 	 *                         based on the seek offset. Valid values are identical to the built-in
-	 *                         PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
-	 *                         offset bytes SEEK_CUR: Set position to current location plus offset
+	 *                         PHP $whence values for `fseek()`.
+	 *                         SEEK_SET: Set position equal to offset bytes
+	 *                         SEEK_CUR: Set position to current location plus offset
 	 *                         SEEK_END: Set position to end-of-stream plus offset.
 	 *
 	 * @return  void

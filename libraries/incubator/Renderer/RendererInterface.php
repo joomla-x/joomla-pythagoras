@@ -24,17 +24,17 @@ use Psr\Http\Message\StreamInterface;
 interface RendererInterface extends StreamInterface
 {
 	/**
-	 * @param   string   $type     The content type
-	 * @param   callable $handler  The handler for that type
+	 * @param   string                $type    The content type
+	 * @param   callable|array|string $handler The handler for that type
 	 *
 	 * @return  void
 	 */
-	public function registerContentType($type, callable $handler);
+	public function registerContentType($type, $handler);
 
 	/**
 	 * Render a headline.
 	 *
-	 * @param   Headline  $headline  The headline
+	 * @param   Headline $headline The headline
 	 *
 	 * @return  integer Number of bytes written to the output
 	 */
@@ -43,7 +43,7 @@ interface RendererInterface extends StreamInterface
 	/**
 	 * Render a compound (block) element
 	 *
-	 * @param   Compound  $compound  The compound
+	 * @param   Compound $compound The compound
 	 *
 	 * @return  integer Number of bytes written to the output
 	 */
@@ -52,7 +52,7 @@ interface RendererInterface extends StreamInterface
 	/**
 	 * Render an attribution to an author
 	 *
-	 * @param   Attribution  $attribution  The attribution
+	 * @param   Attribution $attribution The attribution
 	 *
 	 * @return  integer Number of bytes written to the output
 	 */
@@ -61,7 +61,7 @@ interface RendererInterface extends StreamInterface
 	/**
 	 * Render a paragraph
 	 *
-	 * @param   Paragraph  $paragraph  The paragraph
+	 * @param   Paragraph $paragraph The paragraph
 	 *
 	 * @return  integer Number of bytes written to the output
 	 */

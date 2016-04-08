@@ -27,6 +27,9 @@ class JsonRenderer extends Renderer
 
 	/** @var array The collected data */
 	protected $data = [];
+	
+	/** @var int The current output buffer length */
+	protected $len = 0;
 
 	/**
 	 * Render a headline.
@@ -39,7 +42,7 @@ class JsonRenderer extends Renderer
 	{
 		$this->data[] = ['headline' => ['text' => $headline->text, 'level' => $headline->level]];
 
-		return 0;
+		return $this->updateContent();
 	}
 
 	/**
@@ -62,7 +65,7 @@ class JsonRenderer extends Renderer
 		$stash[] = [$compound->type => $this->data];
 		$this->data = $stash;
 
-		return 0;
+		return $this->updateContent();
 	}
 
 	/**
@@ -76,7 +79,7 @@ class JsonRenderer extends Renderer
 	{
 		$this->data[] = ['attribution' => ['label' => $attribution->label, 'name' => $attribution->name]];
 
-		return 0;
+		return $this->updateContent();
 	}
 
 	/**
@@ -90,6 +93,19 @@ class JsonRenderer extends Renderer
 	{
 		$this->data[] = ['paragraph' => ['text' => $paragraph->text, 'variant' => $paragraph->variant]];
 
-		return 0;
+		return $this->updateContent();
+	}
+
+	/**
+	 * @return int
+	 */
+	private function updateContent()
+	{
+		$this->output = json_encode($this->data, JSON_PRETTY_PRINT);
+		$total        = strlen($this->output);
+		$len          = $total - $this->len;
+		$this->len    = $total;
+
+		return $len;
 	}
 }
