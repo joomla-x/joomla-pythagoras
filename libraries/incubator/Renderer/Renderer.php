@@ -10,6 +10,7 @@ namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Renderer\Exception\NotFoundException;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Class Renderer
@@ -18,7 +19,7 @@ use Joomla\Renderer\Exception\NotFoundException;
  *
  * @since    1.0
  */
-abstract class Renderer implements RendererInterface
+abstract class Renderer implements RendererInterface, StreamInterface
 {
 	/** @var string The MIME type */
 	protected $mediatype = 'application/binary';
@@ -40,7 +41,7 @@ abstract class Renderer implements RendererInterface
 	 *
 	 * @param   array $options Accepted range, ie., MIME type ('token') and quality ('q')
 	 */
-	public function __construct($options)
+	public function __construct(array $options = [])
 	{
 		$this->options = $options;
 	}

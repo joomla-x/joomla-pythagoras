@@ -12,7 +12,6 @@ use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
-use Psr\Http\Message\StreamInterface;
 
 /**
  * Renderer Interface
@@ -21,7 +20,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * @since    1.0
  */
-interface RendererInterface extends StreamInterface
+interface RendererInterface
 {
 	/**
 	 * @param   string                $type    The content type

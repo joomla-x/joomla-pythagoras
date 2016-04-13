@@ -12,26 +12,23 @@ use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 
 /**
- * Class YamlParser
+ * Parser Interface
  *
  * @package  Joomla/ORM
  *
  * @since    1.0
  */
-class YamlParser implements ParserInterface
+interface ParserInterface
 {
 	/**
 	 * Open the description of the entity
-	 *
+	 * 
 	 * @param string $descriptionFile
 	 *
 	 * @return mixed
 	 */
-	public function open($descriptionFile)
-	{
-		// TODO: Implement open() method.
-	}
-
+	public function open($descriptionFile);
+	
 	/**
 	 * Parse the entity definition
 	 *
@@ -40,10 +37,5 @@ class YamlParser implements ParserInterface
 	 *
 	 * @return  EntityStructure
 	 */
-	public function parse($callbacks, LocatorInterface $locator)
-	{
-		$structure = new EntityStructure([]);
-
-		return $structure;
-	}
+	public function parse($callbacks, LocatorInterface $locator);
 }

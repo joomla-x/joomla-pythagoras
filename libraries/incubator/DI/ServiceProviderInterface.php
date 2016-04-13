@@ -18,11 +18,10 @@ interface ServiceProviderInterface
 	/**
 	 * Registers the service provider with a DI container.
 	 *
-	 * @param   Container  $container  The DI container.
-	 *
-	 * @return  void
+	 * @param   Container $container  The DI container.
+	 * @param   string    $alias      An optional alias for the service
 	 *
 	 * @since   1.0
 	 */
-	public function register(Container $container);
+	public function register(Container $container, $alias = null);
 }

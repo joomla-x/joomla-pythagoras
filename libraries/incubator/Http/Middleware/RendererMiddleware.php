@@ -8,6 +8,7 @@
 
 namespace Joomla\Http\Middleware;
 
+use Joomla\Event\Dispatcher;
 use Joomla\Http\MiddlewareInterface;
 use Joomla\Renderer\Factory as RendererFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -25,6 +26,14 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RendererMiddleware implements MiddlewareInterface
 {
+	/** @var Dispatcher  */
+	private $dispatcher;
+	
+	public function __construct(Dispatcher $dispatcher)
+	{
+		$this->dispatcher = $dispatcher;
+	}
+
 	/**
 	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
 	 *
@@ -48,6 +57,7 @@ class RendererMiddleware implements MiddlewareInterface
 		$mapping = parse_ini_file(JPATH_ROOT . '/config/renderer.ini');
 
 		$renderer = (new RendererFactory($mapping))->create($acceptHeader);
+		$renderer = new \Joomla\Renderer\EventDecorator($renderer, $this->dispatcher);
 
 		$response = $next($request, $response->withBody($renderer));
 

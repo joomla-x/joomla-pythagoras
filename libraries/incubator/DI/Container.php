@@ -545,15 +545,16 @@ class Container implements ContainerInterface
 	/**
 	 * Register a service provider to the container.
 	 *
-	 * @param   ServiceProviderInterface  $provider  The service provider to register.
+	 * @param   ServiceProviderInterface $provider The service provider to register.
+	 * @param   string                   $alias    An optional alias for the service
 	 *
-	 * @return  Container  This object for chaining.
+	 * @return Container This object for chaining.
 	 *
 	 * @since   1.0
 	 */
-	public function registerServiceProvider(ServiceProviderInterface $provider)
+	public function registerServiceProvider(ServiceProviderInterface $provider, $alias = null)
 	{
-		$provider->register($this);
+		$provider->register($this, $alias);
 
 		return $this;
 	}

@@ -19,12 +19,15 @@ use Joomla\J3Compatibility\Http\Middleware\RouterMiddleware as LegacyRouterMiddl
 require_once 'libraries/vendor/autoload.php';
 
 $root = __DIR__;
+
+$container = new \Joomla\DI\Container();
+
 $app  = new Application(
 	[
 		new ResponseSenderMiddleware,
-		new ContainerSetupMiddleware,
+		new ContainerSetupMiddleware($container),
 		new ConfigurationMiddleware($root),
-		new RendererMiddleware,
+		new RendererMiddleware($container->get('dispatcher')),
 		new RouterMiddleware,
 		new LegacyRouterMiddleware,
 		new CommandBusMiddleware,

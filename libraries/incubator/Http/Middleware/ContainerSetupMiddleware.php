@@ -8,11 +8,11 @@
 
 namespace Joomla\Http\Middleware;
 
+use Interop\Container\ContainerInterface;
 use Joomla\DI\Container;
 use Joomla\Http\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Joomla\Service\EventDispatcherServiceProvider;
 
 /**
  * Adds a Dependency Injection Container.
@@ -53,6 +53,14 @@ use Joomla\Service\EventDispatcherServiceProvider;
  */
 class ContainerSetupMiddleware implements MiddlewareInterface
 {
+	/** @var Container */
+	private $container;
+	
+	public function __construct(ContainerInterface $container)
+	{
+		$this->container = $container;
+	}
+
 	/**
 	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
 	 *
@@ -66,11 +74,15 @@ class ContainerSetupMiddleware implements MiddlewareInterface
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
 	{
-		$container = new Container;
-		$container->registerServiceProvider(new EventDispatcherServiceProvider());
+		$services = parse_ini_file('config/services.ini', true);
+		print_r($services);
+		foreach ($services['provider'] as $alias => $service)
+		{
+			$this->container->registerServiceProvider(new $service, $alias);
+		}
 
 		$response = $next(
-			$request->withAttribute('container', $container),
+			$request->withAttribute('container', $this->container),
 			$response
 		);
 

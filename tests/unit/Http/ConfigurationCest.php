@@ -9,6 +9,7 @@
 namespace Joomla\Tests\Unit\Http;
 
 use Interop\Container\ContainerInterface;
+use Joomla\DI\Container;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\ConfigurationMiddleware;
 use Joomla\Http\Middleware\ContainerSetupMiddleware;
@@ -31,7 +32,7 @@ class ConfigurationCest
     public function ConfigurationIsAddedToTheContainer(UnitTester $I)
     {
         $app = new Application([
-            new ContainerSetupMiddleware,
+            new ContainerSetupMiddleware(new Container()),
             new ConfigurationMiddleware(__DIR__ . '/data'),
             function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I) {
                 /** @var ContainerInterface $container */

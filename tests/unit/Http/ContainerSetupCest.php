@@ -9,6 +9,7 @@
 namespace Joomla\Tests\Unit\Http;
 
 use Interop\Container\ContainerInterface;
+use Joomla\DI\Container;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\ContainerSetupMiddleware;
@@ -33,7 +34,7 @@ class ContainerSetupCest
 	public function ContainerSetupInjectsAnInteropContainer(UnitTester $I)
 	{
 		$app = new Application([
-			new ContainerSetupMiddleware,
+			new ContainerSetupMiddleware(new Container()),
 			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
 			{
 				$I->assertTrue($request->getAttribute('container') instanceof ContainerInterface);
@@ -52,10 +53,29 @@ class ContainerSetupCest
 	public function ContainerProvidesAnEventDispatcher(UnitTester $I)
 	{
 		$app = new Application([
-			new ContainerSetupMiddleware,
+			new ContainerSetupMiddleware(new Container()),
 			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
 			{
 				$I->assertTrue($request->getAttribute('container')->get('EventDispatcher') instanceof DispatcherInterface);
+
+				return $next($request, $response);
+			}
+		]);
+
+		$request = new ServerRequest();
+		$app->run($request);
+	}
+
+	/**
+	 * @testdox  Container provides 'dispatcher' alias for EventDispatcher
+	 */
+	public function ContainerEventDispatcherAlias(UnitTester $I)
+	{
+		$app = new Application([
+			new ContainerSetupMiddleware(new Container()),
+			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
+			{
+				$I->assertTrue($request->getAttribute('container')->get('dispatcher') instanceof DispatcherInterface);
 
 				return $next($request, $response);
 			}

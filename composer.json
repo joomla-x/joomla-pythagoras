@@ -31,7 +31,8 @@
         "slim/csrf": "^0.6.0",
         "greencape/coding-standards": "^1.0",
         "mayflower/php-codebrowser": "^1.1",
-        "apigen/apigen": "~4"
+        "apigen/apigen": "~4",
+        "codeception/mockery-module": "^0.2.2"
     },
     "autoload": {
         "psr-4": {

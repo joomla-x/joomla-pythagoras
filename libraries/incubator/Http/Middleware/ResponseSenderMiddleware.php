@@ -103,6 +103,7 @@ class ResponseSenderMiddleware implements MiddlewareInterface
 	{
 		$stream = $response->getBody();
 
+		/** @todo emit onBeforeOutput event */
 		if ($stream->isSeekable())
 		{
 			$stream->rewind();
