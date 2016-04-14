@@ -6,10 +6,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Joomla\Http\Application;
 use Joomla\Http\Middleware\CommandBusMiddleware;
 use Joomla\Http\Middleware\ConfigurationMiddleware;
-use Joomla\Http\Middleware\ContainerSetupMiddleware;
-use Joomla\Http\Application;
 use Joomla\Http\Middleware\RendererMiddleware;
 use Joomla\Http\Middleware\ResponseSenderMiddleware;
 use Joomla\Http\Middleware\RouterMiddleware;
@@ -19,14 +18,18 @@ use Joomla\J3Compatibility\Http\Middleware\RouterMiddleware as LegacyRouterMiddl
 require_once 'libraries/vendor/autoload.php';
 
 $root = __DIR__;
-
 $container = new \Joomla\DI\Container();
+
+$services = parse_ini_file($root . '/config/services.ini', true);
+foreach ($services['provider'] as $alias => $service)
+{
+	$container->registerServiceProvider(new $service, $alias);
+}
 
 $app  = new Application(
 	[
 		new ResponseSenderMiddleware,
-		new ContainerSetupMiddleware($container),
-		new ConfigurationMiddleware($root),
+		new ConfigurationMiddleware($root, $container),
 		new RendererMiddleware($container->get('dispatcher')),
 		new RouterMiddleware,
 		new LegacyRouterMiddleware,

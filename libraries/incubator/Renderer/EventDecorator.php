@@ -20,6 +20,7 @@ use Joomla\Renderer\Event\RenderContentTypeEvent;
 use Joomla\Renderer\Event\RenderContentTypeFailureEvent;
 use Joomla\Renderer\Event\RenderContentTypeSuccessEvent;
 use Psr\Http\Message\StreamInterface;
+use Joomla\Event\DispatcherInterface;
 
 /**
  * Event Decorator for Renderer
@@ -30,19 +31,19 @@ use Psr\Http\Message\StreamInterface;
  */
 class EventDecorator implements RendererInterface, StreamInterface
 {
-	/** @var Renderer */
+	/** @var RendererInterface */
 	private $renderer;
 
-	/** @var Dispatcher */
+	/** @var DispatcherInterface */
 	private $dispatcher;
 
 	/**
 	 * Decorator constructor.
 	 *
-	 * @param RendererInterface $renderer
-	 * @param Dispatcher        $dispatcher
+	 * @param RendererInterface   $renderer
+	 * @param DispatcherInterface $dispatcher
 	 */
-	public function __construct(RendererInterface $renderer, Dispatcher $dispatcher)
+	public function __construct(RendererInterface $renderer, DispatcherInterface $dispatcher)
 	{
 		$this->renderer   = $renderer;
 		$this->dispatcher = $dispatcher;

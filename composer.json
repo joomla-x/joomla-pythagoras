@@ -37,7 +37,8 @@
     "autoload": {
         "psr-4": {
             "Joomla\\": "libraries/incubator/",
-            "Joomla\\Component\\Content\\": "components/content/"
+            "Joomla\\Component\\Content\\": "components/content/",
+            "Joomla\\Plugin\\": "plugins/"
         }
     },
     "autoload-dev": {

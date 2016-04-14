@@ -12,7 +12,6 @@ use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
-use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryQuery;
 use Joomla\Service\CommandHandler;
 

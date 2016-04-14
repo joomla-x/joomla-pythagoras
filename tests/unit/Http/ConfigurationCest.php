@@ -8,11 +8,9 @@
 
 namespace Joomla\Tests\Unit\Http;
 
-use Interop\Container\ContainerInterface;
 use Joomla\DI\Container;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\ConfigurationMiddleware;
-use Joomla\Http\Middleware\ContainerSetupMiddleware;
 use Joomla\Registry\Registry;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,12 +29,10 @@ class ConfigurationCest
 
     public function ConfigurationIsAddedToTheContainer(UnitTester $I)
     {
+    	$container = new Container();
         $app = new Application([
-            new ContainerSetupMiddleware(new Container()),
-            new ConfigurationMiddleware(__DIR__ . '/data'),
-            function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I) {
-                /** @var ContainerInterface $container */
-                $container = $request->getAttribute('container');
+            new ConfigurationMiddleware(__DIR__ . '/data', $container),
+            function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I, $container) {
                 /** @var Registry $config */
                 $config = $container->get('config');
                 $I->assertTrue($config instanceof Registry);

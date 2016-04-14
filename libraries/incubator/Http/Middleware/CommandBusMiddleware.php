@@ -8,7 +8,6 @@
 
 namespace Joomla\Http\Middleware;
 
-use Joomla\Command\CommandInterface;
 use Joomla\Event\Dispatcher;
 use Joomla\Http\MiddlewareInterface;
 use Joomla\Service\CommandBusBuilder;

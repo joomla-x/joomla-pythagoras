@@ -17,7 +17,6 @@ use League\Tactician\Handler\Locator\CallableLocator;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use League\Tactician\Middleware;
-use League\Tactician\Plugins\LockingMiddleware;
 
 /**
  * Command Bus Builder.
