@@ -8,18 +8,18 @@ namespace Joomla\Service;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Plugin\PluginDispatcher;
+use Joomla\Plugin\FilePluginFactory;
 
-class EventDispatcherServiceProvider implements ServiceProviderInterface
+class PluginFactoryServiceProvider implements ServiceProviderInterface
 {
 
-	private $key = 'EventDispatcher';
+	private $key = 'PluginFactory';
 
 	public function register (Container $container, $alias = null)
 	{
 		$container->set($this->key, [
 				$this,
-				'createDispatcher'
+				'createPluginFactory'
 		], true, true);
 
 		if (! empty($alias))
@@ -28,8 +28,8 @@ class EventDispatcherServiceProvider implements ServiceProviderInterface
 		}
 	}
 
-	public function createDispatcher (Container $container)
+	public function createPluginFactory (Container $container)
 	{
-		return new PluginDispatcher($container->get('pluginfactory'));
+		return new FilePluginFactory($container->get('ConfigDirectory') . '/plugins');
 	}
 }

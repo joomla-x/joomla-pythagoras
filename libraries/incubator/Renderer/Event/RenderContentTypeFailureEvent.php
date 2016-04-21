@@ -21,7 +21,7 @@ class RenderContentTypeFailureEvent extends Event
 	public function __construct($type, $exception)
 	{
 		parent::__construct(
-			'onRenderContentTypeFailure',
+			'onRender' . $type . 'Failure',
 			[
 				'type'      => $type,
 				'exception' => $exception

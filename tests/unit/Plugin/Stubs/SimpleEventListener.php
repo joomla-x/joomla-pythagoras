@@ -1,12 +1,12 @@
 <?php
-namespace Joomla\Tests\Unit\Service\Stubs;
+namespace Joomla\Tests\Unit\Plugin\Stubs;
 
 use Joomla\Event\Event;
 
 /**
  * Class SimpleEventListener
  *
- * @package Joomla\Tests\Unit\Service\Stubs
+ * @package Joomla\Tests\Unit\Plugin\Stubs
  *
  * @method string onEventTest()
  */

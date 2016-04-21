@@ -6,6 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 namespace Joomla\Plugin\Content\UpperCase\Listener;
+
 use Joomla\Renderer\Event\RenderContentTypeEvent;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\ContentTypeInterface;

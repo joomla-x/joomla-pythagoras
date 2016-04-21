@@ -22,7 +22,7 @@ class RenderContentTypeSuccessEvent extends Event
 	public function __construct($type, $stream)
 	{
 		parent::__construct(
-			'onAfterRenderContentType',
+			'onAfter' . $type,
 			[
 				'type'   => $type,
 				'stream' => $stream

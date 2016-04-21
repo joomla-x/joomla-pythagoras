@@ -22,7 +22,7 @@ class RenderContentTypeEvent extends Event
 	public function __construct($type, $content)
 	{
 		parent::__construct(
-			'onBeforeRenderContentType',
+			'onBeforeRender' . $type,
 			[
 				'type'    => $type,
 				'content' => $content
