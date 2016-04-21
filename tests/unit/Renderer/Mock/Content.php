@@ -3,7 +3,7 @@
 namespace Joomla\Tests\Unit\Renderer\Mock;
 
 use Joomla\Content\ContentTypeInterface;
-use Joomla\Renderer\RendererInterface;
+use Joomla\Content\ContentTypeVisitorInterface;
 
 abstract class Content implements ContentTypeInterface
 {
@@ -22,17 +22,17 @@ abstract class Content implements ContentTypeInterface
 
 class ContentType extends Content
 {
-	public function accept(RendererInterface $renderer)
+	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		$renderer->visitContent($this);
+		$visitor->visitContent($this);
 	}
 }
 
 class NewContentType extends Content
 {
-	public function accept(RendererInterface $renderer)
+	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		$renderer->visitNewContent($this);
+		$visitor->visitNewContent($this);
 	}
 
 	public static function asHtml(NewContentType $content)
@@ -43,9 +43,9 @@ class NewContentType extends Content
 
 class OtherContentType extends Content
 {
-	public function accept(RendererInterface $renderer)
+	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		$renderer->visitOtherContent($this);
+		$visitor->visitOtherContent($this);
 	}
 
 	public function asHtml()
@@ -56,8 +56,8 @@ class OtherContentType extends Content
 
 class UnregisteredContentType extends Content
 {
-	public function accept(RendererInterface $renderer)
+	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		$renderer->visitUnregisteredContent($this);
+		$visitor->visitUnregisteredContent($this);
 	}
 }

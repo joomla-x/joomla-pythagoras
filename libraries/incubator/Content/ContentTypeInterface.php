@@ -8,8 +8,6 @@
 
 namespace Joomla\Content;
 
-use Joomla\Renderer\RendererInterface;
-
 /**
  * ContentType Interface
  *
@@ -19,11 +17,9 @@ use Joomla\Renderer\RendererInterface;
 interface ContentTypeInterface
 {
 	/**
-	 * Render the output
+	 * Visits the content type.
 	 *
-	 * @param   RendererInterface $renderer The Renderer
-	 *
-	 * @return  integer  Length of rendered content
+	 * @param   ContentTypeVisitorInterface $visitor The Visitor
 	 */
-	public function accept(RendererInterface $renderer);
+	public function accept(ContentTypeVisitorInterface $visitor);
 }

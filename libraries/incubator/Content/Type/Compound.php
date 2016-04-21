@@ -1,6 +1,6 @@
 <?php
 /**
- * Part of the Joomla Framework Renderer Package
+ * Part of the Joomla Framework Content Package
  *
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
@@ -9,7 +9,7 @@
 namespace Joomla\Content\Type;
 
 use Joomla\Content\ContentTypeInterface;
-use Joomla\Renderer\RendererInterface;
+use Joomla\Content\ContentTypeVisitorInterface;
 
 /**
  * Headline ContentType
@@ -47,14 +47,12 @@ class Compound extends AbstractContentType
 	}
 
 	/**
-	 * Render the output
+	 * {@inheritDoc}
 	 *
-	 * @param   RendererInterface  $renderer  The Renderer
-	 *
-	 * @return  integer  Length of rendered content
+	 * @see \Joomla\Content\ContentTypeInterface::accept()
 	 */
-	public function accept(RendererInterface $renderer)
+	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		return $renderer->visitCompound($this);
+		return $visitor->visitCompound($this);
 	}
 }
