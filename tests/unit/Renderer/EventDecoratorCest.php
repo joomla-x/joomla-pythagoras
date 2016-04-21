@@ -101,8 +101,8 @@ class EventDecoratorCest
 
 			/** @var Dispatcher $mockDispatcher */
 			$mockDispatcher = Mockery::mock(Dispatcher::class);
-			$mockDispatcher->shouldReceive('dispatch')->once()->with('onBeforeRender' . $contentType, RenderContentTypeEvent::class);
-			$mockDispatcher->shouldReceive('dispatch')->once()->with('onAfterRender' . $contentType, RenderContentTypeSuccessEvent::class);
+			$mockDispatcher->shouldReceive('dispatch')->once()->with(RenderContentTypeEvent::class);
+			$mockDispatcher->shouldReceive('dispatch')->once()->with(RenderContentTypeSuccessEvent::class);
 
 			/** @var RendererInterface $mockRenderer */
 			$mockRenderer = Mockery::mock(Renderer::class);

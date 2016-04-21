@@ -54,16 +54,15 @@ final class DelegatingDispatcher implements DispatcherInterface
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @param   string          $name   The name of the event to dispatch.
 	 * @param   EventInterface  $event  The event to pass to the event handlers/listeners.
 	 *
 	 * @return  EventInterface  The event after being passed through all listeners.
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function dispatch($name, EventInterface $event = null)
+	public function dispatch(EventInterface $event)
 	{
-		return $this->dispatcher->dispatch($name, $event);
+		return $this->dispatcher->dispatch($event);
 	}
 
 	/**

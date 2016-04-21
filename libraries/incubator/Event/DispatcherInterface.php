@@ -31,16 +31,13 @@ interface DispatcherInterface
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @param   string          $name   The name of the event to dispatch.
-	 *                                  The name of the event is the name of the method that is invoked on listeners.
 	 * @param   EventInterface  $event  The event to pass to the event handlers/listeners.
-	 *                                  If not supplied, an empty EventInterface instance is created.
 	 *
 	 * @return  EventInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function dispatch($name, EventInterface $event = null);
+	public function dispatch(EventInterface $event);
 
 	/**
 	 * Removes an event listener from the specified event.

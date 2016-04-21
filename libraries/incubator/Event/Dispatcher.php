@@ -376,20 +376,14 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @param   string          $name   The name of the event to dispatch.
 	 * @param   EventInterface  $event  The event to pass to the event handlers/listeners.
 	 *
 	 * @return  EventInterface
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function dispatch($name, EventInterface $event = null)
+	public function dispatch(EventInterface $event)
 	{
-		if (!($event instanceof EventInterface))
-		{
-			$event = $this->getDefaultEvent($name);
-		}
-
 		if (isset($this->listeners[$event->getName()]))
 		{
 			foreach ($this->listeners[$event->getName()] as $listener)
@@ -423,7 +417,7 @@ class Dispatcher implements DispatcherInterface
 			$event = $this->getDefaultEvent($event);
 		}
 
-		return $this->dispatch($event->getName(), $event);
+		return $this->dispatch($event);
 	}
 
 	/**
