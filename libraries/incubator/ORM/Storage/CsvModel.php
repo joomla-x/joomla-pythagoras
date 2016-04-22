@@ -358,8 +358,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 		{
 			usort(
 				$matches,
-				function ($aRow, $bRow) use ($ordering)
-				{
+				function ($aRow, $bRow) use ($ordering) {
 					$a = $aRow[$ordering['column']];
 					$b = $bRow[$ordering['column']];
 

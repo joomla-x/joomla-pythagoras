@@ -8,11 +8,13 @@
 
 namespace Joomla\DI\Exception;
 
+use Interop\Container\Exception\ContainerException;
+
 /**
  * Attempt to set the value of a protected key, which already is set
  *
  * @since  __DEPLOY_VERSION__
  */
-class ProtectedKeyException extends \OutOfBoundsException implements \Interop\Container\Exception\ContainerException
+class ProtectedKeyException extends \OutOfBoundsException implements ContainerException
 {
 }

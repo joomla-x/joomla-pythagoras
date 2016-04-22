@@ -16,7 +16,7 @@ use Joomla\Content\ContentTypeVisitorInterface;
  * @package  Joomla/Content
  * @since    1.0
  *
- * @property string $text
+ * @property string  $text
  * @property integer $level
  */
 class Headline extends AbstractContentType
@@ -24,8 +24,8 @@ class Headline extends AbstractContentType
 	/**
 	 * Headline constructor.
 	 *
-	 * @param   string   $text   The copy of the headline
-	 * @param   integer  $level  The Level of the headline
+	 * @param   string  $text  The copy of the headline
+	 * @param   integer $level The Level of the headline
 	 */
 	public function __construct($text, $level = 1)
 	{
@@ -34,9 +34,11 @@ class Headline extends AbstractContentType
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Visits the content type.
 	 *
-	 * @see \Joomla\Content\ContentTypeInterface::accept()
+	 * @param   ContentTypeVisitorInterface $visitor The Visitor
+	 *
+	 * @return  mixed
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{

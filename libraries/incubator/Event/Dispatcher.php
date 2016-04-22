@@ -34,7 +34,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Set an event to the dispatcher. It will replace any event with the same name.
 	 *
-	 * @param   EventInterface  $event  The event.
+	 * @param   EventInterface $event The event.
 	 *
 	 * @return  $this
 	 *
@@ -50,7 +50,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Add an event to this dispatcher, only if it is not existing.
 	 *
-	 * @param   EventInterface  $event  The event.
+	 * @param   EventInterface $event The event.
 	 *
 	 * @return  $this
 	 *
@@ -69,7 +69,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Tell if the given event has been added to this dispatcher.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  boolean  True if the listener has the given event, false otherwise.
 	 *
@@ -88,8 +88,8 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Get the event object identified by the given name.
 	 *
-	 * @param   string  $name     The event name.
-	 * @param   mixed   $default  The default value if the event was not registered.
+	 * @param   string $name    The event name.
+	 * @param   mixed  $default The default value if the event was not registered.
 	 *
 	 * @return  EventInterface|mixed  The event of the default value.
 	 *
@@ -108,7 +108,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Remove an event from this dispatcher. The registered listeners will remain.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  $this
 	 *
@@ -150,7 +150,7 @@ class Dispatcher implements DispatcherInterface
 	 */
 	public function clearEvents()
 	{
-		$events = $this->events;
+		$events       = $this->events;
 		$this->events = [];
 
 		return $events;
@@ -159,7 +159,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Count the number of registered event.
 	 *
-	 * @return  integer  The numer of registered events.
+	 * @return  integer  The number of registered events.
 	 *
 	 * @since   1.0
 	 */
@@ -171,9 +171,9 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Attaches a listener to an event
 	 *
-	 * @param   string    $eventName  The event to listen to.
-	 * @param   callable  $callback   A callable function
-	 * @param   integer   $priority   The priority at which the $callback executed
+	 * @param   string   $eventName The event to listen to.
+	 * @param   callable $callback  A callable function
+	 * @param   integer  $priority  The priority at which the $callback executed
 	 *
 	 * @return  boolean
 	 *
@@ -194,8 +194,8 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Get the priority of the given listener for the given event.
 	 *
-	 * @param   string    $eventName  The event to listen to.
-	 * @param   callable  $callback   A callable function
+	 * @param   string   $eventName The event to listen to.
+	 * @param   callable $callback  A callable function
 	 *
 	 * @return  mixed  The listener priority or null if the listener doesn't exist.
 	 *
@@ -214,7 +214,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Get the listeners registered to the given event.
 	 *
-	 * @param   string  $event  The event to fetch listeners for
+	 * @param   string $event The event to fetch listeners for
 	 *
 	 * @return  object[]  An array of registered listeners sorted according to their priorities.
 	 *
@@ -235,8 +235,8 @@ class Dispatcher implements DispatcherInterface
 	 *
 	 * If an event is specified, it will tell if the listener is registered for that event.
 	 *
-	 * @param   callable  $callback   The callable to check is listening to the event.
-	 * @param   string    $eventName  The event to check a listener is subscribed to.
+	 * @param   callable $callback  The callable to check is listening to the event.
+	 * @param   string   $eventName The event to check a listener is subscribed to.
 	 *
 	 * @return  boolean  True if the listener is registered, false otherwise.
 	 *
@@ -268,8 +268,8 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Removes an event listener from the specified event.
 	 *
-	 * @param   string    $eventName  The event to remove a listener from.
-	 * @param   callable  $listener   The listener to remove.
+	 * @param   string   $eventName The event to remove a listener from.
+	 * @param   callable $listener  The listener to remove.
 	 *
 	 * @return  void
 	 *
@@ -288,7 +288,7 @@ class Dispatcher implements DispatcherInterface
 	 *
 	 * If an event is specified, the listeners will be cleared only for that event.
 	 *
-	 * @param   string  $event  The event name.
+	 * @param   string $event The event name.
 	 *
 	 * @return  $this
 	 *
@@ -314,7 +314,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Count the number of registered listeners for the given event.
 	 *
-	 * @param   string  $event  The event name.
+	 * @param   string $event The event name.
 	 *
 	 * @return  integer  The number of registered listeners for the given event.
 	 *
@@ -328,7 +328,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Adds an event subscriber.
 	 *
-	 * @param   SubscriberInterface  $subscriber  The subscriber.
+	 * @param   SubscriberInterface $subscriber The subscriber.
 	 *
 	 * @return  $this
 	 *
@@ -340,19 +340,28 @@ class Dispatcher implements DispatcherInterface
 		{
 			if (is_array($params))
 			{
-				$this->addListener($eventName, [$subscriber, $params[0]], isset($params[1]) ? $params[1] : Priority::NORMAL);
+				$this->addListener(
+					$eventName,
+					[
+						$subscriber,
+						$params[0]
+					],
+					isset($params[1]) ? $params[1] : Priority::NORMAL
+				);
 			}
 			else
 			{
 				$this->addListener($eventName, [$subscriber, $params]);
 			}
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Removes an event subscriber.
 	 *
-	 * @param   SubscriberInterface  $subscriber  The subscriber.
+	 * @param   SubscriberInterface $subscriber The subscriber.
 	 *
 	 * @return  void
 	 *
@@ -376,7 +385,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @param   EventInterface  $event  The event to pass to the event handlers/listeners.
+	 * @param   EventInterface $event The event to pass to the event handlers/listeners.
 	 *
 	 * @return  EventInterface
 	 *
@@ -403,11 +412,11 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Trigger an event.
 	 *
-	 * @param   EventInterface|string  $event  The event object or name.
+	 * @param   EventInterface|string $event The event object or name.
 	 *
 	 * @return  EventInterface  The event after being passed through all listeners.
 	 *
-	 * @since   1.0
+	 * @since       1.0
 	 * @deprecated  3.0  Use dispatch() instead.
 	 */
 	public function triggerEvent($event)
@@ -423,7 +432,7 @@ class Dispatcher implements DispatcherInterface
 	/**
 	 * Get an event object for the specified event name
 	 *
-	 * @param   string  $name  The event name to get an EventInterface object for
+	 * @param   string $name The event name to get an EventInterface object for
 	 *
 	 * @return  EventInterface
 	 *

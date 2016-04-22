@@ -5,6 +5,7 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
+
 use Joomla\DI\Loader\IniLoader;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\CommandBusMiddleware;
@@ -15,18 +16,11 @@ use Joomla\Http\ServerRequestFactory;
 use Joomla\J3Compatibility\Http\Middleware\RouterMiddleware as LegacyRouterMiddleware;
 
 require_once 'libraries/vendor/autoload.php';
+require_once __DIR__ . '/init.php';
 
-$container = new \Joomla\DI\Container();
-$container->set('ConfigDirectory', __DIR__);
+$container = initContainer();
 
-(new IniLoader($container))->loadFromFile(__DIR__ . '/config/services.ini');
-
-if (! defined('JPATH_ROOT'))
-{
-	define('JPATH_ROOT', $container->get('config')->get('JPATH_ROOT', __DIR__));
-}
-
-$app  = new Application(
+$app = new Application(
 	[
 		new ResponseSenderMiddleware,
 		new RendererMiddleware($container->get('dispatcher')),

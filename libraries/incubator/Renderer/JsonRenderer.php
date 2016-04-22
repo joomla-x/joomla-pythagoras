@@ -27,7 +27,7 @@ class JsonRenderer extends Renderer
 
 	/** @var array The collected data */
 	protected $data = [];
-	
+
 	/** @var int The current output buffer length */
 	protected $len = 0;
 
@@ -97,7 +97,9 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * @return int
+	 * Update the content
+	 *
+	 * @return integer
 	 */
 	private function updateContent()
 	{

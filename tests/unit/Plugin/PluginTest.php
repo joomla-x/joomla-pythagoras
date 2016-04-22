@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Tests\Unit\Plugin;
 
 use Joomla\Plugin\Plugin;
@@ -7,8 +8,7 @@ use Joomla\Tests\Unit\Plugin\Stubs\SimpleEventListener;
 
 class PluginTest extends \PHPUnit_Framework_TestCase
 {
-
-	public function testPluginListeners ()
+	public function testPluginListeners()
 	{
 		$plugin = new Plugin();
 
@@ -16,7 +16,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 		$this->assertEmpty($plugin->getListeners('unit'));
 	}
 
-	public function testAddPluginListener ()
+	public function testAddPluginListener()
 	{
 		$plugin = new Plugin();
 		$plugin->addListener('unit', new SimpleEventListener());

@@ -63,8 +63,9 @@ class EventDecoratorCest
 		{
 			$return = array_pop($arguments);
 
-			/** @var RendererInterface $mockRenderer */
-			$mockRenderer   = Mockery::mock('\\Joomla\\Renderer\\Renderer');
+			/** @var RendererInterface|\Mockery\MockInterface $mockRenderer */
+			$mockRenderer = Mockery::mock('\\Joomla\\Renderer\\Renderer');
+			/** @noinspection PhpMethodParametersCountMismatchInspection */
 			$mockRenderer->shouldReceive($method)->once()->andReturn($return);
 
 			$renderer = new EventDecorator($mockRenderer, new Dispatcher);

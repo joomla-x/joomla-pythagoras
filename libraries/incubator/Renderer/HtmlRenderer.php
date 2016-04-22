@@ -26,6 +26,7 @@ class HtmlRenderer extends Renderer
 	/** @var string The MIME type */
 	protected $mediatype = 'text/html';
 
+	/** @var string  Layout directory */
 	protected $layoutDirectory = 'html';
 
 	/** @var  ScriptStrategyInterface */
@@ -116,7 +117,7 @@ class HtmlRenderer extends Renderer
 	 * @param   string                $filename  The filename of the layout file
 	 * @param   ContentTypeInterface  $content   The content
 	 *
-	 * @return int
+	 * @return  integer
 	 */
 	private function applyLayout($filename, $content)
 	{

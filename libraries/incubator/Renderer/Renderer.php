@@ -10,7 +10,6 @@ namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Renderer\Exception\NotFoundException;
-use Psr\Http\Message\StreamInterface;
 
 /**
  * Class Renderer
@@ -19,7 +18,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * @since    1.0
  */
-abstract class Renderer implements RendererInterface, StreamInterface
+abstract class Renderer implements RendererInterface
 {
 	/** @var string The MIME type */
 	protected $mediatype = 'application/binary';
@@ -47,7 +46,9 @@ abstract class Renderer implements RendererInterface, StreamInterface
 	}
 
 	/**
-	 * @param   string   $type     The content type
+	 * Register a content type
+	 *
+	 * @param   string                $type    The content type
 	 * @param   callable|array|string $handler The handler for that type
 	 *
 	 * @return  void
@@ -56,23 +57,23 @@ abstract class Renderer implements RendererInterface, StreamInterface
 	{
 		if (is_string($handler))
 		{
-			$handler = function(ContentTypeInterface $contentItem) use ($handler) {
+			$handler = function (ContentTypeInterface $contentItem) use ($handler) {
 				return call_user_func([$contentItem, $handler]);
 			};
 		}
 		elseif (is_array($handler))
 		{
-			$handler = function (ContentTypeInterface $contentItem) use ($handler)
-			{
+			$handler = function (ContentTypeInterface $contentItem) use ($handler) {
 				return call_user_func($handler, $contentItem);
 			};
 		}
+
 		$this->handlers[strtolower($type)] = $handler;
 	}
 
 	/**
-	 * @param   string  $method     Method name; must start with 'visit'
-	 * @param   array   $arguments  Method arguments
+	 * @param   string $method    Method name; must start with 'visit'
+	 * @param   array  $arguments Method arguments
 	 *
 	 * @return  void
 	 */
@@ -196,8 +197,8 @@ abstract class Renderer implements RendererInterface, StreamInterface
 	 *
 	 * @link http://www.php.net/manual/en/function.fseek.php
 	 *
-	 * @param   int   $offset  Stream offset
-	 * @param   int   $whence  Specifies how the cursor position will be calculated
+	 * @param   int $offset    Stream offset
+	 * @param   int $whence    Specifies how the cursor position will be calculated
 	 *                         based on the seek offset. Valid values are identical to the built-in
 	 *                         PHP $whence values for `fseek()`.
 	 *                         SEEK_SET: Set position equal to offset bytes
@@ -263,7 +264,7 @@ abstract class Renderer implements RendererInterface, StreamInterface
 	/**
 	 * Read data from the stream.
 	 *
-	 * @param   int  $length  Read up to $length bytes from the object and return
+	 * @param   int $length   Read up to $length bytes from the object and return
 	 *                        them. Fewer than $length bytes may be returned if underlying stream
 	 *                        call returns fewer bytes.
 	 *
@@ -302,7 +303,7 @@ abstract class Renderer implements RendererInterface, StreamInterface
 	 *
 	 * @link http://php.net/manual/en/function.stream-get-meta-data.php
 	 *
-	 * @param   string  $key  Specific metadata to retrieve.
+	 * @param   string $key Specific metadata to retrieve.
 	 *
 	 * @return  array|mixed|null  Returns an associative array if no key is
 	 *                            provided. Returns a specific key value if a key is provided and the

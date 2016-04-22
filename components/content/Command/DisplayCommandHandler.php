@@ -27,7 +27,7 @@ class DisplayCommandHandler extends CommandHandler
 	/**
 	 * Execute the DisplayCommand.
 	 *
-	 * @param   DisplayCommand  $command  The command to execute.
+	 * @param   DisplayCommand $command The command to execute.
 	 *
 	 * @return  void
 	 */

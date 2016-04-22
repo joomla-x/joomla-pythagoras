@@ -17,7 +17,7 @@ use Joomla\Content\ContentTypeVisitorInterface;
  * @package  Joomla/Content
  * @since    1.0
  *
- * @property string $type
+ * @property string                 $type
  * @property ContentTypeInterface[] $items
  */
 class Compound extends AbstractContentType
@@ -25,19 +25,19 @@ class Compound extends AbstractContentType
 	/**
 	 * Compound constructor.
 	 *
-	 * @param   string                  $type   The type represented by this class. In HTML, it is rendered as enclosing tag.
-	 * @param   ContentTypeInterface[]  $items  The items enclosed by this tag
+	 * @param   string                 $type  The type represented by this class. In HTML, it is rendered as enclosing tag.
+	 * @param   ContentTypeInterface[] $items The items enclosed by this tag
 	 */
 	public function __construct($type, $items)
 	{
-		$this->type = $type;
+		$this->type  = $type;
 		$this->items = array_filter($items);
 	}
 
 	/**
 	 * Add content items to the compound.
 	 *
-	 * @param   ContentTypeInterface  $content  The content to add
+	 * @param   ContentTypeInterface $content The content to add
 	 *
 	 * @return  void
 	 */
@@ -47,9 +47,11 @@ class Compound extends AbstractContentType
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Visits the content type.
 	 *
-	 * @see \Joomla\Content\ContentTypeInterface::accept()
+	 * @param   ContentTypeVisitorInterface $visitor The Visitor
+	 *
+	 * @return  mixed
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{

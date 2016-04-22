@@ -5,7 +5,9 @@
  * @copyright  Copyright (C) 2013 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
+
 namespace Joomla\DI\Loader;
+
 use Joomla\DI\Container;
 
 /**
@@ -16,13 +18,20 @@ use Joomla\DI\Container;
  *
  * [providers]
  * dispatcher = "\\MyApp\\Service\\MyServiceProvider"
+ *
+ * @since  __DEPLOY_VERSION__
  */
 class IniLoader implements LoaderInterface
 {
-
+	/** @var Container The container */
 	private $container = null;
 
-	public function __construct (Container $container)
+	/**
+	 * IniLoader constructor.
+	 *
+	 * @param   Container  $container  The container
+	 */
+	public function __construct(Container $container)
 	{
 		$this->container = $container;
 	}
@@ -30,29 +39,41 @@ class IniLoader implements LoaderInterface
 	/**
 	 * Helper function to load the services from a file.
 	 *
-	 * @param string $filename
+	 * @param   string  $filename  The filename
+	 *
+	 * @return  void
+	 *
 	 * @see LoaderInterface::load()
 	 */
-	public function loadFromFile ($filename)
+	public function loadFromFile($filename)
 	{
 		$this->load(file_get_contents($filename));
 	}
 
-	public function load ($content)
+	/**
+	 * Loads service providers from the content.
+	 *
+	 * @param   string  $content  The content
+	 *
+	 * @return  void
+	 */
+	public function load($content)
 	{
 		$services = parse_ini_string($content, true);
-		if (! key_exists('providers', $services))
+
+		if (!key_exists('providers', $services))
 		{
 			return;
 		}
 
 		foreach ($services['providers'] as $alias => $service)
 		{
-			if (! class_exists($service))
+			if (!class_exists($service))
 			{
 				continue;
 			}
-			$this->container->registerServiceProvider(new $service(), $alias);
+
+			$this->container->registerServiceProvider(new $service, $alias);
 		}
 	}
 }

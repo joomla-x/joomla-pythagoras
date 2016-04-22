@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Tests\Unit\Service;
 
 use Joomla\DI\Container;
@@ -9,12 +10,11 @@ use Joomla\Service\EventDispatcherServiceProvider;
 
 class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-
 	/**
 	 * @testdox The EventDispatcherServiceProvider implements the
 	 * ServiceProviderInterface interface
 	 */
-	public function testTheTestEventDispatcherServiceProviderImplementsTheServiceProviderInterface ()
+	public function testTheTestEventDispatcherServiceProviderImplementsTheServiceProviderInterface()
 	{
 		$this->assertInstanceOf(ServiceProviderInterface::class, new EventDispatcherServiceProvider());
 	}
@@ -23,11 +23,10 @@ class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 	 * @testdox The EventDispatcherServiceProvider adds an EventDispatcher to a
 	 * container
 	 */
-	public function testEventDispatcherServiceProviderCreatesDispatcher ()
+	public function testEventDispatcherServiceProviderCreatesDispatcher()
 	{
 		$container = new Container();
-		$container->set('pluginfactory', $this->getMockBuilder(PluginFactoryInterface::class)
-			->getMock());
+		$container->set('plugin_factory', $this->getMockBuilder(PluginFactoryInterface::class)->getMock());
 
 		$service = new EventDispatcherServiceProvider();
 		$service->register($container);

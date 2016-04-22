@@ -16,7 +16,7 @@ use Joomla\Content\ContentTypeVisitorInterface;
  * @package  Joomla/Content
  * @since    1.0
  *
- * @property string $text
+ * @property string  $text
  * @property integer $variant One of the class constants
  */
 class Paragraph extends AbstractContentType
@@ -27,8 +27,8 @@ class Paragraph extends AbstractContentType
 	/**
 	 * Paragraph constructor.
 	 *
-	 * @param   string   $text     The copy of the paragraph
-	 * @param   integer  $variant  Emphasis variant, see class constants
+	 * @param   string  $text    The copy of the paragraph
+	 * @param   integer $variant Emphasis variant, see class constants
 	 */
 	public function __construct($text, $variant = self::PLAIN)
 	{
@@ -37,9 +37,11 @@ class Paragraph extends AbstractContentType
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Visits the content type.
 	 *
-	 * @see \Joomla\Content\ContentTypeInterface::accept()
+	 * @param   ContentTypeVisitorInterface $visitor The Visitor
+	 *
+	 * @return  mixed
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{

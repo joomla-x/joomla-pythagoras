@@ -12,6 +12,7 @@ namespace Joomla\Content;
  * ContentType Interface
  *
  * @package  Joomla/Content
+ *
  * @since    1.0
  */
 interface ContentTypeInterface
@@ -20,6 +21,8 @@ interface ContentTypeInterface
 	 * Visits the content type.
 	 *
 	 * @param   ContentTypeVisitorInterface $visitor The Visitor
+	 *
+	 * @return  mixed
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor);
 }

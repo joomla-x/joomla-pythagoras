@@ -115,15 +115,13 @@ class Resource
 
 			if (is_object($value))
 			{
-				$this->factory = function () use ($value)
-				{
+				$this->factory = function () use ($value) {
 					return clone $value;
 				};
 			}
 			else
 			{
-				$this->factory = function () use ($value)
-				{
+				$this->factory = function () use ($value) {
 					return $value;
 				};
 			}

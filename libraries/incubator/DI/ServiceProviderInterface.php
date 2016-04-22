@@ -21,7 +21,7 @@ interface ServiceProviderInterface
 	 * @param   Container $container  The DI container.
 	 * @param   string    $alias      An optional alias for the service
 	 *
-	 * @since   1.0
+	 * @return  void
 	 */
 	public function register(Container $container, $alias = null);
 }

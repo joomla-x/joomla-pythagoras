@@ -10,13 +10,20 @@ namespace Joomla\Renderer\Event;
 
 use Joomla\Event\Event;
 
+/**
+ * Class RegisterContentTypeEvent
+ *
+ * @package Joomla\Renderer
+ *
+ * @since  1.0
+ */
 class RegisterContentTypeEvent extends Event
 {
 	/**
 	 * RegisterContentTypeEvent constructor.
 	 *
-	 * @param string   $type
-	 * @param callable $handler
+	 * @param   string    $type     The name of the content type
+	 * @param   callable  $handler  The content type handler
 	 */
 	public function __construct($type, $handler)
 	{

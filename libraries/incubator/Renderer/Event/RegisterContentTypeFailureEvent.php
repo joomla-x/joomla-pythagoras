@@ -10,13 +10,20 @@ namespace Joomla\Renderer\Event;
 
 use Joomla\Event\Event;
 
+/**
+ * Class RegisterContentTypeFailureEvent
+ *
+ * @package Joomla\Renderer
+ *
+ * @since  1.0
+ */
 class RegisterContentTypeFailureEvent extends Event
 {
 	/**
 	 * RegisterContentTypeFailureEvent constructor.
 	 *
-	 * @param string     $type
-	 * @param \Exception $exception
+	 * @param   string      $type       The name of the content type
+	 * @param   \Exception  $exception  The exception
 	 */
 	public function __construct($type, $exception)
 	{

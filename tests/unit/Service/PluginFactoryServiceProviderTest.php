@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Tests\Unit\Service;
 
 use Joomla\DI\Container;
@@ -8,12 +9,11 @@ use Joomla\Service\PluginFactoryServiceProvider;
 
 class PluginFactoryServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-
 	/**
 	 * @testdox The PluginFactoryServiceProvider implements the
 	 * ServiceProviderInterface interface
 	 */
-	public function testTheTestPluginFactoryServiceProviderImplementsTheServiceProviderInterface ()
+	public function testTheTestPluginFactoryServiceProviderImplementsTheServiceProviderInterface()
 	{
 		$this->assertInstanceOf(ServiceProviderInterface::class, new PluginFactoryServiceProvider());
 	}
@@ -22,7 +22,7 @@ class PluginFactoryServiceProviderTest extends \PHPUnit_Framework_TestCase
 	 * @testdox The PluginFactoryServiceProvider adds an PluginFactory to a
 	 * container
 	 */
-	public function testPluginFactoryServiceProviderCreatesDispatcher ()
+	public function testPluginFactoryServiceProviderCreatesDispatcher()
 	{
 		$container = new Container();
 		$container->set('ConfigDirectory', __DIR__);

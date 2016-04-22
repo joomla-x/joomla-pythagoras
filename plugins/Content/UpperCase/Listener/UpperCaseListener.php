@@ -5,24 +5,45 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
+
 namespace Joomla\Plugin\Content\UpperCase\Listener;
 
-use Joomla\Renderer\Event\RenderContentTypeEvent;
-use Joomla\Content\Type\Compound;
 use Joomla\Content\ContentTypeInterface;
-use Joomla\Content\Type\Paragraph;
+use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\Paragraph;
+use Joomla\Renderer\Event\RenderContentTypeEvent;
 
+/**
+ * Class UpperCaseListener
+ *
+ * @package Joomla\Plugin\Content
+ *
+ * @since   1.0
+ */
 class UpperCaseListener
 {
-
-	public function toUpperCase (RenderContentTypeEvent $event)
+	/**
+	 * Event handler
+	 *
+	 * @param   RenderContentTypeEvent $event The event
+	 *
+	 * @return  void
+	 */
+	public function toUpperCase(RenderContentTypeEvent $event)
 	{
 		$contentType = $event->getArgument('content');
 		$this->toUpper($contentType);
 	}
 
-	private function toUpper (ContentTypeInterface $content)
+	/**
+	 * Convert strings to uppercase
+	 *
+	 * @param   ContentTypeInterface $content The content
+	 *
+	 * @return  void
+	 */
+	private function toUpper(ContentTypeInterface $content)
 	{
 		if ($content instanceof Compound)
 		{
@@ -31,11 +52,11 @@ class UpperCaseListener
 				$this->toUpper($item);
 			}
 		}
-		else if ($content instanceof Paragraph)
+		elseif ($content instanceof Paragraph)
 		{
 			$content->text = strtoupper($content->text);
 		}
-		else if ($content instanceof Headline)
+		elseif ($content instanceof Headline)
 		{
 			$content->text = strtoupper($content->text);
 		}

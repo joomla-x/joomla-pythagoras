@@ -24,8 +24,8 @@ class Attribution extends AbstractContentType
 	/**
 	 * Attribution constructor.
 	 *
-	 * @param   string  $label  The text before the author's name
-	 * @param   string  $name   The author's name
+	 * @param   string $label The text before the author's name
+	 * @param   string $name  The author's name
 	 */
 	public function __construct($label, $name)
 	{
@@ -34,9 +34,11 @@ class Attribution extends AbstractContentType
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Visits the content type.
 	 *
-	 * @see \Joomla\Content\ContentTypeInterface::accept()
+	 * @param   ContentTypeVisitorInterface $visitor The Visitor
+	 *
+	 * @return  mixed
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{

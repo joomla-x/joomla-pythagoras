@@ -22,13 +22,13 @@ interface ParserInterface
 {
 	/**
 	 * Open the description of the entity
-	 * 
-	 * @param string $descriptionFile
+	 *
+	 * @param   string $descriptionFile  The file with the entity description
 	 *
 	 * @return mixed
 	 */
 	public function open($descriptionFile);
-	
+
 	/**
 	 * Parse the entity definition
 	 *

@@ -8,11 +8,13 @@
 
 namespace Joomla\DI\Exception;
 
+use Interop\Container\Exception\ContainerException;
+
 /**
  * No container is available.
  *
  * @since  __DEPLOY_VERSION__
  */
-class ContainerNotFoundException extends \RuntimeException implements \Interop\Container\Exception\ContainerException
+class ContainerNotFoundException extends \RuntimeException implements ContainerException
 {
 }

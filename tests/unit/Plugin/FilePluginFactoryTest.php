@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Tests\Unit\Plugin;
 
 use Joomla\Plugin\FilePluginFactory;
@@ -8,7 +9,7 @@ use League\Flysystem\Adapter\AbstractAdapter;
 class FilePluginFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
-	public function testGetAllPlugins ()
+	public function testGetAllPlugins()
 	{
 		$pluginManifest = <<<EOL
 listeners:
@@ -20,12 +21,12 @@ EOL;
 
 		$fs = $this->getMockBuilder(AbstractAdapter::class)->getMock();
 		$fs->method('listContents')->willReturn([
-				[
-						'path' => 'plugin.yml'
-				]
+			[
+				'path' => 'plugin.yml'
+			]
 		]);
 		$fs->method('read')->willReturn([
-				'contents' => $pluginManifest
+			'contents' => $pluginManifest
 		]);
 
 		$factory = new FilePluginFactory($fs);
@@ -39,9 +40,9 @@ EOL;
 		$this->assertEquals('onEventTest', $listeners[0][1]);
 	}
 
-	public function testGetTypeSpecificPlugins ()
+	public function testGetTypeSpecificPlugins()
 	{
-		$pluginManifest = <<<EOL
+		$pluginManifest  = <<<EOL
 listeners:
     UnitTestListener:
         class: \Joomla\Tests\Unit\Plugin\Stubs\SimpleEventListener
@@ -58,18 +59,18 @@ EOL;
 
 		$fs = $this->getMockBuilder(AbstractAdapter::class)->getMock();
 		$fs->method('listContents')->willReturnOnConsecutiveCalls([
-				[
-						'path' => 'plugin.yml'
-				]
+			[
+				'path' => 'plugin.yml'
+			]
 		], [
-				[
-						'path' => 'plugin.yml'
-				]
+			[
+				'path' => 'plugin.yml'
+			]
 		]);
 		$fs->method('read')->willReturnOnConsecutiveCalls([
-				'contents' => $pluginManifest
+			'contents' => $pluginManifest
 		], [
-				'contents' => $pluginManifest1
+			'contents' => $pluginManifest1
 		]);
 		$fs->method('applyPathPrefix')->willReturnOnConsecutiveCalls('test1', 'test2');
 
@@ -83,6 +84,8 @@ EOL;
 
 		$pluginsAll = $factory->getPlugins();
 		$this->assertNotEquals($plugins, $pluginsAll);
+
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$listeners = $pluginsAll[0]->getListeners('onUnitTestEvent');
 		$this->assertEmpty($pluginsAll[0]->getListeners('onUnitTestEvent'));
 		$this->assertNotEmpty($pluginsAll[0]->getListeners('onUnitTestEvent1'));

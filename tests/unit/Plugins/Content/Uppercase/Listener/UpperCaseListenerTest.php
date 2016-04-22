@@ -1,15 +1,16 @@
 <?php
+
 namespace Joomla\Tests\Unit\Plugins\Content\Uppercase\Listener;
-use Joomla\Plugin\Content\UpperCase\Listener\UpperCaseListener;
-use Joomla\Content\Type\Paragraph;
-use Joomla\Renderer\Event\RenderContentTypeEvent;
-use Joomla\Content\Type\Headline;
+
 use Joomla\Content\Type\Compound;
+use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\Paragraph;
+use Joomla\Plugin\Content\UpperCase\Listener\UpperCaseListener;
+use Joomla\Renderer\Event\RenderContentTypeEvent;
 
 class UpperCaseListenerTest extends \PHPUnit_Framework_TestCase
 {
-
-	public function testUpperCaseListenerParagraph ()
+	public function testUpperCaseListenerParagraph()
 	{
 		$listener = new UpperCaseListener();
 
@@ -19,7 +20,7 @@ class UpperCaseListenerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('UNIT TEST', $p->text);
 	}
 
-	public function testUpperCaseListenerHeadline ()
+	public function testUpperCaseListenerHeadline()
 	{
 		$listener = new UpperCaseListener();
 
@@ -29,7 +30,7 @@ class UpperCaseListenerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('UNIT TEST', $h->text);
 	}
 
-	public function testUpperCaseListenerCompound ()
+	public function testUpperCaseListenerCompound()
 	{
 		$listener = new UpperCaseListener();
 

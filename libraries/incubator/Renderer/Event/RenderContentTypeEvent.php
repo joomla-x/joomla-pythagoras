@@ -11,13 +11,20 @@ namespace Joomla\Renderer\Event;
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Event\Event;
 
+/**
+ * Class RenderContentTypeEvent
+ *
+ * @package Joomla\Renderer
+ *
+ * @since  1.0
+ */
 class RenderContentTypeEvent extends Event
 {
 	/**
 	 * RenderContentTypeEvent constructor.
 	 *
-	 * @param string               $type
-	 * @param ContentTypeInterface $content
+	 * @param   string               $type     The name of the content type
+	 * @param   ContentTypeInterface $content  The content element
 	 */
 	public function __construct($type, $content)
 	{

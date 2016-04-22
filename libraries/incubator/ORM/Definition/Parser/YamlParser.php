@@ -23,7 +23,7 @@ class YamlParser implements ParserInterface
 	/**
 	 * Open the description of the entity
 	 *
-	 * @param string $descriptionFile
+	 * @param   string $descriptionFile The file with the entity description
 	 *
 	 * @return mixed
 	 */
@@ -42,7 +42,7 @@ class YamlParser implements ParserInterface
 	 */
 	public function parse($callbacks, LocatorInterface $locator)
 	{
-		$structure = new EntityStructure([]);
+		$structure = new EntityStructure(array());
 
 		return $structure;
 	}

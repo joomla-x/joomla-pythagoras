@@ -12,15 +12,13 @@ use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
-use Joomla\Event\Dispatcher;
+use Joomla\Event\DispatcherInterface;
 use Joomla\Renderer\Event\RegisterContentTypeEvent;
 use Joomla\Renderer\Event\RegisterContentTypeFailureEvent;
 use Joomla\Renderer\Event\RegisterContentTypeSuccessEvent;
 use Joomla\Renderer\Event\RenderContentTypeEvent;
 use Joomla\Renderer\Event\RenderContentTypeFailureEvent;
 use Joomla\Renderer\Event\RenderContentTypeSuccessEvent;
-use Psr\Http\Message\StreamInterface;
-use Joomla\Event\DispatcherInterface;
 
 /**
  * Event Decorator for Renderer
@@ -29,7 +27,7 @@ use Joomla\Event\DispatcherInterface;
  *
  * @since    1.0
  */
-class EventDecorator implements RendererInterface, StreamInterface
+class EventDecorator implements RendererInterface
 {
 	/** @var RendererInterface */
 	private $renderer;
@@ -40,8 +38,8 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Decorator constructor.
 	 *
-	 * @param RendererInterface   $renderer
-	 * @param DispatcherInterface $dispatcher
+	 * @param   RendererInterface   $renderer    The renderer to be decorated
+	 * @param   DispatcherInterface $dispatcher  The dispather handling the events
 	 */
 	public function __construct(RendererInterface $renderer, DispatcherInterface $dispatcher)
 	{
@@ -53,7 +51,9 @@ class EventDecorator implements RendererInterface, StreamInterface
 	 * @param   string                $type    The content type
 	 * @param   callable|array|string $handler The handler for that type
 	 *
-	 * @throws \Exception
+	 * @return  void
+	 *
+	 * @throws  \Exception
 	 */
 	public function registerContentType($type, $handler)
 	{
@@ -63,7 +63,8 @@ class EventDecorator implements RendererInterface, StreamInterface
 		{
 			$this->renderer->registerContentType($type, $handler);
 			$this->dispatcher->dispatch(new RegisterContentTypeSuccessEvent($type, $handler));
-		} catch (\Exception $exception)
+		}
+		catch (\Exception $exception)
 		{
 			$this->dispatcher->dispatch(new RegisterContentTypeFailureEvent($type, $exception));
 			throw $exception;
@@ -74,8 +75,8 @@ class EventDecorator implements RendererInterface, StreamInterface
 	 * @param   string $method    Method name; must start with 'visit'
 	 * @param   array  $arguments Method arguments
 	 *
-	 * @return mixed
-	 * @throws \Exception
+	 * @return  mixed
+	 * @throws  \Exception
 	 */
 	public function __call($method, $arguments)
 	{
@@ -152,7 +153,7 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Closes the stream and any underlying resources.
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function close()
 	{
@@ -164,7 +165,7 @@ class EventDecorator implements RendererInterface, StreamInterface
 	 *
 	 * After the stream has been detached, the stream is in an unusable state.
 	 *
-	 * @return resource|null Underlying PHP stream, if any
+	 * @return  resource|null Underlying PHP stream, if any
 	 */
 	public function detach()
 	{
@@ -174,7 +175,7 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Get the size of the stream if known.
 	 *
-	 * @return int|null Returns the size in bytes if known, or null if unknown.
+	 * @return  integer|null  Returns the size in bytes if known, or null if unknown.
 	 */
 	public function getSize()
 	{
@@ -184,8 +185,8 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Returns the current position of the file read/write pointer
 	 *
-	 * @return int Position of the file pointer
-	 * @throws \RuntimeException on error.
+	 * @return  integer  Position of the file pointer
+	 * @throws  \RuntimeException on error.
 	 */
 	public function tell()
 	{
@@ -195,7 +196,7 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Returns true if the stream is at the end of the stream.
 	 *
-	 * @return bool
+	 * @return  boolean
 	 */
 	public function eof()
 	{
@@ -205,7 +206,7 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Returns whether or not the stream is seekable.
 	 *
-	 * @return bool
+	 * @return  boolean
 	 */
 	public function isSeekable()
 	{
@@ -217,14 +218,16 @@ class EventDecorator implements RendererInterface, StreamInterface
 	 *
 	 * @link http://www.php.net/manual/en/function.fseek.php
 	 *
-	 * @param int $offset Stream offset
-	 * @param int $whence Specifies how the cursor position will be calculated
-	 *                    based on the seek offset. Valid values are identical to the built-in
-	 *                    PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
-	 *                    offset bytes SEEK_CUR: Set position to current location plus offset
-	 *                    SEEK_END: Set position to end-of-stream plus offset.
+	 * @param   int $offset Stream offset
+	 * @param   int $whence Specifies how the cursor position will be calculated
+	 *                      based on the seek offset. Valid values are identical to the built-in
+	 *                      PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
+	 *                      offset bytes SEEK_CUR: Set position to current location plus offset
+	 *                      SEEK_END: Set position to end-of-stream plus offset.
 	 *
-	 * @throws \RuntimeException on failure.
+	 * @return  void
+	 *
+	 * @throws  \RuntimeException on failure.
 	 */
 	public function seek($offset, $whence = SEEK_SET)
 	{
@@ -239,17 +242,19 @@ class EventDecorator implements RendererInterface, StreamInterface
 	 *
 	 * @see  seek()
 	 * @link http://www.php.net/manual/en/function.fseek.php
-	 * @throws \RuntimeException on failure.
+	 *
+	 * @return  void
+	 * @throws  \RuntimeException on failure.
 	 */
 	public function rewind()
 	{
-		return $this->renderer->rewind();
+		$this->renderer->rewind();
 	}
 
 	/**
 	 * Returns whether or not the stream is writable.
 	 *
-	 * @return bool
+	 * @return  boolean
 	 */
 	public function isWritable()
 	{
@@ -259,10 +264,10 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Write data to the stream.
 	 *
-	 * @param string $string The string that is to be written.
+	 * @param   string $string  The string that is to be written.
 	 *
-	 * @return int Returns the number of bytes written to the stream.
-	 * @throws \RuntimeException on failure.
+	 * @return  integer  Returns the number of bytes written to the stream.
+	 * @throws  \RuntimeException on failure.
 	 */
 	public function write($string)
 	{
@@ -272,7 +277,7 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Returns whether or not the stream is readable.
 	 *
-	 * @return bool
+	 * @return  boolean
 	 */
 	public function isReadable()
 	{
@@ -282,12 +287,13 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Read data from the stream.
 	 *
-	 * @param int $length Read up to $length bytes from the object and return
-	 *                    them. Fewer than $length bytes may be returned if underlying stream
-	 *                    call returns fewer bytes.
+	 * @param   int $length  Read up to $length bytes from the object and return
+	 *                       them. Fewer than $length bytes may be returned if underlying stream
+	 *                       call returns fewer bytes.
 	 *
-	 * @return string Returns the data read from the stream, or an empty string
-	 *     if no bytes are available.
+	 * @return  string  Returns the data read from the stream, or an empty string
+	 *                  if no bytes are available.
+	 *
 	 * @throws \RuntimeException if an error occurs.
 	 */
 	public function read($length)
@@ -298,8 +304,9 @@ class EventDecorator implements RendererInterface, StreamInterface
 	/**
 	 * Returns the remaining contents in a string
 	 *
-	 * @return string
-	 * @throws \RuntimeException if unable to read or an error occurs while
+	 * @return  string
+	 *
+	 * @throws  \RuntimeException if unable to read or an error occurs while
 	 *     reading.
 	 */
 	public function getContents()
@@ -315,11 +322,11 @@ class EventDecorator implements RendererInterface, StreamInterface
 	 *
 	 * @link http://php.net/manual/en/function.stream-get-meta-data.php
 	 *
-	 * @param string $key Specific metadata to retrieve.
+	 * @param   string $key  Specific metadata to retrieve.
 	 *
-	 * @return array|mixed|null Returns an associative array if no key is
-	 *     provided. Returns a specific key value if a key is provided and the
-	 *     value is found, or null if the key is not found.
+	 * @return  array|mixed|null Returns an associative array if no key is
+	 *                           provided. Returns a specific key value if a key is provided and the
+	 *                           value is found, or null if the key is not found.
 	 */
 	public function getMetadata($key = null)
 	{
@@ -327,11 +334,12 @@ class EventDecorator implements RendererInterface, StreamInterface
 	}
 
 	/**
-	 * @param $method
-	 * @param $arguments
+	 * @param   string  $method     The name of the method
+	 * @param   array   $arguments  The arguments
 	 *
-	 * @return mixed
-	 * @throws \Exception
+	 * @return  mixed
+	 *
+	 * @throws  \Exception
 	 */
 	private function delegate($method, $arguments)
 	{
@@ -346,7 +354,8 @@ class EventDecorator implements RendererInterface, StreamInterface
 				$this->dispatcher->dispatch(new RenderContentTypeSuccessEvent($type, $this->renderer));
 
 				return $result;
-			} catch (\Exception $exception)
+			}
+			catch (\Exception $exception)
 			{
 				$this->dispatcher->dispatch(new RenderContentTypeFailureEvent($type, $exception));
 				throw $exception;

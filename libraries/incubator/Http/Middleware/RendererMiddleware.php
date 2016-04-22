@@ -28,7 +28,12 @@ class RendererMiddleware implements MiddlewareInterface
 {
 	/** @var Dispatcher  */
 	private $dispatcher;
-	
+
+	/**
+	 * RendererMiddleware constructor.
+	 *
+	 * @param   Dispatcher $dispatcher  The event dispatcher
+	 */
 	public function __construct(Dispatcher $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;

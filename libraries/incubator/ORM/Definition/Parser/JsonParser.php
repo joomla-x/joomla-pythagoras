@@ -20,14 +20,15 @@ use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
  */
 class JsonParser implements ParserInterface
 {
+	/** @var array The JSON structure */
 	private $data = null;
 
 	/**
 	 * Open the description of the entity
 	 *
-	 * @param string $descriptionFile
+	 * @param   string $descriptionFile The file with the entity description
 	 *
-	 * @return mixed
+	 * @return  mixed
 	 */
 	public function open($descriptionFile)
 	{
@@ -70,7 +71,7 @@ class JsonParser implements ParserInterface
 			{
 				foreach ($fieldData['validation'] as $key => $validation)
 				{
-					$fieldData['validation'][$key] = (object)$validation;
+					$fieldData['validation'][$key] = (object) $validation;
 				}
 			}
 
@@ -78,7 +79,7 @@ class JsonParser implements ParserInterface
 			{
 				foreach ($fieldData['option'] as $key => $option)
 				{
-					$fieldData['option'][$key] = (object)$option;
+					$fieldData['option'][$key] = (object) $option;
 				}
 			}
 

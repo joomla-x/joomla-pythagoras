@@ -5,6 +5,7 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
+
 namespace Joomla\Plugin;
 
 /**
@@ -12,17 +13,17 @@ namespace Joomla\Plugin;
  *
  * @package Joomla/Plugin
  *
- * @since 1.0
+ * @since   1.0
  */
 interface PluginFactoryInterface
 {
-
 	/**
 	 * Returns an array of PluginInterface's for the given group.
 	 * If the group is not defined all plugins are returned.
 	 *
-	 * @param string $groupName
-	 * @return \Joomla\Plugin\PluginInterface[]
+	 * @param   string $groupName  The name of the plugin group
+	 *
+	 * @return  PluginInterface[]
 	 */
-	public function getPlugins ($groupName = '');
+	public function getPlugins($groupName = '');
 }

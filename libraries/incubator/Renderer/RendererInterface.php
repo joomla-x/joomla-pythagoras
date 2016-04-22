@@ -9,6 +9,7 @@
 namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeVisitorInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Renderer Interface
@@ -17,7 +18,7 @@ use Joomla\Content\ContentTypeVisitorInterface;
  *
  * @since    1.0
  */
-interface RendererInterface extends ContentTypeVisitorInterface
+interface RendererInterface extends ContentTypeVisitorInterface, StreamInterface
 {
 	/**
 	 * @param   string                $type    The content type
