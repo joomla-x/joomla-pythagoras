@@ -12,7 +12,7 @@ use BadMethodCallException;
 
 /**
  * Implementation of an immutable Event.
- * An immutable event cannot be modified after instanciation :
+ * An immutable event cannot be modified after instantiation :
  *
  * - its propagation cannot be stopped
  * - its arguments cannot be modified
@@ -64,9 +64,8 @@ final class EventImmutable extends AbstractEvent
 	 *
 	 * @return  void
 	 *
-	 * @throws  BadMethodCallException
-	 *
 	 * @since   1.0
+	 * @throws  BadMethodCallException
 	 */
 	public function offsetSet($name, $value)
 	{

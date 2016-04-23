@@ -8,14 +8,17 @@
 
 namespace Joomla\Http\Middleware;
 
+use Interop\Container\ContainerInterface;
+use Joomla\Event\Dispatcher;
 use Joomla\Http\MiddlewareInterface;
+use Joomla\Service\CommandBusBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class CommandBusMiddleware
  *
- * @package  Joomla/command
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */
@@ -34,6 +37,28 @@ class CommandBusMiddleware implements MiddlewareInterface
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
 	{
+		$command = $request->getAttribute('command');
+
+		if (empty($command))
+		{
+			throw new \RuntimeException('No command provided');
+		}
+
+		$container = $request->getAttribute('container');
+
+		if (!empty($container) && $container->has('EventDispatcher'))
+		{
+			$dispatcher = $container->get('EventDispatcher');
+		}
+		else
+		{
+			$dispatcher = new Dispatcher;
+		}
+
+		$commandBus = (new CommandBusBuilder($dispatcher))->getCommandBus();
+
+		$commandBus->handle($command);
+
 		$response = $next($request, $response);
 
 		return $response;

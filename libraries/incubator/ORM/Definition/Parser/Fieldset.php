@@ -11,7 +11,8 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class Fieldset
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class Fieldset extends Field

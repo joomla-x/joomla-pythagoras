@@ -15,7 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Class Application
  *
- * @package  Joomla/http
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */

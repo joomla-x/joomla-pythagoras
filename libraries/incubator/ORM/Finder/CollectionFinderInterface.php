@@ -8,12 +8,13 @@
 
 namespace Joomla\ORM\Finder;
 
-use Joomla\ORM\Collection\CollectionInterface;
+use Joomla\ORM\Entity\Entity;
 
 /**
  * Interface CollectionFinderInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface CollectionFinderInterface
@@ -21,7 +22,7 @@ interface CollectionFinderInterface
 	/**
 	 * Define the columns to be retrieved.
 	 *
-	 * @param   array $columns The column names
+	 * @param   array  $columns  The column names
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
@@ -30,9 +31,9 @@ interface CollectionFinderInterface
 	/**
 	 * Define a condition.
 	 *
-	 * @param   mixed  $lValue The left value for the comparision
-	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
-	 * @param   mixed  $rValue The right value for the comparision
+	 * @param   mixed   $lValue  The left value for the comparision
+	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   mixed   $rValue  The right value for the comparision
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
@@ -41,8 +42,8 @@ interface CollectionFinderInterface
 	/**
 	 * Set the ordering.
 	 *
-	 * @param   string $column    The name of the ordering column
-	 * @param   string $direction One of 'ASC' (ascending) or 'DESC' (descending)
+	 * @param   string  $column     The name of the ordering column
+	 * @param   string  $direction  One of 'ASC' (ascending) or 'DESC' (descending)
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
@@ -54,7 +55,7 @@ interface CollectionFinderInterface
 	 * @param   int $count The number of matching entities to retrieve
 	 * @param   int $start The index of the first entity to retrieve
 	 *
-	 * @return  CollectionInterface
+	 * @return  Entity|array
 	 */
 	public function get($count = null, $start = 0);
 }

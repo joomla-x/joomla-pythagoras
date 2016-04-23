@@ -13,7 +13,8 @@ use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
 /**
  * Class Locator
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 final class Locator implements LocatorInterface

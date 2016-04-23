@@ -11,7 +11,7 @@ namespace Joomla\Http;
 /**
  * Class Response
  *
- * @package  Joomla/http
+ * @package  Joomla/HTTP
  *
  * @since    1.0
  */

@@ -7,8 +7,8 @@
 namespace Joomla\Tests\Unit\Event;
 
 use Joomla\Event\DelegatingDispatcher;
-use Joomla\Event\DispatcherInterface;
-use PHPUnit_Framework_MockObject_MockObject;
+use Joomla\Event\Dispatcher;
+use Joomla\Event\Event;
 
 /**
  * Tests for the DelegatingDispatcher class.
@@ -18,24 +18,21 @@ use PHPUnit_Framework_MockObject_MockObject;
 class DelegatingDispatcherTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * Test the triggerEvent method.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
+	 * @testdox The deprecated triggerEvent() method proxies the dispatch() method
 	 */
 	public function testTriggerEvent()
 	{
 		$event = 'onTest';
 
-		/** @var DispatcherInterface|PHPUnit_Framework_MockObject_MockObject $mockedDispatcher */
-		$mockedDispatcher = $this->getMock('Joomla\Event\DispatcherInterface');
+		/** @var Dispatcher|\PHPUnit_Framework_MockObject_MockObject $mockedDispatcher */
+		$mockedDispatcher = $this->getMock(Dispatcher::class);
 		$mockedDispatcher->expects($this->once())
-			->method('triggerEvent')
-			->with($event);
+						 ->method('dispatch')
+						 ->with(new Event($event));
 
 		$delegating = new DelegatingDispatcher($mockedDispatcher);
 
+		/** @noinspection PhpDeprecationInspection */
 		$delegating->triggerEvent($event);
 	}
 }

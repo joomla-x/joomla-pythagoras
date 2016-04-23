@@ -18,7 +18,8 @@ use Joomla\ORM\Validator\ValidatorInterface;
 /**
  * Interface RepositoryInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface RepositoryInterface
@@ -57,13 +58,6 @@ interface RepositoryInterface
 	 * @return  CollectionFinderInterface  The responsible Finder object
 	 */
 	public function findAll();
-
-	/**
-	 * Get the validator
-	 *
-	 * @return  ValidatorInterface
-	 */
-	public function validator();
 
 	/**
 	 * Get the persistor

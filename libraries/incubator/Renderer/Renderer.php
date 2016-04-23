@@ -8,15 +8,17 @@
 
 namespace Joomla\Renderer;
 
-use Psr\Http\Message\StreamInterface;
+use Joomla\Content\ContentTypeInterface;
+use Joomla\Renderer\Exception\NotFoundException;
 
 /**
  * Class Renderer
  *
- * @package  Joomla/renderer
+ * @package  Joomla/Renderer
+ *
  * @since    1.0
  */
-abstract class Renderer implements StreamInterface
+abstract class Renderer implements RendererInterface
 {
 	/** @var string The MIME type */
 	protected $mediatype = 'application/binary';
@@ -38,25 +40,40 @@ abstract class Renderer implements StreamInterface
 	 *
 	 * @param   array $options Accepted range, ie., MIME type ('token') and quality ('q')
 	 */
-	public function __construct($options)
+	public function __construct(array $options = [])
 	{
 		$this->options = $options;
 	}
 
 	/**
-	 * @param   string   $type     The content type
-	 * @param   callable $handler  The handler for that type
+	 * Register a content type
+	 *
+	 * @param   string                $type    The content type
+	 * @param   callable|array|string $handler The handler for that type
 	 *
 	 * @return  void
 	 */
-	public function registerContentType($type, callable $handler)
+	public function registerContentType($type, $handler)
 	{
+		if (is_string($handler))
+		{
+			$handler = function (ContentTypeInterface $contentItem) use ($handler) {
+				return call_user_func([$contentItem, $handler]);
+			};
+		}
+		elseif (is_array($handler))
+		{
+			$handler = function (ContentTypeInterface $contentItem) use ($handler) {
+				return call_user_func($handler, $contentItem);
+			};
+		}
+
 		$this->handlers[strtolower($type)] = $handler;
 	}
 
 	/**
-	 * @param   string  $method     Method name; must start with 'visit'
-	 * @param   array   $arguments  Method arguments
+	 * @param   string $method    Method name; must start with 'visit'
+	 * @param   array  $arguments Method arguments
 	 *
 	 * @return  void
 	 */
@@ -78,7 +95,7 @@ abstract class Renderer implements StreamInterface
 			}
 			else
 			{
-				echo "\nLogWarn: Unknown content type {$match[1]}, no default\n";
+				throw new NotFoundException("Unknown content type {$match[1]}, no default\n");
 			}
 		}
 	}
@@ -100,7 +117,7 @@ abstract class Renderer implements StreamInterface
 	 */
 	public function __toString()
 	{
-		return get_class($this);
+		return $this->output;
 	}
 
 	/**
@@ -180,11 +197,12 @@ abstract class Renderer implements StreamInterface
 	 *
 	 * @link http://www.php.net/manual/en/function.fseek.php
 	 *
-	 * @param   int   $offset  Stream offset
-	 * @param   int   $whence  Specifies how the cursor position will be calculated
+	 * @param   int $offset    Stream offset
+	 * @param   int $whence    Specifies how the cursor position will be calculated
 	 *                         based on the seek offset. Valid values are identical to the built-in
-	 *                         PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
-	 *                         offset bytes SEEK_CUR: Set position to current location plus offset
+	 *                         PHP $whence values for `fseek()`.
+	 *                         SEEK_SET: Set position equal to offset bytes
+	 *                         SEEK_CUR: Set position to current location plus offset
 	 *                         SEEK_END: Set position to end-of-stream plus offset.
 	 *
 	 * @return  void
@@ -213,19 +231,24 @@ abstract class Renderer implements StreamInterface
 	/**
 	 * Write data to the stream.
 	 *
-	 * @param   string  $string  The string that is to be written.
+	 * @param   ContentTypeInterface|string $content The string that is to be written.
 	 *
 	 * @return  integer  Returns the number of bytes written to the stream.
 	 * @throws  \RuntimeException on failure.
 	 */
-	public function write($string)
+	public function write($content)
 	{
-		if (empty($string))
+		if ($content instanceof ContentTypeInterface)
 		{
-			return 0;
+			$len = $content->accept($this);
+		}
+		else
+		{
+			$this->output .= $content;
+			$len = strlen($content);
 		}
 
-		throw new \RuntimeException('Unable to write to the renderer directly. Use the visit() method.');
+		return $len;
 	}
 
 	/**
@@ -241,7 +264,7 @@ abstract class Renderer implements StreamInterface
 	/**
 	 * Read data from the stream.
 	 *
-	 * @param   int  $length  Read up to $length bytes from the object and return
+	 * @param   int $length   Read up to $length bytes from the object and return
 	 *                        them. Fewer than $length bytes may be returned if underlying stream
 	 *                        call returns fewer bytes.
 	 *
@@ -280,7 +303,7 @@ abstract class Renderer implements StreamInterface
 	 *
 	 * @link http://php.net/manual/en/function.stream-get-meta-data.php
 	 *
-	 * @param   string  $key  Specific metadata to retrieve.
+	 * @param   string $key Specific metadata to retrieve.
 	 *
 	 * @return  array|mixed|null  Returns an associative array if no key is
 	 *                            provided. Returns a specific key value if a key is provided and the
@@ -330,7 +353,7 @@ abstract class Renderer implements StreamInterface
 	 */
 	public function isWritable()
 	{
-		return false;
+		return true;
 	}
 
 	/**

@@ -23,7 +23,7 @@ class Event extends AbstractEvent
 	 * @param   string $name  The argument name.
 	 * @param   mixed  $value The argument value.
 	 *
-	 * @return  Event  This method is chainable.
+	 * @return  $this
 	 *
 	 * @since   1.0
 	 */
@@ -38,62 +38,12 @@ class Event extends AbstractEvent
 	}
 
 	/**
-	 * Clear all event arguments.
+	 * Add argument to event.
 	 *
-	 * @return  array  The old arguments.
+	 * @param   string $name  Argument name.
+	 * @param   mixed  $value Value.
 	 *
-	 * @since   1.0
-	 */
-	public function clearArguments()
-	{
-		$arguments       = $this->arguments;
-		$this->arguments = array();
-
-		return $arguments;
-	}
-
-	/**
-	 * Stop the event propagation.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function stop()
-	{
-		$this->stopped = true;
-	}
-
-	/**
-	 * Set the value of an event argument.
-	 *
-	 * @param   string $name  The argument name.
-	 * @param   mixed  $value The argument value.
-	 *
-	 * @return  void
-	 *
-	 * @throws  InvalidArgumentException  If the argument name is null.
-	 *
-	 * @since   1.0
-	 */
-	public function offsetSet($name, $value)
-	{
-		if (is_null($name))
-		{
-			throw new InvalidArgumentException('The argument name cannot be null.');
-		}
-
-		$this->setArgument($name, $value);
-	}
-
-	/**
-	 * Set the value of an event argument.
-	 * If the argument already exists, it will be overridden.
-	 *
-	 * @param   string $name  The argument name.
-	 * @param   mixed  $value The argument value.
-	 *
-	 * @return  Event  This method is chainable.
+	 * @return  $this
 	 *
 	 * @since   1.0
 	 */
@@ -102,20 +52,6 @@ class Event extends AbstractEvent
 		$this->arguments[$name] = $value;
 
 		return $this;
-	}
-
-	/**
-	 * Remove an event argument.
-	 *
-	 * @param   string $name The argument name.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function offsetUnset($name)
-	{
-		$this->removeArgument($name);
 	}
 
 	/**
@@ -138,5 +74,68 @@ class Event extends AbstractEvent
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Clear all event arguments.
+	 *
+	 * @return  array  The old arguments.
+	 *
+	 * @since   1.0
+	 */
+	public function clearArguments()
+	{
+		$arguments       = $this->arguments;
+		$this->arguments = array();
+
+		return $arguments;
+	}
+
+	/**
+	 * Stop the event propagation.
+	 *
+	 * @return  void
+	 *
+	 * @since       1.0
+	 * @deprecated  3.0  Use stopPropagation instead
+	 */
+	public function stop()
+	{
+		$this->stopPropagation();
+	}
+
+	/**
+	 * Set the value of an event argument.
+	 *
+	 * @param   string $name  The argument name.
+	 * @param   mixed  $value The argument value.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 * @throws  InvalidArgumentException  If the argument name is null.
+	 */
+	public function offsetSet($name, $value)
+	{
+		if (is_null($name))
+		{
+			throw new InvalidArgumentException('The argument name cannot be null.');
+		}
+
+		$this->setArgument($name, $value);
+	}
+
+	/**
+	 * Remove an event argument.
+	 *
+	 * @param   string $name The argument name.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function offsetUnset($name)
+	{
+		$this->removeArgument($name);
 	}
 }

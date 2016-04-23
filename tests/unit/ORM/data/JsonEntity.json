@@ -1,0 +1,65 @@
+{
+  "name": "article",
+  "storage": {
+    "type": "special",
+    "dsn": "csv://tests/unit/ORM/data/articles.csv"
+  },
+  "fields": [
+    {
+      "name": "id",
+      "type": "id",
+      "label": "JGLOBAL_FIELD_ID_LABEL",
+      "description": "JGLOBAL_FIELD_ID_DESC",
+      "default": null,
+      "validation": [
+        {"rule": "positive"},
+        {"rule": "integer"}
+      ]
+    },
+    {
+      "name": "title",
+      "type": "title",
+      "label": "JGLOBAL_TITLE",
+      "validation": [{
+          "rule": "maxlen",
+          "value": 64
+      }]
+    },
+    {
+      "name": "teaser",
+      "type": "richtext"
+    },
+    {
+      "name": "body",
+      "type": "richtext"
+    },
+    {
+      "name": "author",
+      "type": "text",
+      "default": ""
+    },
+    {
+      "name": "license",
+      "type": "text",
+      "validation": [
+        {
+          "rule": "regex",
+          "value": "copy(right|left)"
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "type": "belongsTo",
+      "name": "parent_id",
+      "entity": "article"
+    },
+    {
+      "type": "hasMany",
+      "name": "children",
+      "entity": "article",
+      "reference": "parent_id"
+    }
+  ]
+}

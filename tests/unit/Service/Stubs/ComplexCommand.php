@@ -1,9 +1,9 @@
 <?php
 namespace Joomla\Tests\Unit\Service\Stubs;
 
-use Joomla\Service\CommandBase;
+use Joomla\Service\Command;
 
-final class ComplexCommand extends CommandBase
+final class ComplexCommand extends Command
 {
 	protected $arg1 = null;
 	protected $arg2 = null;

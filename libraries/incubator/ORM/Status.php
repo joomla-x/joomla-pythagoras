@@ -11,7 +11,8 @@ namespace Joomla\ORM;
 /**
  * Class Status
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 abstract class Status

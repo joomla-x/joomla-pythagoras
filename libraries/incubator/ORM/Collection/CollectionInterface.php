@@ -11,7 +11,8 @@ namespace Joomla\ORM\Collection;
 /**
  * Interface CollectionInterface
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 interface CollectionInterface

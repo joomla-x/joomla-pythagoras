@@ -11,7 +11,7 @@ namespace Joomla\Http\Exception;
 /**
  * Thrown if an unsupported type of middleware is encountered.
  *
- * @package  Joomla/http
+ * @package  Joomla/HTTP
  * @see      Joomla\Http\Application for supported types of middleware.
  * @since    1.0
  */

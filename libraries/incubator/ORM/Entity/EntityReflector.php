@@ -10,12 +10,13 @@ namespace Joomla\ORM\Entity;
 
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Definition\Parser\Field;
-use Joomla\ORM\Repository\StorageProviderInterface;
+use Joomla\ORM\Storage\StorageProviderInterface;
 
 /**
  * Class EntityReflector
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class EntityReflector

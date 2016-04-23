@@ -11,7 +11,8 @@ namespace Joomla\ORM\Definition\Locator\Strategy;
 /**
  * Class MapStrategy
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class MapStrategy implements StrategyInterface

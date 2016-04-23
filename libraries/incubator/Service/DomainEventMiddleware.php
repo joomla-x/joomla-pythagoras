@@ -3,35 +3,54 @@
  * @package     Joomla.Framework
  * @subpackage  Service Layer
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
 namespace Joomla\Service;
 
-use Joomla\DI\Container;
 use League\Tactician\Middleware;
 
 /**
  * Tactician middleware for dispatching domain events.
  *
- * @since  __DEPLOY__
+ * @package  Joomla/Service
+ *
+ * @since  __DEPLOY_VERSION__
  */
 class DomainEventMiddleware implements Middleware
 {
-	/** @var Container  Dependency injection container */
-	protected $container = null;
+	/** @var object The dispatcher */
+	private $dispatcher = null;
+
+	/**
+	 * Command bus callable.
+	 *
+	 * This is needed because the command bus has not been built
+	 * at the time this middleware object is constructed.
+	 *
+	 * @var callable
+	 */
+	private $commandBusCallable = null;
+
+	/** @var CommandBus */
+	private $commandBus = null;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param   Container $container A dependency injection container.
+	 * Note that we take a closure that will return the command bus because at
+	 * the time this object is constructed the command bus has not be built.
 	 *
-	 * @since   __DEPLOY__
+	 * @param   object    $dispatcher          An event dispatcher.
+	 * @param   callable  $commandBusCallable  A closure that will return the command bus.
+	 *
+	 * @since   __DEPLOY_VERSION__
 	 */
-	public function __construct(Container $container)
+	public function __construct($dispatcher, callable $commandBusCallable)
 	{
-		$this->container = $container;
+		$this->dispatcher = $dispatcher;
+		$this->commandBusCallable = $commandBusCallable;
 	}
 
 	/**
@@ -42,48 +61,63 @@ class DomainEventMiddleware implements Middleware
 	 * Suppose there is a DomainEvent with the class name 'PrefixEventSuffix',
 	 * then you can register listeners for the event using:-
 	 *   1. A closure.  Example:
-	 *          $container->get('dispatcher')->register('onPrefixEventSuffix', function($event) { echo 'Do something here'; });
+	 *          $dispatcher->register('onPrefixEventSuffix', function($event) { echo 'Do something here'; });
 	 *   2. A callback function or method.  Example:
-	 *          $container->get('dispatcher')->register('onPrefixEventSuffix', array('MyClass', 'MyMethod'));
+	 *          $dispatcher->register('onPrefixEventSuffix', array('MyClass', 'MyMethod'));
 	 *   3. A preloaded or autoloadable class called 'PrefixEventListenerSuffix' with a method called 'onPrefixEventSuffix'.
 	 *   4. An installed and enabled Joomla plugin in the 'domainevent' group, with a method called 'onPrefixEventSuffix'.
 	 *
-	 * In all cases the method called will be passed two arguments: the event object and the dependency injection container.
+	 * In all cases the method called will be passed the event object as its only argument.
 	 *
-	 * @param   Command  $command Command object.
-	 * @param   callable $next    Inner middleware object being decorated.
+	 * @param   object    $message  A message object (Command or Query).
+	 * @param   callable  $next     Inner middleware object being decorated.
 	 *
-	 * @return  array
+	 * @return  mixed
 	 *
-	 * @since   __DEPLOY__
+	 * @since   __DEPLOY_VERSION__
 	 */
-	public function execute($command, callable $next)
+	public function execute($message, callable $next)
 	{
 		$accumulatedEvents = array();
 
-		// Pass the command to the next inner layer of middleware.
-		$events = $next($command);
+		// Pass the message to the next inner layer of middleware.
+		$return = $next($message);
 
-		// Normally, we expect a possibly empty array of events,
-		// but if we don't get an array, then bubble an empty array up.
-		if (!is_array($events))
+		/*
+		 * Only publish domain events after completion of a Command.
+		 * This is so that queries may be executed during Command execution
+		 * without inadvertently publishing raised Domain Events before the
+		 * Command has finished executing.
+		 */
+		if (!($message instanceof Command))
+		{
+			return $return;
+		}
+
+		/*
+		 * Normally, we expect a possibly empty array of events,
+		 * but if we don't get an array, then bubble an empty array up.
+		 */
+		if (!is_array($return))
 		{
 			return $accumulatedEvents;
 		}
+
+		// Resolve the command bus callable to get the command bus.
+		$this->commandBus = call_user_func($this->commandBusCallable);
 
 		// Recursively publish any domain events that were raised.
 		do
 		{
 			// Accumulate all events raised.
-			$accumulatedEvents = array_merge($accumulatedEvents, $events);
+			$accumulatedEvents = array_merge($accumulatedEvents, $return);
 
 			// Publish the events.
-			$events = $this->innerEventLoop($events);
+			$return = $this->innerEventLoop($return);
 		}
-		while (!empty($events));
+		while (!empty($return));
 
-		// Bubble the events up to the next outer layer of middleware.
-		return $accumulatedEvents;
+		return true;
 	}
 
 	/**
@@ -92,11 +126,11 @@ class DomainEventMiddleware implements Middleware
 	 * Each event listener might raise further events which need
 	 * to be passed back into the event loop for publishing.
 	 *
-	 * @param   array $events Array of domain event objects.
+	 * @param   array  $events  Array of domain event objects.
 	 *
 	 * @return  array of newly-raised domain event objects.
 	 *
-	 * @since   __DEPLOY__
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function innerEventLoop($events)
 	{
@@ -105,7 +139,7 @@ class DomainEventMiddleware implements Middleware
 		foreach ($events as $event)
 		{
 			// Ignore anything that isn't actually an event, just in case.
-			if (!($event instanceof Event))
+			if (!($event instanceof DomainEvent))
 			{
 				continue;
 			}
@@ -115,7 +149,7 @@ class DomainEventMiddleware implements Middleware
 
 			// Get the name of the event.
 			$eventClassReflection = new \ReflectionClass($event);
-			$eventClassName       = $eventClassReflection->getShortName();
+			$eventClassName = $eventClassReflection->getShortName();
 
 			// Determine the event name.
 			$eventName = 'on' . $eventClassName;
@@ -124,7 +158,7 @@ class DomainEventMiddleware implements Middleware
 			$this->registerByConvention($eventClassName, $eventName);
 
 			// Publish the event to all registered listeners.
-			$results = $this->container->get('dispatcher')->trigger($eventName, array($event, $this->container));
+			$results = $this->dispatcher->trigger($eventName, array($event, $this->commandBus));
 
 			// Merge results into collected events array.
 			foreach ($results as $result)
@@ -142,12 +176,12 @@ class DomainEventMiddleware implements Middleware
 	 * Replaces "Event" by "EventListener" in the domain event class name
 	 * and registers that class as a listener.
 	 *
-	 * @param   string $eventClassName Name of the domain event class.
-	 * @param   string $eventName      Name of the event trigger.
+	 * @param   string  $eventClassName  Name of the domain event class.
+	 * @param   string  $eventName       Name of the event trigger.
 	 *
 	 * @return  void
 	 *
-	 * @since   __DEPLOY__
+	 * @since   __DEPLOY_VERSION__
 	 */
 	private function registerByConvention($eventClassName, $eventName)
 	{
@@ -163,7 +197,7 @@ class DomainEventMiddleware implements Middleware
 		// If the event handler class exists, then register it.
 		if (class_exists($handlerClassName))
 		{
-			$this->container->get('dispatcher')->register($eventName, array($handlerClassName, $eventName));
+			$this->dispatcher->register($eventName, array($handlerClassName, $eventName));
 		}
 	}
 }

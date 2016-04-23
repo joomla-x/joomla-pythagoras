@@ -14,30 +14,24 @@ use Joomla\Renderer\Exception\NotFoundException;
 /**
  * Class Factory
  *
- * @package  Joomla/renderer
+ * @package  Joomla/Renderer
+ *
  * @since    1.0
  */
 class Factory
 {
 	/** @var array Mapping of MIME types to matching renderers */
-	protected $mediaTypeMap = [
-		// CLI formats
-		'text/plain'                        => 'PlainRenderer',
-		'text/ansi'                         => 'AnsiRenderer',
+	protected $mediaTypeMap;
 
-		// REST formats
-		'application/xml'                   => 'XmlRenderer',
-		'application/json'                  => 'JsonRenderer',
-
-		// Web/Office formats
-		'text/html'                         => 'HtmlRenderer',
-		'application/pdf'                   => 'PdfRenderer',
-
-		// The DocBook format seems not to be registered. @link http://wiki.docbook.org/DocBookMimeType
-		'application/docbook+xml'           => 'DocbookRenderer',
-		'application/vnd.oasis.docbook+xml' => 'DocbookRenderer',
-		'application/x-docbook'             => 'DocbookRenderer',
-	];
+	/**
+	 * Factory constructor.
+	 *
+	 * @param   array  $mapping  An associative array mapping mime types to renderer classes
+	 */
+	public function __construct(array $mapping)
+	{
+		$this->mediaTypeMap = $mapping;
+	}
 
 	/**
 	 * @param   string  $acceptHeader  The 'Accept' header
@@ -55,7 +49,7 @@ class Factory
 			throw(new NotFoundException("No matching renderer found for\n\t$acceptHeader"));
 		}
 
-		$classname = __NAMESPACE__ . '\\' . $this->mediaTypeMap[$match['token']];
+		$classname = $this->mediaTypeMap[$match['token']];
 
 		return new $classname($match);
 	}

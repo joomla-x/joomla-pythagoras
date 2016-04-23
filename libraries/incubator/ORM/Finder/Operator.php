@@ -11,7 +11,8 @@ namespace Joomla\ORM\Finder;
 /**
  * Class Operator
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 abstract class Operator

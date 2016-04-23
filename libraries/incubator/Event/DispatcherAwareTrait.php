@@ -44,7 +44,7 @@ trait DispatcherAwareTrait
 	/**
 	 * Set the dispatcher to use.
 	 *
-	 * @param   DispatcherInterface $dispatcher The dispatcher to use.
+	 * @param   DispatcherInterface  $dispatcher  The dispatcher to use.
 	 *
 	 * @return  $this
 	 *

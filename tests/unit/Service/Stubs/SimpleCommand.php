@@ -1,9 +1,17 @@
 <?php
 namespace Joomla\Tests\Unit\Service\Stubs;
 
-use Joomla\Service\CommandBase;
+use Joomla\Service\Command;
 
-final class SimpleCommand extends CommandBase
+/**
+ * Class SimpleCommand
+ *
+ * @package Joomla\Tests\Unit\Service\Stubs
+ *
+ * @method string getName()
+ * @method string getTest()
+ */
+final class SimpleCommand extends Command
 {
 	public function __construct($test = null)
 	{

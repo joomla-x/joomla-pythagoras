@@ -11,7 +11,8 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class Entity
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class Entity extends Element

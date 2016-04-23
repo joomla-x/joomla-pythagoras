@@ -1,9 +1,9 @@
 <?php
 namespace Joomla\Tests\Unit\Service\Stubs;
 
-use Joomla\Service\QueryBase;
+use Joomla\Service\Query;
 
-final class ComplexQuery extends QueryBase
+final class ComplexQuery extends Query
 {
 	protected $arg1 = null;
 	protected $arg2 = null;

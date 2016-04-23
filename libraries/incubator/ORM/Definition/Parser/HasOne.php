@@ -11,7 +11,8 @@ namespace Joomla\ORM\Definition\Parser;
 /**
  * Class HasOne
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class HasOne extends Relation

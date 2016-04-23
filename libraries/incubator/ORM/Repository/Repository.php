@@ -22,7 +22,8 @@ use Joomla\ORM\Validator\ValidatorInterface;
 /**
  * Class Repository
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
 class Repository implements RepositoryInterface

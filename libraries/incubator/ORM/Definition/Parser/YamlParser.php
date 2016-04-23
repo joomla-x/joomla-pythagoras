@@ -9,28 +9,41 @@
 namespace Joomla\ORM\Definition\Parser;
 
 use Joomla\ORM\Definition\Locator\LocatorInterface;
+use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 
 /**
  * Class YamlParser
  *
- * @package  Joomla/orm
+ * @package  Joomla/ORM
+ *
  * @since    1.0
  */
-class YamlParser
+class YamlParser implements ParserInterface
 {
 	/**
-	 * Parse the entity XML.
+	 * Open the description of the entity
+	 *
+	 * @param   string $descriptionFile The file with the entity description
+	 *
+	 * @return mixed
+	 */
+	public function open($descriptionFile)
+	{
+		// TODO: Implement open() method.
+	}
+
+	/**
+	 * Parse the entity definition
 	 *
 	 * @param   Callable[]       $callbacks Hooks for pre- and postprocessing of elements
-	 * @param   LocatorInterface $locator   The XML description file locator
+	 * @param   LocatorInterface $locator   The description file locator for related entities
 	 *
-	 * @return  Entity
+	 * @return  EntityStructure
 	 */
 	public function parse($callbacks, LocatorInterface $locator)
 	{
-		// @TODO: Implement parse() method
-		$className = __NAMESPACE__ . '\\Element';
+		$structure = new EntityStructure(array());
 
-		return new $className;
+		return $structure;
 	}
 }

@@ -6,20 +6,20 @@ use Joomla\Tests\Unit\Service\Stubs\ImmutableClass;
 class ImmutableTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @expectedException \RuntimeException
-	 * @testdox Throws a \RuntimeException when trying to get a non-existant property
+	 * @expectedException \InvalidArgumentException
+	 * @testdox Throws a \InvalidArgumentException when trying to get a non-existant property
 	 */
-	public function testThrowsARuntimeexceptionWhenTryingToGetANonexistantProperty()
+	public function testThrowsAnInvalidArgumentExceptionWhenTryingToGetANonexistantProperty()
 	{
 		$something = (new ImmutableClass)->doesNotExist;
 	}
 
 
 	/**
-	 * @expectedException \RuntimeException
-	 * @testdox Throws a \RuntimeException when trying to create a new property
+	 * @expectedException \InvalidArgumentException
+	 * @testdox Throws a \InvalidArgumentException when trying to create a new property
 	 */
-	public function testThrowsARuntimeexceptionWhenTryingToCreateANewProperty()
+	public function testThrowsAnInvalidArgumentExceptionWhenTryingToCreateANewProperty()
 	{
 		$testObject = new ImmutableClass;
 		$testObject->test = 'something';

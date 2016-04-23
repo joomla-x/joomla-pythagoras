@@ -1,0 +1,3 @@
+providers:
+    foo:
+        class: \SimpleServiceProvider
