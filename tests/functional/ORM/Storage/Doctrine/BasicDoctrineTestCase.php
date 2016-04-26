@@ -38,7 +38,18 @@ class BasicDoctrineTestCase extends \PHPUnit_Framework_TestCase
 		$table = new Table($tableName);
 		foreach ($columns as $col)
 		{
-			$table->addColumn($col, 'string');
+			$type = 'string';
+			if ($col == 'id')
+			{
+				$type = 'integer';
+			}
+			$table->addColumn($col, $type);
+		}
+		if ($table->hasColumn('id'))
+		{
+			$table->setPrimaryKey([
+					'id'
+			]);
 		}
 		$connection->getSchemaManager()->createTable($table);
 

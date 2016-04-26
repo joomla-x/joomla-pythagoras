@@ -5,79 +5,93 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
-
 namespace Joomla\ORM\Storage\Doctrine;
 
-use Joomla\ORM\Finder\CollectionFinderInterface;
-use Joomla\ORM\Finder\EntityFinderInterface;
-use Joomla\ORM\Persistor\PersistorInterface;
 use Doctrine\DBAL\DriverManager;
+use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Storage\StorageProviderInterface;
 
 /**
  * Class DoctrineProvider
  *
- * @package  Joomla/ORM
+ * @package Joomla/ORM
  *
- * @since    1.0
+ * @since 1.0
  */
 class DoctrineProvider implements StorageProviderInterface
 {
-	/** @var  string The name of the data file */
-	private $dataFile;
+
+	/** @var  string The url */
+	private $url;
+
+	/** @var  array The parameters */
+	private $parameters;
+
+	/**
+	 *
+	 * @var EntityBuilder
+	 */
+	private $builder = null;
 
 	/**
 	 * DoctrineProvider constructor.
 	 *
-	 * @param   string  $dataFile  The name of the data file
+	 * @param string $url
+	 *        	The url to connect to
+	 * @param array $parameters
+	 *        	The parameters to create the connection from
+	 * @param EntityBuilder $builder
+	 *        	The parameters to create the connection from
 	 */
-	public function __construct($dataFile, $parameters)
+	public function __construct($url, array $parameters = [], EntityBuilder $builder)
 	{
-		$this->dataFile = $dataFile;
+		$this->url = $url;
+		$this->parameters = $parameters;
+		$this->builder = $builder;
 	}
 
 	/**
-	 * Get an EntityFinder.
 	 *
-	 * @param   string  $entityName T he name of the entity
+	 * {@inheritDoc}
 	 *
-	 * @return  EntityFinderInterface  The finder
+	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getEntityFinder()
 	 */
 	public function getEntityFinder($entityName)
 	{
-		return new CsvModel($this->dataFile, CsvModel::ENTITY);
+		return new DoctrineEntityFinder($this->getConnection(), $this->parameters, $this->builder);
 	}
 
 	/**
-	 * Get a CollectionFinder.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * {@inheritDoc}
 	 *
-	 * @return  CollectionFinderInterface
+	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getCollectionFinder()
 	 */
 	public function getCollectionFinder($entityName)
 	{
-		return new CsvModel($this->dataFile, CsvModel::COLLECTION);
+		return new DoctrineCollectionFinder($this->getConnection(), $this->parameters, $this->builder);
 	}
 
 	/**
-	 * Get a Persistor.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * {@inheritDoc}
 	 *
-	 * @return  PersistorInterface
+	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getPersistor()
 	 */
 	public function getPersistor($entityName)
 	{
-		return new CsvModel($this->dataFile, CsvModel::COLLECTION);
+		return new DoctrinePersistor($this->getConnection(), $this->parameters);
 	}
 
 	/**
+	 *
 	 * @return \Doctrine\DBAL\Connection
 	 */
 	private function getConnection()
 	{
-		$connection = DriverManager::getConnection(['url' => $this->dataFile]);
+		$connection = DriverManager::getConnection([
+				'url' => $this->url
+		]);
 		return $connection;
 	}
 }

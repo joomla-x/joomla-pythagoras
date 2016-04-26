@@ -67,7 +67,8 @@ class DoctrinePersistor implements PersistorInterface
 		}
 		else
 		{
-			$this->connection->insert($this->parameters['table'], $entity->asArray());
+			unset($data[$entity->key()]);
+			$this->connection->insert($this->parameters['table'], $data);
 		}
 	}
 
