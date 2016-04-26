@@ -17,7 +17,6 @@ use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;
 use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Persistor\PersistorInterface;
-use Joomla\ORM\Validator\ValidatorInterface;
 
 /**
  * Class Repository

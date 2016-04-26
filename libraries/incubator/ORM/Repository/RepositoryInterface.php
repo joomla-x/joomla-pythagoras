@@ -13,7 +13,6 @@ use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;
 use Joomla\ORM\Persistor\PersistorInterface;
-use Joomla\ORM\Validator\ValidatorInterface;
 
 /**
  * Interface RepositoryInterface

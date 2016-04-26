@@ -50,12 +50,12 @@ interface CollectionFinderInterface
 	public function orderBy($column, $direction = 'ASC');
 
 	/**
-	 * Fetch the entity
+	 * Fetch the entities
 	 *
 	 * @param   int $count The number of matching entities to retrieve
 	 * @param   int $start The index of the first entity to retrieve
 	 *
-	 * @return  Entity|array
+	 * @return  array
 	 */
 	public function get($count = null, $start = 0);
 }
