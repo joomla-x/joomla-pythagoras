@@ -9,7 +9,6 @@
 namespace Joomla\DI\Loader;
 
 use Joomla\DI\Container;
-use Joomla\DI\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**

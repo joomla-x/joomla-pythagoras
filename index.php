@@ -6,7 +6,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-use Joomla\DI\Loader\IniLoader;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\CommandBusMiddleware;
 use Joomla\Http\Middleware\RendererMiddleware;
@@ -26,7 +25,7 @@ $app = new Application(
 		new RendererMiddleware($container->get('dispatcher')),
 		new RouterMiddleware,
 		new LegacyRouterMiddleware,
-		new CommandBusMiddleware,
+		new CommandBusMiddleware($container->get('dispatcher')),
 	]
 );
 
