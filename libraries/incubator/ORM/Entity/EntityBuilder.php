@@ -381,10 +381,19 @@ class EntityBuilder
 
 				case 'special':
 					$parts = explode('://', $info[0]->dsn);
+					$parameters = [];
+					if (isset($info[0]->params))
+					{
+						$parameters = $this->createParameters($info[0]->params);
+					}
 					switch ($parts[0])
 					{
 						case 'csv':
 							$handler = '\Joomla\ORM\Storage\CsvProvider';
+							$param   = $parts[1];
+							break;
+						case 'orm':
+							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
 							$param   = $parts[1];
 							break;
 						default:
@@ -399,7 +408,19 @@ class EntityBuilder
 					break;
 			}
 
-			$this->reflector->setStorageProvider(new $handler($param));
+			$this->reflector->setStorageProvider(new $handler($param, $parameters, $this));
 		}
+	}
+
+	private function createParameters(array $params)
+	{
+		$parameters = [];
+		foreach ($params as $parameter)
+		{
+			foreach ($parameter->param as $key => $data) {
+				$parameters[$key] = $data->{'#text'};
+			}
+		}
+		return $parameters;
 	}
 }

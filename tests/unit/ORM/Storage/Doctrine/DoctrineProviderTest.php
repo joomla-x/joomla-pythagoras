@@ -1,5 +1,5 @@
 <?php
-namespace Joomla\Tests\Functional\ORM\Storage\Doctrine;
+namespace Joomla\Tests\Unit\ORM\Storage\Doctrine;
 
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Finder\CollectionFinderInterface;
@@ -7,7 +7,7 @@ use Joomla\ORM\Finder\EntityFinderInterface;
 use Joomla\ORM\Persistor\PersistorInterface;
 use Joomla\ORM\Storage\Doctrine\DoctrineProvider;
 
-class DoctrineProviderTest extends BasicDoctrineTestCase
+class DoctrineProviderTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testStore()
