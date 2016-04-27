@@ -10,12 +10,14 @@ use Joomla\ORM\Storage\Doctrine\DoctrineProvider;
 class DoctrineProviderTest extends \PHPUnit_Framework_TestCase
 {
 
-	public function testStore()
+	public function testInterfaces()
 	{
 		$builder = $this->getMockBuilder(EntityBuilder::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$persistor = new DoctrineProvider('sqlite::memory:', [], $builder);
+		$persistor = new DoctrineProvider([
+				'dsn' => 'sqlite::memory:'
+		], $builder);
 
 		$this->assertInstanceOf(EntityFinderInterface::class, $persistor->getEntityFinder('Test'));
 		$this->assertInstanceOf(CollectionFinderInterface::class, $persistor->getCollectionFinder('Test'));

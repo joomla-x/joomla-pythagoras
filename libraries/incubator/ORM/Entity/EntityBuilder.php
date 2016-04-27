@@ -362,43 +362,32 @@ class EntityBuilder
 
 	public function handleStorage(Element $storage)
 	{
-		foreach (get_object_vars($storage) as $type => $info)
+		foreach ($storage->toArray() as $type => $info)
 		{
 			$handler = null;
-			$param   = null;
 
 			switch ($type)
 			{
 				case 'default':
 					$handler = '\Joomla\ORM\Storage\DefaultProvider';
-					$param = $info[0]->table;
 					break;
 
 				case 'api':
 					$handler = $info[0]->handler;
-					$param = $info[0]->{'base-url'};
 					break;
 
 				case 'special':
 					$parts = explode('://', $info[0]->dsn);
-					$parameters = [];
-					if (isset($info[0]->params))
-					{
-						$parameters = $this->createParameters($info[0]->params);
-					}
 					switch ($parts[0])
 					{
 						case 'csv':
 							$handler = '\Joomla\ORM\Storage\CsvProvider';
-							$param   = $parts[1];
 							break;
 						case 'orm':
 							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
-							$param   = $parts[1];
 							break;
 						default:
 							$handler = '\Joomla\ORM\Storage\DsnProvider';
-							$param   = $info[0]->dsn;
 							break;
 					}
 					break;
@@ -408,19 +397,7 @@ class EntityBuilder
 					break;
 			}
 
-			$this->reflector->setStorageProvider(new $handler($param, $parameters, $this));
+			$this->reflector->setStorageProvider(new $handler($info[0]->toArray(), $this));
 		}
-	}
-
-	private function createParameters(array $params)
-	{
-		$parameters = [];
-		foreach ($params as $parameter)
-		{
-			foreach ($parameter->param as $key => $data) {
-				$parameters[$key] = $data->{'#text'};
-			}
-		}
-		return $parameters;
 	}
 }

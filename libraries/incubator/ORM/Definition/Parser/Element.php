@@ -38,4 +38,14 @@ class Element
 			}
 		}
 	}
+
+	/**
+	 * Returns an array of variables assigned to this element.
+	 *
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return get_object_vars($this);
+	}
 }

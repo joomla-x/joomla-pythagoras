@@ -14,6 +14,7 @@ use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
 use Joomla\ORM\Repository\RepositoryQuery;
 use Joomla\Service\CommandHandler;
+use Joomla\ORM\Entity\EntityInterface;
 
 /**
  * Display Command Handler
@@ -35,6 +36,11 @@ class DisplayCommandHandler extends CommandHandler
 	{
 		$articleRepository = $this->getCommandBus()->handle(new RepositoryQuery($command->entityName));
 		$article           = $articleRepository->findById($command->id);
+
+		if (!$article instanceof EntityInterface)
+		{
+			return;
+		}
 
 		$compound = new Compound(
 			'article',

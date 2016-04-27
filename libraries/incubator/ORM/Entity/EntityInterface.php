@@ -99,4 +99,19 @@ interface EntityInterface
 	 * @return  array  The field values, indexed by field name
 	 */
 	public function asArray();
+
+	/**
+	 * Get the original data structure
+	 *
+	 * @return  \Joomla\ORM\Definition\Parser\Entity
+	 */
+	public function getDefinition();
+
+	/**
+	 * Get the storage provider
+	 *
+	 * @return  \Joomla\ORM\Storage\StorageProviderInterface  The storage provider
+	 *
+	 */
+	public function getStorage();
 }

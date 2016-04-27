@@ -21,31 +21,22 @@ use Joomla\ORM\Storage\StorageProviderInterface;
 class DoctrineProvider implements StorageProviderInterface
 {
 
-	/** @var  string The url */
-	private $url;
-
 	/** @var  array The parameters */
 	private $parameters;
 
-	/**
-	 *
-	 * @var EntityBuilder
-	 */
+	/** @var EntityBuilder */
 	private $builder = null;
 
 	/**
 	 * DoctrineProvider constructor.
 	 *
-	 * @param string $url
-	 *        	The url to connect to
 	 * @param array $parameters
 	 *        	The parameters to create the connection from
 	 * @param EntityBuilder $builder
 	 *        	The parameters to create the connection from
 	 */
-	public function __construct($url, array $parameters = [], EntityBuilder $builder)
+	public function __construct(array $parameters, EntityBuilder $builder)
 	{
-		$this->url = $url;
 		$this->parameters = $parameters;
 		$this->builder = $builder;
 	}
@@ -58,7 +49,9 @@ class DoctrineProvider implements StorageProviderInterface
 	 */
 	public function getEntityFinder($entityName)
 	{
-		return new DoctrineEntityFinder($this->getConnection(), $this->parameters, $this->builder);
+		$parameters = $this->parameters;
+		$parameters['entity_name'] = $entityName;
+		return new DoctrineEntityFinder($this->getConnection(), $parameters, $this->builder);
 	}
 
 	/**
@@ -69,7 +62,9 @@ class DoctrineProvider implements StorageProviderInterface
 	 */
 	public function getCollectionFinder($entityName)
 	{
-		return new DoctrineCollectionFinder($this->getConnection(), $this->parameters, $this->builder);
+		$parameters = $this->parameters;
+		$parameters['entity_name'] = $entityName;
+		return new DoctrineCollectionFinder($this->getConnection(), $parameters, $this->builder);
 	}
 
 	/**
@@ -80,7 +75,9 @@ class DoctrineProvider implements StorageProviderInterface
 	 */
 	public function getPersistor($entityName)
 	{
-		return new DoctrinePersistor($this->getConnection(), $this->parameters);
+		$parameters = $this->parameters;
+		$parameters['entity_name'] = $entityName;
+		return new DoctrinePersistor($this->getConnection(), $parameters);
 	}
 
 	/**
@@ -89,9 +86,13 @@ class DoctrineProvider implements StorageProviderInterface
 	 */
 	private function getConnection()
 	{
-		$connection = DriverManager::getConnection([
-				'url' => $this->url
-		]);
+		$parameters = $this->parameters;
+		if (key_exists('dsn', $parameters))
+		{
+			$parameters['url'] = str_replace('orm://', '', $parameters['dsn']);
+			unset($parameters['dsn']);
+		}
+		$connection = DriverManager::getConnection($parameters);
 		return $connection;
 	}
 }

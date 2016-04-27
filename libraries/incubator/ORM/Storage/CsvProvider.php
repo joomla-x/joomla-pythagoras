@@ -21,17 +21,17 @@ use Joomla\ORM\Persistor\PersistorInterface;
  */
 class CsvProvider implements StorageProviderInterface
 {
-	/** @var  string The name of the data file */
-	private $dataFile;
+	/** @var  array parameters The parameters */
+	private $parameters;
 
 	/**
 	 * CsvProvider constructor.
 	 *
-	 * @param   string  $dataFile  The name of the data file
+	 * @param   array  $parameters  The parameters
 	 */
-	public function __construct($dataFile)
+	public function __construct(array $parameters)
 	{
-		$this->dataFile = $dataFile;
+		$this->parameters = $parameters;
 	}
 
 	/**
@@ -43,7 +43,7 @@ class CsvProvider implements StorageProviderInterface
 	 */
 	public function getEntityFinder($entityName)
 	{
-		return new CsvModel($this->dataFile, CsvModel::ENTITY);
+		return new CsvModel($this->parameters, CsvModel::ENTITY);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class CsvProvider implements StorageProviderInterface
 	 */
 	public function getCollectionFinder($entityName)
 	{
-		return new CsvModel($this->dataFile, CsvModel::COLLECTION);
+		return new CsvModel($this->parameters, CsvModel::COLLECTION);
 	}
 
 	/**
@@ -67,6 +67,6 @@ class CsvProvider implements StorageProviderInterface
 	 */
 	public function getPersistor($entityName)
 	{
-		return new CsvModel($this->dataFile, CsvModel::COLLECTION);
+		return new CsvModel($this->parameters, CsvModel::COLLECTION);
 	}
 }

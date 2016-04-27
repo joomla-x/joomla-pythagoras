@@ -1,4 +1,5 @@
 /cache/*
+/installation/demo.sqlite
 /libraries/vendor
 /logs/*
 /tmp/*
