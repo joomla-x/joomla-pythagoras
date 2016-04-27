@@ -1,4 +1,4 @@
-# Joomlax structure
+# Joomla! X Doctrine Branch
 
 # This branch is pre alpha, it is far from finished!!
 
@@ -31,3 +31,20 @@ Open your browser with the following url:
 
 ## PHPUnit
 You can run the tests with codeception like `./libraries/vendor/bin/robo test:unit` or good old `phpunit`.
+
+## Contribute
+
+Joomla! X is a big endeavour, and it surely needs some more hands on it.
+
+  - Add issues to the tracker to discuss things.
+  - Fork this repo, write code, and send a PR against this branch.
+    Before sending your PR, please check your contribution first using
+    
+    ```bash
+    $ ./libraries/vendor/bin/robo test:unit
+    $ ./libraries/vendor/bin/robo check:style
+    ```
+    
+Thank you!
+
+The Joomla! 4 Architecture Team
