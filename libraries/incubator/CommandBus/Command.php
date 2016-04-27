@@ -7,13 +7,13 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Service;
+namespace Joomla\CommandBus;
 
 /**
- * Abstract base class for immutable queries.
+ * Abstract base class for immutable commands.
  *
- * Queries are immutable objects that are completely defined by the arguments
- * passed to them in their constructors.  Query argument validation logic
+ * Commands are immutable objects that are completely defined by the arguments
+ * passed to them in their constructors.  Command argument validation logic
  * may be added in the constructor.  Some basic checks are performed to try to
  * enforce immutability, but these only really guard against accidental
  * alteration of object state.
@@ -22,6 +22,6 @@ namespace Joomla\Service;
  *
  * @since  __DEPLOY_VERSION__
  */
-abstract class Query extends Message
+abstract class Command extends Message
 {
 }

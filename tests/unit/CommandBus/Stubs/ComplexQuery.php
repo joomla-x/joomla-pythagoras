@@ -1,9 +1,9 @@
 <?php
-namespace Joomla\Tests\Unit\Service\Stubs;
+namespace Joomla\Tests\Unit\CommandBus\Stubs;
 
-use Joomla\Service\Command;
+use Joomla\CommandBus\Query;
 
-final class ComplexCommand extends Command
+final class ComplexQuery extends Query
 {
 	protected $arg1 = null;
 	protected $arg2 = null;
@@ -20,8 +20,7 @@ final class ComplexCommand extends Command
 
 	private function validate($arg1, $arg2)
 	{
-		if (is_null($arg1))
-		{
+		if (is_null($arg1)) {
 			throw new \RuntimeException('Argument 1 cannot be null');
 		}
 	}

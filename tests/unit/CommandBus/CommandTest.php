@@ -1,8 +1,8 @@
 <?php
-namespace Joomla\Tests\Unit\Service;
+namespace Joomla\Tests\Unit\CommandBus;
 
-use Joomla\Tests\Unit\Service\Stubs\ComplexCommand;
-use Joomla\Tests\Unit\Service\Stubs\SimpleCommand;
+use Joomla\Tests\Unit\CommandBus\Stubs\ComplexCommand;
+use Joomla\Tests\Unit\CommandBus\Stubs\SimpleCommand;
 
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,7 +11,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheTestCommandImplementsTheCommandInterface()
 	{
-		$this->assertInstanceOf('\\Joomla\\Service\\Command', new SimpleCommand);
+		$this->assertInstanceOf('\\Joomla\\CommandBus\\Command', new SimpleCommand);
 	}
 
 
@@ -20,7 +20,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheTestCommandIsAnImmutableObject()
 	{
-		$this->assertInstanceOf('\\Joomla\\Service\\Immutable', new SimpleCommand);
+		$this->assertInstanceOf('\\Joomla\\CommandBus\\Immutable', new SimpleCommand);
 	}
 
 

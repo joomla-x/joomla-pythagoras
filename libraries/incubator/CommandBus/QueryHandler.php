@@ -7,7 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Service;
+namespace Joomla\CommandBus;
 
 /**
  * Abstract base class for query handlers.

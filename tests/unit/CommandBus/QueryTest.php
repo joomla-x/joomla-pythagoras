@@ -1,8 +1,8 @@
 <?php
-namespace Joomla\Tests\Unit\Service;
+namespace Joomla\Tests\Unit\CommandBus;
 
-use Joomla\Tests\Unit\Service\Stubs\ComplexQuery;
-use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
+use Joomla\Tests\Unit\CommandBus\Stubs\ComplexQuery;
+use Joomla\Tests\Unit\CommandBus\Stubs\SimpleQuery;
 
 class QueryTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,7 +11,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheTestQueryImplementsTheQueryInterface()
 	{
-		$this->assertInstanceOf('\\Joomla\\Service\\Query', new SimpleQuery);
+		$this->assertInstanceOf('\\Joomla\\CommandBus\\Query', new SimpleQuery);
 	}
 
 
@@ -20,7 +20,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testTheTestQueryIsAnImmutableObject()
 	{
-		$this->assertInstanceOf('\\Joomla\\Service\\Immutable', new SimpleQuery);
+		$this->assertInstanceOf('\\Joomla\\CommandBus\\Immutable', new SimpleQuery);
 	}
 
 

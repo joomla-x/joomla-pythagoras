@@ -9,7 +9,7 @@
 namespace Joomla\Component\Content\Command;
 
 use Joomla\Renderer\RendererInterface;
-use Joomla\Service\Command;
+use Joomla\CommandBus\Command;
 
 /**
  * Display Command

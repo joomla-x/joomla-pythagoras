@@ -1,7 +1,7 @@
 <?php
-namespace Joomla\Tests\Unit\Service\Stubs;
+namespace Joomla\Tests\Unit\CommandBus\Stubs;
 
-use Joomla\Service\CommandHandler;
+use Joomla\CommandBus\CommandHandler;
 
 final class SimpleCommandHandler extends CommandHandler
 {

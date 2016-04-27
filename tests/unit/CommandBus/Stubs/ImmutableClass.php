@@ -1,12 +1,12 @@
 <?php
-namespace Joomla\Tests\Unit\Service\Stubs;
+namespace Joomla\Tests\Unit\CommandBus\Stubs;
 
-use Joomla\Service\Immutable;
+use Joomla\CommandBus\Immutable;
 
 /**
  * Class ImmutableClass
  *
- * @package Joomla\Tests\Unit\Service\Stubs
+ * @package Joomla\Tests\Unit\CommandBus\Stubs
  *
  * @method string getTest()
  */

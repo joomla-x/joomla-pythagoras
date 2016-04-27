@@ -1,7 +1,7 @@
 <?php
-namespace Joomla\Tests\Unit\Service\Stubs;
+namespace Joomla\Tests\Unit\CommandBus\Stubs;
 
-use Joomla\Service\QueryHandler;
+use Joomla\CommandBus\QueryHandler;
 
 final class SimpleQueryHandler extends QueryHandler
 {

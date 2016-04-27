@@ -25,7 +25,7 @@ $app = new Application(
 		new RendererMiddleware($container->get('dispatcher')),
 		new RouterMiddleware,
 		new LegacyRouterMiddleware,
-		new CommandBusMiddleware($container->get('dispatcher')),
+		new CommandBusMiddleware($container->get('command_bus')),
 	]
 );
 

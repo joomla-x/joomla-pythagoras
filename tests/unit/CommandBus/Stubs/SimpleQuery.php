@@ -1,12 +1,12 @@
 <?php
-namespace Joomla\Tests\Unit\Service\Stubs;
+namespace Joomla\Tests\Unit\CommandBus\Stubs;
 
-use Joomla\Service\Query;
+use Joomla\CommandBus\Query;
 
 /**
  * Class SimpleQuery
  *
- * @package Joomla\Tests\Unit\Service\Stubs
+ * @package Joomla\Tests\Unit\CommandBus\Stubs
  *
  * @method string getName()
  * @method string getTest()

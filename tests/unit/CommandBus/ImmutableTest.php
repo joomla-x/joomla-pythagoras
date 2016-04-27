@@ -1,7 +1,7 @@
 <?php
-namespace Joomla\Tests\Unit\Service;
+namespace Joomla\Tests\Unit\CommandBus;
 
-use Joomla\Tests\Unit\Service\Stubs\ImmutableClass;
+use Joomla\Tests\Unit\CommandBus\Stubs\ImmutableClass;
 
 class ImmutableTest extends \PHPUnit_Framework_TestCase
 {

@@ -6,9 +6,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Unit\Service\Mock;
+namespace Joomla\Tests\Unit\CommandBus\Mock;
 
-class Value extends \Joomla\Service\Value
+class Value extends \Joomla\CommandBus\Value
 {
 	public function __construct(array $args)
 	{

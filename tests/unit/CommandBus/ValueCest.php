@@ -6,9 +6,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Unit\Service;
+namespace Joomla\Tests\Unit\CommandBus;
 
-use Joomla\Tests\Unit\Service\Mock\Value;
+use Joomla\Tests\Unit\CommandBus\Mock\Value;
 use UnitTester;
 
 class ValueCest
