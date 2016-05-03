@@ -47,5 +47,5 @@ interface EntityFinderInterface
 	 *
 	 * @throws  EntityNotFoundException  if the specified entity does not exist.
 	 */
-	public function get();
+	public function getItem();
 }

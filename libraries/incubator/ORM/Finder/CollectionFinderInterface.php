@@ -57,5 +57,5 @@ interface CollectionFinderInterface
 	 *
 	 * @return  Entity|array
 	 */
-	public function get($count = null, $start = 0);
+	public function getItems($count = null, $start = 0);
 }

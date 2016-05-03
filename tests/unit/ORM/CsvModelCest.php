@@ -50,7 +50,7 @@ class CsvModelCest
 	 */
 	public function EntityModelReturnsArrayOnRequestedColumns(UnitTester $I)
 	{
-		$result = $this->entityModel()->columns(['*'])->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->entityModel()->columns(['*'])->with('id', Operator::EQUAL, 1)->getItem();
 
 		$I->assertTrue(is_array($result));
 	}
@@ -60,7 +60,7 @@ class CsvModelCest
 	 */
 	public function EntityModelReturnsRequestedColumns(UnitTester $I)
 	{
-		$result = $this->entityModel()->columns(['id', 'title'])->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->entityModel()->columns(['id', 'title'])->with('id', Operator::EQUAL, 1)->getItem();
 
 		$I->assertEquals(['id' => 1, 'title' => 'First Article'], $result);
 	}
@@ -70,7 +70,7 @@ class CsvModelCest
 	 */
 	public function EntityModelReturnsEntityIfNoColumnsSpecified(UnitTester $I)
 	{
-		$result = $this->entityModel()->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->entityModel()->with('id', Operator::EQUAL, 1)->getItem();
 
 		$I->assertTrue($result instanceof Entity);
 	}
@@ -80,7 +80,7 @@ class CsvModelCest
 	 */
 	public function ColumnsSpecifiedAsCommaSeparatedString(UnitTester $I)
 	{
-		$result = $this->entityModel()->columns('id, title')->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->entityModel()->columns('id, title')->with('id', Operator::EQUAL, 1)->getItem();
 
 		$I->assertEquals(['id' => 1, 'title' => 'First Article'], $result);
 	}
@@ -92,7 +92,7 @@ class CsvModelCest
 	{
 		try
 		{
-			$result = $this->entityModel()->with('id', Operator::EQUAL, 0)->get();
+			$result = $this->entityModel()->with('id', Operator::EQUAL, 0)->getItem();
 			$I->fail('Expected EntityNotFoundException not thrown');
 		} catch (\Exception $e)
 		{
@@ -105,7 +105,7 @@ class CsvModelCest
 	 */
 	public function CollectionModelReturnsArrayOnRequestedColumns(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['*'])->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->collectionModel()->columns(['*'])->with('id', Operator::EQUAL, 1)->getItems();
 
 		$I->assertEquals(1, count($result));
 		$I->assertTrue(is_array($result[0]));
@@ -116,7 +116,7 @@ class CsvModelCest
 	 */
 	public function CollectionModelReturnsRequestedColumns(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::EQUAL, 1)->getItems();
 
 		$I->assertEquals([['id' => 1, 'title' => 'First Article']], $result);
 	}
@@ -126,7 +126,7 @@ class CsvModelCest
 	 */
 	public function CollectionModelReturnsCollectionIfNoColumnsSpecified(UnitTester $I)
 	{
-		$result = $this->collectionModel()->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->collectionModel()->with('id', Operator::EQUAL, 1)->getItems();
 
 		$I->assertTrue($result[0] instanceof Entity);
 	}
@@ -136,7 +136,7 @@ class CsvModelCest
 	 */
 	public function CollectionModelReturnsEmptyArrayIfNoResult(UnitTester $I)
 	{
-		$result = $this->collectionModel()->with('id', Operator::EQUAL, 0)->get();
+		$result = $this->collectionModel()->with('id', Operator::EQUAL, 0)->getItems();
 		$I->assertEquals([], $result);
 	}
 
@@ -145,7 +145,7 @@ class CsvModelCest
 	 */
 	public function ResultSetCanBeOrdered(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -156,7 +156,7 @@ class CsvModelCest
 			$result
 		);
 
-		$result = $this->collectionModel()->columns(['id', 'title'])->orderBy('id', 'DESC')->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->orderBy('id', 'DESC')->getItems();
 		$I->assertEquals(
 			[
 				['id' => 4, 'title' => 'Part Two'],
@@ -167,7 +167,7 @@ class CsvModelCest
 			$result
 		);
 
-		$result = $this->collectionModel()->columns(['id', 'title'])->orderBy('title')->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->orderBy('title')->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -184,7 +184,7 @@ class CsvModelCest
 	 */
 	public function ResultSetCanBeSlicedWithoutStart(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->get(2);
+		$result = $this->collectionModel()->columns(['id', 'title'])->getItems(2);
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -199,7 +199,7 @@ class CsvModelCest
 	 */
 	public function ResultSetCanBeSliced(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->get(2, 1);
+		$result = $this->collectionModel()->columns(['id', 'title'])->getItems(2, 1);
 		$I->assertEquals(
 			[
 				['id' => 2, 'title' => 'Second Article'],
@@ -211,7 +211,7 @@ class CsvModelCest
 
 	public function SupportsEqualOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::EQUAL, 1)->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::EQUAL, 1)->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -222,7 +222,7 @@ class CsvModelCest
 
 	public function SupportsNotEqualOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::NOT_EQUAL, 1)->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::NOT_EQUAL, 1)->getItems();
 		$I->assertEquals(
 			[
 				['id' => 2, 'title' => 'Second Article'],
@@ -235,7 +235,7 @@ class CsvModelCest
 
 	public function SupportsGreaterThanOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::GREATER_THAN, 2)->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::GREATER_THAN, 2)->getItems();
 		$I->assertEquals(
 			[
 				['id' => 3, 'title' => 'Part One'],
@@ -247,7 +247,7 @@ class CsvModelCest
 
 	public function SupportsGreaterThanOrEqualOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::GREATER_OR_EQUAL, 2)->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::GREATER_OR_EQUAL, 2)->getItems();
 		$I->assertEquals(
 			[
 				['id' => 2, 'title' => 'Second Article'],
@@ -260,7 +260,7 @@ class CsvModelCest
 
 	public function SupportsLessThanOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::LESS_THAN, 3)->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::LESS_THAN, 3)->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -272,7 +272,7 @@ class CsvModelCest
 
 	public function SupportsLessThanOrEqualOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::LESS_OR_EQUAL, 3)->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::LESS_OR_EQUAL, 3)->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -286,7 +286,7 @@ class CsvModelCest
 	public function SupportsContainsOperator(UnitTester $I)
 	{
 		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::CONTAINS, 'Article')
-					   ->get();
+					   ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -299,7 +299,7 @@ class CsvModelCest
 	public function SupportsStartsWithOperator(UnitTester $I)
 	{
 		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::STARTS_WITH, 'Part')
-					   ->get();
+					   ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 3, 'title' => 'Part One'],
@@ -312,7 +312,7 @@ class CsvModelCest
 	public function SupportsEndsWithOperator(UnitTester $I)
 	{
 		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::ENDS_WITH, 'Article')
-					   ->get();
+					   ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -324,7 +324,7 @@ class CsvModelCest
 
 	public function SupportsMatchesOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::MATCHES, 'rt\\s')->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::MATCHES, 'rt\\s')->getItems();
 		$I->assertEquals(
 			[
 				['id' => 3, 'title' => 'Part One'],
@@ -336,7 +336,7 @@ class CsvModelCest
 
 	public function SupportsInOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::IN, '1,3')->get();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::IN, '1,3')->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
