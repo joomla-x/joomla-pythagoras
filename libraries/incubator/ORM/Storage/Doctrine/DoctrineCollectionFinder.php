@@ -88,7 +88,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	public function with($lValue, $op, $rValue)
 	{
-		if (!in_array($op, Operator::$ALL))
+		if (!Operator::isValid($op))
 		{
 			return $this;
 		}

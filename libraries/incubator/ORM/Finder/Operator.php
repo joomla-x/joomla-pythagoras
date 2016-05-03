@@ -35,17 +35,9 @@ abstract class Operator
 	const MATCHES = 'RLIKE';
 	const IN = 'IN';
 
-	public static $ALL = [
-			self::EQUAL,
-			self::NOT_EQUAL,
-			self::GREATER_THAN,
-			self::GREATER_OR_EQUAL,
-			self::LESS_THAN,
-			self::LESS_OR_EQUAL,
-			self::CONTAINS,
-			self::STARTS_WITH,
-			self::ENDS_WITH,
-			self::MATCHES,
-			self::IN
-	];
+	public static function isValid($op)
+	{
+		$reflect = new \ReflectionClass(self::class);
+		return in_array($op, $reflect->getConstants());
+	}
 }
