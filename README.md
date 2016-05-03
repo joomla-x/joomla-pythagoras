@@ -1,36 +1,32 @@
-# Joomla! X Doctrine Branch
+# Joomla! X Clean Base Branch
 
-# This branch is pre alpha, it is far from finished!!
+This branch contains the current development of Joomla! X (currently, X == 4),
+based on a clean-base approach.
 
-## Todo's
-Some more work needs to be done:
+## Why Clean Base?
 
-- Connection sharing
-- Better test coverage
-- Real world example
-- Doctrine finder's need to work per entity
+We honestly tried an incremental approach, i.e., to transform J!3 into J!4 using small steps.
+The tight coupling and non-sufficient test coverage, however, makes it extremely hard to apply a state-of-the-art architecture.
+
+It was suggested to start from a fresh ground, the clean base, to create the basic architecture,
+and to port existing functionality in a second step.
+The J!4 Architecture Team decided to try this approach.
+
+## The "Chris Davenport Happy Milestone" (CDHM)
+
+The team defined a milestone, named after the team member, Chris Davenport, who brought up the requirements.
+You can see the original document here: [docs/j4cdhms.md](docs/j4cdhms.md).
+
+The final decision is made, when the milestone is reached, or it shows out, that it can not be reached with the clean base approach.
 
 ## Installation
-To make it running execute the following command on your command line within the root directory:
 
-`composer install`
+As there is no installer yet, a manual installation is required.
+Check out this branch (`clean-base`), and run
 
-## Demo
-
-#### Setup
-We prepared a little script which creates a sqlite database file with an article table and one entry with the id 1. On the command line run:
-
-`php installation/demo.php`
-
-This will create the database file demo.sqlite in the installation folder. Make sure the database settings in the file config/database.ini do pint to that file.
-
-#### Browser
-Open your browser with the following url:
-
-*http://{{address}}/{{path}}/?id=1&entity=article*
-
-## PHPUnit
-You can run the tests with codeception like `./libraries/vendor/bin/robo test:unit` or good old `phpunit`.
+```bash
+$ composer install
+```
 
 ## Contribute
 
