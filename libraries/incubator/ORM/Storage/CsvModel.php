@@ -28,11 +28,6 @@ use Joomla\ORM\Persistor\PersistorInterface;
  */
 class CsvModel implements EntityFinderInterface, CollectionFinderInterface, PersistorInterface
 {
-	const ENTITY = 0;
-	const COLLECTION = 1;
-
-	/** @var  integer  Finder mode, see class constants */
-	private $mode;
 
 	/** @var  array  Conditions */
 	private $conditions = [];
@@ -58,10 +53,9 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	 * @param   array   $parameters The parameters
 	 * @param   integer $mode     The finder mode, see class constants
 	 */
-	public function __construct($parameters, $mode)
+	public function __construct(array $parameters)
 	{
 		$this->dataFile = str_replace('csv://', '', $parameters['dsn']);
-		$this->mode     = $mode;
 
 		$locator       = new Locator(
 			[
@@ -135,12 +129,29 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Fetch the entity
 	 *
+	 * @return  Entity
+	 */
+	public function getItem()
+	{
+		$items = $this->getItems();
+
+		if (empty($items))
+		{
+			throw new EntityNotFoundException;
+		}
+
+		return $items[0];
+	}
+
+	/**
+	 * Fetch the entities
+	 *
 	 * @param   integer $count The number of matching entities to retrieve (collection mode only)
 	 * @param   integer $start The index of the first entity to retrieve (collection mode only)
 	 *
-	 * @return  Entity|array
+	 * @return  Entity[]
 	 */
-	public function get($count = null, $start = 0)
+	public function getItems($count = null, $start = 0)
 	{
 		if (is_null($this->rows))
 		{
@@ -160,19 +171,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 			$result = $this->castToEntity($matches);
 		}
 
-		if ($this->mode == self::ENTITY)
-		{
-			if (empty($result))
-			{
-				throw new EntityNotFoundException;
-			}
-
-			return array_shift($result);
-		}
-		else
-		{
-			return array_slice($result, $start, $count);
-		}
+		return array_slice($result, $start, $count);
 	}
 
 	/**

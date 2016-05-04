@@ -43,7 +43,7 @@ class CsvProvider implements StorageProviderInterface
 	 */
 	public function getEntityFinder($entityName)
 	{
-		return new CsvModel($this->parameters, CsvModel::ENTITY);
+		return new CsvModel($this->parameters);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class CsvProvider implements StorageProviderInterface
 	 */
 	public function getCollectionFinder($entityName)
 	{
-		return new CsvModel($this->parameters, CsvModel::COLLECTION);
+		return new CsvModel($this->parameters);
 	}
 
 	/**
@@ -67,6 +67,6 @@ class CsvProvider implements StorageProviderInterface
 	 */
 	public function getPersistor($entityName)
 	{
-		return new CsvModel($this->parameters, CsvModel::COLLECTION);
+		return new CsvModel($this->parameters);
 	}
 }
