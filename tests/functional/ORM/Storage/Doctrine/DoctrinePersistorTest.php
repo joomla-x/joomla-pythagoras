@@ -39,7 +39,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->orderBy('id');
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(2, $entities);
 		$this->assertEquals('bar', $entities[0]->foo);
@@ -79,7 +79,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->orderBy('id');
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(2, $entities);
 		$this->assertEquals('bar', $entities[0]->foo);
@@ -119,7 +119,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->orderBy('id');
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(1, $entities);
 		$this->assertEquals(1, $entities[0]->id);
@@ -157,7 +157,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->orderBy('id');
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(2, $entities);
 	}
@@ -191,7 +191,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->orderBy('id');
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(2, $entities);
 	}

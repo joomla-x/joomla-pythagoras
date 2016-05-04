@@ -7,6 +7,7 @@ use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Storage\Doctrine\DoctrineEntityFinder;
+use Joomla\ORM\Exception\EntityNotFoundException;
 
 class DoctrineEntityFinderTest extends BasicDoctrineTestCase
 {
@@ -30,7 +31,7 @@ class DoctrineEntityFinderTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->with('foo', Operator::EQUAL, 'bar');
 
-		$entity = $finder->get();
+		$entity = $finder->getItem();
 
 		$this->assertNotNull($entity);
 		$this->assertEquals('bar', $entity->foo);
@@ -38,6 +39,8 @@ class DoctrineEntityFinderTest extends BasicDoctrineTestCase
 
 	public function testGetNoEntity()
 	{
+		$this->setExpectedException(EntityNotFoundException::class);
+
 		$connection = $this->createConnection([
 				[
 						'foo' => 'bar'
@@ -52,8 +55,6 @@ class DoctrineEntityFinderTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->with('foo', Operator::EQUAL, 'bar1');
 
-		$entity = $finder->get();
-
-		$this->assertNull($entity);
+		$finder->getItem();
 	}
 }
