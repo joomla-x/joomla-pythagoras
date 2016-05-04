@@ -272,7 +272,7 @@ class EntityBuilder
 
 			// Records from {$relation->entity} with {$relation->reference}={$id}
 			$repository = new Repository($relation->entity, $locator);
-			$entities   = $repository->findAll()->with($relation->reference, Operator::EQUAL, $id)->get();
+			$entities   = $repository->findAll()->with($relation->reference, Operator::EQUAL, $id)->getItems();
 			$this->reflector->addField(new Field([
 				'name'  => $basename,
 				'type'  => 'relationData',
@@ -308,7 +308,7 @@ class EntityBuilder
 
 			// The record from {$relation->entity} with {$relation->reference}={$id}
 			$repository = new Repository($relation->entity, $locator);
-			$entity     = $repository->findOne()->with($relation->reference, Operator::EQUAL, $id)->get();
+			$entity     = $repository->findOne()->with($relation->reference, Operator::EQUAL, $id)->getItem();
 
 			$this->reflector->addField(new Field([
 				'name'  => $basename,
@@ -345,7 +345,7 @@ class EntityBuilder
 
 			// Records from {$relation->entity} with {$relation->reference} IN ids from {$relation->joinTable} with {$relation->joinRef}={$id}
 			$map     = new Repository($relation->joinTable, $locator);
-			$entries = $map->findAll()->with($relation->joinRef, Operator::EQUAL, $id)->get();
+			$entries = $map->findAll()->with($relation->joinRef, Operator::EQUAL, $id)->getItems();
 
 			$repository = new Repository($relation->entity, $locator);
 			$entities   = $repository->findAll()->with($relation->reference, Operator::IN, $entries->getIds());

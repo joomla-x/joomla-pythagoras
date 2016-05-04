@@ -34,7 +34,7 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		$finder->orderBy('foo');
 		$finder->with('foo', Operator::GREATER_THAN, 1);
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(2, $entities);
 		$this->assertEquals(1, $entities[0]->foo);
@@ -61,14 +61,14 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		$finder->with('foo', 'wrong', 1);
 		$finder->orderBy('foo');
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(2, $entities);
 		$this->assertEquals(1, $entities[0]->foo);
 		$this->assertEquals(2, $entities[1]->foo);
 	}
 
-	public function testEmptyGet()
+	public function testEmptygetItems()
 	{
 		$connection = $this->createConnection([]);
 
@@ -80,7 +80,7 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->with('foo', Operator::EQ, 2);
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertEmpty($entities);
 	}
@@ -105,7 +105,7 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		], $builder);
 		$finder->orderBy('foo');
 
-		$entities = $finder->get();
+		$entities = $finder->getItems();
 
 		$this->assertCount(2, $entities);
 		$this->assertEquals(1, $entities[0]->foo);

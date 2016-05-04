@@ -8,6 +8,7 @@
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Joomla\ORM\Finder\EntityFinderInterface;
+use Joomla\ORM\Exception\EntityNotFoundException;
 
 /**
  * Class DoctrineEntityFinder
@@ -23,16 +24,16 @@ class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFin
 	 *
 	 * {@inheritDoc}
 	 *
-	 * @see \Joomla\ORM\Finder\EntityFinderInterface::get()
+	 * @see \Joomla\ORM\Finder\EntityFinderInterface::getItem()
 	 */
-	public function get($count = null, $start = 0)
+	public function getItem()
 	{
-		$entities = parent::get();
+		$entities = parent::getItems();
 
-		if (is_array($entities) && count($entities) > 0)
+		if (!is_array($entities) || count($entities) < 1)
 		{
-			return $entities[0];
+			throw new EntityNotFoundException();
 		}
-		return null;
+		return $entities[0];
 	}
 }

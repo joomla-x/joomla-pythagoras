@@ -89,7 +89,7 @@ class Repository implements RepositoryInterface
 	{
 		$this->buildPrototype();
 
-		return $this->findOne()->with($this->prototype->key(), Operator::EQUAL, $id)->get();
+		return $this->findOne()->with($this->prototype->key(), Operator::EQUAL, $id)->getItem();
 	}
 
 	/**

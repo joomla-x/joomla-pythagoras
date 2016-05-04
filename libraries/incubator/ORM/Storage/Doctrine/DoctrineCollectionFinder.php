@@ -111,9 +111,9 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 *
 	 * {@inheritDoc}
 	 *
-	 * @see \Joomla\ORM\Finder\CollectionFinderInterface::get()
+	 * @see \Joomla\ORM\Finder\CollectionFinderInterface::getItems()
 	 */
-	public function get($count = null, $start = 0)
+	public function getItems($count = null, $start = 0)
 	{
 		$builder = $this->connection->createQueryBuilder();
 		$builder->select(!$this->columns ? '*' : $this->columns);
