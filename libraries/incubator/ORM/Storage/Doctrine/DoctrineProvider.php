@@ -84,7 +84,7 @@ class DoctrineProvider implements StorageProviderInterface
 	private function getConnection()
 	{
 		return DriverManager::getConnection([
-				'url' => str_replace('orm://', '', $this->dsn)
+				'url' => $this->dsn
 		]);
 	}
 }

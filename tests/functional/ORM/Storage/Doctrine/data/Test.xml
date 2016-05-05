@@ -4,7 +4,7 @@
 <entity name="test">
 
     <storage>
-        <special dsn="orm:///data.sqlite" table="test" />
+        <special dsn="sqlite:///:memory:" table="test" />
     </storage>
 
     <fields>
