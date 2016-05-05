@@ -14,7 +14,7 @@
     },
     "require": {
         "league/flysystem": "^1.0",
-        "doctrine/dbal": "^2.5",
+        "doctrine/dbal": "dev-master#2c345592d33f73dedddbf2bf4d0825495792f9e7",
         "league/tactician": "^0.6.1",
         "monolog/monolog": "^1.17",
         "matthiasmullie/scrapbook": "^1.0",
