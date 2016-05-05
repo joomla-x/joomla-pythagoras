@@ -1,11 +1,11 @@
 <?php
 
-namespace Joomla\Tests\Unit\Service;
+namespace Joomla\Tests\Unit\Joomla\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
-use Joomla\Service\ConfigServiceProvider;
+use Joomla\Joomla\ServiceProvider\ConfigServiceProvider;
 
 class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,6 +32,21 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 		$service->register($container);
 
 		$this->assertInstanceOf(Registry::class, $container->get('config'));
+	}
+
+	/**
+	 * @testdox The ConfigServiceProvider adds an config to a container with an alias
+	 */
+	public function testConfigServiceProviderCreatesConfigWithAlias()
+	{
+		$container = new Container();
+		$container->set('ConfigDirectory', __DIR__ . '/data');
+		$container->set('ConfigFileName', 'env.txt');
+
+		$service = new ConfigServiceProvider();
+		$service->register($container, 'unit');
+
+		$this->assertInstanceOf(Registry::class, $container->get('unit'));
 	}
 
 	/**

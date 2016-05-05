@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Service;
+namespace Joomla\Joomla\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
@@ -14,7 +14,7 @@ use Joomla\Plugin\PluginDispatcher;
 /**
  * Class EventDispatcherServiceProvider
  *
- * @package Joomla\Service
+ * @package Joomla\Joomla\ServiceProvider
  *
  * @since  1.0
  */

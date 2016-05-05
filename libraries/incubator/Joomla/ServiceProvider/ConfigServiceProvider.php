@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Service;
+namespace Joomla\Joomla\ServiceProvider;
 
 use Dotenv\Dotenv;
 use Joomla\DI\Container;
