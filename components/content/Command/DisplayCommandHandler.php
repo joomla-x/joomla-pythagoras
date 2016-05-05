@@ -13,7 +13,7 @@ use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
 use Joomla\ORM\Repository\RepositoryQuery;
-use Joomla\CommandBus\CommandHandler;
+use Joomla\Service\CommandHandler;
 
 /**
  * Display Command Handler

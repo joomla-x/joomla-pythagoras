@@ -8,7 +8,7 @@
 
 namespace Joomla\ORM\Repository;
 
-use Joomla\CommandBus\Query;
+use Joomla\Service\Query;
 
 /**
  * Repository Query

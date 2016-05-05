@@ -11,7 +11,7 @@ namespace Joomla\Http\Middleware;
 use Joomla\Http\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Joomla\CommandBus\CommandBus;
+use Joomla\Service\CommandBus;
 
 /**
  * Class CommandBusMiddleware

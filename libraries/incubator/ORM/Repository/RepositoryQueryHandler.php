@@ -10,7 +10,7 @@ namespace Joomla\ORM\Repository;
 
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
-use Joomla\CommandBus\QueryHandler;
+use Joomla\Service\QueryHandler;
 
 /**
  * Class Repository
