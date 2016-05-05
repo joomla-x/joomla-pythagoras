@@ -21,8 +21,11 @@ use Joomla\ORM\Storage\StorageProviderInterface;
 class DoctrineProvider implements StorageProviderInterface
 {
 
-	/** @var  array The parameters */
-	private $parameters;
+	/** @var  string The dsn url */
+	private $dsn;
+
+	/** @var  string The table name */
+	private $tableName;
 
 	/** @var EntityBuilder */
 	private $builder = null;
@@ -30,54 +33,48 @@ class DoctrineProvider implements StorageProviderInterface
 	/**
 	 * DoctrineProvider constructor.
 	 *
-	 * @param array $parameters
-	 *        	The parameters to create the connection from
+	 * @param string $dsn
 	 * @param EntityBuilder $builder
-	 *        	The parameters to create the connection from
+	 * @param string $tableName
 	 */
-	public function __construct(array $parameters, EntityBuilder $builder)
+	public function __construct($dsn, EntityBuilder $builder, $tableName)
 	{
-		$this->parameters = $parameters;
+		$this->dsn = $dsn;
 		$this->builder = $builder;
+		$this->tableName = $tableName;
 	}
 
 	/**
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getEntityFinder()
 	 */
 	public function getEntityFinder($entityName)
 	{
-		$parameters = $this->parameters;
-		$parameters['entity_name'] = $entityName;
-		return new DoctrineEntityFinder($this->getConnection(), $parameters, $this->builder);
+		return new DoctrineEntityFinder($this->getConnection(), $this->tableName, $entityName, $this->builder);
 	}
 
 	/**
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getCollectionFinder()
 	 */
 	public function getCollectionFinder($entityName)
 	{
-		$parameters = $this->parameters;
-		$parameters['entity_name'] = $entityName;
-		return new DoctrineCollectionFinder($this->getConnection(), $parameters, $this->builder);
+		return new DoctrineCollectionFinder($this->getConnection(), $this->tableName, $entityName, $this->builder);
 	}
 
 	/**
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getPersistor()
 	 */
 	public function getPersistor($entityName)
 	{
-		$parameters = $this->parameters;
-		$parameters['entity_name'] = $entityName;
-		return new DoctrinePersistor($this->getConnection(), $parameters);
+		return new DoctrinePersistor($this->getConnection(), $this->tableName);
 	}
 
 	/**
@@ -86,13 +83,8 @@ class DoctrineProvider implements StorageProviderInterface
 	 */
 	private function getConnection()
 	{
-		$parameters = $this->parameters;
-		if (key_exists('dsn', $parameters))
-		{
-			$parameters['url'] = str_replace('orm://', '', $parameters['dsn']);
-			unset($parameters['dsn']);
-		}
-		$connection = DriverManager::getConnection($parameters);
-		return $connection;
+		return DriverManager::getConnection([
+				'url' => str_replace('orm://', '', $this->dsn)
+		]);
 	}
 }

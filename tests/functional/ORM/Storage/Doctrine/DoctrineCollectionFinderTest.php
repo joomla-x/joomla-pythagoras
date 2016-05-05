@@ -1,7 +1,6 @@
 <?php
 namespace Joomla\Tests\Functional\ORM\Storage\Doctrine;
 
-use Doctrine\DBAL\Schema\Table;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
@@ -29,9 +28,7 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
 		]));
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->columns([
 				'foo'
 		]);
@@ -59,9 +56,7 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
 		]));
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->with('foo', 'wrong', 1);
 		$finder->orderBy('foo');
 
@@ -83,9 +78,7 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
 		]));
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->with('foo', Operator::EQ, 2);
 
 		$entities = $finder->getItems();
@@ -107,10 +100,7 @@ class DoctrineCollectionFinderTest extends BasicDoctrineTestCase
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
 		]));
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test1',
-				'entity_name' => 'Test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test1', 'Test', $builder);
 		$finder->orderBy('foo');
 
 		$entities = $finder->getItems();

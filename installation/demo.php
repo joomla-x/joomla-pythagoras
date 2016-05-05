@@ -21,8 +21,7 @@ if (file_exists($path))
 	unlink($path);
 }
 $connection = DriverManager::getConnection([
-		'path' => $path,
-		'driver' => 'pdo_sqlite'
+		'url' => 'sqlite:///'.$path
 ]);
 
 $builder = new EntityBuilder(new Locator([

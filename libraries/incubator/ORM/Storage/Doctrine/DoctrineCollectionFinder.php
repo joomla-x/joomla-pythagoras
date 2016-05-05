@@ -22,49 +22,32 @@ use Joomla\ORM\Finder\CollectionFinderInterface;
 class DoctrineCollectionFinder implements CollectionFinderInterface
 {
 
-	/**
-	 *
-	 * @var string[] the columns
-	 */
+	/** @var string[] the columns */
 	private $columns = [];
 
-	/**
-	 *
-	 * @var string[] the conditions
-	 */
+	/** @var string[] the conditions */
 	private $conditions = [];
 
-	/**
-	 *
-	 * @var string[] the ordering
-	 */
+	/** @var string[] the ordering */
 	private $ordering = [];
 
-	/**
-	 *
-	 * @var Connection the connection to work on
-	 */
+	/** @var Connection the connection to work on */
 	private $connection = null;
 
-	/**
-	 *
-	 * @var string[] the parameters
-	 *
-	 *      - table The table name to fetch the entities from
-	 *      - entity_name The name of the entity
-	 */
-	private $parameters = null;
+	/** @var string $tableName */
+	private $tableName = null;
 
-	/**
-	 *
-	 * @var EntityBuilder
-	 */
+	/** @var string $entityName */
+	private $entityName = null;
+
+	/** @var EntityBuilder */
 	private $builder = null;
 
-	public function __construct(Connection $connection, array $parameters, EntityBuilder $builder)
+	public function __construct(Connection $connection, $tableName, $entityName, EntityBuilder $builder)
 	{
 		$this->connection = $connection;
-		$this->parameters = $parameters;
+		$this->tableName = $tableName;
+		$this->entityName = $entityName;
 		$this->builder = $builder;
 	}
 
@@ -117,7 +100,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	{
 		$builder = $this->connection->createQueryBuilder();
 		$builder->select(!$this->columns ? '*' : $this->columns);
-		$builder->from($this->parameters['table']);
+		$builder->from($this->tableName);
 
 		$counter = 0;
 		foreach ($this->conditions as $left => $value)
@@ -140,15 +123,10 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 			return [];
 		}
 
-		$entityName = ucfirst($this->parameters['table']);
-		if (key_exists('entity_name', $this->parameters))
-		{
-			$entityName = $this->parameters['entity_name'];
-		}
 		$data = [];
 		foreach ($rows as $row)
 		{
-			$entity = $this->builder->create($entityName);
+			$entity = $this->builder->create($this->entityName);
 			$entity->bind($row);
 			$data[] = $entity;
 		}

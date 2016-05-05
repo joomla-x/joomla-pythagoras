@@ -1,13 +1,12 @@
 <?php
 namespace Joomla\Tests\Unit\ORM\Storage\Doctrine;
 
-use Doctrine\DBAL\Schema\Table;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Storage\Doctrine\DoctrineEntityFinder;
-use Joomla\ORM\Exception\EntityNotFoundException;
 
 class DoctrineEntityFinderTest extends BasicDoctrineTestCase
 {
@@ -26,9 +25,7 @@ class DoctrineEntityFinderTest extends BasicDoctrineTestCase
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
 		]));
-		$finder = new DoctrineEntityFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineEntityFinder($connection, 'test', 'Test', $builder);
 		$finder->with('foo', Operator::EQUAL, 'bar');
 
 		$entity = $finder->getItem();
@@ -46,9 +43,7 @@ class DoctrineEntityFinderTest extends BasicDoctrineTestCase
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
 		]));
-		$finder = new DoctrineEntityFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineEntityFinder($connection, 'test', 'Test', $builder);
 		$finder->with('foo', Operator::EQUAL, 'bar1');
 
 		$finder->getItem();

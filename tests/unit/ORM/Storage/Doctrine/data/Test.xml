@@ -4,11 +4,7 @@
 <entity name="test">
 
     <storage>
-        <special dsn="orm:///data.sqlite">
-	        <params>
-	        	<param name="table">test</param>
-	        </params>
-        </special>
+        <special dsn="orm:///data.sqlite" table="test" />
     </storage>
 
     <fields>

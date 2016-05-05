@@ -21,29 +21,21 @@ use Joomla\ORM\Persistor\PersistorInterface;
 class DoctrinePersistor implements PersistorInterface
 {
 
-	/**
-	 *
-	 * @var Connection the connection to work on
-	 */
+	/** @var Connection the connection to work on */
 	private $connection = null;
 
-	/**
-	 *
-	 * @var string[] the parameters
-	 *
-	 *      - table The table name to work on the
-	 */
-	private $parameters = null;
+	/** @var string $tableName */
+	private $tableName = null;
 
-	public function __construct(Connection $connection, array $parameters)
+	public function __construct(Connection $connection, $tableName)
 	{
 		$this->connection = $connection;
-		$this->parameters = $parameters;
+		$this->tableName = $tableName;
 	}
 
 	/**
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @see \Joomla\ORM\Persistor\PersistorInterface::store()
 	 */
@@ -61,20 +53,20 @@ class DoctrinePersistor implements PersistorInterface
 		$id = $entity->{$entity->key()};
 		if ($id)
 		{
-			$this->connection->update($this->parameters['table'], $data, [
+			$this->connection->update($this->tableName, $data, [
 					$entity->key() => $id
 			]);
 		}
 		else
 		{
 			unset($data[$entity->key()]);
-			$this->connection->insert($this->parameters['table'], $data);
+			$this->connection->insert($this->tableName, $data);
 		}
 	}
 
 	/**
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @see \Joomla\ORM\Persistor\PersistorInterface::delete()
 	 */
@@ -85,7 +77,7 @@ class DoctrinePersistor implements PersistorInterface
 		{
 			return;
 		}
-		$this->connection->delete($this->parameters['table'], [
+		$this->connection->delete($this->tableName, [
 				$entity->key() => $entity->{$entity->key()}
 		]);
 	}

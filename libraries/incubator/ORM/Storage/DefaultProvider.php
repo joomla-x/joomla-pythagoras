@@ -23,9 +23,9 @@ use Joomla\ORM\Entity\EntityBuilder;
 class DefaultProvider extends DoctrineProvider
 {
 
-	public function __construct(array $parameters, EntityBuilder $builder)
+	public function __construct($tableName, EntityBuilder $builder)
 	{
-		$parameters = array_merge($parameters, parse_ini_file('config/database.ini'));
-		parent::__construct($parameters, $builder);
+		$url = file_get_contents('config/database.ini');
+		parent::__construct($url, $builder, $tableName);
 	}
 }

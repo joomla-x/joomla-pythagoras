@@ -364,16 +364,20 @@ class EntityBuilder
 	{
 		foreach ($storage->toArray() as $type => $info)
 		{
-			$handler = null;
+			$handler  = null;
+			$param1   = null;
+			$param2   = null;
 
 			switch ($type)
 			{
 				case 'default':
 					$handler = '\Joomla\ORM\Storage\DefaultProvider';
+					$param1 = $info[0]->table;
 					break;
 
 				case 'api':
 					$handler = $info[0]->handler;
+					$param1 = $info[0]->{'base-url'};
 					break;
 
 				case 'special':
@@ -382,12 +386,13 @@ class EntityBuilder
 					{
 						case 'csv':
 							$handler = '\Joomla\ORM\Storage\CsvProvider';
+							$param1   = $parts[1];
 							break;
 						case 'orm':
-							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
-							break;
 						default:
-							$handler = '\Joomla\ORM\Storage\DsnProvider';
+							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
+							$param1   = $info[0]->dsn;
+							$param2   = $info[0]->table;
 							break;
 					}
 					break;
@@ -397,7 +402,7 @@ class EntityBuilder
 					break;
 			}
 
-			$this->reflector->setStorageProvider(new $handler($info[0]->toArray(), $this));
+			$this->reflector->setStorageProvider(new $handler($param1, $this, $param2));
 		}
 	}
 }

@@ -21,9 +21,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 				]
 		]);
 
-		$persistor = new DoctrinePersistor($connection, [
-				'table' => 'test'
-		]);
+		$persistor = new DoctrinePersistor($connection, 'test', 'Test');
 
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
@@ -34,9 +32,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		]);
 		$persistor->store($entity);
 
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->orderBy('id');
 
 		$entities = $finder->getItems();
@@ -60,9 +56,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 						]
 				]);
 
-		$persistor = new DoctrinePersistor($connection, [
-				'table' => 'test'
-		]);
+		$persistor = new DoctrinePersistor($connection, 'test', 'Test');
 
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
@@ -74,9 +68,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		]);
 		$persistor->store($entity);
 
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->orderBy('id');
 
 		$entities = $finder->getItems();
@@ -100,9 +92,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 						]
 				]);
 
-		$persistor = new DoctrinePersistor($connection, [
-				'table' => 'test'
-		]);
+		$persistor = new DoctrinePersistor($connection, 'test', 'Test');
 
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
@@ -114,9 +104,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		]);
 		$persistor->delete($entity);
 
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->orderBy('id');
 
 		$entities = $finder->getItems();
@@ -139,9 +127,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 						]
 				]);
 
-		$persistor = new DoctrinePersistor($connection, [
-				'table' => 'test'
-		]);
+		$persistor = new DoctrinePersistor($connection, 'test', 'Test');
 
 		$builder = new EntityBuilder(new Locator([
 				new RecursiveDirectoryStrategy(__DIR__)
@@ -152,9 +138,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		]);
 		$persistor->delete($entity);
 
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->orderBy('id');
 
 		$entities = $finder->getItems();
@@ -186,9 +170,7 @@ class DoctrinePersistorTest extends BasicDoctrineTestCase
 		$entity = $builder->create('Test');
 		$persistor->delete($entity);
 
-		$finder = new DoctrineCollectionFinder($connection, [
-				'table' => 'test'
-		], $builder);
+		$finder = new DoctrineCollectionFinder($connection, 'test', 'Test', $builder);
 		$finder->orderBy('id');
 
 		$entities = $finder->getItems();

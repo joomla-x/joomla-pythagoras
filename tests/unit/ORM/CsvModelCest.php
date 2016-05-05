@@ -22,7 +22,7 @@ class CsvModelCest
 
 	public function _before(UnitTester $I)
 	{
-		$this->provider = new CsvProvider(['dsn' =>__DIR__ . '/data/articles.csv']);
+		$this->provider = new CsvProvider(__DIR__ . '/data/articles.csv');
 	}
 
 	public function _after(UnitTester $I)

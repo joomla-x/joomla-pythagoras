@@ -50,12 +50,12 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * CsvModel constructor.
 	 *
-	 * @param   array   $parameters The parameters
+	 * @param   string  $dataFile The name of the data file
 	 * @param   integer $mode     The finder mode, see class constants
 	 */
-	public function __construct(array $parameters)
+	public function __construct($dataFile)
 	{
-		$this->dataFile = str_replace('csv://', '', $parameters['dsn']);
+		$this->dataFile = $dataFile;
 
 		$locator       = new Locator(
 			[
