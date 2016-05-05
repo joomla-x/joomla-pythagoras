@@ -388,7 +388,6 @@ class EntityBuilder
 							$handler = '\Joomla\ORM\Storage\CsvProvider';
 							$param1   = $parts[1];
 							break;
-						case 'orm':
 						default:
 							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
 							$param1   = $info[0]->dsn;
