@@ -77,6 +77,7 @@ class Entity implements EntityInterface
 		{
 			return 'id';
 		}
+
 		return $this->key;
 	}
 

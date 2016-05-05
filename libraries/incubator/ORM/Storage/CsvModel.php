@@ -28,7 +28,6 @@ use Joomla\ORM\Persistor\PersistorInterface;
  */
 class CsvModel implements EntityFinderInterface, CollectionFinderInterface, PersistorInterface
 {
-
 	/** @var  array  Conditions */
 	private $conditions = [];
 
@@ -51,7 +50,6 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	 * CsvModel constructor.
 	 *
 	 * @param   string  $dataFile The name of the data file
-	 * @param   integer $mode     The finder mode, see class constants
 	 */
 	public function __construct($dataFile)
 	{

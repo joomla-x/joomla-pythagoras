@@ -5,6 +5,7 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
+
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
@@ -16,69 +17,89 @@ use Joomla\ORM\Persistor\PersistorInterface;
  *
  * @package Joomla/ORM
  *
- * @since 1.0
+ * @since   1.0
  */
 class DoctrinePersistor implements PersistorInterface
 {
-
 	/** @var Connection the connection to work on */
 	private $connection = null;
 
 	/** @var string $tableName */
 	private $tableName = null;
 
+	/**
+	 * DoctrinePersistor constructor.
+	 *
+	 * @param   Connection    $connection The database connection
+	 * @param   string        $tableName  The name of the table
+	 */
 	public function __construct(Connection $connection, $tableName)
 	{
 		$this->connection = $connection;
-		$this->tableName = $tableName;
+		$this->tableName  = $tableName;
 	}
 
 	/**
+	 * Store an entity.
 	 *
-	 * {@inheritdoc}
+	 * @param   EntityInterface  $entity  The entity to store
 	 *
-	 * @see \Joomla\ORM\Persistor\PersistorInterface::store()
+	 * @return  void
 	 */
 	public function store(EntityInterface $entity)
 	{
 		$data = $entity->asArray();
-		foreach ($data as $key => $value)
+
+		foreach ($data as $index => $value)
 		{
-			if (strpos($key, '@') === 0)
+			if (strpos($index, '@') === 0)
 			{
-				unset($data[$key]);
+				unset($data[$index]);
 			}
 		}
 
-		$id = $entity->{$entity->key()};
-		if ($id)
+		$key = $entity->key();
+		$id  = $entity->$key;
+
+		if (!empty($id))
 		{
-			$this->connection->update($this->tableName, $data, [
-					$entity->key() => $id
-			]);
+			$this->connection->update(
+				$this->tableName,
+				$data,
+				[
+					$key => $id
+				]
+			);
 		}
 		else
 		{
-			unset($data[$entity->key()]);
+			unset($data[$key]);
 			$this->connection->insert($this->tableName, $data);
 		}
 	}
 
 	/**
+	 * Delete an entity.
 	 *
-	 * {@inheritdoc}
+	 * @param   EntityInterface  $entity  The entity to sanitise
 	 *
-	 * @see \Joomla\ORM\Persistor\PersistorInterface::delete()
+	 * @return  void
 	 */
 	public function delete(EntityInterface $entity)
 	{
-		$id = $entity->{$entity->key()};
-		if (!$id)
+		$key = $entity->key();
+		$id  = $entity->$key;
+
+		if (empty($id))
 		{
 			return;
 		}
-		$this->connection->delete($this->tableName, [
-				$entity->key() => $entity->{$entity->key()}
-		]);
+
+		$this->connection->delete(
+			$this->tableName,
+			[
+				$key => $entity->$key
+			]
+		);
 	}
 }

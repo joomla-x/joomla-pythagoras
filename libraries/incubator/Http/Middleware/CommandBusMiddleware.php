@@ -54,6 +54,7 @@ class CommandBusMiddleware implements MiddlewareInterface
 		{
 			throw new \RuntimeException('No command provided');
 		}
+
 		$this->commandBus->handle($command);
 
 		$response = $next($request, $response);

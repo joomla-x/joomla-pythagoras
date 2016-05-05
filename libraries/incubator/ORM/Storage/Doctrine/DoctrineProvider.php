@@ -9,6 +9,9 @@ namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\DriverManager;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Finder\CollectionFinderInterface;
+use Joomla\ORM\Finder\EntityFinderInterface;
+use Joomla\ORM\Persistor\PersistorInterface;
 use Joomla\ORM\Storage\StorageProviderInterface;
 
 /**
@@ -16,11 +19,10 @@ use Joomla\ORM\Storage\StorageProviderInterface;
  *
  * @package Joomla/ORM
  *
- * @since 1.0
+ * @since   1.0
  */
 class DoctrineProvider implements StorageProviderInterface
 {
-
 	/** @var  string The dsn url */
 	private $dsn;
 
@@ -33,22 +35,23 @@ class DoctrineProvider implements StorageProviderInterface
 	/**
 	 * DoctrineProvider constructor.
 	 *
-	 * @param string $dsn
-	 * @param EntityBuilder $builder
-	 * @param string $tableName
+	 * @param   string        $dsn       The DSN describing the desired connection
+	 * @param   EntityBuilder $builder   The entity builder
+	 * @param   string        $tableName The name of the table
 	 */
 	public function __construct($dsn, EntityBuilder $builder, $tableName)
 	{
-		$this->dsn = $dsn;
-		$this->builder = $builder;
+		$this->dsn       = $dsn;
+		$this->builder   = $builder;
 		$this->tableName = $tableName;
 	}
 
 	/**
+	 * Get an EntityFinder.
 	 *
-	 * {@inheritdoc}
+	 * @param   string  $entityName  The name of the entity
 	 *
-	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getEntityFinder()
+	 * @return  EntityFinderInterface  The finder
 	 */
 	public function getEntityFinder($entityName)
 	{
@@ -56,10 +59,11 @@ class DoctrineProvider implements StorageProviderInterface
 	}
 
 	/**
+	 * Get a CollectionFinder.
 	 *
-	 * {@inheritdoc}
+	 * @param   string  $entityName  The name of the entity
 	 *
-	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getCollectionFinder()
+	 * @return  CollectionFinderInterface
 	 */
 	public function getCollectionFinder($entityName)
 	{
@@ -67,10 +71,11 @@ class DoctrineProvider implements StorageProviderInterface
 	}
 
 	/**
+	 * Get a Persistor.
 	 *
-	 * {@inheritdoc}
+	 * @param   string  $entityName  The name of the entity
 	 *
-	 * @see \Joomla\ORM\Storage\StorageProviderInterface::getPersistor()
+	 * @return  PersistorInterface
 	 */
 	public function getPersistor($entityName)
 	{
@@ -83,8 +88,6 @@ class DoctrineProvider implements StorageProviderInterface
 	 */
 	private function getConnection()
 	{
-		return DriverManager::getConnection([
-				'url' => $this->dsn
-		]);
+		return DriverManager::getConnection(['url' => $this->dsn]);
 	}
 }

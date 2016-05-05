@@ -5,23 +5,23 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
+
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
-use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Finder\CollectionFinderInterface;
+use Joomla\ORM\Finder\Operator;
 
 /**
  * Class DoctrineCollectionFinder
  *
  * @package Joomla/ORM
  *
- * @since 1.0
+ * @since   1.0
  */
 class DoctrineCollectionFinder implements CollectionFinderInterface
 {
-
 	/** @var string[] the columns */
 	private $columns = [];
 
@@ -43,31 +43,44 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/** @var EntityBuilder */
 	private $builder = null;
 
+	/**
+	 * DoctrineCollectionFinder constructor.
+	 *
+	 * @param   Connection    $connection The database connection
+	 * @param   string        $tableName  The name of the table
+	 * @param   string        $entityName The name of the entity
+	 * @param   EntityBuilder $builder    The entity builder
+	 */
 	public function __construct(Connection $connection, $tableName, $entityName, EntityBuilder $builder)
 	{
 		$this->connection = $connection;
-		$this->tableName = $tableName;
+		$this->tableName  = $tableName;
 		$this->entityName = $entityName;
-		$this->builder = $builder;
+		$this->builder    = $builder;
 	}
 
 	/**
+	 * Define the columns to be retrieved.
 	 *
-	 * {@inheritDoc}
+	 * @param   array  $columns  The column names
 	 *
-	 * @see \Joomla\ORM\Finder\CollectionFinderInterface::columns()
+	 * @return  CollectionFinderInterface  $this for chaining
 	 */
 	public function columns($columns)
 	{
 		$this->columns = $columns;
+
 		return $this;
 	}
 
 	/**
+	 * Define a condition.
 	 *
-	 * {@inheritDoc}
+	 * @param   mixed   $lValue  The left value for the comparision
+	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   mixed   $rValue  The right value for the comparision
 	 *
-	 * @see \Joomla\ORM\Finder\CollectionFinderInterface::with()
+	 * @return  CollectionFinderInterface  $this for chaining
 	 */
 	public function with($lValue, $op, $rValue)
 	{
@@ -75,26 +88,34 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		{
 			return $this;
 		}
+
 		$this->conditions[$lValue . ' ' . $op . ' ?'] = $rValue;
+
 		return $this;
 	}
 
 	/**
+	 * Set the ordering.
 	 *
-	 * {@inheritDoc}
+	 * @param   string  $column     The name of the ordering column
+	 * @param   string  $direction  One of 'ASC' (ascending) or 'DESC' (descending)
 	 *
-	 * @see \Joomla\ORM\Finder\CollectionFinderInterface::orderBy()
+	 * @return  CollectionFinderInterface  $this for chaining
 	 */
 	public function orderBy($column, $direction = 'ASC')
 	{
 		$this->ordering[$column] = $direction;
+
+		return $this;
 	}
 
 	/**
+	 * Fetch the entities
 	 *
-	 * {@inheritDoc}
+	 * @param   int $count The number of matching entities to retrieve
+	 * @param   int $start The index of the first entity to retrieve
 	 *
-	 * @see \Joomla\ORM\Finder\CollectionFinderInterface::getItems()
+	 * @return  array
 	 */
 	public function getItems($count = null, $start = 0)
 	{
@@ -103,12 +124,14 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		$builder->from($this->tableName);
 
 		$counter = 0;
+
 		foreach ($this->conditions as $left => $value)
 		{
 			$builder->andWhere($left);
 			$builder->setParameter($counter, $value);
-			$counter ++;
+			$counter++;
 		}
+
 		foreach ($this->ordering as $column => $order)
 		{
 			$builder->orderBy($column, $order);
@@ -118,12 +141,14 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		$builder->setFirstResult($start);
 
 		$rows = $builder->execute()->fetchAll(\PDO::FETCH_ASSOC);
-		if (!$rows)
+
+		if (empty($rows))
 		{
 			return [];
 		}
 
 		$data = [];
+
 		foreach ($rows as $row)
 		{
 			$entity = $this->builder->create($this->entityName);

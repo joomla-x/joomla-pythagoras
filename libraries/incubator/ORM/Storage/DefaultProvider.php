@@ -22,7 +22,12 @@ use Joomla\ORM\Entity\EntityBuilder;
  */
 class DefaultProvider extends DoctrineProvider
 {
-
+	/**
+	 * DefaultProvider constructor.
+	 *
+	 * @param   string        $tableName  The name of the table
+	 * @param   EntityBuilder $builder    The entity builder
+	 */
 	public function __construct($tableName, EntityBuilder $builder)
 	{
 		$url = file_get_contents('config/database.ini');

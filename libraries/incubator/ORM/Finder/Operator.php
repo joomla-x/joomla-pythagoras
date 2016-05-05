@@ -35,9 +35,15 @@ abstract class Operator
 	const MATCHES = 'RLIKE';
 	const IN = 'IN';
 
+	/**
+	 * @param   string  $op  The operator to be checked
+	 *
+	 * @return  boolean  true if valid, false else
+	 */
 	public static function isValid($op)
 	{
 		$reflect = new \ReflectionClass(self::class);
+
 		return in_array($op, $reflect->getConstants());
 	}
 }

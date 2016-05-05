@@ -5,26 +5,28 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
+
 namespace Joomla\ORM\Storage\Doctrine;
 
-use Joomla\ORM\Finder\EntityFinderInterface;
+use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
+use Joomla\ORM\Finder\EntityFinderInterface;
 
 /**
  * Class DoctrineEntityFinder
  *
  * @package Joomla/ORM
  *
- * @since 1.0
+ * @since   1.0
  */
 class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFinderInterface
 {
-
 	/**
+	 * Fetch the entity
 	 *
-	 * {@inheritDoc}
+	 * @return  EntityInterface
 	 *
-	 * @see \Joomla\ORM\Finder\EntityFinderInterface::getItem()
+	 * @throws  EntityNotFoundException  if the specified entity does not exist.
 	 */
 	public function getItem()
 	{
@@ -32,8 +34,9 @@ class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFin
 
 		if (!is_array($entities) || count($entities) < 1)
 		{
-			throw new EntityNotFoundException();
+			throw new EntityNotFoundException;
 		}
+
 		return $entities[0];
 	}
 }
