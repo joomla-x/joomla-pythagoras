@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="test">
+
+    <storage>
+        <special dsn="sqlite:///:memory:" table="test" />
+    </storage>
+
+    <fields>
+        <field name="id"
+               type="title"
+               label="JGLOBAL_TITLE"
+        >
+        </field>
+        <field name="foo"
+               type="title"
+               label="JGLOBAL_TITLE"
+        >
+            <validation rule="maxlen" value="64"/>
+        </field>
+    </fields>
+</entity>

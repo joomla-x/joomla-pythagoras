@@ -73,6 +73,10 @@ class Entity implements EntityInterface
 	 */
 	public function key()
 	{
+		if (!$this->key && $this->has('id'))
+		{
+			return 'id';
+		}
 		return $this->key;
 	}
 

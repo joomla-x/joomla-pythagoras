@@ -17,21 +17,27 @@ namespace Joomla\ORM\Finder;
  */
 abstract class Operator
 {
-	const EQ = '=';
+	const EQ = self::EQUAL;
 	const EQUAL = '=';
-	const NE = '<>';
+	const NE = self::NOT_EQUAL;
 	const NOT_EQUAL = '<>';
-	const GT = '>';
+	const GT = self::GREATER_THAN;
 	const GREATER_THAN = '>';
-	const GE = '>=';
+	const GE = self::GREATER_OR_EQUAL;
 	const GREATER_OR_EQUAL = '>=';
-	const LT = '<';
+	const LT = self::LESS_THAN;
 	const LESS_THAN = '<';
-	const LE = '<=';
+	const LE = self::LESS_OR_EQUAL;
 	const LESS_OR_EQUAL = '<=';
 	const CONTAINS = '%LIKE%';
 	const STARTS_WITH = 'LIKE%';
 	const ENDS_WITH = '%LIKE';
 	const MATCHES = 'RLIKE';
 	const IN = 'IN';
+
+	public static function isValid($op)
+	{
+		$reflect = new \ReflectionClass(self::class);
+		return in_array($op, $reflect->getConstants());
+	}
 }

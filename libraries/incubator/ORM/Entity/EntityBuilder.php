@@ -272,7 +272,7 @@ class EntityBuilder
 
 			// Records from {$relation->entity} with {$relation->reference}={$id}
 			$repository = new Repository($relation->entity, $locator);
-			$entities   = $repository->findAll()->with($relation->reference, Operator::EQUAL, $id)->get();
+			$entities   = $repository->findAll()->with($relation->reference, Operator::EQUAL, $id)->getItems();
 			$this->reflector->addField(new Field([
 				'name'  => $basename,
 				'type'  => 'relationData',
@@ -308,7 +308,7 @@ class EntityBuilder
 
 			// The record from {$relation->entity} with {$relation->reference}={$id}
 			$repository = new Repository($relation->entity, $locator);
-			$entity     = $repository->findOne()->with($relation->reference, Operator::EQUAL, $id)->get();
+			$entity     = $repository->findOne()->with($relation->reference, Operator::EQUAL, $id)->getItem();
 
 			$this->reflector->addField(new Field([
 				'name'  => $basename,
@@ -345,7 +345,7 @@ class EntityBuilder
 
 			// Records from {$relation->entity} with {$relation->reference} IN ids from {$relation->joinTable} with {$relation->joinRef}={$id}
 			$map     = new Repository($relation->joinTable, $locator);
-			$entries = $map->findAll()->with($relation->joinRef, Operator::EQUAL, $id)->get();
+			$entries = $map->findAll()->with($relation->joinRef, Operator::EQUAL, $id)->getItems();
 
 			$repository = new Repository($relation->entity, $locator);
 			$entities   = $repository->findAll()->with($relation->reference, Operator::IN, $entries->getIds());
@@ -362,21 +362,22 @@ class EntityBuilder
 
 	public function handleStorage(Element $storage)
 	{
-		foreach (get_object_vars($storage) as $type => $info)
+		foreach ($storage->toArray() as $type => $info)
 		{
-			$handler = null;
-			$param   = null;
+			$handler  = null;
+			$param1   = null;
+			$param2   = null;
 
 			switch ($type)
 			{
 				case 'default':
 					$handler = '\Joomla\ORM\Storage\DefaultProvider';
-					$param = $info[0]->table;
+					$param1 = $info[0]->table;
 					break;
 
 				case 'api':
 					$handler = $info[0]->handler;
-					$param = $info[0]->{'base-url'};
+					$param1 = $info[0]->{'base-url'};
 					break;
 
 				case 'special':
@@ -385,11 +386,12 @@ class EntityBuilder
 					{
 						case 'csv':
 							$handler = '\Joomla\ORM\Storage\CsvProvider';
-							$param   = $parts[1];
+							$param1   = $parts[1];
 							break;
 						default:
-							$handler = '\Joomla\ORM\Storage\DsnProvider';
-							$param   = $info[0]->dsn;
+							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
+							$param1   = $info[0]->dsn;
+							$param2   = $info[0]->table;
 							break;
 					}
 					break;
@@ -399,7 +401,7 @@ class EntityBuilder
 					break;
 			}
 
-			$this->reflector->setStorageProvider(new $handler($param));
+			$this->reflector->setStorageProvider(new $handler($param1, $this, $param2));
 		}
 	}
 }

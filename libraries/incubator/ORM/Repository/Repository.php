@@ -17,7 +17,6 @@ use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;
 use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Persistor\PersistorInterface;
-use Joomla\ORM\Validator\ValidatorInterface;
 
 /**
  * Class Repository
@@ -90,7 +89,7 @@ class Repository implements RepositoryInterface
 	{
 		$this->buildPrototype();
 
-		return $this->findOne()->with($this->prototype->key(), Operator::EQUAL, $id)->get();
+		return $this->findOne()->with($this->prototype->key(), Operator::EQUAL, $id)->getItem();
 	}
 
 	/**
