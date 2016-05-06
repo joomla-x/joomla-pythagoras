@@ -52,3 +52,6 @@ and to provide the necessary information for the Persistor to handle additional 
 
   - On list views, the HCs should provide filters for the fields, they add.
   
+  - Content types based on entities (e.g., Article, Teaser) create a compound element from the entity's properties.
+    A `ContentTypeQuery` is issued, and the `ContentTypeQueryHandler` is responsible to let the HCs add their data.
+    *The current implementation contains just a dummy for that, just adding `extended => YES` to the elements.*
