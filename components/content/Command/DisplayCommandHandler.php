@@ -8,13 +8,11 @@
 
 namespace Joomla\Component\Content\Command;
 
-use Joomla\Content\Type\Attribution;
-use Joomla\Content\Type\Compound;
-use Joomla\Content\Type\Headline;
-use Joomla\Content\Type\Paragraph;
+use Joomla\Content\Type\Article;
+use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryQuery;
+use Joomla\Renderer\Exception\NotFoundException;
 use Joomla\Service\CommandHandler;
-use Joomla\ORM\Entity\EntityInterface;
 
 /**
  * Display Command Handler
@@ -34,38 +32,28 @@ class DisplayCommandHandler extends CommandHandler
 	 */
 	public function handle(DisplayCommand $command)
 	{
-		$articleRepository = $this->getCommandBus()->handle(new RepositoryQuery($command->entityName));
-		$article           = $articleRepository->findById($command->id);
-
-		if (!$article instanceof EntityInterface)
+		try
 		{
-			return;
+			$articleRepository = $this->getRepository($command->entityName);
+			$article           = $articleRepository->findById($command->id);
+		}
+		catch (\Exception $e)
+		{
+			throw new NotFoundException($command->entityName . ' ' . $command->id . ' not found', 404);
 		}
 
-		$compound = new Compound(
-			'article',
-			[
-				new Headline($article->title, 1),
-				new Attribution('Written by', $article->author),
-				new Paragraph($article->teaser, Paragraph::EMPHASISED),
-				new Paragraph($article->body),
-			]
-		);
+		$element = new Article($article, $this->getCommandBus());
 
-		foreach ($article->children as $child)
-		{
-			$compound->add(
-				new Compound(
-					'section',
-					[
-						new Headline($child->title, 2),
-						$child->author != $article->author ? new Attribution('Contribution from', $child->author) : null,
-						new Paragraph($child->body),
-					]
-				)
-			);
-		}
+		$element->accept($command->renderer);
+	}
 
-		$compound->accept($command->renderer);
+	/**
+	 * @param   string $entityName The name of the entity
+	 *
+	 * @return  Repository
+	 */
+	private function getRepository($entityName)
+	{
+		return $this->getCommandBus()->handle(new RepositoryQuery($entityName));
 	}
 }
