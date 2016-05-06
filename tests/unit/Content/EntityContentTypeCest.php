@@ -161,5 +161,9 @@ class EntityContentTypeCest
 		{
 			$I->assertContains('undefinedProperty', $e->getMessage());
 		}
+		catch (\Exception $e)
+		{
+			$I->fail('Expected an UnexpectedValueException, but got ' . get_class($e));
+		}
 	}
 }
