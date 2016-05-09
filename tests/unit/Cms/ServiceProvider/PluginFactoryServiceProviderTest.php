@@ -1,11 +1,11 @@
 <?php
 
-namespace Joomla\Tests\Unit\Joomla\ServiceProvider;
+namespace Joomla\Tests\Unit\Cms\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Plugin\PluginFactoryInterface;
-use Joomla\Joomla\ServiceProvider\PluginFactoryServiceProvider;
+use Joomla\Cms\ServiceProvider\PluginFactoryServiceProvider;
 
 class PluginFactoryServiceProviderTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Joomla\Tests\Unit\Joomla\ServiceProvider;
+namespace Joomla\Tests\Unit\Cms\ServiceProvider;
 
 use Joomla\Service\CommandBus;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Tests\Unit\Service\Stubs\SimpleCommand;
 use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
-use Joomla\Joomla\ServiceProvider\CommandBusServiceProvider;
+use Joomla\Cms\ServiceProvider\CommandBusServiceProvider;
 use Joomla\Tests\Unit\Service\Stubs\LoggingMiddleware;
 use Joomla\Tests\Unit\Service\Stubs\Logger;
 

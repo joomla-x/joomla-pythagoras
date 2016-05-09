@@ -1,5 +1,7 @@
 # Joomla! X Clean Base Branch
 
+[![Build Status](https://travis-ci.org/joomla-projects/joomla-pythagoras.svg?branch=clean-base)](https://travis-ci.org/joomla-projects/joomla-pythagoras)
+
 This branch contains the current development of Joomla! X (currently, X == 4),
 based on a clean-base approach.
 

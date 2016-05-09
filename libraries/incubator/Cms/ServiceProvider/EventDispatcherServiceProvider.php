@@ -5,26 +5,26 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Joomla\ServiceProvider;
+namespace Joomla\Cms\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Plugin\FilePluginFactory;
+use Joomla\Plugin\PluginDispatcher;
 
 /**
- * Class PluginFactoryServiceProvider
+ * Class EventDispatcherServiceProvider
  *
- * @package Joomla\Joomla\ServiceProvider
+ * @package Joomla\Cms\ServiceProvider
  *
  * @since  1.0
  */
-class PluginFactoryServiceProvider implements ServiceProviderInterface
+class EventDispatcherServiceProvider implements ServiceProviderInterface
 {
-	/** @var string The access key for the container */
-	private $key = 'PluginFactory';
+	/** @var string  The access key */
+	private $key = 'EventDispatcher';
 
 	/**
-	 * Add the plugin factory to a container
+	 * Add the dispatcher to a container
 	 *
 	 * @param   Container $container  The container
 	 * @param   string    $alias      An optional alias
@@ -37,7 +37,7 @@ class PluginFactoryServiceProvider implements ServiceProviderInterface
 			$this->key,
 			[
 				$this,
-				'createPluginFactory'
+				'createDispatcher'
 			],
 			true,
 			true
@@ -50,14 +50,14 @@ class PluginFactoryServiceProvider implements ServiceProviderInterface
 	}
 
 	/**
-	 * Create the plugin factory
+	 * Create the dispatcher
 	 *
 	 * @param   Container $container  The container
 	 *
-	 * @return  FilePluginFactory
+	 * @return  PluginDispatcher
 	 */
-	public function createPluginFactory(Container $container)
+	public function createDispatcher(Container $container)
 	{
-		return new FilePluginFactory($container->get('ConfigDirectory') . '/plugins');
+		return new PluginDispatcher($container->get('plugin_factory'));
 	}
 }
