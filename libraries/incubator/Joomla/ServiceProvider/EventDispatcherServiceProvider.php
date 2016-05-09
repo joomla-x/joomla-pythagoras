@@ -9,7 +9,7 @@ namespace Joomla\Joomla\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Plugin\PluginDispatcher;
+use Joomla\Extension\ExtensionDispatcher;
 
 /**
  * Class EventDispatcherServiceProvider
@@ -54,10 +54,10 @@ class EventDispatcherServiceProvider implements ServiceProviderInterface
 	 *
 	 * @param   Container $container  The container
 	 *
-	 * @return  PluginDispatcher
+	 * @return  ExtensionDispatcher
 	 */
 	public function createDispatcher(Container $container)
 	{
-		return new PluginDispatcher($container->get('plugin_factory'));
+		return new ExtensionDispatcher($container->get('plugin_factory'));
 	}
 }

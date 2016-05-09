@@ -9,19 +9,19 @@ namespace Joomla\Joomla\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Plugin\FilePluginFactory;
+use Joomla\Extension\FileExtensionFactory;
 
 /**
- * Class PluginFactoryServiceProvider
+ * Class ExtensionFactoryServiceProvider
  *
  * @package Joomla\Joomla\ServiceProvider
  *
  * @since  1.0
  */
-class PluginFactoryServiceProvider implements ServiceProviderInterface
+class ExtensionFactoryServiceProvider implements ServiceProviderInterface
 {
 	/** @var string The access key for the container */
-	private $key = 'PluginFactory';
+	private $key = 'ExtensionFactory';
 
 	/**
 	 * Add the plugin factory to a container
@@ -37,7 +37,7 @@ class PluginFactoryServiceProvider implements ServiceProviderInterface
 			$this->key,
 			[
 				$this,
-				'createPluginFactory'
+				'createExtensionFactory'
 			],
 			true,
 			true
@@ -54,10 +54,10 @@ class PluginFactoryServiceProvider implements ServiceProviderInterface
 	 *
 	 * @param   Container $container  The container
 	 *
-	 * @return  FilePluginFactory
+	 * @return  FileExtensionFactory
 	 */
-	public function createPluginFactory(Container $container)
+	public function createExtensionFactory(Container $container)
 	{
-		return new FilePluginFactory($container->get('ConfigDirectory') . '/plugins');
+		return new FileExtensionFactory($container->get('ConfigDirectory') . '/extensions');
 	}
 }

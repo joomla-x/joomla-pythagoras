@@ -1,11 +1,11 @@
 <?php
 
-namespace Joomla\Tests\Unit\Plugins\Content\Uppercase\Listener;
+namespace Joomla\Tests\Unit\Extensions\Uppercase\Listener;
 
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
-use Joomla\Plugin\Content\UpperCase\Listener\UpperCaseListener;
+use Joomla\Extension\UpperCase\Listener\UpperCaseListener;
 use Joomla\Renderer\Event\RenderContentTypeEvent;
 
 class UpperCaseListenerTest extends \PHPUnit_Framework_TestCase

@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Component\Content\Command;
+namespace Joomla\Component\Article\Command;
 
 use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;

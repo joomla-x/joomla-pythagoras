@@ -1,12 +1,12 @@
 <?php
 /**
- * Part of the Joomla! Content Plugin Package
+ * Part of the Joomla! Content Extension Package
  *
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Plugin\Content\UpperCase\Listener;
+namespace Joomla\Extension\UpperCase\Listener;
 
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\Compound;
@@ -17,7 +17,7 @@ use Joomla\Renderer\Event\RenderContentTypeEvent;
 /**
  * Class UpperCaseListener
  *
- * @package Joomla\Plugin\Content
+ * @package Joomla\Extension\Content
  *
  * @since   1.0
  */

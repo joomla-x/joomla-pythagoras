@@ -1,20 +1,20 @@
 <?php
 
-namespace Joomla\Tests\Unit\Plugin;
+namespace Joomla\Tests\Unit\Extension;
 
-use Joomla\Plugin\FilePluginFactory;
-use Joomla\Tests\Unit\Plugin\Stubs\SimpleEventListener;
+use Joomla\Extension\FileExtensionFactory;
+use Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener;
 use League\Flysystem\Adapter\AbstractAdapter;
 
-class FilePluginFactoryTest extends \PHPUnit_Framework_TestCase
+class FileExtensionFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
-	public function testGetAllPlugins()
+	public function testGetAllExtensions()
 	{
 		$pluginManifest = <<<EOL
 listeners:
     UnitTestListener:
-        class: \Joomla\Tests\Unit\Plugin\Stubs\SimpleEventListener
+        class: \Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener
         events:
             onUnitTestEvent: onEventTest
 EOL;
@@ -29,8 +29,8 @@ EOL;
 			'contents' => $pluginManifest
 		]);
 
-		$factory = new FilePluginFactory($fs);
-		$plugins = $factory->getPlugins();
+		$factory = new FileExtensionFactory($fs);
+		$plugins = $factory->getExtensions();
 
 		$this->assertCount(1, $plugins);
 
@@ -40,19 +40,19 @@ EOL;
 		$this->assertEquals('onEventTest', $listeners[0][1]);
 	}
 
-	public function testGetTypeSpecificPlugins()
+	public function testGetTypeSpecificExtensions()
 	{
 		$pluginManifest  = <<<EOL
 listeners:
     UnitTestListener:
-        class: \Joomla\Tests\Unit\Plugin\Stubs\SimpleEventListener
+        class: \Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener
         events:
             onUnitTestEvent: onEventTest
 EOL;
 		$pluginManifest1 = <<<EOL
 listeners:
     UnitTestListener1:
-        class: \Joomla\Tests\Unit\Plugin\Stubs\SimpleEventListener
+        class: \Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener
         events:
             onUnitTestEvent1: onEventTest
 EOL;
@@ -74,15 +74,15 @@ EOL;
 		]);
 		$fs->method('applyPathPrefix')->willReturnOnConsecutiveCalls('test1', 'test2');
 
-		$factory = new FilePluginFactory($fs);
-		$plugins = $factory->getPlugins('content');
+		$factory = new FileExtensionFactory($fs);
+		$plugins = $factory->getExtensions('content');
 
 		$listeners = $plugins[0]->getListeners('onUnitTestEvent');
 		$this->assertNotEmpty($listeners);
 		$this->assertInstanceOf(SimpleEventListener::class, $listeners[0][0]);
 		$this->assertEquals('onEventTest', $listeners[0][1]);
 
-		$pluginsAll = $factory->getPlugins();
+		$pluginsAll = $factory->getExtensions();
 		$this->assertNotEquals($plugins, $pluginsAll);
 
 		/** @noinspection PhpUnusedLocalVariableInspection */

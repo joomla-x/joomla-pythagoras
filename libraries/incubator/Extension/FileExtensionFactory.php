@@ -1,12 +1,12 @@
 <?php
 /**
- * Part of the Joomla Framework Plugin Package
+ * Part of the Joomla Framework Extension Package
  *
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Plugin;
+namespace Joomla\Extension;
 
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
@@ -14,25 +14,25 @@ use League\Flysystem\AdapterInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class FilePluginFactory
+ * Class FileExtensionFactory
  *
- * @package Joomla\Plugin
+ * @package Joomla\Extension
  *
  * @since  1.0
  */
-class FilePluginFactory implements PluginFactoryInterface
+class FileExtensionFactory implements ExtensionFactoryInterface
 {
 	/** @var string|AdapterInterface  The root folder the factory reads the plugins from. */
 	private $rootFolder;
 
-	/** @var PluginInterface[] Plugins cache. */
+	/** @var ExtensionInterface[] Extensions cache. */
 	private $plugins = [];
 
 	/** @var array the loaded files */
 	private $loadedFiles = [];
 
 	/**
-	 * FilePluginFactory constructor.
+	 * FileExtensionFactory constructor.
 	 *
 	 * @param   string|AdapterInterface $rootFolder  The root folder the factory reads the plugins from
 	 */
@@ -46,9 +46,9 @@ class FilePluginFactory implements PluginFactoryInterface
 	 *
 	 * @param   string $group  The plugin group
 	 *
-	 * @return  PluginInterface[]
+	 * @return  ExtensionInterface[]
 	 */
-	public function getPlugins($group = '')
+	public function getExtensions($group = '')
 	{
 		if (key_exists($group, $this->plugins))
 		{
@@ -86,7 +86,7 @@ class FilePluginFactory implements PluginFactoryInterface
 				continue;
 			}
 
-			$plugin                   = new Plugin;
+			$plugin                   = new Extension;
 			$this->loadedFiles[$path] = $plugin;
 			$this->plugins[$group][]  = $plugin;
 
@@ -104,12 +104,12 @@ class FilePluginFactory implements PluginFactoryInterface
 	/**
 	 * Create listeners
 	 *
-	 * @param   Plugin  $plugin           The plugin
+	 * @param   Extension  $plugin           The plugin
 	 * @param   array   $listenersConfig  The configuration
 	 *
 	 * @return  void
 	 */
-	private function createListeners(Plugin $plugin, array $listenersConfig)
+	private function createListeners(Extension $plugin, array $listenersConfig)
 	{
 		foreach ($listenersConfig as $listener)
 		{

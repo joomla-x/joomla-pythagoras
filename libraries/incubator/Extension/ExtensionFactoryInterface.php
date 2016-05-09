@@ -1,29 +1,29 @@
 <?php
 /**
- * Part of the Joomla Framework Plugin Package
+ * Part of the Joomla Framework Extension Package
  *
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Plugin;
+namespace Joomla\Extension;
 
 /**
- * Plugin Factory Interface
+ * Extension Factory Interface
  *
- * @package Joomla/Plugin
+ * @package Joomla/Extension
  *
  * @since   1.0
  */
-interface PluginFactoryInterface
+interface ExtensionFactoryInterface
 {
 	/**
-	 * Returns an array of PluginInterface's for the given group.
+	 * Returns an array of ExtensionInterface's for the given group.
 	 * If the group is not defined all plugins are returned.
 	 *
 	 * @param   string $groupName  The name of the plugin group
 	 *
-	 * @return  PluginInterface[]
+	 * @return  ExtensionInterface[]
 	 */
-	public function getPlugins($groupName = '');
+	public function getExtensions($groupName = '');
 }
