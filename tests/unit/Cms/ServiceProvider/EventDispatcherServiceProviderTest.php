@@ -1,12 +1,12 @@
 <?php
 
-namespace Joomla\Tests\Unit\Joomla\ServiceProvider;
+namespace Joomla\Tests\Unit\Cms\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Extension\ExtensionFactoryInterface;
-use Joomla\Joomla\ServiceProvider\EventDispatcherServiceProvider;
+use Joomla\Cms\ServiceProvider\EventDispatcherServiceProvider;
 
 class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
