@@ -1,11 +1,11 @@
 <?php
 
-namespace Joomla\Tests\Unit\Joomla\ServiceProvider;
+namespace Joomla\Tests\Unit\Cms\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Registry\Registry;
-use Joomla\Joomla\ServiceProvider\ConfigServiceProvider;
+use Joomla\Cms\ServiceProvider\ConfigServiceProvider;
 
 class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
