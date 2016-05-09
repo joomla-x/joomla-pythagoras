@@ -51,12 +51,12 @@ class RouterMiddleware implements MiddlewareInterface
 					break;
 			}
 
-			$component = ucfirst(strtolower($params->get('option', 'content')));
+			$extension = ucfirst(strtolower($params->get('option', 'Article')));
 			$action  = ucfirst(strtolower($params->get('task', 'display')));
 			$entity  = $params->get('entity', 'error');
 			$id      = $params->get('id', null);
 
-			$commandClass = "\\Joomla\\Component\\{$component}\\Command\\{$action}Command";
+			$commandClass = "\\Joomla\\Extension\\{$extension}\\Command\\{$action}Command";
 
 			if (class_exists($commandClass))
 			{

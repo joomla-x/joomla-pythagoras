@@ -58,6 +58,6 @@ class EventDispatcherServiceProvider implements ServiceProviderInterface
 	 */
 	public function createDispatcher(Container $container)
 	{
-		return new ExtensionDispatcher($container->get('plugin_factory'));
+		return new ExtensionDispatcher($container->get('extension_factory'));
 	}
 }

@@ -1,12 +1,12 @@
 <?php
 /**
- * Part of the Joomla! Content Component Package
+ * Part of the Joomla! Article Extension Package
  *
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Component\Article\Command;
+namespace Joomla\Extension\Article\Command;
 
 use Joomla\Renderer\RendererInterface;
 use Joomla\Service\Command;
@@ -14,7 +14,7 @@ use Joomla\Service\Command;
 /**
  * Display Command
  *
- * @package  Joomla/Component/Content
+ * @package  Joomla/Extension/Article
  *
  * @since    1.0
  */
