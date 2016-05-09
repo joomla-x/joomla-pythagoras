@@ -12,9 +12,8 @@ use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
-use Joomla\ORM\Repository\RepositoryQuery;
-use Joomla\Service\CommandHandler;
 use Joomla\ORM\Entity\EntityInterface;
+use Joomla\Cms\Service\BasicDisplayCommandHandler;
 
 /**
  * Display Command Handler
@@ -23,49 +22,24 @@ use Joomla\ORM\Entity\EntityInterface;
  *
  * @since    1.0
  */
-class DisplayCommandHandler extends CommandHandler
+class DisplayCommandHandler extends BasicDisplayCommandHandler
 {
-	/**
-	 * Execute the DisplayCommand.
-	 *
-	 * @param   DisplayCommand $command The command to execute.
-	 *
-	 * @return  void
-	 */
-	public function handle(DisplayCommand $command)
+	protected function getElements(EntityInterface $entity)
 	{
-		$articleRepository = $this->getCommandBus()->handle(new RepositoryQuery($command->entityName));
-		$article           = $articleRepository->findById($command->id);
+		$elements = parent::getElements($entity);
 
-		if (!$article instanceof EntityInterface)
+		foreach ($entity->children as $child)
 		{
-			return;
-		}
-
-		$compound = new Compound(
-			'article',
-			[
-				new Headline($article->title, 1),
-				new Attribution('Written by', $article->author),
-				new Paragraph($article->teaser, Paragraph::EMPHASISED),
-				new Paragraph($article->body),
-			]
-		);
-
-		foreach ($article->children as $child)
-		{
-			$compound->add(
-				new Compound(
-					'section',
-					[
-						new Headline($child->title, 2),
-						$child->author != $article->author ? new Attribution('Contribution from', $child->author) : null,
-						new Paragraph($child->body),
-					]
-				)
+			$elements[] = new Compound(
+				'section',
+				[
+					new Headline($child->title, 2),
+					$child->author != $article->author ? new Attribution('Contribution from', $child->author) : null,
+					new Paragraph($child->body),
+				]
 			);
 		}
 
-		$compound->accept($command->renderer);
+		return $elements;
 	}
 }
