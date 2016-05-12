@@ -34,7 +34,7 @@ $connection = DriverManager::getConnection(
 $builder = new EntityBuilder(
 	new Locator(
 		[
-			new RecursiveDirectoryStrategy(__DIR__ . '/../components')
+			new RecursiveDirectoryStrategy(__DIR__ . '/../extensions')
 		]
 	)
 );

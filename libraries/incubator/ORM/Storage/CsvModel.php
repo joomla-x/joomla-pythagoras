@@ -57,7 +57,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 
 		$locator       = new Locator(
 			[
-				new RecursiveDirectoryStrategy(getcwd() . '/components'),
+				new RecursiveDirectoryStrategy(getcwd() . '/extensions'),
 			]
 		);
 		$this->builder = new EntityBuilder($locator);

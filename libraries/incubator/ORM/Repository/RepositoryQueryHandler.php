@@ -31,7 +31,7 @@ class RepositoryQueryHandler extends QueryHandler
 	public function handle(RepositoryQuery $query)
 	{
 		$strategies = [
-			new RecursiveDirectoryStrategy(JPATH_ROOT . '/components')
+			new RecursiveDirectoryStrategy(JPATH_ROOT . '/extensions')
 		];
 		$locator    = new Locator($strategies);
 

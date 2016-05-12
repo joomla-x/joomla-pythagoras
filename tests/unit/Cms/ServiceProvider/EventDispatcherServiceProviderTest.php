@@ -5,7 +5,7 @@ namespace Joomla\Tests\Unit\Cms\ServiceProvider;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\PluginFactoryInterface;
+use Joomla\Extension\ExtensionFactoryInterface;
 use Joomla\Cms\ServiceProvider\EventDispatcherServiceProvider;
 
 class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
@@ -26,7 +26,7 @@ class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 	public function testEventDispatcherServiceProviderCreatesDispatcher()
 	{
 		$container = new Container();
-		$container->set('plugin_factory', $this->getMockBuilder(PluginFactoryInterface::class)->getMock());
+		$container->set('extension_factory', $this->getMockBuilder(ExtensionFactoryInterface::class)->getMock());
 
 		$service = new EventDispatcherServiceProvider();
 		$service->register($container);
@@ -41,7 +41,7 @@ class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 	public function testEventDispatcherServiceProviderCreatesDispatcherWithAlias()
 	{
 		$container = new Container();
-		$container->set('plugin_factory', $this->getMockBuilder(PluginFactoryInterface::class)->getMock());
+		$container->set('extension_factory', $this->getMockBuilder(ExtensionFactoryInterface::class)->getMock());
 
 		$service = new EventDispatcherServiceProvider();
 		$service->register($container, 'unit');
