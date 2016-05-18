@@ -39,7 +39,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 			$middleware = (array) $container->get('CommandBusMiddleware');
 		}
 
-		$builder    = new CommandBusBuilder($container->has('EventDispatcher') ? $container->get('EventDispatcher') : null);
+		$builder    = new CommandBusBuilder($container->get('EventDispatcher'));
 		$middleware = array_merge($middleware, $builder->getMiddleware());
 		$builder->setMiddleware($middleware);
 

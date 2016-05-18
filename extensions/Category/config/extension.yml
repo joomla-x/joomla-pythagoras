@@ -1,0 +1,5 @@
+listeners:
+    AddRelationListener:
+        class: \Joomla\Extension\Category\Listener\AddRelationListener
+        events:
+            onAfterCreateDefinition: addCategoryRelation

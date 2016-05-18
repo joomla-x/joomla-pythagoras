@@ -5,7 +5,6 @@
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
-
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Table;
 use Joomla\ORM\Definition\Locator\Locator;
@@ -18,63 +17,75 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../libraries/vendor/autoload.php';
 
-$path = __DIR__ . '/demo.sqlite';
+$path =  '/tmp/demo.sqlite';
 
 if (file_exists($path))
 {
 	unlink($path);
 }
 
-$connection = DriverManager::getConnection(
-	[
+$connection = DriverManager::getConnection([
 		'url' => 'sqlite:///' . $path
-	]
-);
+]);
 
-$builder = new EntityBuilder(
-	new Locator(
-		[
-			new RecursiveDirectoryStrategy(__DIR__ . '/../extensions')
+$data = [
+		'Article' => [
+				[
+						'title' => 'Demo title',
+						'teaser' => 'Demo teaser',
+						'body' => 'Demo body',
+						'author' => 'Joomla',
+						'license' => 'MIT',
+						'parent_id' => 0
+				]
+		],
+		'Category' => [
+				[
+						'title' => 'Demo category',
+						'body' => 'Demo category body',
+						'parent_id' => 0
+				]
 		]
-	)
-);
-$entity  = $builder->create('Article');
+];
 
-$table = new Table('article');
+$builder = new EntityBuilder(new Locator([
+		new RecursiveDirectoryStrategy(__DIR__ . '/../extensions')
+]));
 
-foreach ($entity->asArray() as $name => $value)
+foreach ($data as $entityName => $entityRows)
 {
-	if (strpos($name, '@') === 0)
+	$entity = $builder->create($entityName);
+
+	$table = new Table(strtolower($entityName));
+
+	foreach ($entity->asArray() as $name => $value)
 	{
-		continue;
+		if (strpos($name, '@') === 0)
+		{
+			continue;
+		}
+
+		$type = 'string';
+
+		if ($name == 'id')
+		{
+			$type = 'integer';
+		}
+
+		$table->addColumn($name, $type);
 	}
 
-	$type = 'string';
-
-	if ($name == 'id')
+	if ($table->hasColumn('id'))
 	{
-		$type = 'integer';
+		$table->setPrimaryKey([
+				'id'
+		]);
 	}
 
-	$table->addColumn($name, $type);
+	$connection->getSchemaManager()->createTable($table);
+
+	foreach ($entityRows as $row)
+	{
+		$connection->insert(strtolower($entityName), $row);
+	}
 }
-
-if ($table->hasColumn('id'))
-{
-	$table->setPrimaryKey(['id']);
-}
-
-$connection->getSchemaManager()->createTable($table);
-
-$entity->bind(
-	[
-		'title'     => 'Demo title',
-		'teaser'    => 'Demo teaser',
-		'body'      => 'Demo body',
-		'author'    => 'Joomla',
-		'license'   => 'MIT',
-		'parent_id' => 0
-	]
-);
-
-$entity->getStorage()->getPersistor('Article')->store($entity);

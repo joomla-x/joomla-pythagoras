@@ -10,6 +10,7 @@ use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
 use Joomla\Cms\ServiceProvider\CommandBusServiceProvider;
 use Joomla\Tests\Unit\Service\Stubs\LoggingMiddleware;
 use Joomla\Tests\Unit\Service\Stubs\Logger;
+use Joomla\Event\DispatcherInterface;
 
 class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,9 +27,10 @@ class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 	 * @testdox The CommandBusServiceProvider adds an CommandBus to a
 	 * container
 	 */
-	public function testCommandBusServiceProviderCreatesDispatcher()
+	public function testCommandBusServiceProviderCreatesCommandBus()
 	{
 		$container = new Container();
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
 
 		$service = new CommandBusServiceProvider();
 		$service->register($container);
@@ -40,9 +42,10 @@ class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 	 * @testdox The CommandBusServiceProvider adds an CommandBus to a
 	 * container with an alias
 	 */
-	public function testCommandBusServiceProviderCreatesDispatcherWithAlias()
+	public function testCommandBusServiceProviderCreatesCommandBusWithAlias()
 	{
 		$container = new Container();
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
 
 		$service = new CommandBusServiceProvider();
 		$service->register($container, 'unit');
@@ -58,6 +61,7 @@ class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 		$this->expectOutputString(sprintf("LOG: Starting %1\$s\nLOG: Ending %1\$s\n", "Joomla\\Tests\\Unit\\Service\\Stubs\\SimpleCommand"));
 
 		$container = new Container();
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
 		$container->set('CommandBusMiddleware', [new LoggingMiddleware(new Logger())]);
 		$container->registerServiceProvider(new CommandBusServiceProvider());
 
@@ -73,6 +77,7 @@ class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 		$this->expectOutputString(sprintf("LOG: Starting %1\$s\nLOG: Ending %1\$s\n", "Joomla\\Tests\\Unit\\Service\\Stubs\\SimpleQuery"));
 
 		$container = new Container();
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
 		$container->set('CommandBusMiddleware', [new LoggingMiddleware(new Logger())]);
 		$container->registerServiceProvider(new CommandBusServiceProvider());
 

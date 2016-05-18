@@ -17,4 +17,6 @@ namespace Joomla\ORM\Definition\Parser;
  */
 class HasOne extends Relation
 {
+	/** @var  string  The id */
+	public $id = null;
 }

@@ -11,6 +11,7 @@ namespace Joomla\ORM\Repository;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\Service\QueryHandler;
+use Joomla\ORM\Entity\EntityBuilder;
 
 /**
  * Class Repository
@@ -35,6 +36,8 @@ class RepositoryQueryHandler extends QueryHandler
 		];
 		$locator    = new Locator($strategies);
 
-		return new Repository($query->entityName, $locator);
+		$builder = new EntityBuilder($locator);
+		$builder->setDispatcher($this->getDispatcher());
+		return new Repository($query->entityName, $builder);
 	}
 }

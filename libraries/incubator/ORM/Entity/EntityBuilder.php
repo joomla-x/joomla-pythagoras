@@ -22,6 +22,8 @@ use Joomla\ORM\Definition\Parser\YamlParser;
 use Joomla\ORM\Exception\FileNotFoundException;
 use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Repository\Repository;
+use Joomla\Event\DispatcherAwareTrait;
+use Joomla\ORM\Event\AfterCreateDefinitionEvent;
 
 /**
  * Class EntityBuilder
@@ -32,6 +34,8 @@ use Joomla\ORM\Repository\Repository;
  */
 class EntityBuilder
 {
+	use DispatcherAwareTrait;
+
 	/** @var  LocatorInterface  The XML definition file locator */
 	private $locator;
 
@@ -66,7 +70,7 @@ class EntityBuilder
 		$entity          = new Entity;
 		$this->reflector = new EntityReflector($entity);
 
-		$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityName)));
+		$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityName), $entityName));
 
 		return $entity;
 	}
@@ -96,11 +100,12 @@ class EntityBuilder
 	/**
 	 * Parse the description file
 	 *
-	 * @param   string $filename The definition file path
+	 * @param   string $filename   The definition file path
+	 * @param   string $entityName The name of the entity
 	 *
 	 * @return  EntityStructure  The parsed description
 	 */
-	private function parseDescription($filename)
+	private function parseDescription($filename, $entityName)
 	{
 		$extension = preg_replace('~^.*?\.([^.]+)$~', '\1', $filename);
 
@@ -126,7 +131,7 @@ class EntityBuilder
 
 		$parser->open($filename);
 
-		return $parser->parse([
+		$definition = $parser->parse([
 			'onBeforeEntity'        => [$this, 'prepareEntity'],
 			'onAfterField'          => [$this, 'handleField'],
 			'onAfterBelongsTo'      => [$this, 'handleBelongsTo'],
@@ -135,6 +140,17 @@ class EntityBuilder
 			'onAfterHasManyThrough' => [$this, 'handleHasManyThrough'],
 			'onAfterStorage'        => [$this, 'handleStorage'],
 		], $this->locator);
+
+		try
+		{
+			$this->getDispatcher()->dispatch(new AfterCreateDefinitionEvent($entityName, $definition, $this));
+		}
+		catch (\UnexpectedValueException $e)
+		{
+			// Dispatcher is not set, ignoring the exception
+		}
+
+		return $definition;
 	}
 
 	/**
@@ -234,7 +250,7 @@ class EntityBuilder
 			$basename = $this->getBasename($relation->name);
 
 			// The record from {$relation->entity} with id={$field->value}
-			$repository = new Repository($relation->entity, $locator);
+			$repository = new Repository($relation->entity, new EntityBuilder($locator));
 			$entity     = $repository->findById($reference);
 
 			$this->reflector->addField(new Field([
@@ -271,7 +287,7 @@ class EntityBuilder
 			$basename = $this->getBasename($relation->name);
 
 			// Records from {$relation->entity} with {$relation->reference}={$id}
-			$repository = new Repository($relation->entity, $locator);
+			$repository = new Repository($relation->entity, new EntityBuilder($locator));
 			$entities   = $repository->findAll()->with($relation->reference, Operator::EQUAL, $id)->getItems();
 			$this->reflector->addField(new Field([
 				'name'  => $basename,
@@ -297,7 +313,7 @@ class EntityBuilder
 
 		$this->reflector->addHandler($basename, function () use ($relation, $locator)
 		{
-			$id = $this->reflector->getId();
+			$id = $relation->id ? $relation->id : $this->reflector->getId();
 
 			if (empty($id))
 			{
@@ -307,7 +323,7 @@ class EntityBuilder
 			$basename = $this->getBasename($relation->name);
 
 			// The record from {$relation->entity} with {$relation->reference}={$id}
-			$repository = new Repository($relation->entity, $locator);
+			$repository = new Repository($relation->entity, new EntityBuilder($locator));
 			$entity     = $repository->findOne()->with($relation->reference, Operator::EQUAL, $id)->getItem();
 
 			$this->reflector->addField(new Field([
@@ -344,7 +360,7 @@ class EntityBuilder
 			$basename = $this->getBasename($relation->name);
 
 			// Records from {$relation->entity} with {$relation->reference} IN ids from {$relation->joinTable} with {$relation->joinRef}={$id}
-			$map     = new Repository($relation->joinTable, $locator);
+			$map     = new Repository($relation->joinTable, new EntityBuilder($locator));
 			$entries = $map->findAll()->with($relation->joinRef, Operator::EQUAL, $id)->getItems();
 
 			$repository = new Repository($relation->entity, $locator);
