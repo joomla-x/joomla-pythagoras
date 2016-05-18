@@ -34,8 +34,8 @@ class BasicDisplayCommandHandler extends CommandHandler
 	 */
 	public function handle(BasicDisplayCommand $command)
 	{
-		$articleRepository = $this->getCommandBus()->handle(new RepositoryQuery($command->entityName));
-		$entity           = $articleRepository->findById($command->id);
+		$repository = $this->getCommandBus()->handle(new RepositoryQuery($command->entityName));
+		$entity     = $repository->findById($command->id);
 
 		if (!$entity instanceof EntityInterface)
 		{
