@@ -3,3 +3,4 @@ listeners:
         class: \Joomla\Extension\Category\Listener\AddRelationListener
         events:
             onAfterCreateDefinition: addCategoryRelation
+            onAfterRenderAttribution: addCategoryParagraph
