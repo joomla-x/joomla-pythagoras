@@ -5,6 +5,11 @@ namespace Joomla\Tests\Unit\Extension;
 use Joomla\Extension\FileExtensionFactory;
 use Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener;
 use League\Flysystem\Adapter\AbstractAdapter;
+use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
+use Joomla\Tests\Unit\Service\Stubs\SimpleQueryHandler;
+use Joomla\Service\CommandBus;
+use Joomla\Event\DispatcherInterface;
+use Joomla\DI\Container;
 
 class FileExtensionFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,6 +22,10 @@ listeners:
         class: \Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener
         events:
             onUnitTestEvent: onEventTest
+queryhandlers:
+    UnitTestQueryHandler:
+        class: \Joomla\Tests\Unit\Service\Stubs\SimpleQueryHandler
+        query: \Joomla\Tests\Unit\Service\Stubs\SimpleQuery
 EOL;
 
 		$fs = $this->getMockBuilder(AbstractAdapter::class)->getMock();
@@ -29,7 +38,10 @@ EOL;
 			'contents' => $extensionManifest
 		]);
 
-		$factory = new FileExtensionFactory($fs);
+		$container = new Container();
+		$container->set('CommandBus', $this->getMockBuilder(CommandBus::class)->disableOriginalConstructor()->getMock());
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
+		$factory = new FileExtensionFactory($fs, $container);
 		$extensions = $factory->getExtensions();
 
 		$this->assertCount(1, $extensions);
@@ -38,6 +50,13 @@ EOL;
 		$this->assertNotEmpty($listeners);
 		$this->assertInstanceOf(SimpleEventListener::class, $listeners[0][0]);
 		$this->assertEquals('onEventTest', $listeners[0][1]);
+
+		$queryHandlers = $extensions[0]->getQueryHandlers(
+				new SimpleQuery(),
+				$this->getMockBuilder(CommandBus::class)->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder(DispatcherInterface::class)->getMock());
+		$this->assertNotEmpty($queryHandlers);
+		$this->assertInstanceOf(SimpleQueryHandler::class, $queryHandlers[0]);
 	}
 
 	public function testGetTypeSpecificExtensions()
@@ -74,7 +93,10 @@ EOL;
 		]);
 		$fs->method('applyPathPrefix')->willReturnOnConsecutiveCalls('test1', 'test2');
 
-		$factory = new FileExtensionFactory($fs);
+		$container = new Container();
+		$container->set('CommandBus', $this->getMockBuilder(CommandBus::class)->disableOriginalConstructor()->getMock());
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
+		$factory = new FileExtensionFactory($fs, $container);
 		$extensions = $factory->getExtensions('content');
 
 		$listeners = $extensions[0]->getListeners('onUnitTestEvent');

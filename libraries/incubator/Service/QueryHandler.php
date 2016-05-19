@@ -29,7 +29,8 @@ abstract class QueryHandler
 	/**
 	 * Constructor.
 	 *
-	 * @param   CommandBus  $messageBus  A command bus.
+	 * @param   CommandBus           $messageBus  A command bus
+	 * @param   DispatcherInterface  $dispatcher  A dispatcher
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */

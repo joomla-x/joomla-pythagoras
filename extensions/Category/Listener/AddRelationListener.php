@@ -57,6 +57,5 @@ class AddRelationListener
 		/** @var \Joomla\Content\Type\Attribution $contentType */
 		$contentType = $event->getArgument('content');
 
-		$contentType->getParent()->add($content)
 	}
 }

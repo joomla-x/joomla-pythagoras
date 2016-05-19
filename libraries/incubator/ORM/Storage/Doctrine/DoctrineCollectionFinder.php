@@ -83,7 +83,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
 	public function with($lValue, $op, $rValue)
-	{if(!$lValue){echo new \Exception();die;}
+	{
 		if (!Operator::isValid($op))
 		{
 			return $this;

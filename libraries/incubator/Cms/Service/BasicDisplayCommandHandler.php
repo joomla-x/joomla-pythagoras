@@ -78,7 +78,12 @@ class BasicDisplayCommandHandler extends CommandHandler
 			$elements['body'] = new Paragraph($entity->body);
 		}
 
-		$elements = $this->getCommandBus()->handle(new ContentTypeQuery($entity, $elements));
+		$elementsData = $this->getCommandBus()->handle(new ContentTypeQuery($entity, $elements));
+
+		foreach ($elementsData as $data)
+		{
+			$elements = array_merge($elements, $data);
+		}
 
 		return $elements;
 	}

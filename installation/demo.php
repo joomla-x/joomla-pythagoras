@@ -17,7 +17,7 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../libraries/vendor/autoload.php';
 
-$path =  '/tmp/demo.sqlite';
+$path = str_replace('sqlite:///', '', file_get_contents(__DIR__ . '/../config/database.ini'));
 
 if (file_exists($path))
 {

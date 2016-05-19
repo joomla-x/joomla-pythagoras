@@ -8,7 +8,6 @@
 
 namespace Joomla\Cms\Service;
 
-use Joomla\Content\Type\Attribution;
 use Joomla\Service\QueryHandler;
 
 /**
@@ -32,9 +31,8 @@ class ContentTypeQueryHandler extends QueryHandler
 		$entity   = $query->entity;
 		$elements = $query->elements;
 
-		// @todo  Add content from horizontal components
-		$elements['extended'] = new Attribution('Extended', 'YES');
-
-		return $elements;
+		return [
+				$elements
+		];
 	}
 }

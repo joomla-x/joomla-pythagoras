@@ -13,6 +13,7 @@ namespace Joomla\Cms\ServiceProvider;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Service\CommandBusBuilder;
+use Joomla\Cms\Service\ExtensionQueryMiddleware;
 
 /**
  * Command Bus Service Provider.
@@ -31,6 +32,24 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 	 */
 	public function register(Container $container, $alias = null)
 	{
+		$container->set(
+			'CommandBus',
+			[
+					$this,
+					'createCommandBus'
+			],
+			true,
+			true
+		);
+
+		if ($alias)
+		{
+			$container->alias($alias, 'CommandBus');
+		}
+	}
+
+	public function createCommandBus(Container $container)
+	{
 		// Construct the command handler middleware
 		$middleware = [];
 
@@ -39,15 +58,15 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 			$middleware = (array) $container->get('CommandBusMiddleware');
 		}
 
+		if ($container->has('extension_factory'))
+		{
+			$middleware[] = new ExtensionQueryMiddleware($container->get('extension_factory'));
+		}
+
 		$builder    = new CommandBusBuilder($container->get('EventDispatcher'));
 		$middleware = array_merge($middleware, $builder->getMiddleware());
 		$builder->setMiddleware($middleware);
 
-		$container->set('CommandBus', $builder->getCommandBus());
-
-		if ($alias)
-		{
-			$container->alias($alias, 'CommandBus');
-		}
+		return $builder->getCommandBus();
 	}
 }

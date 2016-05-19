@@ -8,10 +8,12 @@
 
 namespace Joomla\Extension;
 
+use Joomla\Service\CommandBus;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use Symfony\Component\Yaml\Yaml;
+use Interop\Container\ContainerInterface;
 
 /**
  * Class FileExtensionFactory
@@ -35,10 +37,13 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 	 * FileExtensionFactory constructor.
 	 *
 	 * @param   string|AdapterInterface $rootFolder  The root folder the factory reads the extensions from
+	 *
+	 * @todo remove the container parameter and pass something which will lazy load the command bus and dispatcher
 	 */
-	public function __construct($rootFolder)
+	public function __construct($rootFolder, ContainerInterface $container)
 	{
 		$this->rootFolder = $rootFolder;
+		$this->container = $container;
 	}
 
 	/**
@@ -86,8 +91,8 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 				continue;
 			}
 
-			$extension                = new Extension;
-			$this->loadedFiles[$path] = $extension;
+			$extension                   = new Extension;
+			$this->loadedFiles[$path]    = $extension;
 			$this->extensions[$group][]  = $extension;
 
 			$config = Yaml::parse($fs->read($file['path'])['contents'], true);
@@ -95,6 +100,10 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 			if (key_exists('listeners', $config))
 			{
 				$this->createListeners($extension, $config['listeners']);
+			}
+			if (key_exists('queryhandlers', $config))
+			{
+				$this->createQueryHandlers($extension, $config['queryhandlers']);
 			}
 		}
 
@@ -125,6 +134,14 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 					]
 				);
 			}
+		}
+	}
+
+	private function createQueryHandlers(Extension $extension, array $handlersConfig)
+	{
+		foreach ($handlersConfig as $handler)
+		{
+			$extension->addQueryHandler($handler['query'], new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher')));
 		}
 	}
 }
