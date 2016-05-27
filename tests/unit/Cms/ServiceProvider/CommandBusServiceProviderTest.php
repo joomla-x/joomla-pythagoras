@@ -66,7 +66,7 @@ class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 		$container->registerServiceProvider(new CommandBusServiceProvider());
 
 		$commandBus = $container->get('CommandBus');
-		$this->assertTrue(is_array($commandBus->handle(new SimpleCommand())));
+		$this->assertTrue($commandBus->handle(new SimpleCommand()));
 	}
 
 	/**

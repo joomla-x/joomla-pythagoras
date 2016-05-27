@@ -3,7 +3,6 @@ listeners:
         class: \Joomla\Extension\Category\Listener\AddRelationListener
         events:
             onAfterCreateDefinition: addCategoryRelation
-            onAfterRenderAttribution: addCategoryParagraph
 queryhandlers:
     AddCategoryContentTypesHandler:
         class: \Joomla\Extension\Category\Command\AddCategoryContentTypesHandler

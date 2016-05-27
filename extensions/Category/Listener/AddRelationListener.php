@@ -14,7 +14,6 @@ use Joomla\ORM\Definition\Parser\Relation;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\HasOne;
-use Joomla\Renderer\Event\RenderContentTypeEvent;
 
 /**
  * Class AddRelationListener
@@ -43,19 +42,5 @@ class AddRelationListener
 		$relation = new HasOne(['id' => 1, 'name' => 'category_id', 'type' => 'hasOne', 'entity' => 'Category', 'reference' => 'id']);
 
 		$builder->handleHasOne($relation, new Locator([new RecursiveDirectoryStrategy(__DIR__ . '/../Entity')]));
-	}
-
-	/**
-	 * Event handler
-	 *
-	 * @param   RenderContentTypeEvent $event The event
-	 *
-	 * @return  void
-	 */
-	public function addCategoryParagraph(RenderContentTypeEvent $event)
-	{
-		/** @var \Joomla\Content\Type\Attribution $contentType */
-		$contentType = $event->getArgument('content');
-
 	}
 }
