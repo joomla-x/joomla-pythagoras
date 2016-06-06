@@ -8,10 +8,12 @@
 
 namespace Joomla\Extension;
 
+use Joomla\Service\CommandBus;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use Symfony\Component\Yaml\Yaml;
+use Interop\Container\ContainerInterface;
 
 /**
  * Class FileExtensionFactory
@@ -22,11 +24,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 class FileExtensionFactory implements ExtensionFactoryInterface
 {
-	/** @var string|AdapterInterface  The root folder the factory reads the plugins from. */
+	/** @var string|AdapterInterface  The root folder the factory reads the extensions from. */
 	private $rootFolder;
 
 	/** @var ExtensionInterface[] Extensions cache. */
-	private $plugins = [];
+	private $extensions = [];
 
 	/** @var array the loaded files */
 	private $loadedFiles = [];
@@ -34,28 +36,31 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 	/**
 	 * FileExtensionFactory constructor.
 	 *
-	 * @param   string|AdapterInterface $rootFolder  The root folder the factory reads the plugins from
+	 * @param   string|AdapterInterface $rootFolder  The root folder the factory reads the extensions from
+	 *
+	 * @todo remove the container parameter and pass something which will lazy load the command bus and dispatcher
 	 */
-	public function __construct($rootFolder)
+	public function __construct($rootFolder, ContainerInterface $container)
 	{
 		$this->rootFolder = $rootFolder;
+		$this->container = $container;
 	}
 
 	/**
-	 * Get the plugins
+	 * Get the extensions
 	 *
-	 * @param   string $group  The plugin group
+	 * @param   string $group  The extension group
 	 *
 	 * @return  ExtensionInterface[]
 	 */
 	public function getExtensions($group = '')
 	{
-		if (key_exists($group, $this->plugins))
+		if (key_exists($group, $this->extensions))
 		{
-			return $this->plugins[$group];
+			return $this->extensions[$group];
 		}
 
-		$this->plugins[$group] = [];
+		$this->extensions[$group] = [];
 
 		$fs = $this->rootFolder;
 
@@ -72,7 +77,7 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 
 		foreach ($fs->listContents($group, true) as $file)
 		{
-			if (strpos($file['path'], 'plugin.yml') === false)
+			if (strpos($file['path'], 'extension.yml') === false)
 			{
 				continue;
 			}
@@ -82,34 +87,38 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 			if (key_exists($path, $this->loadedFiles))
 			{
 				// We have loaded it already
-				$this->plugins[$group][] = $this->loadedFiles[$path];
+				$this->extensions[$group][] = $this->loadedFiles[$path];
 				continue;
 			}
 
-			$plugin                   = new Extension;
-			$this->loadedFiles[$path] = $plugin;
-			$this->plugins[$group][]  = $plugin;
+			$extension                   = new Extension;
+			$this->loadedFiles[$path]    = $extension;
+			$this->extensions[$group][]  = $extension;
 
 			$config = Yaml::parse($fs->read($file['path'])['contents'], true);
 
 			if (key_exists('listeners', $config))
 			{
-				$this->createListeners($plugin, $config['listeners']);
+				$this->createListeners($extension, $config['listeners']);
+			}
+			if (key_exists('queryhandlers', $config))
+			{
+				$this->createQueryHandlers($extension, $config['queryhandlers']);
 			}
 		}
 
-		return $this->plugins[$group];
+		return $this->extensions[$group];
 	}
 
 	/**
 	 * Create listeners
 	 *
-	 * @param   Extension  $plugin           The plugin
+	 * @param   Extension  $extension     The extension
 	 * @param   array   $listenersConfig  The configuration
 	 *
 	 * @return  void
 	 */
-	private function createListeners(Extension $plugin, array $listenersConfig)
+	private function createListeners(Extension $extension, array $listenersConfig)
 	{
 		foreach ($listenersConfig as $listener)
 		{
@@ -117,7 +126,7 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 
 			foreach ($listener['events'] as $eventName => $method)
 			{
-				$plugin->addListener(
+				$extension->addListener(
 					$eventName,
 					[
 						$listenerInstance,
@@ -125,6 +134,14 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 					]
 				);
 			}
+		}
+	}
+
+	private function createQueryHandlers(Extension $extension, array $handlersConfig)
+	{
+		foreach ($handlersConfig as $handler)
+		{
+			$extension->addQueryHandler($handler['query'], new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher')));
 		}
 	}
 }

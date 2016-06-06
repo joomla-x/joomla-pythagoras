@@ -5,51 +5,70 @@ namespace Joomla\Tests\Unit\Extension;
 use Joomla\Extension\FileExtensionFactory;
 use Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener;
 use League\Flysystem\Adapter\AbstractAdapter;
+use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
+use Joomla\Tests\Unit\Service\Stubs\SimpleQueryHandler;
+use Joomla\Service\CommandBus;
+use Joomla\Event\DispatcherInterface;
+use Joomla\DI\Container;
 
 class FileExtensionFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testGetAllExtensions()
 	{
-		$pluginManifest = <<<EOL
+		$extensionManifest = <<<EOL
 listeners:
     UnitTestListener:
         class: \Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener
         events:
             onUnitTestEvent: onEventTest
+queryhandlers:
+    UnitTestQueryHandler:
+        class: \Joomla\Tests\Unit\Service\Stubs\SimpleQueryHandler
+        query: \Joomla\Tests\Unit\Service\Stubs\SimpleQuery
 EOL;
 
 		$fs = $this->getMockBuilder(AbstractAdapter::class)->getMock();
 		$fs->method('listContents')->willReturn([
 			[
-				'path' => 'plugin.yml'
+				'path' => 'extension.yml'
 			]
 		]);
 		$fs->method('read')->willReturn([
-			'contents' => $pluginManifest
+			'contents' => $extensionManifest
 		]);
 
-		$factory = new FileExtensionFactory($fs);
-		$plugins = $factory->getExtensions();
+		$container = new Container();
+		$container->set('CommandBus', $this->getMockBuilder(CommandBus::class)->disableOriginalConstructor()->getMock());
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
+		$factory = new FileExtensionFactory($fs, $container);
+		$extensions = $factory->getExtensions();
 
-		$this->assertCount(1, $plugins);
+		$this->assertCount(1, $extensions);
 
-		$listeners = $plugins[0]->getListeners('onUnitTestEvent');
+		$listeners = $extensions[0]->getListeners('onUnitTestEvent');
 		$this->assertNotEmpty($listeners);
 		$this->assertInstanceOf(SimpleEventListener::class, $listeners[0][0]);
 		$this->assertEquals('onEventTest', $listeners[0][1]);
+
+		$queryHandlers = $extensions[0]->getQueryHandlers(
+				new SimpleQuery(),
+				$this->getMockBuilder(CommandBus::class)->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder(DispatcherInterface::class)->getMock());
+		$this->assertNotEmpty($queryHandlers);
+		$this->assertInstanceOf(SimpleQueryHandler::class, $queryHandlers[0]);
 	}
 
 	public function testGetTypeSpecificExtensions()
 	{
-		$pluginManifest  = <<<EOL
+		$extensionManifest  = <<<EOL
 listeners:
     UnitTestListener:
         class: \Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener
         events:
             onUnitTestEvent: onEventTest
 EOL;
-		$pluginManifest1 = <<<EOL
+		$extensionManifest1 = <<<EOL
 listeners:
     UnitTestListener1:
         class: \Joomla\Tests\Unit\Extension\Stubs\SimpleEventListener
@@ -60,34 +79,37 @@ EOL;
 		$fs = $this->getMockBuilder(AbstractAdapter::class)->getMock();
 		$fs->method('listContents')->willReturnOnConsecutiveCalls([
 			[
-				'path' => 'plugin.yml'
+				'path' => 'extension.yml'
 			]
 		], [
 			[
-				'path' => 'plugin.yml'
+				'path' => 'extension.yml'
 			]
 		]);
 		$fs->method('read')->willReturnOnConsecutiveCalls([
-			'contents' => $pluginManifest
+			'contents' => $extensionManifest
 		], [
-			'contents' => $pluginManifest1
+			'contents' => $extensionManifest1
 		]);
 		$fs->method('applyPathPrefix')->willReturnOnConsecutiveCalls('test1', 'test2');
 
-		$factory = new FileExtensionFactory($fs);
-		$plugins = $factory->getExtensions('content');
+		$container = new Container();
+		$container->set('CommandBus', $this->getMockBuilder(CommandBus::class)->disableOriginalConstructor()->getMock());
+		$container->set('EventDispatcher', $this->getMockBuilder(DispatcherInterface::class)->getMock());
+		$factory = new FileExtensionFactory($fs, $container);
+		$extensions = $factory->getExtensions('content');
 
-		$listeners = $plugins[0]->getListeners('onUnitTestEvent');
+		$listeners = $extensions[0]->getListeners('onUnitTestEvent');
 		$this->assertNotEmpty($listeners);
 		$this->assertInstanceOf(SimpleEventListener::class, $listeners[0][0]);
 		$this->assertEquals('onEventTest', $listeners[0][1]);
 
-		$pluginsAll = $factory->getExtensions();
-		$this->assertNotEquals($plugins, $pluginsAll);
+		$extensionsAll = $factory->getExtensions();
+		$this->assertNotEquals($extensions, $extensionsAll);
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$listeners = $pluginsAll[0]->getListeners('onUnitTestEvent');
-		$this->assertEmpty($pluginsAll[0]->getListeners('onUnitTestEvent'));
-		$this->assertNotEmpty($pluginsAll[0]->getListeners('onUnitTestEvent1'));
+		$listeners = $extensionsAll[0]->getListeners('onUnitTestEvent');
+		$this->assertEmpty($extensionsAll[0]->getListeners('onUnitTestEvent'));
+		$this->assertNotEmpty($extensionsAll[0]->getListeners('onUnitTestEvent1'));
 	}
 }

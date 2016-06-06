@@ -1,6 +1,8 @@
 <?php
 namespace Joomla\Tests\Unit\Service\Stubs;
 
-final class MockEventDispatcher
+use Joomla\Event\Dispatcher;
+
+final class MockEventDispatcher extends Dispatcher
 {
 }

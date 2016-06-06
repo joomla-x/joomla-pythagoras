@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\Repository;
 
-use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Entity\Entity;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityInterface;
@@ -39,13 +38,13 @@ class Repository implements RepositoryInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   string           $entityName The name (type) of the entity
-	 * @param   LocatorInterface $locator    The XML description file locator
+	 * @param   string        $entityName The name (type) of the entity
+	 * @param   EntityBuilder $builder    The builder
 	 */
-	public function __construct($entityName, LocatorInterface $locator = null)
+	public function __construct($entityName, EntityBuilder $builder)
 	{
 		$this->entityName = $entityName;
-		$this->builder    = new EntityBuilder($locator);
+		$this->builder    = $builder;
 	}
 
 	/**
