@@ -141,7 +141,12 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 	{
 		foreach ($handlersConfig as $handler)
 		{
-			$extension->addQueryHandler($handler['query'], new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher')));
+			$handlerInstance = new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher'));
+			if (method_exists($handlerInstance, 'setSession') && $this->container->has('Session'))
+			{
+				$handlerInstance->setSession($this->container->get('Session'));
+			}
+			$extension->addQueryHandler($handler['query'], $handlerInstance);
 		}
 	}
 }

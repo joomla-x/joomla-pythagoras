@@ -8,7 +8,6 @@
 
 namespace Joomla\Cms\Service;
 
-use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
@@ -64,10 +63,6 @@ class BasicDisplayCommandHandler extends CommandHandler
 		if ($entity->has('title'))
 		{
 			$elements['title'] = new Headline($entity->title, 1);
-		}
-		if ($entity->has('author'))
-		{
-			$elements['author'] = new Attribution('Written by', $entity->author);
 		}
 		if ($entity->has('teaser'))
 		{

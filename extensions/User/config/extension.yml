@@ -1,0 +1,12 @@
+listeners:
+    AddRelationListener:
+        class: \Joomla\Extension\User\Listener\AddRelationListener
+        events:
+            onAfterCreateDefinition: addAuthorRelation
+queryhandlers:
+    AddAuthorContentTypesHandler:
+        class: \Joomla\Extension\User\Command\AddAuthorContentTypesHandler
+        query: \Joomla\Cms\Service\ContentTypeQuery
+    AddLoggedInUserContentTypesHandler:
+        class: \Joomla\Extension\User\Command\AddLoggedInUserContentTypesHandler
+        query: \Joomla\Cms\Service\ContentTypeQuery

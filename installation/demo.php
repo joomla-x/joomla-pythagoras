@@ -45,6 +45,12 @@ $data = [
 						'body' => 'Demo category body',
 						'parent_id' => 0
 				]
+		],
+		'User' => [
+				[
+						'username' => 'demo',
+						'name' => 'Demo User'
+				]
 		]
 ];
 
