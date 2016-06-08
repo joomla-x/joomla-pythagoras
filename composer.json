@@ -23,6 +23,7 @@
         "container-interop/container-interop": "^1.1",
         "vlucas/phpdotenv": "^2.2",
         "joomla/registry": "^1.5",
+        "aura/session": "^2.0",
         "php": ">=5.5.9"
     },
     "require-dev": {
