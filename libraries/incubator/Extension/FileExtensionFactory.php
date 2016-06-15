@@ -95,7 +95,7 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 			$this->loadedFiles[$path]    = $extension;
 			$this->extensions[$group][]  = $extension;
 
-			$config = Yaml::parse($fs->read($file['path'])['contents'], true);
+			$config = Yaml::parse($fs->read($file['path'])['contents'], Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 
 			if (key_exists('listeners', $config))
 			{
