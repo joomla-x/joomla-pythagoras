@@ -281,8 +281,7 @@ class RoboFile extends \Robo\Tasks
 		try
 		{
 			$codecept = $this->taskCodecept($this->binDir . '/codecept')
-			                 ->configFile($tempConfigFile)
-			                 ->html($suite . '-test-results.html');
+			                 ->configFile($tempConfigFile);
 
 			if ($suite != 'all')
 			{
