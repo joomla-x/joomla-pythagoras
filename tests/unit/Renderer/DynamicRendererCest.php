@@ -82,10 +82,13 @@ class DynamicRendererCest
 
 		$content = new UnregisteredContentType('UnregisteredContentType');
 
-		try {
+		try
+		{
 			$content->accept($renderer);
 			$I->fail('Expected NotFoundException was not thrown');
-		} catch (\Exception $e) {
+		}
+		catch (\Exception $e)
+		{
 			$I->assertTrue($e instanceof NotFoundException);
 		}
 	}

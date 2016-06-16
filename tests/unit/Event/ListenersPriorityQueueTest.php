@@ -33,8 +33,8 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAdd()
 	{
-		$listener = function() {
-
+		$listener = function ()
+		{
 		};
 
 		$this->instance->add($listener, 0);
@@ -52,8 +52,8 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAddExisting()
 	{
-		$listener = function() {
-
+		$listener = function ()
+		{
 		};
 
 		$this->instance->add($listener, 5);
@@ -72,16 +72,16 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetPriorityNonExisting()
 	{
-		$listener = function() {
-
+		$listener = function ()
+		{
 		};
 
 		$this->assertNull($this->instance->getPriority($listener));
 
 		$this->assertFalse(
 			$this->instance->getPriority(
-				function () {
-
+				function ()
+				{
 				},
 				false
 			)
@@ -97,11 +97,12 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testRemove()
 	{
-		$listener1 = function() {
-
+		$listener1 = function ()
+		{
 		};
 
-		$listener2 = function() {
+		$listener2 = function ()
+		{
 			return false;
 		};
 
@@ -141,11 +142,12 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertEmpty($this->instance->getAll());
 
-		$listener0 = function() {
-
+		$listener0 = function ()
+		{
 		};
 
-		$listener1 = function() {
+		$listener1 = function ()
+		{
 			return false;
 		};
 
@@ -167,11 +169,12 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetIterator()
 	{
-		$listener0 = function() {
-
+		$listener0 = function ()
+		{
 		};
 
-		$listener1 = function() {
+		$listener1 = function ()
+		{
 			return false;
 		};
 
@@ -198,11 +201,12 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetIteratorMultipleIterations()
 	{
-		$listener0 = function() {
-
+		$listener0 = function ()
+		{
 		};
 
-		$listener1 = function() {
+		$listener1 = function ()
+		{
 			return false;
 		};
 
@@ -237,11 +241,12 @@ class ListenersPriorityQueueTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertCount(0, $this->instance);
 
-		$listener1 = function() {
-
+		$listener1 = function ()
+		{
 		};
 
-		$listener2 = function() {
+		$listener2 = function ()
+		{
 			return false;
 		};
 

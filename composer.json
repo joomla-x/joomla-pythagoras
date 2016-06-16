@@ -1,62 +1,62 @@
 {
-    "name": "joomla/joomla-cms",
-    "type": "application",
-    "description": "Joomla CMS",
-    "keywords": [
-        "joomla",
-        "cms",
-        "content management"
-    ],
-    "homepage": "https://github.com/joomla/joomla-cms",
-    "license": "GPL-2.0+",
-    "config": {
-        "vendor-dir": "libraries/vendor"
-    },
-    "require": {
-        "league/flysystem": "^1.0",
-        "doctrine/dbal": "dev-master#2c345592d33f73dedddbf2bf4d0825495792f9e7",
-        "league/tactician": "^0.6.1",
-        "monolog/monolog": "^1.17",
-        "matthiasmullie/scrapbook": "^1.0",
-        "guzzlehttp/guzzle": "^6.1",
-        "zendframework/zend-diactoros": "^1.3",
-        "container-interop/container-interop": "^1.1",
-        "vlucas/phpdotenv": "^2.2",
-        "joomla/registry": "^1.5",
-        "aura/session": "^2.0",
-        "php": ">=5.5.9"
-    },
-    "require-dev": {
-        "codeception/codeception": "~2",
-        "codegyre/robo": "^0.6.0",
-        "slim/csrf": "^0.6.0",
-        "greencape/coding-standards": "^1.0",
-        "mayflower/php-codebrowser": "^1.1",
-        "apigen/apigen": "~4",
-        "codeception/mockery-module": "^0.2.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "Joomla\\": "libraries/incubator/",
-            "Joomla\\Extension\\": "extensions/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Joomla\\Tests\\Unit\\": "tests/unit/",
-            "Joomla\\Tests\\Functional\\": "tests/functional/",
-            "Joomla\\Tests\\System\\": "tests/acceptance/",
-            "Joomla\\Tests\\Page\\": "tests/_support/Page/"
-        }
-    },
-    "suggest": {
-        "ext-fileinfo": "Required for MimeType",
-        "ext-apc": "Allows caching using APC",
-        "ext-couchbase": "Allows caching using CouchDB",
-        "ext-memcached": "Allows caching using MemCacheD",
-        "ext-redis": "Allows caching using Redis",
-        "ext-pdo": "Allows caching using PDO",
-        "ext-amqp": "Allows sending log messages to an AMQP server (1.0+ required)",
-        "ext-mongo": "Allows sending log messages to a MongoDB server"
+  "name": "joomla/joomla-cms",
+  "type": "application",
+  "description": "Joomla CMS",
+  "keywords": [
+    "joomla",
+    "cms",
+    "content management"
+  ],
+  "homepage": "https://github.com/joomla/joomla-cms",
+  "license": "GPL-2.0+",
+  "config": {
+    "vendor-dir": "libraries/vendor"
+  },
+  "require": {
+    "league/flysystem": "^1.0",
+    "doctrine/dbal": "dev-master#2c345592d33f73dedddbf2bf4d0825495792f9e7",
+    "league/tactician": "^0.6.1",
+    "monolog/monolog": "^1.17",
+    "matthiasmullie/scrapbook": "^1.0",
+    "guzzlehttp/guzzle": "^6.1",
+    "zendframework/zend-diactoros": "^1.3",
+    "container-interop/container-interop": "^1.1",
+    "vlucas/phpdotenv": "^2.2",
+    "joomla/registry": "^1.5",
+    "aura/session": "^2.0",
+    "php": ">=5.5.9"
+  },
+  "require-dev": {
+    "codeception/codeception": "~2",
+    "codegyre/robo": "^0.6.0",
+    "slim/csrf": "^0.6.0",
+    "greencape/coding-standards": "^1.0",
+    "mayflower/php-codebrowser": "^1.1",
+    "apigen/apigen": "~4",
+    "codeception/mockery-module": "^0.2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Joomla\\": "libraries/incubator/",
+      "Joomla\\Extension\\": "extensions/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Joomla\\Tests\\Unit\\": "tests/unit/",
+      "Joomla\\Tests\\Functional\\": "tests/functional/",
+      "Joomla\\Tests\\System\\": "tests/acceptance/",
+      "Joomla\\Tests\\Page\\": "tests/_support/Page/"
+    }
+  },
+  "suggest": {
+    "ext-fileinfo": "Required for MimeType",
+    "ext-apc": "Allows caching using APC",
+    "ext-couchbase": "Allows caching using CouchDB",
+    "ext-memcached": "Allows caching using MemCacheD",
+    "ext-redis": "Allows caching using Redis",
+    "ext-pdo": "Allows caching using PDO",
+    "ext-amqp": "Allows sending log messages to an AMQP server (1.0+ required)",
+    "ext-mongo": "Allows sending log messages to a MongoDB server"
+  }
 }

@@ -34,7 +34,7 @@ class EventImmutableTest extends \PHPUnit_Framework_TestCase
 	public function test__construct()
 	{
 		$arguments = array('foo' => 'bar');
-		$event = new EventImmutable('test', $arguments);
+		$event     = new EventImmutable('test', $arguments);
 
 		$this->assertEquals('test', $event->getName());
 		$this->assertEquals($arguments, $event->getArguments());

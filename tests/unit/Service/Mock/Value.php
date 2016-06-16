@@ -16,7 +16,7 @@ class Value extends \Joomla\Service\Value
 		{
 			$this->{$key} = $value;
 		}
-		
+
 		parent::__construct();
 	}
 }

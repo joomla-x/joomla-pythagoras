@@ -10,116 +10,124 @@ namespace Joomla\Tests\Page;
 
 class Toolbar
 {
-    /** @var  AbstractAdapter */
-    protected $driver;
+	/** @var  AbstractAdapter */
+	protected $driver;
 
-    /**
-     * Map menu paths to page classes
-     * Format of each entry is
-     * 'abstract menu path' => array(
-     *     'menu' => 'actual corresponding menu path',
-     *     'page' => 'Fully\\Qualified\\Class'
-     * )
-     *
-     * @var array
-     */
-    protected $pageMap = array();
+	/**
+	 * Map menu paths to page classes
+	 * Format of each entry is
+	 * 'abstract menu path' => array(
+	 *     'menu' => 'actual corresponding menu path',
+	 *     'page' => 'Fully\\Qualified\\Class'
+	 * )
+	 *
+	 * @var array
+	 */
+	protected $pageMap = array();
 
-    protected $itemFormat = 'link text:%s';
+	protected $itemFormat = 'link text:%s';
 
-    public function __construct(AbstractAdapter $driver)
-    {
-        $this->driver = $driver;
-    }
+	public function __construct(AbstractAdapter $driver)
+	{
+		$this->driver = $driver;
+	}
 
-    /**
-     * @param $button
-     *
-     * @return Element
-     */
-    public function item($button)
-    {
-        $this->debug("Toolbar: " . $button);
-        if (isset($this->pageMap[$button])) {
-            $button = $this->pageMap[$button]['menu'];
-            $this->debug(" => " . $button);
-        }
-        $this->debug("\n");
+	/**
+	 * @param $menuItem
+	 *
+	 * @return bool
+	 */
+	public function itemExists($menuItem)
+	{
+		try
+		{
+			$this->item($menuItem);
 
-        $item = $this->driver->getElement(sprintf($this->itemFormat, urldecode($button)));
+			return true;
+		}
+		catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e)
+		{
+			$this->debug($e->getMessage());
+			$this->debug($e->getTraceAsString());
 
-        return $item;
-    }
+			return false;
+		}
+	}
 
-    /**
-     * @param $menuItem
-     *
-     * @return bool
-     */
-    public function itemExists($menuItem)
-    {
-        try {
-            $this->item($menuItem);
+	/**
+	 * @param $button
+	 *
+	 * @return Element
+	 */
+	public function item($button)
+	{
+		$this->debug("Toolbar: " . $button);
+		if (isset($this->pageMap[$button]))
+		{
+			$button = $this->pageMap[$button]['menu'];
+			$this->debug(" => " . $button);
+		}
+		$this->debug("\n");
 
-            return true;
-        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
-            $this->debug($e->getMessage());
-            $this->debug($e->getTraceAsString());
+		$item = $this->driver->getElement(sprintf($this->itemFormat, urldecode($button)));
 
-            return false;
-        }
-    }
+		return $item;
+	}
 
-    /**
-     * @param $element
-     *
-     * @return Page
-     */
-    public function select($element)
-    {
-        $pageClass = $this->getPageClass($element);
+	protected function debug($message)
+	{
+		$this->driver->debug($message);
+	}
 
-        $element = $this->item($element);
-        $this->debug("Clicking element $element (" . $element->getId() . ")\n");
-        $element->click();
+	/**
+	 * @param $element
+	 *
+	 * @return Page
+	 */
+	public function select($element)
+	{
+		$pageClass = $this->getPageClass($element);
 
-        return $this->driver->pageFactoryCreate($pageClass);
-    }
+		$element = $this->item($element);
+		$this->debug("Clicking element $element (" . $element->getId() . ")\n");
+		$element->click();
 
-    public function add($menuItem, $pageClass)
-    {
-        $this->pageMap[$menuItem] = array(
-            'menu' => $menuItem,
-            'page' => $pageClass
-        );
-    }
+		return $this->driver->pageFactoryCreate($pageClass);
+	}
 
-    public function remove($menuItem)
-    {
-        unset($this->pageMap[$menuItem]);
-    }
+	/**
+	 * @param   string $menuItem
+	 *
+	 * @return  string
+	 */
+	protected function getPageClass($menuItem)
+	{
+		if (!isset($this->pageMap[$menuItem]))
+		{
+			$menuItem = 'default';
+		}
+		if (isset($this->pageMap[$menuItem]))
+		{
+			$pageClass = $this->pageMap[$menuItem]['page'];
+		}
+		else
+		{
+			$pageClass = strtr($menuItem, array(' ' => '', '/' => '_'));
+		}
 
-    protected function debug($message)
-    {
-        $this->driver->debug($message);
-    }
+		return $pageClass;
+	}
 
-    /**
-     * @param   string $menuItem
-     *
-     * @return  string
-     */
-    protected function getPageClass($menuItem)
-    {
-        if (!isset($this->pageMap[$menuItem])) {
-            $menuItem = 'default';
-        }
-        if (isset($this->pageMap[$menuItem])) {
-            $pageClass = $this->pageMap[$menuItem]['page'];
-        } else {
-            $pageClass = strtr($menuItem, array(' ' => '', '/' => '_'));
-        }
+	public function add($menuItem, $pageClass)
+	{
+		$this->pageMap[$menuItem] = array(
+			'menu' => $menuItem,
+			'page' => $pageClass
+		);
+	}
 
-        return $pageClass;
-    }
+	public function remove($menuItem)
+	{
+		unset($this->pageMap[$menuItem]);
+	}
 }

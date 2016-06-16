@@ -38,6 +38,7 @@ class RepositoryQueryHandler extends QueryHandler
 
 		$builder = new EntityBuilder($locator);
 		$builder->setDispatcher($this->getDispatcher());
+
 		return new Repository($query->entityName, $builder);
 	}
 }

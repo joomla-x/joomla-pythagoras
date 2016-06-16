@@ -36,10 +36,10 @@ class ExtensionDispatcherTest extends \PHPUnit_Framework_TestCase
 		/** @var ExtensionFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $factory */
 		$factory = $this->getMockBuilder(ExtensionFactoryInterface::class)->getMock();
 		$factory->expects($this->once())
-				->method('getExtensions')
-				->willReturn([
-					$plugin
-				]);
+		        ->method('getExtensions')
+		        ->willReturn([
+			        $plugin
+		        ]);
 		$dispatcher = new ExtensionDispatcher($factory);
 		$dispatcher->dispatch(new Event('unit'));
 

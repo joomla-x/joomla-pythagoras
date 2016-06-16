@@ -9,6 +9,7 @@
 
 namespace Joomla\Service;
 
+use Joomla\Event\DispatcherInterface;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
@@ -17,7 +18,6 @@ use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use League\Tactician\Middleware;
-use Joomla\Event\DispatcherInterface;
 
 /**
  * Command Bus Builder.
@@ -67,7 +67,7 @@ class CommandBusBuilder
 
 		// Set the default handler locator.
 		$this->handlerLocator = new CallableLocator(
-			function ($commandName) use($dispatcher)
+			function ($commandName) use ($dispatcher)
 			{
 				// Break apart the fully-qualified class name.
 				// We do this so that the namespace path is not modified.

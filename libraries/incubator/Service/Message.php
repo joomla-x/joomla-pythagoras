@@ -17,7 +17,7 @@ namespace Joomla\Service;
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 abstract class Message extends Value
 {
@@ -30,7 +30,7 @@ abstract class Message extends Value
 	{
 		// Save time of object construction as a property.
 		// Convert microtime to string to avoid loss of precision due to overflow.
-		$parts = explode(' ', microtime());
+		$parts          = explode(' ', microtime());
 		$this->raisedon = sprintf('%d%03d', $parts[1], $parts[0] * 1000);
 
 		parent::__construct();

@@ -52,20 +52,6 @@ final class DelegatingDispatcher implements DispatcherInterface
 	}
 
 	/**
-	 * Dispatches an event to all registered listeners.
-	 *
-	 * @param   EventInterface $event The event to pass to the event handlers/listeners.
-	 *
-	 * @return  EventInterface  The event after being passed through all listeners.
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function dispatch(EventInterface $event)
-	{
-		return $this->dispatcher->dispatch($event);
-	}
-
-	/**
 	 * Removes an event listener from the specified event.
 	 *
 	 * @param   string   $eventName The event to remove a listener from.
@@ -98,5 +84,19 @@ final class DelegatingDispatcher implements DispatcherInterface
 		}
 
 		return $this->dispatch($event);
+	}
+
+	/**
+	 * Dispatches an event to all registered listeners.
+	 *
+	 * @param   EventInterface $event The event to pass to the event handlers/listeners.
+	 *
+	 * @return  EventInterface  The event after being passed through all listeners.
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function dispatch(EventInterface $event)
+	{
+		return $this->dispatcher->dispatch($event);
 	}
 }

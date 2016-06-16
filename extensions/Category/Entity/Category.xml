@@ -4,7 +4,7 @@
 <entity name="article">
 
     <storage>
-    	<default table="category"/>
+        <default table="category"/>
     </storage>
 
     <fields>

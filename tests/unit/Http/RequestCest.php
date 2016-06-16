@@ -13,16 +13,16 @@ use Zend\Diactoros\ServerRequestFactory;
 
 class RequestCest
 {
-    public function _before(UnitTester $I)
-    {
-    }
+	public function _before(UnitTester $I)
+	{
+	}
 
-    public function _after(UnitTester $I)
-    {
-    }
+	public function _after(UnitTester $I)
+	{
+	}
 
-    public function GeneratedRequestObjectIsPsr7Compatible(UnitTester $tester)
-    {
-        $tester->assertTrue(ServerRequestFactory::fromGlobals() instanceof \Psr\Http\Message\RequestInterface, 'Request does not follow PSR-7');
-    }
+	public function GeneratedRequestObjectIsPsr7Compatible(UnitTester $tester)
+	{
+		$tester->assertTrue(ServerRequestFactory::fromGlobals() instanceof \Psr\Http\Message\RequestInterface, 'Request does not follow PSR-7');
+	}
 }

@@ -26,7 +26,7 @@ class Factory
 	/**
 	 * Factory constructor.
 	 *
-	 * @param   array  $mapping  An associative array mapping mime types to renderer classes
+	 * @param   array $mapping An associative array mapping mime types to renderer classes
 	 */
 	public function __construct(array $mapping)
 	{
@@ -34,7 +34,7 @@ class Factory
 	}
 
 	/**
-	 * @param   string  $acceptHeader  The 'Accept' header
+	 * @param   string $acceptHeader The 'Accept' header
 	 *
 	 * @return  mixed
 	 */

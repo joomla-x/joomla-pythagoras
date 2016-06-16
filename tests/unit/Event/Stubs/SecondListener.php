@@ -19,7 +19,7 @@ class SecondListener
 	/**
 	 * Listen to onSomething.
 	 *
-	 * @param   Event  $event  The event.
+	 * @param   Event $event The event.
 	 *
 	 * @return  void
 	 *

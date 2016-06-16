@@ -14,17 +14,15 @@ class ImmutableTest extends \PHPUnit_Framework_TestCase
 		$something = (new ImmutableClass)->doesNotExist;
 	}
 
-
 	/**
 	 * @expectedException \InvalidArgumentException
 	 * @testdox Throws a \InvalidArgumentException when trying to create a new property
 	 */
 	public function testThrowsAnInvalidArgumentExceptionWhenTryingToCreateANewProperty()
 	{
-		$testObject = new ImmutableClass;
+		$testObject       = new ImmutableClass;
 		$testObject->test = 'something';
 	}
-
 
 	/**
 	 * @testdox The constructor argument can be retrieved by a getter method.
@@ -34,7 +32,6 @@ class ImmutableTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('testing', (new ImmutableClass('testing'))->getTest());
 	}
 
-
 	/**
 	 * @testdox The constructor argument can be retrieved as an object property.
 	 */
@@ -42,7 +39,6 @@ class ImmutableTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('testing', (new ImmutableClass('testing'))->test);
 	}
-
 
 	/**
 	 * @testdox Property names are not case-sensitive.

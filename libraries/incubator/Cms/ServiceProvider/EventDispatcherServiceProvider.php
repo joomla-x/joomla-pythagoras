@@ -16,7 +16,7 @@ use Joomla\Extension\ExtensionDispatcher;
  *
  * @package Joomla\Cms\ServiceProvider
  *
- * @since  1.0
+ * @since   1.0
  */
 class EventDispatcherServiceProvider implements ServiceProviderInterface
 {
@@ -26,8 +26,8 @@ class EventDispatcherServiceProvider implements ServiceProviderInterface
 	/**
 	 * Add the dispatcher to a container
 	 *
-	 * @param   Container $container  The container
-	 * @param   string    $alias      An optional alias
+	 * @param   Container $container The container
+	 * @param   string    $alias     An optional alias
 	 *
 	 * @return  void
 	 */
@@ -52,7 +52,7 @@ class EventDispatcherServiceProvider implements ServiceProviderInterface
 	/**
 	 * Create the dispatcher
 	 *
-	 * @param   Container $container  The container
+	 * @param   Container $container The container
 	 *
 	 * @return  ExtensionDispatcher
 	 */

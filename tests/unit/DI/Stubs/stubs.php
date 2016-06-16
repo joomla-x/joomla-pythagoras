@@ -8,9 +8,13 @@ namespace Joomla\Tests\Unit\DI;
 
 // @codingStandardsIgnoreStart
 
-interface StubInterface {}
+interface StubInterface
+{
+}
 
-class Stub1 implements StubInterface {}
+class Stub1 implements StubInterface
+{
+}
 
 class Stub2 implements StubInterface
 {
@@ -34,7 +38,9 @@ class Stub3
 	}
 }
 
-class Stub4 implements StubInterface {}
+class Stub4 implements StubInterface
+{
+}
 
 class Stub5
 {

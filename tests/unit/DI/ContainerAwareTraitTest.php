@@ -7,7 +7,6 @@
 namespace Joomla\Tests\Unit\DI;
 
 use Joomla\DI\Container;
-use Joomla\DI\Exception\ContainerNotFoundException;
 
 /**
  * Tests for ContainerAwareTrait class.

@@ -94,7 +94,8 @@ class CsvModelCest
 		{
 			$result = $this->entityModel()->with('id', Operator::EQUAL, 0)->getItem();
 			$I->fail('Expected EntityNotFoundException not thrown');
-		} catch (\Exception $e)
+		}
+		catch (\Exception $e)
 		{
 			$I->assertTrue($e instanceof EntityNotFoundException);
 		}
@@ -247,7 +248,8 @@ class CsvModelCest
 
 	public function SupportsGreaterThanOrEqualOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::GREATER_OR_EQUAL, 2)->getItems();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::GREATER_OR_EQUAL, 2)
+		               ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 2, 'title' => 'Second Article'],
@@ -272,7 +274,8 @@ class CsvModelCest
 
 	public function SupportsLessThanOrEqualOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::LESS_OR_EQUAL, 3)->getItems();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('id', Operator::LESS_OR_EQUAL, 3)
+		               ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -286,7 +289,7 @@ class CsvModelCest
 	public function SupportsContainsOperator(UnitTester $I)
 	{
 		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::CONTAINS, 'Article')
-					   ->getItems();
+		               ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -299,7 +302,7 @@ class CsvModelCest
 	public function SupportsStartsWithOperator(UnitTester $I)
 	{
 		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::STARTS_WITH, 'Part')
-					   ->getItems();
+		               ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 3, 'title' => 'Part One'],
@@ -312,7 +315,7 @@ class CsvModelCest
 	public function SupportsEndsWithOperator(UnitTester $I)
 	{
 		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::ENDS_WITH, 'Article')
-					   ->getItems();
+		               ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 1, 'title' => 'First Article'],
@@ -324,7 +327,8 @@ class CsvModelCest
 
 	public function SupportsMatchesOperator(UnitTester $I)
 	{
-		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::MATCHES, 'rt\\s')->getItems();
+		$result = $this->collectionModel()->columns(['id', 'title'])->with('title', Operator::MATCHES, 'rt\\s')
+		               ->getItems();
 		$I->assertEquals(
 			[
 				['id' => 3, 'title' => 'Part One'],

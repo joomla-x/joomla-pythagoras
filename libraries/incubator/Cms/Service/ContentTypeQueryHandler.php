@@ -32,7 +32,7 @@ class ContentTypeQueryHandler extends QueryHandler
 		$elements = $query->elements;
 
 		return [
-				$elements
+			$elements
 		];
 	}
 }

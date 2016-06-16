@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 class RoboFile extends \Robo\Tasks
 {
 	private $config = [
-		'title'    => "Joomla Next (4)",
+		'title'    => "Joomla X (Pythagoras)",
 		'reports'  => 'build/reports',
 		'apidocs'  => 'build/docs',
 		'userdocs' => 'docs',
@@ -26,12 +26,13 @@ class RoboFile extends \Robo\Tasks
 
 	private $ignoredDirs = [
 		'build',
+		'cache',
 		'docs',
 		'etc',
 		'logs',
 		'tests',
 		'tmp',
-		'vendor',
+		'libraries/vendor',
 	];
 	private $ignoredFiles = [
 		'RoboFile.php',
@@ -49,6 +50,24 @@ class RoboFile extends \Robo\Tasks
 		$this->binDir    = $this->vendorDir . '/bin';
 	}
 
+	/**
+	 * Measures the size and analyses the structure of the project.
+	 */
+	public function checkLoc()
+	{
+		$this->init();
+		$phploc = $this->taskExec($this->binDir . '/phploc')
+		               ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
+		               ->arg('--log-xml=' . $this->config['reports'] . '/phploc.xml');
+
+		foreach ($this->ignoredDirs as $dir)
+		{
+			$phploc->arg('--exclude=' . $dir);
+		}
+
+		$phploc->arg('.')->run();
+	}
+
 	private function init()
 	{
 		if (!file_exists($this->config['apidocs']))
@@ -62,33 +81,15 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
-	 * Measures the size and analyses the structure of the project.
-	 */
-	public function checkLoc()
-	{
-		$this->init();
-		$phploc = $this->taskExec($this->binDir . '/phploc')
-					   ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
-					   ->arg('--log-xml=' . $this->config['reports'] . '/phploc.xml');
-
-		foreach ($this->ignoredDirs as $dir)
-		{
-			$phploc->arg('--exclude=' . $dir);
-		}
-
-		$phploc->arg('.')->run();
-	}
-
-	/**
 	 * Detects duplicate code.
 	 */
 	public function checkCpd()
 	{
 		$this->init();
 		$phploc = $this->taskExec($this->binDir . '/phpcpd')
-					   ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
-					   ->arg('--log-pmd=' . $this->config['reports'] . '/pmd-cpd.xml')
-					   ->arg('--fuzzy');
+		               ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
+		               ->arg('--log-pmd=' . $this->config['reports'] . '/pmd-cpd.xml')
+		               ->arg('--fuzzy');
 
 		foreach ($this->ignoredDirs as $dir)
 		{
@@ -105,12 +106,12 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->init();
 		$pdepend = $this->taskExec($this->binDir . '/pdepend')
-						->arg('--dependency-xml=' . $this->config['reports'] . '/dependency.xml')
-						->arg('--jdepend-chart=' . $this->config['reports'] . '/jdepend.svg')
-						->arg('--jdepend-xml=' . $this->config['reports'] . '/jdepend.xml')
-						->arg('--overview-pyramid=' . $this->config['reports'] . '/pyramid.svg')
-						->arg('--summary-xml=' . $this->config['reports'] . '/summary.xml')
-						->arg('--ignore=' . implode(',', $this->ignoredDirs));
+		                ->arg('--dependency-xml=' . $this->config['reports'] . '/dependency.xml')
+		                ->arg('--jdepend-chart=' . $this->config['reports'] . '/jdepend.svg')
+		                ->arg('--jdepend-xml=' . $this->config['reports'] . '/jdepend.xml')
+		                ->arg('--overview-pyramid=' . $this->config['reports'] . '/pyramid.svg')
+		                ->arg('--summary-xml=' . $this->config['reports'] . '/summary.xml')
+		                ->arg('--ignore=' . implode(',', $this->ignoredDirs));
 
 		if (file_exists('' . $this->config['reports'] . '/coverage.xml'))
 		{
@@ -120,18 +121,6 @@ class RoboFile extends \Robo\Tasks
 		$pdepend->arg('.')->run();
 	}
 
-	protected function checkMd()
-	{
-		$this->init();
-		$this->taskExec($this->binDir . '/phpmd')
-			 ->arg(__DIR__)
-			 ->arg('xml')
-			 ->arg($this->config['toolcfg'] . '/phpmd.xml')
-			 ->arg('--reportfile=' . $this->config['reports'] . '/pmd.xml')
-			 ->arg('--exclude=' . implode(',', $this->ignoredDirs))
-			 ->run();
-	}
-
 	/**
 	 * Detects violations of the coding standard.
 	 */
@@ -139,9 +128,25 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->init();
 		$this->taskStyle($this->binDir . '/phpcs')
-			 ->arg('--report=full')
-			 ->arg('--report-checkstyle=' . $this->config['reports'] . '/checkstyle.xml')
-			 ->run();
+		     ->arg('--report=full')
+		     ->arg('--report-checkstyle=' . $this->config['reports'] . '/checkstyle.xml')
+		     ->run();
+	}
+
+	/**
+	 * Sets the common parameters for CodeSniffer and CodeBeautifier
+	 *
+	 * @param   string $bin One of 'phpcs' or 'phpcbf'
+	 *
+	 * @return \Robo\Task\Base\Exec
+	 */
+	private function taskStyle($bin)
+	{
+		return $this->taskExec($bin)
+			#->arg('--standard=PSR2')
+			        ->arg('--standard=' . $this->vendorDir . '/greencape/coding-standards/src/Joomla')
+		            ->arg('--ignore=' . implode(',', $this->ignoredDirs))
+		            ->arg(__DIR__);
 	}
 
 	/**
@@ -161,11 +166,11 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->init();
 		$this->taskApiGen($this->binDir . '/apigen')
-			 ->arg('generate')
-			 ->config($this->config['toolcfg'] . '/apigen.api.yml')
-			 ->arg('--title="' . $this->config['title'] . ' API Documentation"')
-			 ->arg('--destination="' . $this->config['apidocs'] . '/api"')
-			 ->run();
+		     ->arg('generate')
+		     ->config($this->config['toolcfg'] . '/apigen.api.yml')
+		     ->arg('--title="' . $this->config['title'] . ' API Documentation"')
+		     ->arg('--destination="' . $this->config['apidocs'] . '/api"')
+		     ->run();
 	}
 
 	/**
@@ -176,12 +181,12 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->init();
 		$this->taskApiGen($this->binDir . '/apigen')
-			 ->arg('generate')
-			 ->config($this->config['toolcfg'] . '/apigen.full.yml')
-			 ->arg('--title="' . $this->config['title'] . ' Developer Documentation"')
-			 ->arg('--destination="' . $this->config['apidocs'] . '/full"')
-			 ->arg('--annotation-groups=package')
-			 ->run();
+		     ->arg('generate')
+		     ->config($this->config['toolcfg'] . '/apigen.full.yml')
+		     ->arg('--title="' . $this->config['title'] . ' Developer Documentation"')
+		     ->arg('--destination="' . $this->config['apidocs'] . '/full"')
+		     ->arg('--annotation-groups=package')
+		     ->run();
 	}
 
 	/**
@@ -190,9 +195,9 @@ class RoboFile extends \Robo\Tasks
 	public function documentStyle()
 	{
 		$this->taskStyle($this->binDir . '/phpcs')
-			 ->arg('--generator=Markdown')
-			 ->arg('> "' . $this->config['apidocs'] . '/coding-standard.md"')
-			 ->run();
+		     ->arg('--generator=Markdown')
+		     ->arg('> "' . $this->config['apidocs'] . '/coding-standard.md"')
+		     ->run();
 	}
 
 	/**
@@ -202,7 +207,7 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->init();
 		$this->taskStyle($this->binDir . '/phpcbf')
-			 ->run();
+		     ->run();
 	}
 
 	/**
@@ -212,12 +217,12 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->init();
 		$phpcb = $this->taskExec($this->binDir . '/phpcb')
-					  ->arg('--log "' . $this->config['reports'] . '"')
-					  ->arg('--source .')
-					  ->arg('--extensions ".php"')
-					  ->arg('--exclude "*.md"')
-					  ->arg('--exclude "*.dtd"')
-					  ->arg('--output "' . $this->config['reports'] . '/code"');
+		              ->arg('--log "' . $this->config['reports'] . '"')
+		              ->arg('--source .')
+		              ->arg('--extensions ".php"')
+		              ->arg('--exclude "*.md"')
+		              ->arg('--exclude "*.dtd"')
+		              ->arg('--output "' . $this->config['reports'] . '/code"');
 
 		foreach (array_merge($this->ignoredDirs, $this->ignoredFiles) as $dir)
 		{
@@ -234,10 +239,10 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->init();
 		$this->taskExec($this->binDir . '/phpmetrics')
-			 ->arg('--config="' . $this->config['toolcfg'] . '/phpmetrics.yml"')
+		     ->arg('--config="' . $this->config['toolcfg'] . '/phpmetrics.yml"')
 			#->arg('--template-title="' . $this->config['title'] . ' Metrics Report"')
 			 ->arg('.')
-			 ->run();
+		     ->run();
 	}
 
 	/**
@@ -260,25 +265,6 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
-	 * Performs the tests from the `acceptance` suite.
-	 *
-	 * **Note**: The `acceptance` suite contains all tests,
-	 * that involve a browser.
-	 *
-	 * @param array $option
-	 *
-	 * @option $coverage Whether or not to generate a code coverage report
-	 */
-	public function testSystem($option = [
-		'coverage' => false
-	])
-	{
-		$this->init();
-
-		$this->test('acceptance', $option);
-	}
-
-	/**
 	 * Performs the tests from the selected suite.
 	 *
 	 * @param string $suite The test suite to conduct
@@ -295,8 +281,8 @@ class RoboFile extends \Robo\Tasks
 		try
 		{
 			$codecept = $this->taskCodecept($this->binDir . '/codecept')
-							 ->configFile($tempConfigFile)
-							 ->html($suite . '-test-results.html');
+			                 ->configFile($tempConfigFile)
+			                 ->html($suite . '-test-results.html');
 
 			if ($suite != 'all')
 			{
@@ -315,22 +301,6 @@ class RoboFile extends \Robo\Tasks
 		{
 			$this->_remove($tempConfigFile);
 		}
-	}
-
-	/**
-	 * Sets the common parameters for CodeSniffer and CodeBeautifier
-	 *
-	 * @param   string $bin One of 'phpcs' or 'phpcbf'
-	 *
-	 * @return \Robo\Task\Base\Exec
-	 */
-	private function taskStyle($bin)
-	{
-		return $this->taskExec($bin)
-			#->arg('--standard=PSR2')
-					->arg('--standard=' . $this->vendorDir . '/greencape/coding-standards/src/Joomla')
-					->arg('--ignore=' . implode(',', $this->ignoredDirs))
-					->arg(__DIR__);
 	}
 
 	/**
@@ -371,5 +341,36 @@ class RoboFile extends \Robo\Tasks
 		file_put_contents($tempConfigFile, Yaml::dump($config));
 
 		return $tempConfigFile;
+	}
+
+	/**
+	 * Performs the tests from the `acceptance` suite.
+	 *
+	 * **Note**: The `acceptance` suite contains all tests,
+	 * that involve a browser.
+	 *
+	 * @param array $option
+	 *
+	 * @option $coverage Whether or not to generate a code coverage report
+	 */
+	public function testSystem($option = [
+		'coverage' => false
+	])
+	{
+		$this->init();
+
+		$this->test('acceptance', $option);
+	}
+
+	protected function checkMd()
+	{
+		$this->init();
+		$this->taskExec($this->binDir . '/phpmd')
+		     ->arg(__DIR__)
+		     ->arg('xml')
+		     ->arg($this->config['toolcfg'] . '/phpmd.xml')
+		     ->arg('--reportfile=' . $this->config['reports'] . '/pmd.xml')
+		     ->arg('--exclude=' . implode(',', $this->ignoredDirs))
+		     ->run();
 	}
 }
