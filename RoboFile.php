@@ -43,6 +43,9 @@ class RoboFile extends \Robo\Tasks
 
 	use \Robo\Task\Testing\loadTasks;
 
+	/**
+	 * RoboFile constructor.
+	 */
 	public function __construct()
 	{
 		$config          = json_decode(file_get_contents(__DIR__ . '/composer.json'), true);
@@ -55,7 +58,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function checkLoc()
 	{
-		$this->init();
+		$this->initReports();
 		$phploc = $this->taskExec($this->binDir . '/phploc')
 		               ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
 		               ->arg('--log-xml=' . $this->config['reports'] . '/phploc.xml');
@@ -68,24 +71,12 @@ class RoboFile extends \Robo\Tasks
 		$phploc->arg('.')->run();
 	}
 
-	private function init()
-	{
-		if (!file_exists($this->config['apidocs']))
-		{
-			$this->_mkdir($this->config['apidocs']);
-		}
-		if (!file_exists($this->config['reports']))
-		{
-			$this->_mkdir($this->config['reports']);
-		}
-	}
-
 	/**
 	 * Detects duplicate code.
 	 */
 	public function checkCpd()
 	{
-		$this->init();
+		$this->initReports();
 		$phploc = $this->taskExec($this->binDir . '/phpcpd')
 		               ->arg('--names-exclude=' . implode(',', $this->ignoredFiles))
 		               ->arg('--log-pmd=' . $this->config['reports'] . '/pmd-cpd.xml')
@@ -104,7 +95,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function checkDepend()
 	{
-		$this->init();
+		$this->initReports();
 		$pdepend = $this->taskExec($this->binDir . '/pdepend')
 		                ->arg('--dependency-xml=' . $this->config['reports'] . '/dependency.xml')
 		                ->arg('--jdepend-chart=' . $this->config['reports'] . '/jdepend.svg')
@@ -126,7 +117,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function checkStyle()
 	{
-		$this->init();
+		$this->initReports();
 		$this->taskStyle($this->binDir . '/phpcs')
 		     ->arg('--report=full')
 		     ->arg('--report-checkstyle=' . $this->config['reports'] . '/checkstyle.xml')
@@ -143,7 +134,6 @@ class RoboFile extends \Robo\Tasks
 	private function taskStyle($bin)
 	{
 		return $this->taskExec($bin)
-			#->arg('--standard=PSR2')
 			        ->arg('--standard=' . $this->vendorDir . '/greencape/coding-standards/src/Joomla')
 		            ->arg('--ignore=' . implode(',', $this->ignoredDirs))
 		            ->arg(__DIR__);
@@ -164,7 +154,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function documentApi()
 	{
-		$this->init();
+		$this->initApiDocs();
 		$this->taskApiGen($this->binDir . '/apigen')
 		     ->arg('generate')
 		     ->config($this->config['toolcfg'] . '/apigen.api.yml')
@@ -179,7 +169,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function documentFull()
 	{
-		$this->init();
+		$this->initApiDocs();
 		$this->taskApiGen($this->binDir . '/apigen')
 		     ->arg('generate')
 		     ->config($this->config['toolcfg'] . '/apigen.full.yml')
@@ -194,6 +184,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function documentStyle()
 	{
+		$this->initApiDocs();
 		$this->taskStyle($this->binDir . '/phpcs')
 		     ->arg('--generator=Markdown')
 		     ->arg('> "' . $this->config['apidocs'] . '/coding-standard.md"')
@@ -205,7 +196,6 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function fixStyle()
 	{
-		$this->init();
 		$this->taskStyle($this->binDir . '/phpcbf')
 		     ->run();
 	}
@@ -215,7 +205,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function reportCb()
 	{
-		$this->init();
+		$this->initReports();
 		$phpcb = $this->taskExec($this->binDir . '/phpcb')
 		              ->arg('--log "' . $this->config['reports'] . '"')
 		              ->arg('--source .')
@@ -237,10 +227,9 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function reportMetrics()
 	{
-		$this->init();
+		$this->initReports();
 		$this->taskExec($this->binDir . '/phpmetrics')
 		     ->arg('--config="' . $this->config['toolcfg'] . '/phpmetrics.yml"')
-			#->arg('--template-title="' . $this->config['title'] . ' Metrics Report"')
 			 ->arg('.')
 		     ->run();
 	}
@@ -259,8 +248,6 @@ class RoboFile extends \Robo\Tasks
 		'coverage' => false
 	])
 	{
-		$this->init();
-
 		$this->test('unit', $option);
 	}
 
@@ -276,6 +263,8 @@ class RoboFile extends \Robo\Tasks
 		'coverage' => false
 	])
 	{
+		$this->initReports();
+
 		$tempConfigFile = $this->buildConfig($this->config['toolcfg'], $option['coverage']);
 
 		try
@@ -356,14 +345,12 @@ class RoboFile extends \Robo\Tasks
 		'coverage' => false
 	])
 	{
-		$this->init();
-
 		$this->test('acceptance', $option);
 	}
 
 	protected function checkMd()
 	{
-		$this->init();
+		$this->initReports();
 		$this->taskExec($this->binDir . '/phpmd')
 		     ->arg(__DIR__)
 		     ->arg('xml')
@@ -371,5 +358,21 @@ class RoboFile extends \Robo\Tasks
 		     ->arg('--reportfile=' . $this->config['reports'] . '/pmd.xml')
 		     ->arg('--exclude=' . implode(',', $this->ignoredDirs))
 		     ->run();
+	}
+
+	private function initApiDocs()
+	{
+		if (!file_exists($this->config['apidocs']))
+		{
+			$this->_mkdir($this->config['apidocs']);
+		}
+	}
+
+	private function initReports()
+	{
+		if (!file_exists($this->config['reports']))
+		{
+			$this->_mkdir($this->config['reports']);
+		}
 	}
 }
