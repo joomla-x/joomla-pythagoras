@@ -36,7 +36,7 @@ before_script:
 
 script:
   - libraries/vendor/bin/codecept run -c travisci-codeception.yml
-  - libraries/vendor/bin/phpcs --standard=libraries/vendor/greencape/coding-standards/src/Joomla --ignore=build,docs,etc,logs,tests,tmp,libraries/vendor .
+  - libraries/vendor/bin/robo check:style
 
 branches:
   except:
