@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="page">
+
+    <storage>
+        <default table="pages"/>
+    </storage>
+
+    <fields>
+        <field name="id"
+               type="id"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               default="null"
+        >
+            <validation rule="positive"/>
+            <validation rule="integer"/>
+        </field>
+
+        <field name="title"
+               type="title"
+               label="JGLOBAL_TITLE"
+        >
+            <validation rule="maxlen" value="64"/>
+        </field>
+
+        <field name="url" type="url"/>
+
+    </fields>
+
+    <relations>
+        <belongsTo name="parent_id"
+                   entity="page"
+                   label="JFIELD_PARENT_LABEL"
+                   description="JFIELD_PARENT_DESC"
+        />
+        <belongsTo name="master_id" entity="master"/>
+        <hasMany name="children" entity="article" reference="parent_id"/>
+        <hasMany name="content" entity="page_content" reference="page_id"/>
+    </relations>
+
+</entity>

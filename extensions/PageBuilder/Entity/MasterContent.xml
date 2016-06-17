@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="mastercontent">
+
+    <storage>
+        <default table="master_content"/>
+    </storage>
+
+    <fields>
+        <field name="id"
+               type="id"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               default="null"
+        >
+            <validation rule="positive"/>
+            <validation rule="integer"/>
+        </field>
+        <field name="position" type="string"/>
+        <field name="ordering" type="integer"/>
+        <field name="component" type="string"/>
+        <field name="layout" type="string"/>
+        <field name="reference" type="string"/>
+        <field name="selection" type="string"/>
+        <field name="params" type="json"/>
+
+    </fields>
+
+    <relations>
+        <belongsTo name="master_id" entity="master"/>
+    </relations>
+
+</entity>

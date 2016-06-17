@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="master">
+
+    <storage>
+        <default table="masters"/>
+    </storage>
+
+    <fields>
+        <field name="id"
+               type="id"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               default="null"
+        >
+            <validation rule="positive"/>
+            <validation rule="integer"/>
+        </field>
+
+        <field name="title"
+               type="title"
+               label="JGLOBAL_TITLE"
+        >
+            <validation rule="maxlen" value="64"/>
+        </field>
+
+    </fields>
+
+    <relations>
+        <belongsTo name="template_id"
+                   entity="template"
+        />
+        <hasMany name="pages"
+                 entity="page"
+                 reference="master_id"
+        />
+    </relations>
+
+</entity>
