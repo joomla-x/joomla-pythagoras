@@ -9,7 +9,9 @@
 namespace Joomla\ORM\Repository;
 
 use Joomla\ORM\Definition\Locator\Locator;
+use Joomla\ORM\Definition\Locator\Strategy\MapStrategy;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
+use Joomla\ORM\Exception\RepositoryNotFoundException;
 use Joomla\Service\QueryHandler;
 use Joomla\ORM\Entity\EntityBuilder;
 
@@ -31,13 +33,23 @@ class RepositoryQueryHandler extends QueryHandler
 	 */
 	public function handle(RepositoryQuery $query)
 	{
-		$strategies = [
-			new RecursiveDirectoryStrategy(JPATH_ROOT . '/extensions')
-		];
-		$locator    = new Locator($strategies);
+		$map     = parse_ini_file(JPATH_ROOT . '/config/entities.ini');
+		$locator = new Locator(
+			[
+				new MapStrategy(JPATH_ROOT, $map),
+				new RecursiveDirectoryStrategy(JPATH_ROOT . '/extensions'),
+			]
+		);
 
 		$builder = new EntityBuilder($locator);
 		$builder->setDispatcher($this->getDispatcher());
-		return new Repository($query->entityName, $builder);
+		$repository = new Repository($query->entityName, $builder);
+
+		if (is_null($repository))
+		{
+			throw new RepositoryNotFoundException("Unable to create the '$query->entityName' repository.");
+		}
+
+		return $repository;
 	}
 }
