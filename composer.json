@@ -35,7 +35,7 @@
     "apigen/apigen": "~4",
     "codeception/mockery-module": "^0.2.2",
     "phpmetrics/phpmetrics": "^1.10",
-    "phploc/phploc": "^3.0",
+    "phploc/phploc": "~2.1",
     "sebastian/phpcpd": "^2.0",
     "pdepend/pdepend": "^2.2",
     "phpmd/phpmd": "^2.4"
