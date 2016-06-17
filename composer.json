@@ -33,7 +33,12 @@
     "greencape/coding-standards": "^1.0",
     "mayflower/php-codebrowser": "^1.1",
     "apigen/apigen": "~4",
-    "codeception/mockery-module": "^0.2.2"
+    "codeception/mockery-module": "^0.2.2",
+    "phpmetrics/phpmetrics": "^1.10",
+    "phploc/phploc": "^3.0",
+    "sebastian/phpcpd": "^2.0",
+    "pdepend/pdepend": "^2.2",
+    "phpmd/phpmd": "^2.4"
   },
   "autoload": {
     "psr-4": {

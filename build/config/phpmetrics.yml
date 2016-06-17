@@ -1,7 +1,7 @@
 myconfig:
     path:
         extensions: php
-        exclude: build|docs|etc|logs|tests|tmp|vendor
+        exclude: "(.*\\b(build|cache|docs|logs|tests|tmp|vendor|RoboFile)\\b.*)"
 
     logging:
         report:

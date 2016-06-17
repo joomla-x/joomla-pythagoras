@@ -28,7 +28,6 @@ class RoboFile extends \Robo\Tasks
 		'build',
 		'cache',
 		'docs',
-		'etc',
 		'logs',
 		'tests',
 		'tmp',
@@ -158,8 +157,8 @@ class RoboFile extends \Robo\Tasks
 		$this->taskApiGen($this->binDir . '/apigen')
 		     ->arg('generate')
 		     ->config($this->config['toolcfg'] . '/apigen.api.yml')
-		     ->arg('--title="' . $this->config['title'] . ' API Documentation"')
-		     ->arg('--destination="' . $this->config['apidocs'] . '/api"')
+		     ->arg('--title "' . $this->config['title'] . ' API Documentation"')
+		     ->arg('--destination "' . $this->config['apidocs'] . '/api"')
 		     ->run();
 	}
 
@@ -348,6 +347,9 @@ class RoboFile extends \Robo\Tasks
 		$this->test('acceptance', $option);
 	}
 
+	/**
+	 * Disabled due to MD 2.4.3 internal problems
+	 */
 	protected function checkMd()
 	{
 		$this->initReports();
