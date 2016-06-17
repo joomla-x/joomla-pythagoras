@@ -8,6 +8,8 @@
 
 namespace Joomla\Extension;
 
+use Joomla\Service\Query;
+
 /**
  * Extension Interface
  *
@@ -17,6 +19,8 @@ namespace Joomla\Extension;
  */
 interface ExtensionInterface
 {
+	public function getQueryHandlers(Query $query);
+
 	/**
 	 * Returns an array of callables to listen for events on a
 	 * DispatcherInterface.

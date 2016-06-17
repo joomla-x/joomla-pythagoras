@@ -14,7 +14,7 @@ use Joomla\Event\EventInterface;
 /**
  * Class ExtensionDispatcher
  *
- * Lazy loading plugin dispatcher, which loads the listeners from a
+ * Lazy loading extension dispatcher, which loads the listeners from a
  * ExtensionFactoryInterface when the event is fired the first time.
  *
  * @package  Joomla\Extension
@@ -23,7 +23,7 @@ use Joomla\Event\EventInterface;
  */
 class ExtensionDispatcher extends Dispatcher
 {
-	/** @var ExtensionFactoryInterface The plugin factory */
+	/** @var ExtensionFactoryInterface The extension factory */
 	private $factory;
 
 	/** @var string[] The loaded events */
@@ -32,7 +32,7 @@ class ExtensionDispatcher extends Dispatcher
 	/**
 	 * ExtensionDispatcher constructor.
 	 *
-	 * @param   ExtensionFactoryInterface $factory  The plugin factory
+	 * @param   ExtensionFactoryInterface $factory  The extension factory
 	 */
 	public function __construct(ExtensionFactoryInterface $factory)
 	{
@@ -40,7 +40,7 @@ class ExtensionDispatcher extends Dispatcher
 	}
 
 	/**
-	 * Call the plugins
+	 * Call the extensions
 	 *
 	 * @param   EventInterface $event  The event
 	 *
@@ -60,18 +60,18 @@ class ExtensionDispatcher extends Dispatcher
 	}
 
 	/**
-	 * Loads the listeners from the given plugins and attaches them.
+	 * Loads the listeners from the given extensions and attaches them.
 	 *
-	 * @param   string            $name     The event name
-	 * @param   ExtensionInterface[] $plugins  A list of plugins
+	 * @param   string               $name        The event name
+	 * @param   ExtensionInterface[] $extensions  A list of extensions
 	 *
 	 * @return  void
 	 */
-	private function loadExtensionListeners($name, array $plugins)
+	private function loadExtensionListeners($name, array $extensions)
 	{
-		foreach ($plugins as $plugin)
+		foreach ($extensions as $extension)
 		{
-			foreach ($plugin->getListeners($name) as $listener)
+			foreach ($extension->getListeners($name) as $listener)
 			{
 				$this->addListener($name, $listener);
 			}

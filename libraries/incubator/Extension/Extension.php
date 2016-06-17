@@ -8,6 +8,8 @@
 
 namespace Joomla\Extension;
 
+use Joomla\Service\Query;
+
 /**
  * Class Extension
  *
@@ -19,6 +21,9 @@ class Extension implements ExtensionInterface
 {
 	/** @var callable[]  */
 	private $listeners = [];
+
+	/** @var callable[]  */
+	private $queryHandlers = [];
 
 	/**
 	 * Get the listeners
@@ -53,5 +58,41 @@ class Extension implements ExtensionInterface
 		}
 
 		$this->listeners[$eventName][] = $listener;
+	}
+
+	/**
+	 * Get the listeners
+	 *
+	 * @param   Query  $query
+	 *
+	 * @return  callable[]
+	 */
+	public function getQueryHandlers(Query $query)
+	{
+		if (!key_exists(get_class($query), $this->queryHandlers))
+		{
+			return [];
+		}
+
+		return $this->queryHandlers[get_class($query)];
+	}
+
+	/**
+	 * Add a query handler
+	 *
+	 * @param   string   $className  The name of the query class
+	 * @param   callable $handler    The event handler
+	 *
+	 * @return  void
+	 */
+	public function addQueryHandler($className, $handler)
+	{
+		$className = ltrim($className, '\\');
+		if (!key_exists($className, $this->queryHandlers))
+		{
+			$this->queryHandlers[$className] = [];
+		}
+
+		$this->queryHandlers[$className][] = $handler;
 	}
 }

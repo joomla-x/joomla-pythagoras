@@ -58,6 +58,6 @@ class ExtensionFactoryServiceProvider implements ServiceProviderInterface
 	 */
 	public function createExtensionFactory(Container $container)
 	{
-		return new FileExtensionFactory($container->get('ConfigDirectory') . '/extensions');
+		return new FileExtensionFactory($container->get('ConfigDirectory') . '/extensions', $container);
 	}
 }

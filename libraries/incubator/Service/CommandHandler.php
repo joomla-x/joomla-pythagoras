@@ -9,6 +9,9 @@
 
 namespace Joomla\Service;
 
+use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\DispatcherInterface;
+
 /**
  * Abstract base class for command handlers.
  *
@@ -21,6 +24,8 @@ namespace Joomla\Service;
  */
 abstract class CommandHandler
 {
+	use DispatcherAwareTrait;
+
 	/** @var CommandBus The command bus */
 	private $commandBus = null;
 
@@ -30,13 +35,15 @@ abstract class CommandHandler
 	/**
 	 * Constructor.
 	 *
-	 * @param   CommandBus  $commandBus  A command bus.
+	 * @param   CommandBus           $commandBus  A command bus
+	 * @param   DispatcherInterface  $dispatcher  A dispatcher
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function __construct(CommandBus $commandBus)
+	public function __construct(CommandBus $commandBus, DispatcherInterface $dispatcher)
 	{
 		$this->commandBus = $commandBus;
+		$this->setDispatcher($dispatcher);
 	}
 
 	/**

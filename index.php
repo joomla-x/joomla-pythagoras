@@ -11,7 +11,6 @@ use Joomla\Http\Middleware\CommandBusMiddleware;
 use Joomla\Http\Middleware\RendererMiddleware;
 use Joomla\Http\Middleware\ResponseSenderMiddleware;
 use Joomla\Http\Middleware\RouterMiddleware;
-use Joomla\Http\ServerRequestFactory;
 use Joomla\J3Compatibility\Http\Middleware\RouterMiddleware as LegacyRouterMiddleware;
 
 require_once 'libraries/vendor/autoload.php';
@@ -29,4 +28,4 @@ $app = new Application(
 	]
 );
 
-$response = $app->run(ServerRequestFactory::fromGlobals());
+$response = $app->run($container->get('Request'));

@@ -1,0 +1,9 @@
+listeners:
+    AddRelationListener:
+        class: \Joomla\Extension\Category\Listener\AddRelationListener
+        events:
+            onAfterCreateDefinition: addCategoryRelation
+queryhandlers:
+    AddCategoryContentTypesHandler:
+        class: \Joomla\Extension\Category\Command\AddCategoryContentTypesHandler
+        query: \Joomla\Cms\Service\ContentTypeQuery
