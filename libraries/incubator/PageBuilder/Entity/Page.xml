@@ -36,7 +36,7 @@
                    description="JFIELD_PARENT_DESC"
         />
         <belongsTo name="master_id" entity="master"/>
-        <hasMany name="children" entity="article" reference="parent_id"/>
+        <hasMany name="children" entity="page" reference="parent_id"/>
         <hasMany name="content" entity="page_content" reference="page_id"/>
     </relations>
 

@@ -30,7 +30,7 @@ class DefaultProvider extends DoctrineProvider
 	 */
 	public function __construct($tableName, EntityBuilder $builder)
 	{
-		$url = file_get_contents('config/database.ini');
+		$url = isset($_ENV['DB_DSN']) ? $_ENV['DB_DSN'] : file_get_contents('config/database.ini');
 		parent::__construct($url, $builder, $tableName);
 	}
 }

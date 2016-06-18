@@ -33,7 +33,8 @@
         "greencape/coding-standards": "^1.0",
         "mayflower/php-codebrowser": "^1.1",
         "apigen/apigen": "~4",
-        "codeception/mockery-module": "^0.2.2"
+        "codeception/mockery-module": "^0.2.2",
+        "phpunit/dbunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -43,6 +44,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Joomla\\Tests\\": "tests/",
             "Joomla\\Tests\\Unit\\": "tests/unit/",
             "Joomla\\Tests\\Functional\\": "tests/functional/",
             "Joomla\\Tests\\System\\": "tests/acceptance/",
