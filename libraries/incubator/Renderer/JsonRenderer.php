@@ -54,7 +54,7 @@ class JsonRenderer extends Renderer
 	 */
 	public function visitCompound(Compound $compound)
 	{
-		$stash = $this->data;
+		$stash      = $this->data;
 		$this->data = [];
 
 		foreach ($compound->items as $item)
@@ -62,7 +62,7 @@ class JsonRenderer extends Renderer
 			$item->accept($this);
 		}
 
-		$stash[] = [$compound->type => $this->data];
+		$stash[]    = [$compound->type => $this->data];
 		$this->data = $stash;
 
 		return $this->updateContent();

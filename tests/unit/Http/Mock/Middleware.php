@@ -14,62 +14,62 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Middleware implements MiddlewareInterface
 {
-    /** @var  string */
-    private $marker;
+	/** @var  string */
+	private $marker;
 
-    public function __construct($marker)
-    {
-        $this->marker = $marker;
-    }
+	public function __construct($marker)
+	{
+		$this->marker = $marker;
+	}
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
-    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
-    {
-        $response->getBody()->write("<$this->marker]");
-        /** @var ResponseInterface $response */
-        $response = $next($request, $response);
-        $response->getBody()->write("[$this->marker>");
+	/**
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface      $response
+	 * @param callable               $next
+	 *
+	 * @return ResponseInterface
+	 */
+	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+	{
+		$response->getBody()->write("<$this->marker]");
+		/** @var ResponseInterface $response */
+		$response = $next($request, $response);
+		$response->getBody()->write("[$this->marker>");
 
-        return $response;
-    }
+		return $response;
+	}
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
-    public function callableHandler(ServerRequestInterface $request, ResponseInterface $response, callable $next)
-    {
-        $response->getBody()->write("<$this->marker-alternative]");
-        /** @var ResponseInterface $response */
-        $response = $next($request, $response);
-        $response->getBody()->write("[$this->marker-alternative>");
+	/**
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface      $response
+	 * @param callable               $next
+	 *
+	 * @return ResponseInterface
+	 */
+	public function callableHandler(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+	{
+		$response->getBody()->write("<$this->marker-alternative]");
+		/** @var ResponseInterface $response */
+		$response = $next($request, $response);
+		$response->getBody()->write("[$this->marker-alternative>");
 
-        return $response;
-    }
+		return $response;
+	}
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
-    public static function staticHandler(ServerRequestInterface $request, ResponseInterface $response, callable $next)
-    {
-        $response->getBody()->write("<0-static]");
-        /** @var ResponseInterface $response */
-        $response = $next($request, $response);
-        $response->getBody()->write("[0-static>");
+	/**
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface      $response
+	 * @param callable               $next
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function staticHandler(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+	{
+		$response->getBody()->write("<0-static]");
+		/** @var ResponseInterface $response */
+		$response = $next($request, $response);
+		$response->getBody()->write("[0-static>");
 
-        return $response;
-    }
+		return $response;
+	}
 }

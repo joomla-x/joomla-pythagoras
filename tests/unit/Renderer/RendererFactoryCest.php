@@ -24,9 +24,9 @@ class RendererFactoryCest
 	public function _before(UnitTester $I)
 	{
 		$this->factory = new Factory([
-			'text/plain' => PlainRenderer::class,
-			'text/html'  => HtmlRenderer::class,
-			'application/xml' => XmlRenderer::class,
+			'text/plain'       => PlainRenderer::class,
+			'text/html'        => HtmlRenderer::class,
+			'application/xml'  => XmlRenderer::class,
 			'application/json' => JsonRenderer::class,
 		]);
 	}
@@ -38,7 +38,10 @@ class RendererFactoryCest
 	private function dataAcceptHeaders()
 	{
 		$acceptHeaders = array(
-			['Accept: text/*;q=0.3, text/html;q=0.7, text/html;level=1, text/html;level=2;q=0.4, */*;q=0.5', HtmlRenderer::class],
+			[
+				'Accept: text/*;q=0.3, text/html;q=0.7, text/html;level=1, text/html;level=2;q=0.4, */*;q=0.5',
+				HtmlRenderer::class
+			],
 			['Accept: audio/*; q=0.2, audio/basic', NotFoundException::class],
 			['text/plain; q=0.5, text/html, text/x-dvi; q=0.8, text/x-c', HtmlRenderer::class],
 			['application/xml', XmlRenderer::class],
@@ -59,14 +62,18 @@ class RendererFactoryCest
 		{
 			list($acceptHeader, $expected) = $foo;
 
-			try {
+			try
+			{
 				$renderer = $this->factory->create($acceptHeader);
 				$I->assertTrue(
 					$renderer instanceof $expected,
 					"Expected $expected, but got " . get_class($renderer)
 				);
-			} catch (NotFoundException $e) {
-				if (!($e instanceof $expected)) {
+			}
+			catch (NotFoundException $e)
+			{
+				if (!($e instanceof $expected))
+				{
 					$I->fail('Expected NotFoundException, got ' . get_class($e));
 				}
 			}

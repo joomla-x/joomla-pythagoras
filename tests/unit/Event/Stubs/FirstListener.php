@@ -19,7 +19,7 @@ class FirstListener
 	/**
 	 * Listen to `fooBar`.
 	 *
-	 * @param   Event  $event  The event.
+	 * @param   Event $event The event.
 	 *
 	 * @return  void
 	 *
@@ -32,7 +32,7 @@ class FirstListener
 	/**
 	 * Listen to onSomething.
 	 *
-	 * @param   Event  $event  The event.
+	 * @param   Event $event The event.
 	 *
 	 * @return  void
 	 *

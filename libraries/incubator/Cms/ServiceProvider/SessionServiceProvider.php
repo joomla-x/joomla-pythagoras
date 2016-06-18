@@ -33,8 +33,8 @@ class SessionServiceProvider implements ServiceProviderInterface
 		$container->set(
 			'Session',
 			[
-					$this,
-					'createSession'
+				$this,
+				'createSession'
 			],
 			true,
 			true
@@ -46,6 +46,13 @@ class SessionServiceProvider implements ServiceProviderInterface
 		}
 	}
 
+	/**
+	 * Create a session
+	 *
+	 * @param   Container  $container  The container
+	 *
+	 * @return  Session
+	 */
 	public function createSession(Container $container)
 	{
 		return new Session($container->get('Request')->getCookieParams());

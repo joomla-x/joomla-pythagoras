@@ -22,34 +22,6 @@ class ValueCest
 	}
 
 	/**
-	 * @return array
-	 */
-	private function testData()
-	{
-		return [
-			['string' => 'foo'],
-			['integer' => 42],
-			['array' => ['one' => 1, 'two' => 2, 'three' => 3]],
-			['object' => (object)['one' => 1, 'two' => 2, 'three' => 3]],
-			['value' => new Value(['key' => 'value'])],
-		];
-	}
-
-	/**
-	 * @return array
-	 */
-	private function modifiedData()
-	{
-		return [
-			['string' => 'bar'],
-			['integer' => 23],
-			['array' => ['one' => 1, 'two' => 10, 'three' => 11]],
-			['object' => (object)['one' => 1, 'two' => 10, 'three' => 11]],
-			['value' => new Value(['key' => 'other'])],
-		];
-	}
-
-	/**
 	 * @testdox A value equals itself: a = a
 	 */
 	public function AValueEqualsItself(UnitTester $I)
@@ -60,6 +32,20 @@ class ValueCest
 
 			$I->assertTrue($foo->equals($foo));
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	private function testData()
+	{
+		return [
+			['string' => 'foo'],
+			['integer' => 42],
+			['array' => ['one' => 1, 'two' => 2, 'three' => 3]],
+			['object' => (object) ['one' => 1, 'two' => 2, 'three' => 3]],
+			['value' => new Value(['key' => 'value'])],
+		];
 	}
 
 	/**
@@ -92,6 +78,20 @@ class ValueCest
 			$I->assertFalse($foo->equals($bar));
 			$I->assertFalse($bar->equals($foo));
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	private function modifiedData()
+	{
+		return [
+			['string' => 'bar'],
+			['integer' => 23],
+			['array' => ['one' => 1, 'two' => 10, 'three' => 11]],
+			['object' => (object) ['one' => 1, 'two' => 10, 'three' => 11]],
+			['value' => new Value(['key' => 'other'])],
+		];
 	}
 
 	/**

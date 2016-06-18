@@ -11,7 +11,7 @@ class Renderer extends \Joomla\Renderer\Renderer
 
 		return strlen($str);
 	}
-	
+
 	/**
 	 * Render a headline.
 	 *

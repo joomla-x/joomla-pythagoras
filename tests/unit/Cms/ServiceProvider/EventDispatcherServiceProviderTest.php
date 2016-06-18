@@ -2,11 +2,11 @@
 
 namespace Joomla\Tests\Unit\Cms\ServiceProvider;
 
+use Joomla\Cms\ServiceProvider\EventDispatcherServiceProvider;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Extension\ExtensionFactoryInterface;
-use Joomla\Cms\ServiceProvider\EventDispatcherServiceProvider;
 
 class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 {

@@ -14,7 +14,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('\\Joomla\\Service\\Command', new SimpleCommand);
 	}
 
-
 	/**
 	 * @testdox The test command is an Immutable object
 	 */
@@ -22,7 +21,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertInstanceOf('\\Joomla\\Service\\Immutable', new SimpleCommand);
 	}
-
 
 	/**
 	 * @testdox The constructor argument can be retrieved by a getter method.
@@ -32,7 +30,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('testing', (new SimpleCommand('testing'))->getTest());
 	}
 
-
 	/**
 	 * @testdox The constructor argument can be retrieved as an object property.
 	 */
@@ -40,7 +37,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('testing', (new SimpleCommand('testing'))->test);
 	}
-
 
 	/**
 	 * @testdox The getName method returns the name of the test command
@@ -50,7 +46,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('SimpleCommand', (new SimpleCommand('testing'))->getName());
 	}
 
-
 	/**
 	 * @testdox The name property contains the name of the test command
 	 */
@@ -58,7 +53,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('SimpleCommand', (new SimpleCommand('testing'))->name);
 	}
-
 
 	/**
 	 * @testdox The getRaisedOn method does not throw an exception
@@ -68,7 +62,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotEmpty((new SimpleCommand)->getRaisedOn());
 	}
 
-
 	/**
 	 * @testdox Accessing the requestedOn property does not throw an exception
 	 */
@@ -77,17 +70,15 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotEmpty((new SimpleCommand)->raisedOn);
 	}
 
-
 	/**
 	 * @expectedException \InvalidArgumentException
 	 * @testdox Throws a InvalidArgumentException when trying to change the requestedOn time.
 	 */
 	public function testThrowsAnInvalidArgumentExceptionWhenTryingToChangeTheRequestedonTime()
 	{
-		$command = new SimpleCommand;
+		$command              = new SimpleCommand;
 		$command->requestedon = 'something';
 	}
-
 
 	/**
 	 * @expectedException \RuntimeException

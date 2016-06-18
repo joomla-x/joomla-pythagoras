@@ -12,6 +12,7 @@ namespace Joomla\Cms\ServiceProvider;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Http\ServerRequestFactory;
+use Zend\Diactoros\ServerRequest;
 
 /**
  * Request Service Provider.
@@ -33,8 +34,8 @@ class RequestServiceProvider implements ServiceProviderInterface
 		$container->set(
 			'Request',
 			[
-					$this,
-					'createRequest'
+				$this,
+				'createRequest'
 			],
 			true,
 			true
@@ -46,6 +47,13 @@ class RequestServiceProvider implements ServiceProviderInterface
 		}
 	}
 
+	/**
+	 * Create a request
+	 *
+	 * @param   Container  $container  The container
+	 *
+	 * @return  ServerRequest
+	 */
 	public function createRequest(Container $container)
 	{
 		return ServerRequestFactory::fromGlobals();

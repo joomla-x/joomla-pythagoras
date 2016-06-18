@@ -1,4 +1,5 @@
 <?php
+
 class ArbitraryInteropContainer implements \Interop\Container\ContainerInterface
 {
 	private $data = array(

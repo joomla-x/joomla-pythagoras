@@ -90,9 +90,9 @@ class Resource
 	/**
 	 * Create a resource representation
 	 *
-	 * @param   Container  $container  The container
-	 * @param   mixed      $value      The resource or its factory closure
-	 * @param   integer    $mode       Resource mode, defaults to Resource::NO_SHARE | Resource::NO_PROTECT
+	 * @param   Container $container The container
+	 * @param   mixed     $value     The resource or its factory closure
+	 * @param   integer   $mode      Resource mode, defaults to Resource::NO_SHARE | Resource::NO_PROTECT
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -129,30 +129,6 @@ class Resource
 	}
 
 	/**
-	 * Check whether the resource is shared
-	 *
-	 * @return  boolean
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function isShared()
-	{
-		return $this->shared;
-	}
-
-	/**
-	 * Check whether the resource is protected
-	 *
-	 * @return  boolean
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function isProtected()
-	{
-		return $this->protected;
-	}
-
-	/**
 	 * Get an instance of the resource
 	 *
 	 * If a factory was provided, the resource is created and - if it is a shared resource - cached internally.
@@ -177,6 +153,18 @@ class Resource
 		}
 
 		return call_user_func($callable, $this->container);
+	}
+
+	/**
+	 * Check whether the resource is shared
+	 *
+	 * @return  boolean
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function isShared()
+	{
+		return $this->shared;
 	}
 
 	/**
@@ -211,5 +199,17 @@ class Resource
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check whether the resource is protected
+	 *
+	 * @return  boolean
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function isProtected()
+	{
+		return $this->protected;
 	}
 }
