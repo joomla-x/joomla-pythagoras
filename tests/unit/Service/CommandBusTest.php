@@ -14,7 +14,7 @@ class CommandBusTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$dispatcher = new MockEventDispatcher;
+		$dispatcher       = new MockEventDispatcher;
 		$this->commandBus = (new CommandBusBuilder($dispatcher))->getCommandBus();
 	}
 

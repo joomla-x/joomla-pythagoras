@@ -27,8 +27,8 @@ class DelegatingDispatcherTest extends \PHPUnit_Framework_TestCase
 		/** @var Dispatcher|\PHPUnit_Framework_MockObject_MockObject $mockedDispatcher */
 		$mockedDispatcher = $this->getMock(Dispatcher::class);
 		$mockedDispatcher->expects($this->once())
-						 ->method('dispatch')
-						 ->with(new Event($event));
+		                 ->method('dispatch')
+		                 ->with(new Event($event));
 
 		$delegating = new DelegatingDispatcher($mockedDispatcher);
 

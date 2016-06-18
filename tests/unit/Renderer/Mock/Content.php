@@ -30,14 +30,14 @@ class ContentType extends Content
 
 class NewContentType extends Content
 {
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		$visitor->visitNewContent($this);
-	}
-
 	public static function asHtml(NewContentType $content)
 	{
 		return 'static: ' . $content->getContents() . "\n";
+	}
+
+	public function accept(ContentTypeVisitorInterface $visitor)
+	{
+		$visitor->visitNewContent($this);
 	}
 }
 

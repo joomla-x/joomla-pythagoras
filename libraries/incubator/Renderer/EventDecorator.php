@@ -38,8 +38,8 @@ class EventDecorator implements RendererInterface
 	/**
 	 * Decorator constructor.
 	 *
-	 * @param   RendererInterface   $renderer    The renderer to be decorated
-	 * @param   DispatcherInterface $dispatcher  The dispather handling the events
+	 * @param   RendererInterface   $renderer   The renderer to be decorated
+	 * @param   DispatcherInterface $dispatcher The dispather handling the events
 	 */
 	public function __construct(RendererInterface $renderer, DispatcherInterface $dispatcher)
 	{
@@ -264,7 +264,7 @@ class EventDecorator implements RendererInterface
 	/**
 	 * Write data to the stream.
 	 *
-	 * @param   string $string  The string that is to be written.
+	 * @param   string $string The string that is to be written.
 	 *
 	 * @return  integer  Returns the number of bytes written to the stream.
 	 * @throws  \RuntimeException on failure.
@@ -322,7 +322,7 @@ class EventDecorator implements RendererInterface
 	 *
 	 * @link http://php.net/manual/en/function.stream-get-meta-data.php
 	 *
-	 * @param   string $key  Specific metadata to retrieve.
+	 * @param   string $key Specific metadata to retrieve.
 	 *
 	 * @return  array|mixed|null Returns an associative array if no key is
 	 *                           provided. Returns a specific key value if a key is provided and the
@@ -334,8 +334,8 @@ class EventDecorator implements RendererInterface
 	}
 
 	/**
-	 * @param   string  $method     The name of the method
-	 * @param   array   $arguments  The arguments
+	 * @param   string $method    The name of the method
+	 * @param   array  $arguments The arguments
 	 *
 	 * @return  mixed
 	 *

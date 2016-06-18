@@ -18,15 +18,15 @@ use League\Tactician\Plugins\LockingMiddleware;
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 class CommandLockingMiddleware extends LockingMiddleware
 {
 	/**
 	 * Execute the given command.
 	 *
-	 * @param   object    $message  The Command or Query to execute.
-	 * @param   callable  $next     The next middleware object to be called.
+	 * @param   object   $message The Command or Query to execute.
+	 * @param   callable $next    The next middleware object to be called.
 	 *
 	 * @return  mixed|void
 	 *

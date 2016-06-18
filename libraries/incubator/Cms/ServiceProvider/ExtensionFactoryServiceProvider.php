@@ -16,7 +16,7 @@ use Joomla\Extension\FileExtensionFactory;
  *
  * @package Joomla\Cms\ServiceProvider
  *
- * @since  1.0
+ * @since   1.0
  */
 class ExtensionFactoryServiceProvider implements ServiceProviderInterface
 {
@@ -26,8 +26,8 @@ class ExtensionFactoryServiceProvider implements ServiceProviderInterface
 	/**
 	 * Add the plugin factory to a container
 	 *
-	 * @param   Container $container  The container
-	 * @param   string    $alias      An optional alias
+	 * @param   Container $container The container
+	 * @param   string    $alias     An optional alias
 	 *
 	 * @return  void
 	 */
@@ -52,7 +52,7 @@ class ExtensionFactoryServiceProvider implements ServiceProviderInterface
 	/**
 	 * Create the plugin factory
 	 *
-	 * @param   Container $container  The container
+	 * @param   Container $container The container
 	 *
 	 * @return  FileExtensionFactory
 	 */

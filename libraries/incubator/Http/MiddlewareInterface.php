@@ -25,9 +25,9 @@ interface MiddlewareInterface
 	 *
 	 * @internal
 	 *
-	 * @param   ServerRequestInterface $request   The request object
-	 * @param   ResponseInterface      $response  The response object
-	 * @param   callable               $next      The next middleware handler
+	 * @param   ServerRequestInterface $request  The request object
+	 * @param   ResponseInterface      $response The response object
+	 * @param   callable               $next     The next middleware handler
 	 *
 	 * @return  ResponseInterface
 	 */

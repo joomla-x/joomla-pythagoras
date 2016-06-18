@@ -26,8 +26,8 @@ class ListenersPriorityQueue implements \IteratorAggregate, \Countable
 	/**
 	 * Add a listener with the given priority only if not already present.
 	 *
-	 * @param   callable  $callback  A callable function acting as an event listener.
-	 * @param   integer   $priority  The listener priority.
+	 * @param   callable $callback A callable function acting as an event listener.
+	 * @param   integer  $priority The listener priority.
 	 *
 	 * @return  $this
 	 *
@@ -43,7 +43,7 @@ class ListenersPriorityQueue implements \IteratorAggregate, \Countable
 	/**
 	 * Remove a listener from the queue.
 	 *
-	 * @param   callable  $callback  A callable function acting as an event listener.
+	 * @param   callable $callback A callable function acting as an event listener.
 	 *
 	 * @return  $this
 	 *
@@ -65,7 +65,7 @@ class ListenersPriorityQueue implements \IteratorAggregate, \Countable
 	/**
 	 * Tell if the listener exists in the queue.
 	 *
-	 * @param   callable  $callback  A callable function acting as an event listener.
+	 * @param   callable $callback A callable function acting as an event listener.
 	 *
 	 * @return  boolean  True if it exists, false otherwise.
 	 *
@@ -87,8 +87,8 @@ class ListenersPriorityQueue implements \IteratorAggregate, \Countable
 	/**
 	 * Get the priority of the given listener.
 	 *
-	 * @param   callable  $callback  A callable function acting as an event listener.
-	 * @param   mixed     $default   The default value to return if the listener doesn't exist.
+	 * @param   callable $callback A callable function acting as an event listener.
+	 * @param   mixed    $default  The default value to return if the listener doesn't exist.
 	 *
 	 * @return  mixed  The listener priority if it exists or the specified default value
 	 *
@@ -105,6 +105,18 @@ class ListenersPriorityQueue implements \IteratorAggregate, \Countable
 		}
 
 		return $default;
+	}
+
+	/**
+	 * Get the priority queue.
+	 *
+	 * @return  \ArrayIterator
+	 *
+	 * @since   1.0
+	 */
+	public function getIterator()
+	{
+		return new \ArrayIterator($this->getAll());
 	}
 
 	/**
@@ -128,18 +140,6 @@ class ListenersPriorityQueue implements \IteratorAggregate, \Countable
 		$sorted = call_user_func_array('array_merge', $this->listeners);
 
 		return $sorted;
-	}
-
-	/**
-	 * Get the priority queue.
-	 *
-	 * @return  \ArrayIterator
-	 *
-	 * @since   1.0
-	 */
-	public function getIterator()
-	{
-		return new \ArrayIterator($this->getAll());
 	}
 
 	/**

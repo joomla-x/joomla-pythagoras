@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package     Joomla.Framework
  * @subpackage  Service Layer
@@ -10,10 +9,10 @@
 
 namespace Joomla\Cms\ServiceProvider;
 
+use Joomla\Cms\Service\ExtensionQueryMiddleware;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Service\CommandBusBuilder;
-use Joomla\Cms\Service\ExtensionQueryMiddleware;
 
 /**
  * Command Bus Service Provider.
@@ -35,8 +34,8 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 		$container->set(
 			'CommandBus',
 			[
-					$this,
-					'createCommandBus'
+				$this,
+				'createCommandBus'
 			],
 			true,
 			true
@@ -48,6 +47,11 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 		}
 	}
 
+	/**
+	 * @param   Container  $container  The container
+	 *
+	 * @return  \Joomla\Service\CommandBus
+	 */
 	public function createCommandBus(Container $container)
 	{
 		// Construct the command handler middleware

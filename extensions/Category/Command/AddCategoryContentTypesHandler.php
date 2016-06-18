@@ -6,26 +6,32 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 namespace Joomla\Extension\Category\Command;
-use Joomla\Service\QueryHandler;
+
 use Joomla\Cms\Service\ContentTypeQuery;
 use Joomla\Content\Type\Paragraph;
+use Joomla\Service\QueryHandler;
 
 /**
  * Category Command Handler
  *
  * @package Joomla/Extension/Category
  *
- * @since 1.0
+ * @since   1.0
  */
 class AddCategoryContentTypesHandler extends QueryHandler
 {
-
-	public function handle (ContentTypeQuery $query)
+	/**
+	 * @param   ContentTypeQuery  $query  The query
+	 *
+	 * @return  mixed
+	 */
+	public function handle(ContentTypeQuery $query)
 	{
 		$category = $query->entity->category;
 
-		$elements = $query->elements;
+		$elements                   = $query->elements;
 		$elements['category_title'] = new Paragraph($category->title);
+
 		return $elements;
 	}
 }

@@ -169,29 +169,6 @@ class Dispatcher implements DispatcherInterface
 	}
 
 	/**
-	 * Attaches a listener to an event
-	 *
-	 * @param   string   $eventName The event to listen to.
-	 * @param   callable $callback  A callable function
-	 * @param   integer  $priority  The priority at which the $callback executed
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	public function addListener($eventName, callable $callback, $priority = 0)
-	{
-		if (!isset($this->listeners[$eventName]))
-		{
-			$this->listeners[$eventName] = new ListenersPriorityQueue;
-		}
-
-		$this->listeners[$eventName]->add($callback, $priority);
-
-		return $this;
-	}
-
-	/**
 	 * Get the priority of the given listener for the given event.
 	 *
 	 * @param   string   $eventName The event to listen to.
@@ -263,24 +240,6 @@ class Dispatcher implements DispatcherInterface
 		}
 
 		return false;
-	}
-
-	/**
-	 * Removes an event listener from the specified event.
-	 *
-	 * @param   string   $eventName The event to remove a listener from.
-	 * @param   callable $listener  The listener to remove.
-	 *
-	 * @return  void
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function removeListener($eventName, callable $listener)
-	{
-		if (isset($this->listeners[$eventName]))
-		{
-			$this->listeners[$eventName]->remove($listener);
-		}
 	}
 
 	/**
@@ -359,6 +318,29 @@ class Dispatcher implements DispatcherInterface
 	}
 
 	/**
+	 * Attaches a listener to an event
+	 *
+	 * @param   string   $eventName The event to listen to.
+	 * @param   callable $callback  A callable function
+	 * @param   integer  $priority  The priority at which the $callback executed
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	public function addListener($eventName, callable $callback, $priority = 0)
+	{
+		if (!isset($this->listeners[$eventName]))
+		{
+			$this->listeners[$eventName] = new ListenersPriorityQueue;
+		}
+
+		$this->listeners[$eventName]->add($callback, $priority);
+
+		return $this;
+	}
+
+	/**
 	 * Removes an event subscriber.
 	 *
 	 * @param   SubscriberInterface $subscriber The subscriber.
@@ -383,30 +365,21 @@ class Dispatcher implements DispatcherInterface
 	}
 
 	/**
-	 * Dispatches an event to all registered listeners.
+	 * Removes an event listener from the specified event.
 	 *
-	 * @param   EventInterface $event The event to pass to the event handlers/listeners.
+	 * @param   string   $eventName The event to remove a listener from.
+	 * @param   callable $listener  The listener to remove.
 	 *
-	 * @return  EventInterface
+	 * @return  void
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	public function dispatch(EventInterface $event)
+	public function removeListener($eventName, callable $listener)
 	{
-		if (isset($this->listeners[$event->getName()]))
+		if (isset($this->listeners[$eventName]))
 		{
-			foreach ($this->listeners[$event->getName()] as $listener)
-			{
-				if ($event->isStopped())
-				{
-					return $event;
-				}
-
-				call_user_func($listener, $event);
-			}
+			$this->listeners[$eventName]->remove($listener);
 		}
-
-		return $event;
 	}
 
 	/**
@@ -446,5 +419,32 @@ class Dispatcher implements DispatcherInterface
 		}
 
 		return new Event($name);
+	}
+
+	/**
+	 * Dispatches an event to all registered listeners.
+	 *
+	 * @param   EventInterface $event The event to pass to the event handlers/listeners.
+	 *
+	 * @return  EventInterface
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function dispatch(EventInterface $event)
+	{
+		if (isset($this->listeners[$event->getName()]))
+		{
+			foreach ($this->listeners[$event->getName()] as $listener)
+			{
+				if ($event->isStopped())
+				{
+					return $event;
+				}
+
+				call_user_func($listener, $event);
+			}
+		}
+
+		return $event;
 	}
 }

@@ -9,15 +9,12 @@
 
 namespace Joomla\Service;
 
-use Joomla\Service\CommandBusBuilder;
-use Joomla\Service\Message;
-
 /**
  * Abstract service layer class.
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 abstract class Service
 {
@@ -41,7 +38,7 @@ abstract class Service
 	/**
 	 * Command/query handler.
 	 *
-	 * @param   Message  $message  A Command or a Query.
+	 * @param   Message $message A Command or a Query.
 	 *
 	 * @return  mixed
 	 *

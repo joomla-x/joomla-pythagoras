@@ -33,7 +33,7 @@ class HtmlRenderer extends Renderer
 	private $clientScript;
 
 	/**
-	 * @param   ScriptStrategyInterface  $strategy  The scripting startegy (library) to use
+	 * @param   ScriptStrategyInterface $strategy The scripting startegy (library) to use
 	 *
 	 * @return  void
 	 */
@@ -114,8 +114,8 @@ class HtmlRenderer extends Renderer
 	/**
 	 * Apply a layout
 	 *
-	 * @param   string                $filename  The filename of the layout file
-	 * @param   ContentTypeInterface  $content   The content
+	 * @param   string               $filename The filename of the layout file
+	 * @param   ContentTypeInterface $content  The content
 	 *
 	 * @return  integer
 	 */

@@ -12,18 +12,24 @@
       "description": "JGLOBAL_FIELD_ID_DESC",
       "default": null,
       "validation": [
-        {"rule": "positive"},
-        {"rule": "integer"}
+        {
+          "rule": "positive"
+        },
+        {
+          "rule": "integer"
+        }
       ]
     },
     {
       "name": "title",
       "type": "title",
       "label": "JGLOBAL_TITLE",
-      "validation": [{
+      "validation": [
+        {
           "rule": "maxlen",
           "value": 64
-      }]
+        }
+      ]
     },
     {
       "name": "teaser",

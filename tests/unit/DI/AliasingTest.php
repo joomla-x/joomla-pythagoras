@@ -41,7 +41,10 @@ class AliasingTest extends \PHPUnit_Framework_TestCase
 	{
 		$container = new Container();
 		$container
-			->set('foo', function () {return new \stdClass;}, true, true)
+			->set('foo', function ()
+			{
+				return new \stdClass;
+			}, true, true)
 			->alias('bar', 'foo');
 
 		$this->assertTrue($container->has('foo'), "Original 'foo' was not resolved");

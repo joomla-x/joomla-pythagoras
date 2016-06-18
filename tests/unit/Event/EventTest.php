@@ -37,7 +37,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
 		$array = array(
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			)
 		);
@@ -80,7 +80,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
 		$array = array(
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			)
 		);
@@ -142,10 +142,10 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
 		$arguments = array(
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			),
-			'foo' => new \stdClass
+			'foo'  => new \stdClass
 		);
 
 		$event = new Event('test', $arguments);
@@ -189,10 +189,10 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
 		$argument = array(
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			),
-			'foo' => new \stdClass
+			'foo'  => new \stdClass
 		);
 
 		$this->instance['foo'] = $argument;

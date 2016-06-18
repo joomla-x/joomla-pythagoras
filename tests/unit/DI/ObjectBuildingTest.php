@@ -81,7 +81,7 @@ class ObjectBuildingTest extends \PHPUnit_Framework_TestCase
 	public function testGetMethodArgsConcreteClass()
 	{
 		$container = new Container();
-		$object = $container->buildObject('Joomla\\Tests\\Unit\\DI\\Stub5');
+		$object    = $container->buildObject('Joomla\\Tests\\Unit\\DI\\Stub5');
 
 		$this->assertInstanceOf('Joomla\\Tests\\Unit\\DI\\Stub4', $object->stub);
 	}

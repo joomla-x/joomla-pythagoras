@@ -19,7 +19,7 @@ namespace Joomla\Service;
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 class CommandBus
 {
@@ -29,7 +29,7 @@ class CommandBus
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  $middleware  Array of middleware decorators.
+	 * @param   array $middleware Array of middleware decorators.
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -41,7 +41,7 @@ class CommandBus
 	/**
 	 * Handle a command or query.
 	 *
-	 * @param   Message  $message  A command object.
+	 * @param   Message $message A command object.
 	 *
 	 * @return  mixed
 	 *

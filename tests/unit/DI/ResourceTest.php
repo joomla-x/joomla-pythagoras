@@ -19,23 +19,23 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 	public function dataInstantiation()
 	{
 		return array(
-			'shared, protected'         => array(
-				'mode' => Resource::SHARE | Resource::PROTECT,
+			'shared, protected'                    => array(
+				'mode'      => Resource::SHARE | Resource::PROTECT,
 				'shared'    => true,
 				'protected' => true
 			),
 			'shared, not protected (explicit)'     => array(
-				'mode' => Resource::SHARE | Resource::NO_PROTECT,
+				'mode'      => Resource::SHARE | Resource::NO_PROTECT,
 				'shared'    => true,
 				'protected' => false
 			),
 			'not shared, protected (explicit)'     => array(
-				'mode' => Resource::NO_SHARE | Resource::PROTECT,
+				'mode'      => Resource::NO_SHARE | Resource::PROTECT,
 				'shared'    => false,
 				'protected' => true
 			),
 			'not shared, not protected (explicit)' => array(
-				'mode' => Resource::NO_SHARE | Resource::NO_PROTECT,
+				'mode'      => Resource::NO_SHARE | Resource::NO_PROTECT,
 				'shared'    => false,
 				'protected' => false
 			),
@@ -58,7 +58,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The resource supports 'shared' and 'protected' modes, defaulting to 'not shared' and 'not protected'
+	 * @testdox      The resource supports 'shared' and 'protected' modes, defaulting to 'not shared' and 'not protected'
 	 * @dataProvider dataInstantiation
 	 */
 	public function testInstantiation($mode, $shared, $protected)
@@ -84,7 +84,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 	public function testGetInstanceWithFactory()
 	{
 		$container = new Container();
-		$resource = new Resource(
+		$resource  = new Resource(
 			$container,
 			function ()
 			{
@@ -140,7 +140,7 @@ class ResourceTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetInstanceWithInstanceInSharedMode()
 	{
-		$stub = new Stub6();
+		$stub      = new Stub6();
 		$container = new Container();
 		$resource  = new Resource(
 			$container,
