@@ -43,7 +43,7 @@ class EntityBuilderCest
 			"parent_id" => null
 		];
 
-		foreach (['XmlEntity', 'JsonEntity', 'YmlEntity', 'YamlEntity'] as $entityName)
+		foreach (['XmlEntity', /*'JsonEntity', 'YmlEntity', 'YamlEntity'*/] as $entityName)
 		{
 			$entity = $builder->create($entityName);
 			$I->assertEquals('article', $entity->type());
