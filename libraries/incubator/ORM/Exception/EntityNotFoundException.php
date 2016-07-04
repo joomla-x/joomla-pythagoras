@@ -15,6 +15,6 @@ namespace Joomla\ORM\Exception;
  *
  * @since    1.0
  */
-class EntityNotFoundException extends \RuntimeException
+class EntityNotFoundException extends OrmException
 {
 }

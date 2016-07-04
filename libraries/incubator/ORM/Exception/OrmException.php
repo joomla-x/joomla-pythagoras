@@ -9,12 +9,12 @@
 namespace Joomla\ORM\Exception;
 
 /**
- * Class InvalidElementException
+ * Generic exception for the ORM
  *
  * @package  Joomla/ORM
  *
  * @since    1.0
  */
-class InvalidElementException extends OrmException
+class OrmException extends \RuntimeException
 {
 }

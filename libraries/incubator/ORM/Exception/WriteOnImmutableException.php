@@ -15,6 +15,6 @@ namespace Joomla\ORM\Exception;
  *
  * @since    1.0
  */
-class WriteOnImmutableException extends \BadMethodCallException
+class WriteOnImmutableException extends OrmException
 {
 }
