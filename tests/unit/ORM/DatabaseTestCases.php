@@ -146,35 +146,19 @@ class DatabaseTestCases extends TestCase
 	 */
 	public function testResultSetCanBeOrdered()
 	{
-		$byIdAsc = [
-			['id' => 1, 'title' => 'First Article'],
-			['id' => 2, 'title' => 'Second Article'],
-			['id' => 3, 'title' => 'Part One'],
-			['id' => 4, 'title' => 'Part Two'],
-		];
-
-		$byIdDesc = [
-			['id' => 4, 'title' => 'Part Two'],
-			['id' => 3, 'title' => 'Part One'],
-			['id' => 2, 'title' => 'Second Article'],
-			['id' => 1, 'title' => 'First Article'],
-		];
-
-		$byTitle = [
-			['id' => 1, 'title' => 'First Article'],
-			['id' => 3, 'title' => 'Part One'],
-			['id' => 4, 'title' => 'Part Two'],
-			['id' => 2, 'title' => 'Second Article'],
-		];
-
 		$result = $this->repo
 			->findAll()
 			->columns(['id', 'title'])
 			->getItems();
 
 		$this->assertEquals(
-			print_r($byIdAsc, true),
-			print_r($result, true)
+			[
+				['id' => 1, 'title' => 'First Article'],
+				['id' => 2, 'title' => 'Second Article'],
+				['id' => 3, 'title' => 'Part One'],
+				['id' => 4, 'title' => 'Part Two'],
+			],
+			$result
 		);
 
 		$result = $this->repo
@@ -184,7 +168,12 @@ class DatabaseTestCases extends TestCase
 			->getItems();
 
 		$this->assertEquals(
-			$byIdDesc,
+			[
+				['id' => 4, 'title' => 'Part Two'],
+				['id' => 3, 'title' => 'Part One'],
+				['id' => 2, 'title' => 'Second Article'],
+				['id' => 1, 'title' => 'First Article'],
+			],
 			$result
 		);
 
@@ -195,7 +184,12 @@ class DatabaseTestCases extends TestCase
 			->getItems();
 
 		$this->assertEquals(
-			$byTitle,
+			[
+				['id' => 1, 'title' => 'First Article'],
+				['id' => 3, 'title' => 'Part One'],
+				['id' => 4, 'title' => 'Part Two'],
+				['id' => 2, 'title' => 'Second Article'],
+			],
 			$result
 		);
 	}
