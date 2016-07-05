@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\Storage\Doctrine;
 
-use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Finder\EntityFinderInterface;
 
@@ -24,7 +23,7 @@ class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFin
 	/**
 	 * Fetch the entity
 	 *
-	 * @return  EntityInterface
+	 * @return  object
 	 *
 	 * @throws  EntityNotFoundException  if the specified entity does not exist.
 	 */
@@ -32,11 +31,11 @@ class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFin
 	{
 		$entities = parent::getItems();
 
-		if (!is_array($entities) || count($entities) < 1)
+		if (empty($entities))
 		{
 			throw new EntityNotFoundException;
 		}
 
-		return $entities[0];
+		return reset($entities);
 	}
 }

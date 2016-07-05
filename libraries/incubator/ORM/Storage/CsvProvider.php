@@ -37,36 +37,36 @@ class CsvProvider implements StorageProviderInterface
 	/**
 	 * Get an EntityFinder.
 	 *
-	 * @param   string  $entityName T he name of the entity
+	 * @param   string $entityClass T he name of the entity
 	 *
 	 * @return  EntityFinderInterface  The finder
 	 */
-	public function getEntityFinder($entityName)
+	public function getEntityFinder($entityClass)
 	{
-		return new CsvModel($this->dataFile);
+		return new CsvModel($this->dataFile, $entityClass);
 	}
 
 	/**
 	 * Get a CollectionFinder.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  CollectionFinderInterface
 	 */
-	public function getCollectionFinder($entityName)
+	public function getCollectionFinder($entityClass)
 	{
-		return new CsvModel($this->dataFile);
+		return new CsvModel($this->dataFile, $entityClass);
 	}
 
 	/**
 	 * Get a Persistor.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  PersistorInterface
 	 */
-	public function getPersistor($entityName)
+	public function getPersistor($entityClass)
 	{
-		return new CsvModel($this->dataFile);
+		return new CsvModel($this->dataFile, $entityClass);
 	}
 }

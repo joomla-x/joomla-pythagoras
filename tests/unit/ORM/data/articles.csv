@@ -1,5 +1,5 @@
 id,title,teaser,body,author,license,parent_id
-1,"First Article","Look at the first example","This first example is cool","John Doe","CC",0
-2,"Second Article","Look at another example","This provides child elements","Doctor","CC",0
-3,"Part One","No. 1 of 2. article's children","This is the first child element","Rose Tyler","CC",2
-4,"Part Two","No. 2 of 2. article's children","This is the second child element","Doctor","CC",2
+1,"First Article","Look at the first example","This first example is cool","John Doe",CC,0
+2,"Second Article","Look at another example","This provides child elements",Doctor,CC,0
+3,"Part One","No. 1 of 2. article's children","This is the first child element","Rose Tyler",CC,2
+4,"Part Two","No. 2 of 2. article's children","This is the second child element",Doctor,CC,2

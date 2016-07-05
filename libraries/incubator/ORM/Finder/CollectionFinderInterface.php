@@ -8,7 +8,7 @@
 
 namespace Joomla\ORM\Finder;
 
-use Joomla\ORM\Entity\Entity;
+
 
 /**
  * Interface CollectionFinderInterface

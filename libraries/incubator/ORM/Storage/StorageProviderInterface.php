@@ -24,27 +24,27 @@ interface StorageProviderInterface
 	/**
 	 * Get an EntityFinder.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  EntityFinderInterface  The finder
 	 */
-	public function getEntityFinder($entityName);
+	public function getEntityFinder($entityClass);
 
 	/**
 	 * Get a CollectionFinder.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  CollectionFinderInterface
 	 */
-	public function getCollectionFinder($entityName);
+	public function getCollectionFinder($entityClass);
 
 	/**
 	 * Get a Persistor.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  PersistorInterface
 	 */
-	public function getPersistor($entityName);
+	public function getPersistor($entityClass);
 }

@@ -20,20 +20,29 @@ use Joomla\ORM\Entity\EntityInterface;
 interface PersistorInterface
 {
 	/**
-	 * Store an entity.
+	 * Insert an entity.
 	 *
-	 * @param   EntityInterface  $entity  The entity to store
+	 * @param   object  $entity  The entity to store
 	 *
 	 * @return  void
 	 */
-	public function store(EntityInterface $entity);
+	public function insert($entity);
+
+	/**
+	 * Update an entity.
+	 *
+	 * @param   object $entity The entity to store
+	 *
+	 * @return  void
+	 */
+	public function update($entity);
 
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   EntityInterface  $entity  The entity to sanitise
+	 * @param   object  $entity  The entity to sanitise
 	 *
 	 * @return  void
 	 */
-	public function delete(EntityInterface $entity);
+	public function delete($entity);
 }

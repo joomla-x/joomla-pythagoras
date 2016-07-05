@@ -33,7 +33,7 @@ class AfterCreateDefinitionEvent extends Event
 		parent::__construct(
 			'onAfterCreateDefinition',
 			[
-				'entityName' => $entityName,
+				'entityClass' => $entityName,
 				'definition' => $definition,
 				'builder'    => $builder
 			]

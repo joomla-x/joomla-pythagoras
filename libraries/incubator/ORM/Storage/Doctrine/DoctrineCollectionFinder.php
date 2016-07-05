@@ -9,7 +9,10 @@
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\SyntaxErrorException;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Exception\InvalidOperatorException;
 use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\Operator;
 
@@ -34,14 +37,17 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/** @var Connection the connection to work on */
 	private $connection = null;
 
-	/** @var string $tableName */
+	/** @var string */
 	private $tableName = null;
 
-	/** @var string $entityName */
+	/** @var string */
 	private $entityName = null;
 
 	/** @var EntityBuilder */
 	private $builder = null;
+
+	/** @var array */
+	private $patterns = [];
 
 	/**
 	 * DoctrineCollectionFinder constructor.
@@ -62,7 +68,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/**
 	 * Define the columns to be retrieved.
 	 *
-	 * @param   array  $columns  The column names
+	 * @param   array $columns The column names
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
@@ -76,20 +82,46 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/**
 	 * Define a condition.
 	 *
-	 * @param   mixed   $lValue  The left value for the comparision
-	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
-	 * @param   mixed   $rValue  The right value for the comparision
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   mixed  $rValue The right value for the comparision
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
 	public function with($lValue, $op, $rValue)
 	{
-		if (!Operator::isValid($op))
+		switch ($op)
 		{
-			return $this;
+			case Operator::CONTAINS:
+				$lValue = "$lValue LIKE ?";
+				$rValue = "%$rValue%";
+				break;
+
+			case Operator::STARTS_WITH:
+				$lValue = "$lValue LIKE ?";
+				$rValue = "$rValue%";
+				break;
+
+			case Operator::ENDS_WITH:
+				$lValue = "$lValue LIKE ?";
+				$rValue = "%$rValue";
+				break;
+
+			case Operator::MATCHES:
+				$this->patterns[$lValue] = $rValue;
+
+				return $this;
+
+			case Operator::IN:
+				$lValue = "$lValue IN (?" . str_repeat(',?', count($rValue) - 1) . ")";
+				break;
+
+			default:
+				$lValue = "$lValue $op ?";
+				break;
 		}
 
-		$this->conditions[$lValue . ' ' . $op . ' ?'] = $rValue;
+		$this->conditions[$lValue] = $rValue;
 
 		return $this;
 	}
@@ -97,8 +129,8 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/**
 	 * Set the ordering.
 	 *
-	 * @param   string  $column     The name of the ordering column
-	 * @param   string  $direction  One of 'ASC' (ascending) or 'DESC' (descending)
+	 * @param   string $column    The name of the ordering column
+	 * @param   string $direction One of 'ASC' (ascending) or 'DESC' (descending)
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining
 	 */
@@ -120,42 +152,113 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	public function getItems($count = null, $start = 0)
 	{
 		$builder = $this->connection->createQueryBuilder();
-		$builder->select(!$this->columns ? '*' : $this->columns);
-		$builder->from($this->tableName);
+		$builder
+			->select(empty($this->columns) ? '*' : $this->columns)
+			->from($this->tableName);
 
-		$counter = 0;
+		$builder = $this->applyConditions($builder);
+		$builder = $this->applyOrdering($builder);
 
-		foreach ($this->conditions as $left => $value)
+		$builder
+			->setMaxResults($count)
+			->setFirstResult($start);
+
+		try
 		{
-			$builder->andWhere($left);
-			$builder->setParameter($counter, $value);
-			$counter++;
+			$rows = $builder
+				->execute()
+				->fetchAll(\PDO::FETCH_ASSOC);
+		}
+		catch (SyntaxErrorException $e)
+		{
+			throw new InvalidOperatorException($e->getMessage());
 		}
 
-		foreach ($this->ordering as $column => $order)
+		foreach ($this->patterns as $column => $pattern)
 		{
-			$builder->orderBy($column, $order);
+			$rows = array_filter(
+				$rows,
+				function ($row) use ($column, $pattern) {
+					return preg_match("~{$pattern}~", $row[$column]);
+				}
+			);
 		}
-
-		$builder->setMaxResults($count);
-		$builder->setFirstResult($start);
-
-		$rows = $builder->execute()->fetchAll(\PDO::FETCH_ASSOC);
 
 		if (empty($rows))
 		{
 			return [];
 		}
 
-		$data = [];
-
-		foreach ($rows as $row)
+		if (empty($this->columns))
 		{
-			$entity = $this->builder->create($this->entityName);
-			$entity->bind($row);
-			$data[] = $entity;
+			$rows = $this->castToEntity($rows);
 		}
 
-		return $data;
+		return array_values($rows);
+	}
+
+	/**
+	 * Cast array to entity
+	 *
+	 * @param   array $matches The records
+	 *
+	 * @return  array
+	 */
+	private function castToEntity($matches)
+	{
+		$result = [];
+
+		foreach ($matches as $match)
+		{
+			$entity = new $this->entityName;
+
+			foreach ($match as $key => $value)
+			{
+				$entity->{$key} = $value;
+			}
+
+			$result[] = $entity;
+			unset($entity);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param   QueryBuilder $builder The query builder
+	 *
+	 * @return  QueryBuilder
+	 */
+	private function applyConditions($builder)
+	{
+		$counter = 0;
+
+		foreach ($this->conditions as $left => $value)
+		{
+			$builder->andWhere($left);
+
+			foreach ((array) $value as $v)
+			{
+				$builder->setParameter($counter, $v);
+				$counter++;
+			}
+		}
+
+		return $builder;
+	}
+
+	/**
+	 * @param   QueryBuilder $builder  The query builder
+	 *
+	 * @return  QueryBuilder
+	 */
+	private function applyOrdering($builder)
+	{
+		foreach ($this->ordering as $column => $order)
+		{
+			$builder->orderBy($column, $order);
+		}
+
+		return $builder;
 	}
 }

@@ -12,7 +12,6 @@ use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\Entity;
 use Joomla\ORM\Entity\EntityBuilder;
-use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;
@@ -49,7 +48,7 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * CsvModel constructor.
 	 *
-	 * @param   string  $dataFile The name of the data file
+	 * @param   string $dataFile The name of the data file
 	 */
 	public function __construct($dataFile)
 	{
@@ -175,11 +174,24 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Store an entity.
 	 *
-	 * @param   EntityInterface $entity The entity to store
+	 * @param   object $entity The entity to store
 	 *
 	 * @return  void
 	 */
-	public function store(EntityInterface $entity)
+	public function insert($entity)
+	{
+		echo "Storing {$entity->type()}#{$entity->id}\n";
+		$this->rows = null;
+	}
+
+	/**
+	 * Store an entity.
+	 *
+	 * @param   object $entity The entity to store
+	 *
+	 * @return  void
+	 */
+	public function update($entity)
 	{
 		echo "Storing {$entity->type()}#{$entity->id}\n";
 		$this->rows = null;
@@ -188,11 +200,11 @@ class CsvModel implements EntityFinderInterface, CollectionFinderInterface, Pers
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   EntityInterface $entity The entity to sanitise
+	 * @param   object $entity The entity to sanitise
 	 *
 	 * @return  void
 	 */
-	public function delete(EntityInterface $entity)
+	public function delete($entity)
 	{
 		echo "Deleting {$entity->type()}#{$entity->id}\n";
 		$this->rows = null;

@@ -29,7 +29,7 @@ class YamlParser implements ParserInterface
 	 */
 	public function open($descriptionFile)
 	{
-		// TODO: Implement open() method.
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -42,7 +42,8 @@ class YamlParser implements ParserInterface
 	 */
 	public function parse($callbacks, LocatorInterface $locator)
 	{
-		$structure = new EntityStructure(array());
+		$preset    = [];
+		$structure = new EntityStructure($preset);
 
 		return $structure;
 	}

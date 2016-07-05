@@ -49,35 +49,35 @@ class DoctrineProvider implements StorageProviderInterface
 	/**
 	 * Get an EntityFinder.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  EntityFinderInterface  The finder
 	 */
-	public function getEntityFinder($entityName)
+	public function getEntityFinder($entityClass)
 	{
-		return new DoctrineEntityFinder($this->getConnection(), $this->tableName, $entityName, $this->builder);
+		return new DoctrineEntityFinder($this->getConnection(), $this->tableName, $entityClass, $this->builder);
 	}
 
 	/**
 	 * Get a CollectionFinder.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  CollectionFinderInterface
 	 */
-	public function getCollectionFinder($entityName)
+	public function getCollectionFinder($entityClass)
 	{
-		return new DoctrineCollectionFinder($this->getConnection(), $this->tableName, $entityName, $this->builder);
+		return new DoctrineCollectionFinder($this->getConnection(), $this->tableName, $entityClass, $this->builder);
 	}
 
 	/**
 	 * Get a Persistor.
 	 *
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityClass The name of the entity
 	 *
 	 * @return  PersistorInterface
 	 */
-	public function getPersistor($entityName)
+	public function getPersistor($entityClass)
 	{
 		return new DoctrinePersistor($this->getConnection(), $this->tableName);
 	}

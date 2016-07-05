@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Entity;
 
+use Joomla\ORM\DataMapper\DataMapper;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
 use Joomla\ORM\Definition\Parser\Element;
@@ -24,6 +25,9 @@ use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Repository\Repository;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Event\AfterCreateDefinitionEvent;
+use Joomla\ORM\Storage\CsvProvider;
+use Joomla\ORM\Storage\DefaultProvider;
+use Joomla\ORM\Storage\Doctrine\DoctrineProvider;
 
 /**
  * Class EntityBuilder
@@ -61,16 +65,16 @@ class EntityBuilder
 	/**
 	 * Get a new instance of the entity.
 	 *
-	 * @param   string $entityName The name of the entity
+	 * @param   string $entityClass The class of the entity
 	 *
 	 * @return  EntityInterface  An empty entity
 	 */
-	public function create($entityName)
+	public function create($entityClass)
 	{
-		$entity          = new Entity;
+		$entity          = new $entityClass;
 		$this->reflector = new EntityReflector($entity);
 
-		$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityName), $entityName));
+		$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityClass), $entityClass));
 
 		return $entity;
 	}
@@ -250,8 +254,10 @@ class EntityBuilder
 			$basename = $this->getBasename($relation->name);
 
 			// The record from {$relation->entity} with id={$field->value}
-			$repository = new Repository($relation->entity, new EntityBuilder($locator));
-			$entity     = $repository->findById($reference);
+			$entityBuilder = new EntityBuilder($locator);
+			$dataMapper    = new DataMapper('$relation->entity', $entityBuilder);
+			$repository    = new Repository($relation->entity, $dataMapper);
+			$entity        = $repository->getById($reference);
 
 			$this->reflector->addField(new Field([
 				'name'  => $basename,
@@ -387,7 +393,7 @@ class EntityBuilder
 			switch ($type)
 			{
 				case 'default':
-					$handler = '\Joomla\ORM\Storage\DefaultProvider';
+					$handler = DefaultProvider::class;
 					$param1 = $info[0]->table;
 					break;
 
@@ -401,11 +407,11 @@ class EntityBuilder
 					switch ($parts[0])
 					{
 						case 'csv':
-							$handler = '\Joomla\ORM\Storage\CsvProvider';
+							$handler = CsvProvider::class;
 							$param1   = $parts[1];
 							break;
 						default:
-							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
+							$handler = DoctrineProvider::class;
 							$param1   = $info[0]->dsn;
 							$param2   = $info[0]->table;
 							break;
@@ -413,7 +419,7 @@ class EntityBuilder
 					break;
 
 				default:
-					throw new \Exception("Unknown storage type ''");
+					throw new \Exception("Unknown storage type '$type'");
 					break;
 			}
 

@@ -10,6 +10,7 @@ namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityInterface;
+use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Persistor\PersistorInterface;
 
 /**
@@ -40,66 +41,75 @@ class DoctrinePersistor implements PersistorInterface
 	}
 
 	/**
-	 * Store an entity.
+	 * Insert an entity.
 	 *
-	 * @param   EntityInterface  $entity  The entity to store
+	 * @param   object  $entity  The entity to store
 	 *
 	 * @return  void
 	 */
-	public function store(EntityInterface $entity)
+	public function insert($entity)
 	{
-		$data = $entity->asArray();
+		$data = get_object_vars($entity);
 
-		foreach ($data as $index => $value)
+		try
 		{
-			if (strpos($index, '@') === 0)
+			$this->connection->insert($this->tableName, $data);
+
+			if (empty($entity->id))
 			{
-				unset($data[$index]);
+				$entity->id = $this->connection->lastInsertId();
 			}
 		}
-
-		$key = $entity->key();
-		$id  = $entity->$key;
-
-		if (!empty($id))
+		catch (\Exception $e)
 		{
-			$this->connection->update(
-				$this->tableName,
-				$data,
-				[
-					$key => $id
-				]
-			);
+			throw new OrmException("Entity with id {$entity->id} already exists.\n" . $e->getMessage());
 		}
-		else
+	}
+
+	/**
+	 * Update an entity.
+	 *
+	 * @param   object $entity The entity to store
+	 *
+	 * @return  void
+	 */
+	public function update($entity)
+	{
+		$data = get_object_vars($entity);
+
+		$affectedRows = $this->connection->update(
+			$this->tableName,
+			$data,
+			[
+				'id' => $entity->id
+			]
+		);
+
+		if ($affectedRows == 0)
 		{
-			unset($data[$key]);
-			$this->connection->insert($this->tableName, $data);
+			throw new OrmException("Entity with id {$entity->id} not found.");
 		}
 	}
 
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   EntityInterface  $entity  The entity to sanitise
+	 * @param   object  $entity  The entity to sanitise
 	 *
 	 * @return  void
 	 */
-	public function delete(EntityInterface $entity)
+	public function delete($entity)
 	{
-		$key = $entity->key();
-		$id  = $entity->$key;
-
-		if (empty($id))
-		{
-			return;
-		}
-
-		$this->connection->delete(
+		$affectedRows = $this->connection->delete(
 			$this->tableName,
 			[
-				$key => $entity->$key
+				'id' => $entity->id
 			]
 		);
+
+		if ($affectedRows == 0)
+		{
+			throw new OrmException("Entity with id {$entity->id} not found.");
+		}
 	}
 }

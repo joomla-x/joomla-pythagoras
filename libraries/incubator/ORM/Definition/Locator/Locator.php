@@ -41,6 +41,8 @@ final class Locator implements LocatorInterface
 	 */
 	public function findFile($filename)
 	{
+		$filename = basename(str_replace('\\', '/', $filename));
+
 		foreach ($this->strategies as $strategy)
 		{
 			$path = $strategy->locate($filename);

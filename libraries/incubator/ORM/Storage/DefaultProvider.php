@@ -13,7 +13,7 @@ use Joomla\ORM\Entity\EntityBuilder;
 /**
  * Class DefaultProvider
  *
- * The default provider is reading the connectio information from a global
+ * The default provider is reading the connection information from a global
  * config file.
  *
  * @package Joomla/ORM

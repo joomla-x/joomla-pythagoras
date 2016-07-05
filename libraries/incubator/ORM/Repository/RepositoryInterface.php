@@ -8,11 +8,11 @@
 
 namespace Joomla\ORM\Repository;
 
-use Joomla\ORM\Entity\EntityInterface;
+
 use Joomla\ORM\Exception\EntityNotFoundException;
+use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;
-use Joomla\ORM\Persistor\PersistorInterface;
 
 /**
  * Interface RepositoryInterface
@@ -24,30 +24,26 @@ use Joomla\ORM\Persistor\PersistorInterface;
 interface RepositoryInterface
 {
 	/**
-	 * Create a new entity.
-	 *
-	 * @return  EntityInterface  A new instance of the entity
-	 */
-	public function create();
-
-	/**
 	 * Find an entity using its id.
 	 *
-	 * findById() is a convenience method, It is equivalent to
-	 * ->findOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
+	 * getById() is a convenience method, It is equivalent to
+	 * ->getOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
 	 *
-	 * @param   mixed $id The id value
+	 * @param   mixed  $id  The id value
 	 *
-	 * @return  EntityInterface  The requested entity
+	 * @return  object  The requested entity
 	 *
 	 * @throws  EntityNotFoundException  if the entity does not exist
+	 * @throws  OrmException  if there was an error getting the entity
 	 */
-	public function findById($id);
+	public function getById($id);
 
 	/**
 	 * Find a single entity.
 	 *
 	 * @return  EntityFinderInterface  The responsible Finder object
+	 *
+	 * @throws  OrmException  if there was an error getting the entity
 	 */
 	public function findOne();
 
@@ -55,13 +51,37 @@ interface RepositoryInterface
 	 * Find multiple entities.
 	 *
 	 * @return  CollectionFinderInterface  The responsible Finder object
+	 *
+	 * @throws  OrmException  if there was an error getting the entities
 	 */
 	public function findAll();
 
 	/**
-	 * Get the persistor
+	 * Adds an entity to the repo
 	 *
-	 * @return  PersistorInterface
+	 * @param   object $entity The entity to add
+	 *
+	 * @return  void
+	 *
+	 * @throws  OrmException  if the entity could not be added
 	 */
-	public function persistor();
+	public function add($entity);
+
+	/**
+	 * Deletes an entity from the repo
+	 *
+	 * @param   object $entity The entity to delete
+	 *
+	 * @return  void
+	 *
+	 * @throws  OrmException  if the entity could not be deleted
+	 */
+	public function delete($entity);
+
+	/**
+	 * Persists all changes
+	 *
+	 * @return void
+	 */
+	public function commit();
 }
