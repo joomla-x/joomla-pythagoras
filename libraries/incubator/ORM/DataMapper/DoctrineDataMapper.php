@@ -11,6 +11,7 @@ namespace Joomla\ORM\DataMapper;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Joomla\ORM\Definition\Locator\Locator;
+use Joomla\ORM\Definition\Locator\Strategy\FileStrategy;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -66,7 +67,7 @@ class DoctrineDataMapper implements DataMapperInterface
 
 		$this->connection = DriverManager::getConnection(['url' => $this->dsn], new Configuration);
 
-		$strategy      = new RecursiveDirectoryStrategy(dirname($this->definitionFile));
+		$strategy      = new FileStrategy($this->definitionFile);
 		$locator       = new Locator([$strategy]);
 		$this->builder = new EntityBuilder($locator);
 	}

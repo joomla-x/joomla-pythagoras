@@ -534,4 +534,12 @@ class DatabaseTestCases extends TestCase
 
 		$this->repo->commit();
 	}
+
+	public function testParentRelation()
+	{
+		$article = $this->repo->getById(2);
+		$children = $article->children->findAll()->getItems();
+
+		$this->assertEquals(2, count($children));
+	}
 }

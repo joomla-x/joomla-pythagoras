@@ -8,6 +8,9 @@
 
 namespace Joomla\ORM\DataMapper;
 
+use Joomla\ORM\Definition\Locator\Locator;
+use Joomla\ORM\Definition\Locator\Strategy\FileStrategy;
+use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\InvalidOperatorException;
 use Joomla\ORM\Exception\OrmException;
@@ -54,6 +57,10 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 		$this->entityClass    = $entityClass;
 		$this->definitionFile = $definitionFile;
 		$this->dataFile       = $dataFile;
+
+		$strategy      = new FileStrategy($this->definitionFile);
+		$locator       = new Locator([$strategy]);
+		$this->builder = new EntityBuilder($locator);
 	}
 
 	/**
