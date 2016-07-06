@@ -24,39 +24,35 @@ if (file_exists($path))
 	unlink($path);
 }
 
-$connection = DriverManager::getConnection([
-		'url' => 'sqlite:///' . $path
-]);
+$connection = DriverManager::getConnection(['url' => 'sqlite:///' . $path]);
 
 $data = [
-		'Article' => [
-				[
-						'title' => 'Demo title',
-						'teaser' => 'Demo teaser',
-						'body' => 'Demo body',
-						'author' => 'Joomla',
-						'license' => 'MIT',
-						'parent_id' => 0
-				]
-		],
-		'Category' => [
-				[
-						'title' => 'Demo category',
-						'body' => 'Demo category body',
-						'parent_id' => 0
-				]
-		],
-		'User' => [
-				[
-						'username' => 'demo',
-						'name' => 'Demo User'
-				]
-		]
+	'Article' => [
+			[
+					'title' => 'Demo title',
+					'teaser' => 'Demo teaser',
+					'body' => 'Demo body',
+					'author' => 'Joomla',
+					'license' => 'MIT',
+					'parent_id' => 0
+			]
+	],
+	'Category' => [
+			[
+					'title' => 'Demo category',
+					'body' => 'Demo category body',
+					'parent_id' => 0
+			]
+	],
+	'User' => [
+			[
+					'username' => 'demo',
+					'name' => 'Demo User'
+			]
+	]
 ];
 
-$builder = new EntityBuilder(new Locator([
-		new RecursiveDirectoryStrategy(__DIR__ . '/../extensions')
-]));
+$builder = new EntityBuilder(new Locator([new RecursiveDirectoryStrategy(__DIR__ . '/../extensions')]));
 
 foreach ($data as $entityName => $entityRows)
 {
@@ -83,9 +79,7 @@ foreach ($data as $entityName => $entityRows)
 
 	if ($table->hasColumn('id'))
 	{
-		$table->setPrimaryKey([
-				'id'
-		]);
+		$table->setPrimaryKey(['id']);
 	}
 
 	$connection->getSchemaManager()->createTable($table);

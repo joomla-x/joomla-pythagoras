@@ -19,7 +19,7 @@ use Joomla\Event\EventInterface;
  *
  * @package  Joomla\Extension
  *
- * @since  1.0
+ * @since    1.0
  */
 class ExtensionDispatcher extends Dispatcher
 {
@@ -32,7 +32,7 @@ class ExtensionDispatcher extends Dispatcher
 	/**
 	 * ExtensionDispatcher constructor.
 	 *
-	 * @param   ExtensionFactoryInterface $factory  The extension factory
+	 * @param   ExtensionFactoryInterface $factory The extension factory
 	 */
 	public function __construct(ExtensionFactoryInterface $factory)
 	{
@@ -42,7 +42,7 @@ class ExtensionDispatcher extends Dispatcher
 	/**
 	 * Call the extensions
 	 *
-	 * @param   EventInterface $event  The event
+	 * @param   EventInterface $event The event
 	 *
 	 * @return  EventInterface
 	 */
@@ -62,8 +62,8 @@ class ExtensionDispatcher extends Dispatcher
 	/**
 	 * Loads the listeners from the given extensions and attaches them.
 	 *
-	 * @param   string               $name        The event name
-	 * @param   ExtensionInterface[] $extensions  A list of extensions
+	 * @param   string               $name       The event name
+	 * @param   ExtensionInterface[] $extensions A list of extensions
 	 *
 	 * @return  void
 	 */

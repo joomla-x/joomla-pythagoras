@@ -27,7 +27,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 	{
 		$request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
 		$request->method('getCookieParams')->willReturn([
-				'unit' => 'test'
+			'unit' => 'test'
 		]);
 
 		$container = new Container();
@@ -47,7 +47,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 	{
 		$request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
 		$request->method('getCookieParams')->willReturn([
-				'unit' => 'test'
+			'unit' => 'test'
 		]);
 
 		$container = new Container();

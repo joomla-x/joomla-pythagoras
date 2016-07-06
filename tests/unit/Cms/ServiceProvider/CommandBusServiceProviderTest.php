@@ -2,15 +2,15 @@
 
 namespace Joomla\Tests\Unit\Cms\ServiceProvider;
 
-use Joomla\Service\CommandBus;
+use Joomla\Cms\ServiceProvider\CommandBusServiceProvider;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Service\CommandBus;
+use Joomla\Tests\Unit\Service\Stubs\Logger;
+use Joomla\Tests\Unit\Service\Stubs\LoggingMiddleware;
 use Joomla\Tests\Unit\Service\Stubs\SimpleCommand;
 use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
-use Joomla\Cms\ServiceProvider\CommandBusServiceProvider;
-use Joomla\Tests\Unit\Service\Stubs\LoggingMiddleware;
-use Joomla\Tests\Unit\Service\Stubs\Logger;
-use Joomla\Event\DispatcherInterface;
 
 class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 {

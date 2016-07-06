@@ -11,6 +11,7 @@ namespace Joomla\Cms\Service;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
+use Joomla\Extension\Article\Command\DisplayCommand;
 use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Repository\RepositoryQuery;
 use Joomla\Service\CommandHandler;
@@ -42,9 +43,9 @@ class BasicDisplayCommandHandler extends CommandHandler
 		}
 
 		$compound = new Compound(
- 			$command->entityName,
- 			$this->getElements($entity)
- 		);
+			$command->entityName,
+			$this->getElements($entity)
+		);
 
 		$compound->accept($command->renderer);
 	}
@@ -53,8 +54,9 @@ class BasicDisplayCommandHandler extends CommandHandler
 	 * Returns an array of ContentTypeInterface's. Subclasses can override it to
 	 * add component specific elements.
 	 *
-	 * @param EntityInterface $entity
-	 * @return \Joomla\Content\ContentTypeInterface[]
+	 * @param   EntityInterface $entity The entity
+	 *
+	 * @return  \Joomla\Content\ContentTypeInterface[]
 	 */
 	protected function getElements(EntityInterface $entity)
 	{
@@ -64,10 +66,12 @@ class BasicDisplayCommandHandler extends CommandHandler
 		{
 			$elements['title'] = new Headline($entity->title, 1);
 		}
+
 		if ($entity->has('teaser'))
 		{
 			$elements['teaser'] = new Paragraph($entity->teaser, Paragraph::EMPHASISED);
 		}
+
 		if ($entity->has('body'))
 		{
 			$elements['body'] = new Paragraph($entity->body);

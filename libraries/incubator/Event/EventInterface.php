@@ -19,8 +19,8 @@ interface EventInterface
 	/**
 	 * Get an event argument value.
 	 *
-	 * @param   string  $name     The argument name.
-	 * @param   mixed   $default  The default value if not found.
+	 * @param   string $name    The argument name.
+	 * @param   mixed  $default The default value if not found.
 	 *
 	 * @return  mixed  The argument value or the default value.
 	 *

@@ -35,8 +35,8 @@ before_script:
   - if [ $TRAVIS_PHP_VERSION == "5.5" ] || [ $TRAVIS_PHP_VERSION == "5.6" ]; then phpenv config-add build/config/travis/phpenv/redis.ini; fi
 
 script:
-  - libraries/vendor/bin/codecept run -c travisci-codeception.yml
-  - libraries/vendor/bin/phpcs --standard=libraries/vendor/greencape/coding-standards/src/Joomla --ignore=build,docs,etc,logs,tests,tmp,libraries/vendor .
+  - libraries/vendor/bin/robo test
+  - libraries/vendor/bin/robo check:style
 
 branches:
   except:

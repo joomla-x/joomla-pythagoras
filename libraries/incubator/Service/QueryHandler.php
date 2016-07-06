@@ -9,15 +9,15 @@
 
 namespace Joomla\Service;
 
-use Joomla\Event\DispatcherInterface;
 use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\DispatcherInterface;
 
 /**
  * Abstract base class for query handlers.
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 abstract class QueryHandler
 {
@@ -29,8 +29,8 @@ abstract class QueryHandler
 	/**
 	 * Constructor.
 	 *
-	 * @param   CommandBus           $messageBus  A command bus
-	 * @param   DispatcherInterface  $dispatcher  A dispatcher
+	 * @param   CommandBus          $messageBus A command bus
+	 * @param   DispatcherInterface $dispatcher A dispatcher
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */

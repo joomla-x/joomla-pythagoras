@@ -8,9 +8,9 @@
 
 namespace Joomla\Event;
 
-use Serializable;
 use ArrayAccess;
 use Countable;
+use Serializable;
 
 /**
  * Implementation of EventInterface.
@@ -46,14 +46,14 @@ abstract class AbstractEvent implements EventInterface, ArrayAccess, Serializabl
 	/**
 	 * Constructor.
 	 *
-	 * @param   string  $name       The event name.
-	 * @param   array   $arguments  The event arguments.
+	 * @param   string $name      The event name.
+	 * @param   array  $arguments The event arguments.
 	 *
 	 * @since   1.0
 	 */
 	public function __construct($name, array $arguments = array())
 	{
-		$this->name = $name;
+		$this->name      = $name;
 		$this->arguments = $arguments;
 	}
 
@@ -72,8 +72,8 @@ abstract class AbstractEvent implements EventInterface, ArrayAccess, Serializabl
 	/**
 	 * Get an event argument value.
 	 *
-	 * @param   string  $name     The argument name.
-	 * @param   mixed   $default  The default value if not found.
+	 * @param   string $name    The argument name.
+	 * @param   mixed  $default The default value if not found.
 	 *
 	 * @return  mixed  The argument value or the default value.
 	 *
@@ -92,7 +92,7 @@ abstract class AbstractEvent implements EventInterface, ArrayAccess, Serializabl
 	/**
 	 * Tell if the given event argument exists.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   string $name The argument name.
 	 *
 	 * @return  boolean  True if it exists, false otherwise.
 	 *
@@ -166,7 +166,7 @@ abstract class AbstractEvent implements EventInterface, ArrayAccess, Serializabl
 	/**
 	 * Unserialize the event.
 	 *
-	 * @param   string  $serialized  The serialized event.
+	 * @param   string $serialized The serialized event.
 	 *
 	 * @return  void
 	 *
@@ -180,7 +180,7 @@ abstract class AbstractEvent implements EventInterface, ArrayAccess, Serializabl
 	/**
 	 * Tell if the given event argument exists.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   string $name The argument name.
 	 *
 	 * @return  boolean  True if it exists, false otherwise.
 	 *
@@ -194,7 +194,7 @@ abstract class AbstractEvent implements EventInterface, ArrayAccess, Serializabl
 	/**
 	 * Get an event argument value.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   string $name The argument name.
 	 *
 	 * @return  mixed  The argument value or null if not existing.
 	 *

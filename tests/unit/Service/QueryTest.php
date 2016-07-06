@@ -14,7 +14,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('\\Joomla\\Service\\Query', new SimpleQuery);
 	}
 
-
 	/**
 	 * @testdox The test query is an Immutable object
 	 */
@@ -22,7 +21,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertInstanceOf('\\Joomla\\Service\\Immutable', new SimpleQuery);
 	}
-
 
 	/**
 	 * @testdox The constructor argument can be retrieved by a getter method.
@@ -32,7 +30,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('testing', (new SimpleQuery('testing'))->getTest());
 	}
 
-
 	/**
 	 * @testdox The constructor argument can be retrieved as an object property.
 	 */
@@ -40,7 +37,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('testing', (new SimpleQuery('testing'))->test);
 	}
-
 
 	/**
 	 * @testdox The getName method returns the name of the test query
@@ -50,7 +46,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('SimpleQuery', (new SimpleQuery('testing'))->getName());
 	}
 
-
 	/**
 	 * @testdox The name property contains the name of the test query
 	 */
@@ -58,7 +53,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('SimpleQuery', (new SimpleQuery('testing'))->name);
 	}
-
 
 	/**
 	 * @testdox The getRaisedOn method does not throw an exception
@@ -68,7 +62,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotEmpty((new SimpleQuery)->getRaisedOn());
 	}
 
-
 	/**
 	 * @testdox Accessing the getRaisedOn property does not throw an exception
 	 */
@@ -77,17 +70,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotEmpty((new SimpleQuery)->raisedOn);
 	}
 
-
 	/**
 	 * @expectedException \InvalidArgumentException
 	 * @testdox Throws a \InvalidArgumentException when trying to change the raisedOn time.
 	 */
 	public function testThrowsAnInvalidArgumentExceptionWhenTryingToChangeTheRaisedonTime()
 	{
-		$query = new SimpleQuery;
+		$query           = new SimpleQuery;
 		$query->raisedOn = 'something';
 	}
-
 
 	/**
 	 * @expectedException \RuntimeException

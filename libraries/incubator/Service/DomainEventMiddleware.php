@@ -16,7 +16,7 @@ use League\Tactician\Middleware;
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 class DomainEventMiddleware implements Middleware
 {
@@ -42,14 +42,14 @@ class DomainEventMiddleware implements Middleware
 	 * Note that we take a closure that will return the command bus because at
 	 * the time this object is constructed the command bus has not be built.
 	 *
-	 * @param   object    $dispatcher          An event dispatcher.
-	 * @param   callable  $commandBusCallable  A closure that will return the command bus.
+	 * @param   object   $dispatcher         An event dispatcher.
+	 * @param   callable $commandBusCallable A closure that will return the command bus.
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function __construct($dispatcher, callable $commandBusCallable)
 	{
-		$this->dispatcher = $dispatcher;
+		$this->dispatcher         = $dispatcher;
 		$this->commandBusCallable = $commandBusCallable;
 	}
 
@@ -69,8 +69,8 @@ class DomainEventMiddleware implements Middleware
 	 *
 	 * In all cases the method called will be passed the event object as its only argument.
 	 *
-	 * @param   object    $message  A message object (Command or Query).
-	 * @param   callable  $next     Inner middleware object being decorated.
+	 * @param   object   $message A message object (Command or Query).
+	 * @param   callable $next    Inner middleware object being decorated.
 	 *
 	 * @return  mixed
 	 *
@@ -126,7 +126,7 @@ class DomainEventMiddleware implements Middleware
 	 * Each event listener might raise further events which need
 	 * to be passed back into the event loop for publishing.
 	 *
-	 * @param   array  $events  Array of domain event objects.
+	 * @param   array $events Array of domain event objects.
 	 *
 	 * @return  array of newly-raised domain event objects.
 	 *
@@ -149,7 +149,7 @@ class DomainEventMiddleware implements Middleware
 
 			// Get the name of the event.
 			$eventClassReflection = new \ReflectionClass($event);
-			$eventClassName = $eventClassReflection->getShortName();
+			$eventClassName       = $eventClassReflection->getShortName();
 
 			// Determine the event name.
 			$eventName = 'on' . $eventClassName;
@@ -176,8 +176,8 @@ class DomainEventMiddleware implements Middleware
 	 * Replaces "Event" by "EventListener" in the domain event class name
 	 * and registers that class as a listener.
 	 *
-	 * @param   string  $eventClassName  Name of the domain event class.
-	 * @param   string  $eventName       Name of the event trigger.
+	 * @param   string $eventClassName Name of the domain event class.
+	 * @param   string $eventName      Name of the event trigger.
 	 *
 	 * @return  void
 	 *

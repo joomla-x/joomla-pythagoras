@@ -20,7 +20,7 @@ class SomethingListener implements SubscriberInterface
 	/**
 	 * Listen to onBeforeSomething.
 	 *
-	 * @param   Event  $event  The event.
+	 * @param   Event $event The event.
 	 *
 	 * @return  void
 	 *
@@ -33,7 +33,7 @@ class SomethingListener implements SubscriberInterface
 	/**
 	 * Listen to onSomething.
 	 *
-	 * @param   Event  $event  The event.
+	 * @param   Event $event The event.
 	 *
 	 * @return  void
 	 *
@@ -46,7 +46,7 @@ class SomethingListener implements SubscriberInterface
 	/**
 	 * Listen to onAfterSomething.
 	 *
-	 * @param   Event  $event  The event.
+	 * @param   Event $event The event.
 	 *
 	 * @return  void
 	 *

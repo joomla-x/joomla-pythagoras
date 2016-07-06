@@ -79,7 +79,9 @@ class ResourceDecoration extends \PHPUnit_Framework_TestCase
 	public function testExtendValidatesKeyIsPresent()
 	{
 		$container = new Container();
-		$container->extend('foo', function () {});
+		$container->extend('foo', function ()
+		{
+		});
 	}
 
 	/**

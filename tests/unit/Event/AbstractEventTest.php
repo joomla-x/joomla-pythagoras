@@ -48,10 +48,10 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($this->instance->getArgument('non-existing', false));
 
 		$object = new \stdClass;
-		$array = array(
-			'foo' => 'bar',
+		$array  = array(
+			'foo'  => 'bar',
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			)
 		);
@@ -59,7 +59,7 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 		$arguments = array(
 			'string' => 'bar',
 			'object' => $object,
-			'array' => $array
+			'array'  => $array
 		);
 
 		/** @var $event \Joomla\Event\AbstractEvent */
@@ -99,10 +99,10 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 		$this->assertEmpty($this->instance->getArguments());
 
 		$object = new \stdClass;
-		$array = array(
-			'foo' => 'bar',
+		$array  = array(
+			'foo'  => 'bar',
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			)
 		);
@@ -110,7 +110,7 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 		$arguments = array(
 			'string' => 'bar',
 			'object' => $object,
-			'array' => $array
+			'array'  => $array
 		);
 
 		/** @var $event \Joomla\Event\AbstractEvent */
@@ -143,10 +143,11 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertCount(0, $this->instance);
 
-		$event = $this->getMockForAbstractClass('Joomla\Event\AbstractEvent', array('test',
+		$event = $this->getMockForAbstractClass('Joomla\Event\AbstractEvent', array(
+				'test',
 				array(
-				'foo' => 'bar',
-				'test' => array('test')
+					'foo'  => 'bar',
+					'test' => array('test')
 				)
 			)
 		);
@@ -164,10 +165,10 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 	public function testSerializeUnserialize()
 	{
 		$object = new \stdClass;
-		$array = array(
-			'foo' => 'bar',
+		$array  = array(
+			'foo'  => 'bar',
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			)
 		);
@@ -175,7 +176,7 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 		$arguments = array(
 			'string' => 'bar',
 			'object' => $object,
-			'array' => $array
+			'array'  => $array
 		);
 
 		$event = $this->getMockForAbstractClass('Joomla\Event\AbstractEvent', array('test', $arguments));
@@ -215,10 +216,10 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 		$this->assertNull($this->instance['foo']);
 
 		$object = new \stdClass;
-		$array = array(
-			'foo' => 'bar',
+		$array  = array(
+			'foo'  => 'bar',
 			'test' => array(
-				'foo' => 'bar',
+				'foo'  => 'bar',
 				'test' => 'test'
 			)
 		);
@@ -226,7 +227,7 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
 		$arguments = array(
 			'string' => 'bar',
 			'object' => $object,
-			'array' => $array
+			'array'  => $array
 		);
 
 		$event = $this->getMockForAbstractClass('Joomla\Event\AbstractEvent', array('test', $arguments));

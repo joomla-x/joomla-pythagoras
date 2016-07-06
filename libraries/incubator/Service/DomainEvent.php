@@ -20,7 +20,7 @@ namespace Joomla\Service;
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 abstract class DomainEvent extends Value
 {
@@ -30,7 +30,7 @@ abstract class DomainEvent extends Value
 	 * This overrides the generic equality test because we want to
 	 * include the requestedon timestamp too.
 	 *
-	 * @param   Value  $other  Another value object to compare with this one.
+	 * @param   Value $other Another value object to compare with this one.
 	 *
 	 * @return  boolean
 	 *

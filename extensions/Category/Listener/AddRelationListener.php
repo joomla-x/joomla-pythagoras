@@ -8,12 +8,10 @@
 
 namespace Joomla\Extension\Category\Listener;
 
-
-use Joomla\ORM\Event\AfterCreateDefinitionEvent;
-use Joomla\ORM\Definition\Parser\Relation;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\HasOne;
+use Joomla\ORM\Event\AfterCreateDefinitionEvent;
 
 /**
  * Class AddRelationListener
@@ -39,13 +37,21 @@ class AddRelationListener
 			return ;
 		}
 
-		/** @var \Joomla\ORM\Entity\EntityBuilder $builder */
+		// @var EntityBuilder $builder The entity builder
 		$builder = $event->getArgument('builder');
 
 		// @todo the relation needs to be looked up here trough a relation table
 		$id = 1;
 
-		$relation = new HasOne(['id' => 1, 'name' => 'category_id', 'type' => 'hasOne', 'entity' => 'Category', 'reference' => 'id']);
+		$relation = new HasOne(
+			[
+				'id'        => 1,
+				'name'      => 'category_id',
+				'type'      => 'hasOne',
+				'entity'    => 'Category',
+				'reference' => 'id'
+			]
+		);
 
 		$builder->handleHasOne($relation, new Locator([new RecursiveDirectoryStrategy(__DIR__ . '/../Entity')]));
 	}

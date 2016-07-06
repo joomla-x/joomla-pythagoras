@@ -14,26 +14,45 @@ use Aura\Session\SessionFactory;
  *
  * @package Joomla/Session
  *
- * @since 1.0
+ * @since   1.0
  */
 class Session implements SessionInterface
 {
-
 	/** @var \Aura\Session\Session */
 	private $session = null;
 
+	/**
+	 * Session constructor.
+	 *
+	 * @param   array  $cookieParams  An array of cookie values, typically $_COOKIE.
+	 */
 	public function __construct($cookieParams)
 	{
-		$this->session = (new SessionFactory())->newInstance($cookieParams);
+		$this->session = (new SessionFactory)->newInstance($cookieParams);
 	}
 
+	/**
+	 * Get a property from the session bucket
+	 *
+	 * @param   string  $key  The key
+	 *
+	 * @return  mixed
+	 */
 	public function get($key)
 	{
 		return $this->session->getSegment('Joomla')->get($key);
 	}
 
+	/**
+	 * Set a property in the session bucket
+	 *
+	 * @param   string  $key    The key
+	 * @param   mixed   $value  The value
+	 *
+	 * @return  void
+	 */
 	public function set($key, $value)
 	{
-		return $this->session->getSegment('Joomla')->set($key, $value);
+		$this->session->getSegment('Joomla')->set($key, $value);
 	}
 }

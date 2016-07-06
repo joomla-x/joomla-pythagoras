@@ -16,7 +16,7 @@ namespace Joomla\Service;
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 abstract class Immutable
 {
@@ -40,7 +40,7 @@ abstract class Immutable
 
 		// Save the name of the class as a property.
 		$reflectionClass = new \ReflectionClass($this);
-		$this->name = $reflectionClass->getShortName();
+		$this->name      = $reflectionClass->getShortName();
 
 		// Flag object construction completed.
 		$this->constructed = true;
@@ -52,8 +52,8 @@ abstract class Immutable
 	 * Method names starting with "get" are treated as property getters.
 	 * All other (non-existant) methods will throw an exception.
 	 *
-	 * @param   string  $name  Name of the method being called.
-	 * @param   array   $args  Array of arguments passed to the method.
+	 * @param   string $name Name of the method being called.
+	 * @param   array  $args Array of arguments passed to the method.
 	 *
 	 * @return  mixed
 	 *
@@ -86,7 +86,7 @@ abstract class Immutable
 	 * If the property exists, it will return its value;
 	 * otherwise it will throw an exception.
 	 *
-	 * @param   string  $key  Property name (case-insensitive).
+	 * @param   string $key Property name (case-insensitive).
 	 *
 	 * @return  mixed
 	 *
@@ -109,8 +109,8 @@ abstract class Immutable
 	 * Since the object is immutable, this always throws an exception
 	 * once object creation has been completed.
 	 *
-	 * @param   string  $key    Property name (case-insensitive).
-	 * @param   mixed   $value  Property value.
+	 * @param   string $key   Property name (case-insensitive).
+	 * @param   mixed  $value Property value.
 	 *
 	 * @return  void
 	 *

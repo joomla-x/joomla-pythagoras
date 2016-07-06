@@ -20,7 +20,7 @@ namespace Joomla\Service;
  *
  * @package  Joomla/Service
  *
- * @since  __DEPLOY_VERSION__
+ * @since    __DEPLOY_VERSION__
  */
 abstract class Command extends Message
 {

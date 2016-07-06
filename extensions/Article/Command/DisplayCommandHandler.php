@@ -8,11 +8,11 @@
 
 namespace Joomla\Extension\Article\Command;
 
+use Joomla\Cms\Service\BasicDisplayCommandHandler;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
 use Joomla\ORM\Entity\EntityInterface;
-use Joomla\Cms\Service\BasicDisplayCommandHandler;
 
 /**
  * Display Command Handler
@@ -23,6 +23,14 @@ use Joomla\Cms\Service\BasicDisplayCommandHandler;
  */
 class DisplayCommandHandler extends BasicDisplayCommandHandler
 {
+	/**
+	 * Returns an array of ContentTypeInterface's. Subclasses can override it to
+	 * add component specific elements.
+	 *
+	 * @param   EntityInterface $entity The entity
+	 *
+	 * @return  \Joomla\Content\ContentTypeInterface[]
+	 */
 	protected function getElements(EntityInterface $entity)
 	{
 		$elements = parent::getElements($entity);

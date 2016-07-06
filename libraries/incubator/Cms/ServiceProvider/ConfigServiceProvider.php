@@ -25,8 +25,8 @@ class ConfigServiceProvider implements ServiceProviderInterface
 	/**
 	 * Add the configuration from the environment to a container
 	 *
-	 * @param   Container $container  The container
-	 * @param   string    $alias      An optional alias, defaults to 'config'
+	 * @param   Container $container The container
+	 * @param   string    $alias     An optional alias, defaults to 'config'
 	 *
 	 * @return  void
 	 */

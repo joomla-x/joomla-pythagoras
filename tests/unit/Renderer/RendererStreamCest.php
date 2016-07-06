@@ -33,7 +33,7 @@ class RendererStreamCest
 
 		$content->accept($renderer);
 
-		$I->assertEquals("standard: This is the content.\n", (string)$renderer);
+		$I->assertEquals("standard: This is the content.\n", (string) $renderer);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class RendererStreamCest
 		$content->accept($renderer);
 		$renderer->close();
 
-		$I->assertEquals('', (string)$renderer);
+		$I->assertEquals('', (string) $renderer);
 		$I->assertEquals(0, $renderer->tell());
 	}
 
@@ -208,7 +208,8 @@ class RendererStreamCest
 		{
 			$renderer->seek(0, 5);
 			$I->fail('Expected RuntimeException was not thrown');
-		} catch (\Exception $e)
+		}
+		catch (\Exception $e)
 		{
 			$I->assertTrue($e instanceof \RuntimeException);
 		}
@@ -226,7 +227,7 @@ class RendererStreamCest
 
 		$renderer->write("More of this.");
 
-		$I->assertEquals("standard: This is the content.\nMore of this.", (string)$renderer);
+		$I->assertEquals("standard: This is the content.\nMore of this.", (string) $renderer);
 	}
 
 	/**
@@ -242,7 +243,7 @@ class RendererStreamCest
 
 		$renderer->write($more);
 
-		$I->assertEquals("standard: This is the content.\nstandard: More of this.\n", (string)$renderer);
+		$I->assertEquals("standard: This is the content.\nstandard: More of this.\n", (string) $renderer);
 	}
 
 	/**
@@ -251,19 +252,19 @@ class RendererStreamCest
 	public function Metadata(UnitTester $I)
 	{
 		$renderer = new Renderer(['token' => '*/*']);
-		$meta = $renderer->getMetadata();
-		
+		$meta     = $renderer->getMetadata();
+
 		$I->assertEquals([
-				'wrapper_data',
-				'wrapper_type',
-				'stream_type',
-				'mode',
-				'unread_bytes',
-				'seekable',
-				'uri',
-				'mediatype',
-				'base64'
-			],
+			'wrapper_data',
+			'wrapper_type',
+			'stream_type',
+			'mode',
+			'unread_bytes',
+			'seekable',
+			'uri',
+			'mediatype',
+			'base64'
+		],
 			array_keys($meta)
 		);
 	}

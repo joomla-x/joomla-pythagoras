@@ -15,20 +15,20 @@ use Joomla\Service\Query;
  *
  * @package Joomla\Extension
  *
- * @since  1.0
+ * @since   1.0
  */
 class Extension implements ExtensionInterface
 {
-	/** @var callable[]  */
+	/** @var callable[] */
 	private $listeners = [];
 
-	/** @var callable[]  */
+	/** @var callable[] */
 	private $queryHandlers = [];
 
 	/**
 	 * Get the listeners
 	 *
-	 * @param   string  $eventName  The name of the event
+	 * @param   string $eventName The name of the event
 	 *
 	 * @return  callable[]
 	 */
@@ -45,8 +45,8 @@ class Extension implements ExtensionInterface
 	/**
 	 * Add a listener
 	 *
-	 * @param   string   $eventName  The name of the event
-	 * @param   callable $listener   The event handler
+	 * @param   string   $eventName The name of the event
+	 * @param   callable $listener  The event handler
 	 *
 	 * @return  void
 	 */
@@ -63,7 +63,7 @@ class Extension implements ExtensionInterface
 	/**
 	 * Get the listeners
 	 *
-	 * @param   Query  $query
+	 * @param   Query $query The query
 	 *
 	 * @return  callable[]
 	 */
@@ -80,14 +80,15 @@ class Extension implements ExtensionInterface
 	/**
 	 * Add a query handler
 	 *
-	 * @param   string   $className  The name of the query class
-	 * @param   callable $handler    The event handler
+	 * @param   string   $className The name of the query class
+	 * @param   callable $handler   The event handler
 	 *
 	 * @return  void
 	 */
 	public function addQueryHandler($className, $handler)
 	{
 		$className = ltrim($className, '\\');
+
 		if (!key_exists($className, $this->queryHandlers))
 		{
 			$this->queryHandlers[$className] = [];
