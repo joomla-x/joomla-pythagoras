@@ -12,9 +12,13 @@ class DoctrineStorageTest extends DatabaseTestCases
 	{
 		parent::setUp();
 
-		$dataDir    = JPATH_ROOT . '/tests/unit/ORM/data';
-		$database   = $dataDir . '/sqlite.test.db';
-		$dataMapper = new DoctrineDataMapper(Article::class, $dataDir . '/Article.xml', 'sqlite:///' . $database, 'articles');
+		$dataMapper = new DoctrineDataMapper(
+			'Article',
+			'Article.xml',
+			$this->builder,
+			'sqlite:///' . __DIR__ . '/data/sqlite.test.db',
+			'articles'
+		);
 		$this->repo = new Repository(Article::class, $dataMapper);
 	}
 

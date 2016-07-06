@@ -8,8 +8,7 @@
 
 namespace Joomla\ORM\DataMapper;
 
-use Joomla\ORM\Definition\Locator\Locator;
-use Joomla\ORM\Definition\Locator\Strategy\FileStrategy;
+use Joomla\ORM\Definition\Parser\Entity;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\InvalidOperatorException;
@@ -27,6 +26,9 @@ use Joomla\ORM\Finder\Operator;
  */
 class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, CollectionFinderInterface
 {
+	/** @var  array  Column names */
+	private $keys;
+
 	/** @var  array  Row cache */
 	private $rows = null;
 
@@ -37,7 +39,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	private $definitionFile;
 
 	/** @var string  Class of the entity */
-	private $entityClass;
+	private $entityName;
 
 	/** @var  array  Conditions */
 	private $conditions = [];
@@ -45,22 +47,23 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	/** @var  array  Ordering instructions */
 	private $ordering = [];
 
+	/** @var EntityBuilder The entity builder */
+	private $builder;
+
 	/**
 	 * CsvDataMapper constructor.
 	 *
-	 * @param   string $entityClass    The class name of the entity
-	 * @param   string $definitionFile The definition file name
-	 * @param   string $dataFile       The data file name
+	 * @param   string        $entityName     The class name of the entity
+	 * @param   string        $definitionFile The definition file name
+	 * @param   EntityBuilder $builder        The entity builder
+	 * @param   string        $dataFile       The data file name
 	 */
-	public function __construct($entityClass, $definitionFile, $dataFile)
+	public function __construct($entityName, $definitionFile, $builder, $dataFile)
 	{
-		$this->entityClass    = $entityClass;
+		$this->entityName     = $entityName;
 		$this->definitionFile = $definitionFile;
 		$this->dataFile       = $dataFile;
-
-		$strategy      = new FileStrategy($this->definitionFile);
-		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator);
+		$this->builder        = $builder;
 	}
 
 	/**
@@ -90,6 +93,8 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	 */
 	public function findOne()
 	{
+		$this->conditions = [];
+
 		return $this;
 	}
 
@@ -102,6 +107,8 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	 */
 	public function findAll()
 	{
+		$this->conditions = [];
+
 		return $this;
 	}
 
@@ -143,7 +150,8 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 			}
 		}
 
-		$this->rows[] = get_object_vars($entity);
+		$this->rows[] = $this->builder->reduce($entity);
+		$this->builder->resolve($entity);
 	}
 
 	/**
@@ -323,7 +331,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	protected function loadData()
 	{
 		$fh   = fopen($this->dataFile, 'r');
-		$keys = fgetcsv($fh);
+		$this->keys = fgetcsv($fh);
 
 		$this->rows = [];
 
@@ -336,7 +344,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 				break;
 			}
 
-			$this->rows[] = array_combine($keys, $row);
+			$this->rows[] = array_combine($this->keys, $row);
 		}
 
 		fclose($fh);
@@ -372,7 +380,8 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 		{
 			usort(
 				$matches,
-				function ($aRow, $bRow) use ($ordering) {
+				function ($aRow, $bRow) use ($ordering)
+				{
 					$a = $aRow[$ordering['column']];
 					$b = $bRow[$ordering['column']];
 
@@ -421,22 +430,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	 */
 	private function castToEntity($matches)
 	{
-		$result = [];
-
-		foreach ($matches as $match)
-		{
-			$entity = new $this->entityClass;
-
-			foreach ($match as $key => $value)
-			{
-				$entity->{$key} = $value;
-			}
-
-			$result[] = $entity;
-			unset($entity);
-		}
-
-		return $result;
+		return $this->builder->castToEntity($matches, $this->entityName);
 	}
 
 	/**
@@ -551,13 +545,17 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	public function commit()
 	{
 		$fh   = fopen($this->dataFile, 'w');
-		$keys = array_keys($this->rows[0]);
 
-		fputcsv($fh, $keys);
+		fputcsv($fh, $this->keys);
 
 		foreach ($this->rows as $row)
 		{
-			fputcsv($fh, $row);
+			$data = [];
+			foreach ($this->keys as $key)
+			{
+				$data[$key] = $row[$key];
+			}
+			fputcsv($fh, $data);
 		}
 
 		fclose($fh);

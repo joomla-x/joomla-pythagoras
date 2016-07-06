@@ -11,7 +11,6 @@ namespace Joomla\Tests\Unit\ORM;
 use Joomla\ORM\DataMapper\CsvDataMapper;
 use Joomla\ORM\Repository\Repository;
 use Joomla\Tests\Unit\ORM\TestData\Article;
-use UnitTester;
 
 class CsvStorageTest extends DatabaseTestCases
 {
@@ -19,7 +18,12 @@ class CsvStorageTest extends DatabaseTestCases
 	{
 		parent::setUp();
 
-		$dataMapper = new CsvDataMapper(Article::class, __DIR__ . '/data/Article.xml', __DIR__ . '/data/articles.csv');
+		$dataMapper = new CsvDataMapper(
+			'Article',
+			'Article.xml',
+			$this->builder,
+			__DIR__ . '/data/articles.csv'
+		);
 		$this->repo = new Repository(Article::class, $dataMapper);
 	}
 

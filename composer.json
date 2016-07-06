@@ -52,6 +52,7 @@
   "autoload-dev": {
     "psr-4": {
       "Joomla\\Tests\\Unit\\": "tests/unit/",
+      "Joomla\\Tests\\Unit\\ORM\\TestData\\": "tests/unit/ORM/data/",
       "Joomla\\Tests\\Functional\\": "tests/functional/",
       "Joomla\\Tests\\System\\": "tests/acceptance/",
       "Joomla\\Tests\\Page\\": "tests/_support/Page/"

@@ -10,9 +10,6 @@ namespace Joomla\ORM\DataMapper;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
-use Joomla\ORM\Definition\Locator\Locator;
-use Joomla\ORM\Definition\Locator\Strategy\FileStrategy;
-use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
@@ -53,23 +50,20 @@ class DoctrineDataMapper implements DataMapperInterface
 	/**
 	 * CsvDataMapper constructor.
 	 *
-	 * @param   string $entityClass    The class name of the entity
-	 * @param   string $definitionFile The definition file name
-	 * @param   string $dsn            The dsn for the storage
-	 * @param   string $table          The table
+	 * @param   string        $entityClass    The class name of the entity
+	 * @param   string        $definitionFile The definition file name
+	 * @param   EntityBuilder $builder        The entity builder
+	 * @param   string        $dsn            The dsn for the storage
+	 * @param   string        $table          The table
 	 */
-	public function __construct($entityClass, $definitionFile, $dsn, $table)
+	public function __construct($entityClass, $definitionFile, $builder, $dsn, $table)
 	{
 		$this->entityClass    = $entityClass;
 		$this->definitionFile = $definitionFile;
 		$this->dsn            = $dsn;
 		$this->table          = $table;
-
-		$this->connection = DriverManager::getConnection(['url' => $this->dsn], new Configuration);
-
-		$strategy      = new FileStrategy($this->definitionFile);
-		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator);
+		$this->connection     = DriverManager::getConnection(['url' => $this->dsn], new Configuration);
+		$this->builder        = $builder;
 	}
 
 	/**
@@ -125,7 +119,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function insert($entity)
 	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table);
+		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
 		$persistor->insert($entity);
 	}
 
@@ -140,7 +134,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function update($entity)
 	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table);
+		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
 		$persistor->update($entity);
 	}
 
@@ -155,7 +149,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function delete($entity)
 	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table);
+		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
 		$persistor->delete($entity);
 	}
 

@@ -147,4 +147,24 @@ class DataMapper implements DataMapperInterface
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
+
+	/**
+	 * Persists all changes
+	 *
+	 * @return void
+	 */
+	public function commit()
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Get the meta data for the entity type
+	 *
+	 * @return mixed
+	 */
+	public function getMeta()
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
 }

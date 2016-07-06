@@ -41,7 +41,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	private $tableName = null;
 
 	/** @var string */
-	private $entityName = null;
+	private $entityClass = null;
 
 	/** @var EntityBuilder */
 	private $builder = null;
@@ -52,17 +52,17 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/**
 	 * DoctrineCollectionFinder constructor.
 	 *
-	 * @param   Connection    $connection The database connection
-	 * @param   string        $tableName  The name of the table
-	 * @param   string        $entityName The name of the entity
-	 * @param   EntityBuilder $builder    The entity builder
+	 * @param   Connection    $connection  The database connection
+	 * @param   string        $tableName   The name of the table
+	 * @param   string        $entityClass The class of the entity
+	 * @param   EntityBuilder $builder     The entity builder
 	 */
-	public function __construct(Connection $connection, $tableName, $entityName, EntityBuilder $builder)
+	public function __construct(Connection $connection, $tableName, $entityClass, EntityBuilder $builder)
 	{
-		$this->connection = $connection;
-		$this->tableName  = $tableName;
-		$this->entityName = $entityName;
-		$this->builder    = $builder;
+		$this->connection  = $connection;
+		$this->tableName   = $tableName;
+		$this->entityClass = $entityClass;
+		$this->builder     = $builder;
 	}
 
 	/**
@@ -206,22 +206,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	private function castToEntity($matches)
 	{
-		$result = [];
-
-		foreach ($matches as $match)
-		{
-			$entity = new $this->entityName;
-
-			foreach ($match as $key => $value)
-			{
-				$entity->{$key} = $value;
-			}
-
-			$result[] = $entity;
-			unset($entity);
-		}
-
-		return $result;
+		return $this->builder->castToEntity($matches, $this->entityClass);
 	}
 
 	/**

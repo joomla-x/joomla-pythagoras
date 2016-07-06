@@ -33,9 +33,9 @@ class EntityReflector
 	/**
 	 * Constructor
 	 *
-	 * @param   Entity $entity The entity
+	 * @param   object $entity The entity
 	 */
-	public function __construct(Entity $entity)
+	public function __construct($entity)
 	{
 		$this->entity = $entity;
 

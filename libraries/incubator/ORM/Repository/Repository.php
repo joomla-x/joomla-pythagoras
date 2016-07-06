@@ -31,6 +31,9 @@ class Repository implements RepositoryInterface
 	/** @var DataMapperInterface */
 	private $dataMapper;
 
+	/** @var  array */
+	private $restrictions = [];
+
 	/**
 	 * Constructor
 	 *
@@ -70,7 +73,13 @@ class Repository implements RepositoryInterface
 	 */
 	public function findOne()
 	{
-		return $this->dataMapper->findOne();
+		$finder = $this->dataMapper->findOne();
+		foreach ($this->restrictions as $filter)
+		{
+			$finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
+		}
+
+		return $finder;
 	}
 
 	/**
@@ -82,7 +91,14 @@ class Repository implements RepositoryInterface
 	 */
 	public function findAll()
 	{
-		return $this->dataMapper->findAll();
+		$finder = $this->dataMapper->findAll();
+
+		foreach ($this->restrictions as $filter)
+		{
+			$finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
+		}
+
+		return $finder;
 	}
 
 	/**
@@ -128,5 +144,23 @@ class Repository implements RepositoryInterface
 	public function commit()
 	{
 		$this->dataMapper->commit();
+	}
+
+	/**
+	 * Define a condition.
+	 *
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   mixed  $rValue The right value for the comparision
+	 *
+	 * @return  EntityFinderInterface  $this for chaining
+	 */
+	public function restrictTo($lValue, $op, $rValue)
+	{
+		$this->restrictions[] = [
+			'field' => $lValue,
+			'op'    => $op,
+			'value' => $rValue
+		];
 	}
 }

@@ -1,6 +1,9 @@
 <?php
 namespace Joomla\Tests\Unit\ORM;
 
+use Joomla\ORM\Definition\Locator\Locator;
+use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
+use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Finder\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
@@ -11,6 +14,17 @@ class DatabaseTestCases extends TestCase
 {
 	/** @var  RepositoryInterface */
 	protected $repo;
+
+	/** @var EntityBuilder The entity builder */
+	protected $builder;
+
+	public function setUp()
+	{
+		$config        = parse_ini_file(__DIR__ . '/data/entities.ini', true);
+		$strategy      = new RecursiveDirectoryStrategy(__DIR__ . '/data');
+		$locator       = new Locator([$strategy]);
+		$this->builder = new EntityBuilder($locator, $config);
+	}
 
 	/**
 	 * @testdox Entity finder returns array on requested columns
@@ -408,7 +422,7 @@ class DatabaseTestCases extends TestCase
 		$result = $this->repo
 			->findAll()
 			->columns(['id', 'title'])
-			->with('id', Operator::IN, [1,3])
+			->with('id', Operator::IN, [1, 3])
 			->getItems();
 
 		$this->assertEquals(
@@ -434,12 +448,12 @@ class DatabaseTestCases extends TestCase
 
 	public function testStoreNew()
 	{
-		$article = new Article;
-		$article->title = "New Article";
-		$article->teaser = "This is a new article";
-		$article->body = "It serves test purposes only and should go away afterwards.";
-		$article->author = __METHOD__;
-		$article->license = 'CC';
+		$article            = new Article;
+		$article->title     = "New Article";
+		$article->teaser    = "This is a new article";
+		$article->body      = "It serves test purposes only and should go away afterwards.";
+		$article->author    = __METHOD__;
+		$article->license   = 'CC';
 		$article->parent_id = 0;
 
 		$this->repo->add($article);
@@ -448,10 +462,8 @@ class DatabaseTestCases extends TestCase
 
 		$this->assertNotEmpty($article->id);
 
-		$loaded = $this->repo
-			->findOne()
-			->with('title', Operator::EQUAL, $article->title)
-			->getItem();
+		$this->builder->resolve($article);
+		$loaded = $this->repo->getById($article->id);
 
 		// @todo Should be assertSame()
 		$this->assertEquals($article, $loaded);
@@ -537,7 +549,9 @@ class DatabaseTestCases extends TestCase
 
 	public function testParentRelation()
 	{
-		$article = $this->repo->getById(2);
+		$article  = $this->repo->getById(2);
+		$this->assertInstanceOf(RepositoryInterface::class, $article->children);
+
 		$children = $article->children->findAll()->getItems();
 
 		$this->assertEquals(2, count($children));

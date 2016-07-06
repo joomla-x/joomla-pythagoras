@@ -16,5 +16,5 @@ class Article
 	public $body;
 	public $author;
 	public $license;
-	public $parent_id;
+	public $parent_id = 0;
 }

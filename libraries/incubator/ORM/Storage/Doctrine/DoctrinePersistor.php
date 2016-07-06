@@ -9,7 +9,7 @@
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
-use Joomla\ORM\Entity\EntityInterface;
+use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Persistor\PersistorInterface;
 
@@ -25,31 +25,36 @@ class DoctrinePersistor implements PersistorInterface
 	/** @var Connection the connection to work on */
 	private $connection = null;
 
-	/** @var string $tableName */
+	/** @var string */
 	private $tableName = null;
+
+	/** @var  EntityBuilder */
+	private $builder;
 
 	/**
 	 * DoctrinePersistor constructor.
 	 *
 	 * @param   Connection    $connection The database connection
 	 * @param   string        $tableName  The name of the table
+	 * @param   EntityBuilder $builder
 	 */
-	public function __construct(Connection $connection, $tableName)
+	public function __construct(Connection $connection, $tableName, $builder)
 	{
 		$this->connection = $connection;
 		$this->tableName  = $tableName;
+		$this->builder    = $builder;
 	}
 
 	/**
 	 * Insert an entity.
 	 *
-	 * @param   object  $entity  The entity to store
+	 * @param   object $entity The entity to store
 	 *
 	 * @return  void
 	 */
 	public function insert($entity)
 	{
-		$data = get_object_vars($entity);
+		$data = $this->builder->reduce($entity);
 
 		try
 		{
@@ -75,7 +80,7 @@ class DoctrinePersistor implements PersistorInterface
 	 */
 	public function update($entity)
 	{
-		$data = get_object_vars($entity);
+		$data = $this->builder->reduce($entity);
 
 		$affectedRows = $this->connection->update(
 			$this->tableName,
@@ -94,7 +99,7 @@ class DoctrinePersistor implements PersistorInterface
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   object  $entity  The entity to sanitise
+	 * @param   object $entity The entity to sanitise
 	 *
 	 * @return  void
 	 */

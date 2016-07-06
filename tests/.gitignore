@@ -1,3 +1,4 @@
 /_support/_generated
 /_output/*
 /unit/ORM/data/sqlite.test.db
+/unit/ORM/data/*.csv
