@@ -380,8 +380,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 		{
 			usort(
 				$matches,
-				function ($aRow, $bRow) use ($ordering)
-				{
+				function ($aRow, $bRow) use ($ordering) {
 					$a = $aRow[$ordering['column']];
 					$b = $bRow[$ordering['column']];
 
@@ -551,10 +550,12 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 		foreach ($this->rows as $row)
 		{
 			$data = [];
+
 			foreach ($this->keys as $key)
 			{
 				$data[$key] = $row[$key];
 			}
+
 			fputcsv($fh, $data);
 		}
 

@@ -36,7 +36,7 @@ class DoctrinePersistor implements PersistorInterface
 	 *
 	 * @param   Connection    $connection The database connection
 	 * @param   string        $tableName  The name of the table
-	 * @param   EntityBuilder $builder
+	 * @param   EntityBuilder $builder    The entity builder
 	 */
 	public function __construct(Connection $connection, $tableName, $builder)
 	{

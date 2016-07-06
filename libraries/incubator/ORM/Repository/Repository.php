@@ -74,6 +74,7 @@ class Repository implements RepositoryInterface
 	public function findOne()
 	{
 		$finder = $this->dataMapper->findOne();
+
 		foreach ($this->restrictions as $filter)
 		{
 			$finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
@@ -153,7 +154,7 @@ class Repository implements RepositoryInterface
 	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
 	 * @param   mixed  $rValue The right value for the comparision
 	 *
-	 * @return  EntityFinderInterface  $this for chaining
+	 * @return  void
 	 */
 	public function restrictTo($lValue, $op, $rValue)
 	{
