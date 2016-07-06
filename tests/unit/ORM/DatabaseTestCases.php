@@ -505,7 +505,7 @@ class DatabaseTestCases extends TestCase
 	{
 		$article = $this->repo->getById($id);
 
-		$this->repo->delete($article);
+		$this->repo->remove($article);
 
 		$this->repo->commit();
 	}
@@ -524,7 +524,7 @@ class DatabaseTestCases extends TestCase
 		$article->license   = 'CC';
 		$article->parent_id = 0;
 
-		$this->repo->delete($article);
+		$this->repo->remove($article);
 
 		$this->repo->commit();
 	}
@@ -542,7 +542,7 @@ class DatabaseTestCases extends TestCase
 		$article->license   = 'CC';
 		$article->parent_id = 0;
 
-		$this->repo->delete($article);
+		$this->repo->remove($article);
 
 		$this->repo->commit();
 	}

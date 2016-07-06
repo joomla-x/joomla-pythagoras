@@ -132,7 +132,7 @@ class Repository implements RepositoryInterface
 	 *
 	 * @throws  OrmException  if the entity could not be deleted
 	 */
-	public function delete($entity)
+	public function remove($entity)
 	{
 		$this->dataMapper->delete($entity);
 	}
