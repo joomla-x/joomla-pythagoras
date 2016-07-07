@@ -10,12 +10,13 @@ namespace Joomla\Tests\Unit\ORM;
 
 use Joomla\ORM\DataMapper\CsvDataMapper;
 use Joomla\ORM\Repository\Repository;
-use Joomla\Tests\Unit\ORM\TestData\Article;
 
 class CsvStorageTest extends DatabaseTestCases
 {
 	public function setUp()
 	{
+		$this->config = parse_ini_file(__DIR__ . '/data/entities.csv.ini', true);
+
 		parent::setUp();
 
 		$dataMapper = new CsvDataMapper(

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="Map">
+
+    <fields>
+    </fields>
+
+    <relations>
+        <belongsTo
+            name="master_id"
+            entity="Master"
+        />
+        <belongsTo
+            name="tag_id"
+            entity="Tag"
+        />
+    </relations>
+
+</entity>

@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
 
 class DatabaseTestCases extends TestCase
 {
+	/** @var  array */
+	protected $config;
+
 	/** @var  RepositoryInterface */
 	protected $repo;
 
@@ -20,10 +23,9 @@ class DatabaseTestCases extends TestCase
 
 	public function setUp()
 	{
-		$config        = parse_ini_file(__DIR__ . '/data/entities.ini', true);
 		$strategy      = new RecursiveDirectoryStrategy(__DIR__ . '/data');
 		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator, $config);
+		$this->builder = new EntityBuilder($locator, $this->config);
 	}
 
 	/**
