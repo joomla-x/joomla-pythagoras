@@ -11,7 +11,7 @@ namespace Joomla\Tests\Unit\ORM;
 use Joomla\ORM\DataMapper\CsvDataMapper;
 use Joomla\ORM\Repository\Repository;
 
-class CsvStorageTest extends DatabaseTestCases
+class CsvStorageTest extends StorageTestCases
 {
 	public function setUp()
 	{

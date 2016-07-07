@@ -4,7 +4,7 @@ namespace Joomla\Tests\Unit\ORM;
 use Joomla\ORM\DataMapper\DoctrineDataMapper;
 use Joomla\ORM\Repository\Repository;
 
-class DoctrineStorageTest extends DatabaseTestCases
+class DoctrineStorageTest extends StorageTestCases
 {
 	public function setUp()
 	{

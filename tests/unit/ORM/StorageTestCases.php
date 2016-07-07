@@ -10,7 +10,7 @@ use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\Tests\Unit\ORM\TestData\Article;
 use PHPUnit\Framework\TestCase;
 
-class DatabaseTestCases extends TestCase
+class StorageTestCases extends TestCase
 {
 	/** @var  array */
 	protected $config;
