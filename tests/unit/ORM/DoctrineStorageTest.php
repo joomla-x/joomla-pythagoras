@@ -19,7 +19,7 @@ class DoctrineStorageTest extends DatabaseTestCases
 			'sqlite:///' . __DIR__ . '/data/sqlite.test.db',
 			'articles'
 		);
-		$this->repo = new Repository(Article::class, $dataMapper);
+		$this->repo = new Repository('Article', $dataMapper);
 	}
 
 	public function tearDown()

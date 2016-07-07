@@ -24,7 +24,7 @@ class CsvStorageTest extends DatabaseTestCases
 			$this->builder,
 			__DIR__ . '/data/articles.csv'
 		);
-		$this->repo = new Repository(Article::class, $dataMapper);
+		$this->repo = new Repository('Article', $dataMapper);
 	}
 
 	public function tearDown()
