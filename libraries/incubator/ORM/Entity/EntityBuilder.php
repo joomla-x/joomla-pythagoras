@@ -103,12 +103,14 @@ class EntityBuilder
 	 */
 	private function locateDescription($entityName)
 	{
+		$search = $entityName . '.xml';
+
 		if (isset($this->config[$entityName]['definition']))
 		{
-			return $this->config[$entityName]['definition'];
+			$search = $this->config[$entityName]['definition'];
 		}
 
-		$filename = $this->locator->findFile($entityName . '.xml');
+		$filename = $this->locator->findFile($search);
 
 		if (!is_null($filename))
 		{
@@ -128,8 +130,6 @@ class EntityBuilder
 	 */
 	private function parseDescription($filename, $entityName)
 	{
-		$extension = preg_replace('~^.*?\.([^.]+)$~', '\1', $filename);
-
 		$parser = new XmlParser();
 
 		$parser->open($filename);
@@ -612,7 +612,16 @@ class EntityBuilder
 
 					case 'hasOne':
 						/** @var HasOne $relation */
-						throw new \Exception(print_r($relation, true));
+						$repository = $this->getRepository($relation->entity);
+						$property   = $relation->name;
+						try
+						{
+							$entity->{$property} = $repository->findOne()->with($relation->reference, Operator::EQUAL, $entity->id)->getItem();
+						}
+						catch (EntityNotFoundException $e)
+						{
+							$entity->{$property} = null;
+						}
 						break;
 
 					case 'hasMany':

@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\DataMapper;
 
-use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -62,7 +61,7 @@ class DoctrineDataMapper implements DataMapperInterface
 		$this->definitionFile = $definitionFile;
 		$this->dsn            = $dsn;
 		$this->table          = $table;
-		$this->connection     = DriverManager::getConnection(['url' => $this->dsn], new Configuration);
+		$this->connection     = DriverManager::getConnection(['url' => $this->dsn]);
 		$this->builder        = $builder;
 	}
 

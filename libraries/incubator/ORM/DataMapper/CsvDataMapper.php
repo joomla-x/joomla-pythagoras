@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\DataMapper;
 
-use Joomla\ORM\Definition\Parser\Entity;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\InvalidOperatorException;
@@ -330,7 +329,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	 */
 	protected function loadData()
 	{
-		$fh   = fopen($this->dataFile, 'r');
+		$fh         = fopen($this->dataFile, 'r');
 		$this->keys = fgetcsv($fh);
 
 		$this->rows = [];
@@ -543,7 +542,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	 */
 	public function commit()
 	{
-		$fh   = fopen($this->dataFile, 'w');
+		$fh = fopen($this->dataFile, 'w');
 
 		fputcsv($fh, $this->keys);
 

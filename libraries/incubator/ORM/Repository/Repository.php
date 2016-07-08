@@ -9,12 +9,10 @@
 namespace Joomla\ORM\Repository;
 
 use Joomla\ORM\DataMapper\DataMapperInterface;
-use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Finder\CollectionFinderInterface;
 use Joomla\ORM\Finder\EntityFinderInterface;
-use Joomla\ORM\Finder\Operator;
 
 /**
  * Class Repository
@@ -37,8 +35,8 @@ class Repository implements RepositoryInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   string               $entityName The name (type) of the entity
-	 * @param   DataMapperInterface  $dataMapper The builder
+	 * @param   string              $entityName The name (type) of the entity
+	 * @param   DataMapperInterface $dataMapper The builder
 	 */
 	public function __construct($entityName, DataMapperInterface $dataMapper)
 	{
