@@ -9,7 +9,7 @@
 namespace Joomla\Tests\Unit\ORM;
 
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Id\IdAccessorRegistry;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\Tests\Unit\ORM\Mocks\Foo;
 use Joomla\Tests\Unit\ORM\Mocks\User;
 use PHPUnit\Framework\TestCase;

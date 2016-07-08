@@ -6,18 +6,16 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\ORM\DataMapper;
+namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\DriverManager;
+use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Finder\CollectionFinderInterface;
-use Joomla\ORM\Finder\EntityFinderInterface;
-use Joomla\ORM\Finder\Operator;
-use Joomla\ORM\Storage\Doctrine\DoctrineCollectionFinder;
-use Joomla\ORM\Storage\Doctrine\DoctrineEntityFinder;
-use Joomla\ORM\Storage\Doctrine\DoctrinePersistor;
+use Joomla\ORM\Storage\CollectionFinderInterface;
+use Joomla\ORM\Storage\EntityFinderInterface;
+use Joomla\ORM\Operator;
 
 /**
  * Class DoctrineDataMapper
@@ -69,7 +67,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	 * Find an entity using its id.
 	 *
 	 * getById() is a convenience method, It is equivalent to
-	 * ->findOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->getItem()
+	 * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->getItem()
 	 *
 	 * @param   mixed $id The id value
 	 *

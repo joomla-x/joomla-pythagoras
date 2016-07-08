@@ -6,17 +6,19 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Unit\ORM;
+namespace Joomla\Tests\Unit\ORM\Storage\Csv;
 
-use Joomla\ORM\DataMapper\CsvDataMapper;
 use Joomla\ORM\Repository\Repository;
+use Joomla\ORM\Storage\Csv\CsvDataMapper;
+use Joomla\Tests\Unit\ORM\Storage\RelationTestCases;
 
 class CsvRelationTest extends RelationTestCases
 {
 	public function setUp()
 	{
-		$path         = __DIR__ . '/data';
-		$this->config = parse_ini_file($path . '/entities.csv.ini', true);
+		$dataPath = realpath(__DIR__ . '/../../data');
+
+		$this->config = parse_ini_file($dataPath . '/entities.csv.ini', true);
 
 		parent::setUp();
 
@@ -26,7 +28,7 @@ class CsvRelationTest extends RelationTestCases
 		{
 			$dataMapper              = new CsvDataMapper(
 				$entityName,
-				$path . '/' . $entityName . '.xml',
+				$dataPath . '/' . $entityName . '.xml',
 				$this->builder,
 				$this->config[$entityName]['data']
 			);

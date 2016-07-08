@@ -6,13 +6,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\ORM\DataMapper;
+namespace Joomla\ORM\Storage;
 
 
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Finder\CollectionFinderInterface;
-use Joomla\ORM\Finder\EntityFinderInterface;
 
 /**
  * Interface DataMapperInterface
@@ -27,7 +25,7 @@ interface DataMapperInterface
 	 * Find an entity using its id.
 	 *
 	 * getById() is a convenience method, It is equivalent to
-	 * ->getOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
+	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
 	 *
 	 * @param   mixed  $id  The id value
 	 *

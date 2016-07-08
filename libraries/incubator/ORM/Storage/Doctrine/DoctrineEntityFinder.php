@@ -9,7 +9,7 @@
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Finder\EntityFinderInterface;
+use Joomla\ORM\Storage\EntityFinderInterface;
 
 /**
  * Class DoctrineEntityFinder

@@ -1,11 +1,11 @@
 <?php
-namespace Joomla\Tests\Unit\ORM;
+namespace Joomla\Tests\Unit\ORM\Storage;
 
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Finder\Operator;
+use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\Tests\Unit\ORM\TestData\Article;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +23,7 @@ class StorageTestCases extends TestCase
 
 	public function setUp()
 	{
-		$strategy      = new RecursiveDirectoryStrategy(__DIR__ . '/data');
+		$strategy      = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../data'));
 		$locator       = new Locator([$strategy]);
 		$this->builder = new EntityBuilder($locator, $this->config);
 	}

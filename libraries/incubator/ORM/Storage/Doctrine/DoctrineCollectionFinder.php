@@ -13,8 +13,8 @@ use Doctrine\DBAL\Exception\SyntaxErrorException;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\InvalidOperatorException;
-use Joomla\ORM\Finder\CollectionFinderInterface;
-use Joomla\ORM\Finder\Operator;
+use Joomla\ORM\Storage\CollectionFinderInterface;
+use Joomla\ORM\Operator;
 
 /**
  * Class DoctrineCollectionFinder

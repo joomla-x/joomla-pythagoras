@@ -1,14 +1,17 @@
 <?php
-namespace Joomla\Tests\Unit\ORM;
+namespace Joomla\Tests\Unit\ORM\Storage\Doctrine;
 
-use Joomla\ORM\DataMapper\DoctrineDataMapper;
 use Joomla\ORM\Repository\Repository;
+use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
+use Joomla\Tests\Unit\ORM\Storage\StorageTestCases;
 
 class DoctrineStorageTest extends StorageTestCases
 {
 	public function setUp()
 	{
-		$this->config = parse_ini_file(__DIR__ . '/data/entities.doctrine.ini', true);
+		$dataPath = realpath(__DIR__ . '/../../data');
+
+		$this->config = parse_ini_file($dataPath . '/entities.doctrine.ini', true);
 
 		parent::setUp();
 
@@ -16,7 +19,7 @@ class DoctrineStorageTest extends StorageTestCases
 			'Article',
 			'Article.xml',
 			$this->builder,
-			'sqlite:///' . __DIR__ . '/data/sqlite.test.db',
+			'sqlite:///' . $dataPath . '/sqlite.test.db',
 			'articles'
 		);
 		$this->repo = new Repository('Article', $dataMapper);

@@ -6,9 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\ORM\Finder;
-
-
+namespace Joomla\ORM\Storage;
 
 /**
  * Interface CollectionFinderInterface
@@ -32,7 +30,7 @@ interface CollectionFinderInterface
 	 * Define a condition.
 	 *
 	 * @param   mixed   $lValue  The left value for the comparision
-	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Operator constants
 	 * @param   mixed   $rValue  The right value for the comparision
 	 *
 	 * @return  CollectionFinderInterface  $this for chaining

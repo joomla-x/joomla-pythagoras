@@ -8,11 +8,11 @@
 
 namespace Joomla\Tests\Unit\ORM\Entity;
 
-use Joomla\ORM\ChangeTracker\ChangeTracker;
+use Joomla\ORM\UnitOfWork\ChangeTracker;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Id\IdAccessorRegistry;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\Tests\Unit\ORM\Mocks\User;
 
 /**

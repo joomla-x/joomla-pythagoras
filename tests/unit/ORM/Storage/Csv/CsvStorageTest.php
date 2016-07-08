@@ -6,16 +6,19 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Unit\ORM;
+namespace Joomla\Tests\Unit\ORM\Storage\Csv;
 
-use Joomla\ORM\DataMapper\CsvDataMapper;
 use Joomla\ORM\Repository\Repository;
+use Joomla\ORM\Storage\Csv\CsvDataMapper;
+use Joomla\Tests\Unit\ORM\Storage\StorageTestCases;
 
 class CsvStorageTest extends StorageTestCases
 {
 	public function setUp()
 	{
-		$this->config = parse_ini_file(__DIR__ . '/data/entities.csv.ini', true);
+		$dataPath = realpath(__DIR__ . '/../../data');
+
+		$this->config = parse_ini_file($dataPath . '/entities.csv.ini', true);
 
 		parent::setUp();
 
@@ -23,7 +26,7 @@ class CsvStorageTest extends StorageTestCases
 			'Article',
 			'Article.xml',
 			$this->builder,
-			__DIR__ . '/data/articles.csv'
+			$dataPath . '/articles.csv'
 		);
 		$this->repo = new Repository('Article', $dataMapper);
 	}

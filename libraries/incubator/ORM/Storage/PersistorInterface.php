@@ -6,9 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\ORM\Persistor;
-
-use Joomla\ORM\Entity\EntityInterface;
+namespace Joomla\ORM\Storage;
 
 /**
  * Interface PersistorInterface
@@ -22,7 +20,7 @@ interface PersistorInterface
 	/**
 	 * Insert an entity.
 	 *
-	 * @param   object  $entity  The entity to store
+	 * @param   object $entity The entity to store
 	 *
 	 * @return  void
 	 */
@@ -40,7 +38,7 @@ interface PersistorInterface
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   object  $entity  The entity to sanitise
+	 * @param   object $entity The entity to sanitise
 	 *
 	 * @return  void
 	 */

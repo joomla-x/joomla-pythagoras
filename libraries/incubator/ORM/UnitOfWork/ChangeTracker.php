@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\ORM\ChangeTracker;
+namespace Joomla\ORM\UnitOfWork;
 
 use Joomla\ORM\Exception\OrmException;
 use ReflectionClass;

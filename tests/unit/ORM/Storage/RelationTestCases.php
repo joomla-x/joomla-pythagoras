@@ -1,5 +1,5 @@
 <?php
-namespace Joomla\Tests\Unit\ORM;
+namespace Joomla\Tests\Unit\ORM\Storage;
 
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
@@ -21,7 +21,7 @@ class RelationTestCases extends TestCase
 
 	public function setUp()
 	{
-		$strategy      = new RecursiveDirectoryStrategy(__DIR__ . '/data');
+		$strategy      = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../data'));
 		$locator       = new Locator([$strategy]);
 		$this->builder = new EntityBuilder($locator, $this->config);
 	}

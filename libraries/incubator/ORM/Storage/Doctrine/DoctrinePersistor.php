@@ -11,7 +11,7 @@ namespace Joomla\ORM\Storage\Doctrine;
 use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Persistor\PersistorInterface;
+use Joomla\ORM\Storage\PersistorInterface;
 
 /**
  * Class DoctrineCollectionPersistor

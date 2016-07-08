@@ -9,8 +9,8 @@
 namespace Joomla\ORM\Entity;
 
 use Joomla\Event\DispatcherAwareTrait;
-use Joomla\ORM\DataMapper\CsvDataMapper;
-use Joomla\ORM\DataMapper\DoctrineDataMapper;
+use Joomla\ORM\Storage\Csv\CsvDataMapper;
+use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
 use Joomla\ORM\Definition\Parser\Element;
@@ -24,12 +24,9 @@ use Joomla\ORM\Event\AfterCreateDefinitionEvent;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\FileNotFoundException;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Finder\Operator;
+use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryInterface;
-use Joomla\ORM\Storage\CsvProvider;
-use Joomla\ORM\Storage\DefaultProvider;
-use Joomla\ORM\Storage\Doctrine\DoctrineProvider;
 
 /**
  * Class EntityBuilder
@@ -381,47 +378,6 @@ class EntityBuilder
 
 	public function handleStorage(Element $storage)
 	{
-		foreach ($storage->toArray() as $type => $info)
-		{
-			$handler = null;
-			$param1  = null;
-			$param2  = null;
-
-			switch ($type)
-			{
-				case 'default':
-					$handler = DefaultProvider::class;
-					$param1  = $info[0]->table;
-					break;
-
-				case 'api':
-					$handler = $info[0]->handler;
-					$param1  = $info[0]->{'base-url'};
-					break;
-
-				case 'special':
-					$parts = explode('://', $info[0]->dsn);
-					switch ($parts[0])
-					{
-						case 'csv':
-							$handler = CsvProvider::class;
-							$param1  = $parts[1];
-							break;
-						default:
-							$handler = DoctrineProvider::class;
-							$param1  = $info[0]->dsn;
-							$param2  = $info[0]->table;
-							break;
-					}
-					break;
-
-				default:
-					throw new \Exception("Unknown storage type '$type'");
-					break;
-			}
-
-			$this->reflector->setStorageProvider(new $handler($param1, $this, $param2));
-		}
 	}
 
 	/**

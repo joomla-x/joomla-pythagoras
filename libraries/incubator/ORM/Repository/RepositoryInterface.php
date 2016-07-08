@@ -11,8 +11,8 @@ namespace Joomla\ORM\Repository;
 
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Finder\CollectionFinderInterface;
-use Joomla\ORM\Finder\EntityFinderInterface;
+use Joomla\ORM\Storage\CollectionFinderInterface;
+use Joomla\ORM\Storage\EntityFinderInterface;
 
 /**
  * Interface RepositoryInterface
@@ -27,7 +27,7 @@ interface RepositoryInterface
 	 * Find an entity using its id.
 	 *
 	 * getById() is a convenience method, It is equivalent to
-	 * ->getOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
+	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
 	 *
 	 * @param   mixed  $id  The id value
 	 *

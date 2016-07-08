@@ -8,7 +8,7 @@
 
 namespace Joomla\Tests\Unit\ORM;
 
-use Joomla\ORM\ChangeTracker\ChangeTracker;
+use Joomla\ORM\UnitOfWork\ChangeTracker;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\Tests\Unit\ORM\Mocks\User;
 use PHPUnit\Framework\TestCase;

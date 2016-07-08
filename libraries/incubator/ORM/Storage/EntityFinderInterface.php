@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\ORM\Finder;
+namespace Joomla\ORM\Storage;
 
 use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -33,7 +33,7 @@ interface EntityFinderInterface
 	 * Define a condition.
 	 *
 	 * @param   mixed   $lValue  The left value for the comparision
-	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Operator constants
 	 * @param   mixed   $rValue  The right value for the comparision
 	 *
 	 * @return  EntityFinderInterface  $this for chaining
