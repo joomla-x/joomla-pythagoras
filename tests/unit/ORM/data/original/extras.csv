@@ -1,4 +1,4 @@
-id, tag, description
-1,"Tag 1","Description for Tag 1"
-2,"Tag 2","Description for Tag 2"
-3,"Tag 3","Description for Tag 3"
+detail_id,info
+1,"Info for Detail 1"
+3,"Info for Detail 3"
+5,"Info for Detail 5"
