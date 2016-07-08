@@ -25,15 +25,6 @@ interface EntityInterface
 	public function type();
 
 	/**
-	 * Get the status of the entity.
-	 *
-	 * @return  int  The status, one of the \Joomla\ORM\Status constants
-	 *
-	 * @see     \Joomla\ORM\Status
-	 */
-	public function status();
-
-	/**
 	 * Get the field for the primary key.
 	 *
 	 * @return  string  The name of the field
@@ -106,12 +97,4 @@ interface EntityInterface
 	 * @return  \Joomla\ORM\Definition\Parser\Entity
 	 */
 	public function getDefinition();
-
-	/**
-	 * Get the storage provider
-	 *
-	 * @return  \Joomla\ORM\Storage\StorageProviderInterface  The storage provider
-	 *
-	 */
-	public function getStorage();
 }

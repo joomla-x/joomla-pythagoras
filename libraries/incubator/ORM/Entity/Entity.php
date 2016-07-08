@@ -11,8 +11,6 @@ namespace Joomla\ORM\Entity;
 use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Exception\PropertyNotFoundException;
 use Joomla\ORM\Exception\WriteOnImmutableException;
-use Joomla\ORM\Storage\StorageProviderInterface;
-use Joomla\ORM\Status;
 
 /**
  * Class Entity
@@ -23,9 +21,6 @@ use Joomla\ORM\Status;
  */
 class Entity implements EntityInterface
 {
-	/** @var  int  The status, one of the \Joomla\ORM\Status constants */
-	private $status = Status::CREATED;
-
 	/** @var  bool  Flag whether this entity is immutable */
 	private $immutable = false;
 
@@ -41,9 +36,6 @@ class Entity implements EntityInterface
 	/** @var  string  The name of the id field */
 	private $key;
 
-	/** @var  StorageProviderInterface  The storage provider */
-	private $storage;
-
 	/**
 	 * Get the type of the entity.
 	 *
@@ -52,18 +44,6 @@ class Entity implements EntityInterface
 	public function type()
 	{
 		return $this->definition->name;
-	}
-
-	/**
-	 * Get the status of the entity.
-	 *
-	 * @return  int  The status, one of the \Joomla\ORM\Status constants
-	 *
-	 * @see     \Joomla\ORM\Status
-	 */
-	public function status()
-	{
-		return $this->status;
 	}
 
 	/**
@@ -94,6 +74,7 @@ class Entity implements EntityInterface
 		{
 			if ($this->has($property))
 			{
+				/** @noinspection PhpVariableVariableInspection */
 				$this->$property = $value;
 			}
 		}
@@ -175,13 +156,7 @@ class Entity implements EntityInterface
 			throw new PropertyNotFoundException("Unknown property {$property}");
 		}
 
-		$oldValue                       = $this->$property;
 		$this->fields[$property]->value = $value;
-
-		if ($oldValue !== $value)
-		{
-			$this->status = Status::CHANGED;
-		}
 	}
 
 	/**
@@ -212,16 +187,5 @@ class Entity implements EntityInterface
 	public function getDefinition()
 	{
 		return $this->definition;
-	}
-
-	/**
-	 * Get the storage provider
-	 *
-	 * @return  StorageProviderInterface  The storage provider
-	 *
-	 */
-	public function getStorage()
-	{
-		return $this->storage;
 	}
 }
