@@ -171,7 +171,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		}
 		catch (SyntaxErrorException $e)
 		{
-			throw new InvalidOperatorException($e->getMessage());
+			throw new InvalidOperatorException($e->getMessage(), 0, $e);
 		}
 
 		foreach ($this->patterns as $column => $pattern)

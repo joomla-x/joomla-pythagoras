@@ -5,9 +5,10 @@ use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
-use Joomla\Tests\Unit\ORM\TestData\Article;
+use Joomla\Tests\Unit\ORM\Mocks\Article;
 use PHPUnit\Framework\TestCase;
 
 class StorageTestCases extends TestCase
@@ -21,11 +22,15 @@ class StorageTestCases extends TestCase
 	/** @var EntityBuilder The entity builder */
 	protected $builder;
 
+	/** @var  IdAccessorRegistry */
+	protected $idAccessorRegistry;
+
 	public function setUp()
 	{
-		$strategy      = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../data'));
-		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator, $this->config);
+		$this->idAccessorRegistry = new IdAccessorRegistry;
+		$strategy                 = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../Mocks'));
+		$locator                  = new Locator([$strategy]);
+		$this->builder            = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry);
 	}
 
 	/**
@@ -90,6 +95,7 @@ class StorageTestCases extends TestCase
 	{
 		try
 		{
+			/** @noinspection PhpUnusedLocalVariableInspection */
 			$result = $this->repo
 				->findOne()
 				->with('id', Operator::EQUAL, 0)
@@ -441,6 +447,7 @@ class StorageTestCases extends TestCase
 	 */
 	public function testThrowsExceptionOnIllegalOperator()
 	{
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$result = $this->repo
 			->findAll()
 			->columns(['id', 'title'])
@@ -450,13 +457,13 @@ class StorageTestCases extends TestCase
 
 	public function testStoreNew()
 	{
-		$article            = new Article;
-		$article->title     = "New Article";
-		$article->teaser    = "This is a new article";
-		$article->body      = "It serves test purposes only and should go away afterwards.";
-		$article->author    = __METHOD__;
-		$article->license   = 'CC';
-		$article->parent_id = 0;
+		$article           = new Article;
+		$article->title    = "New Article";
+		$article->teaser   = "This is a new article";
+		$article->body     = "It serves test purposes only and should go away afterwards.";
+		$article->author   = __METHOD__;
+		$article->license  = 'CC';
+		$article->parentId = 0;
 
 		$this->repo->add($article);
 
@@ -475,6 +482,10 @@ class StorageTestCases extends TestCase
 
 	/**
 	 * @depends testStoreNew
+	 *
+	 * @param int $id
+	 *
+	 * @return int
 	 */
 	public function testStoreUpdate($id)
 	{
@@ -502,6 +513,10 @@ class StorageTestCases extends TestCase
 
 	/**
 	 * @depends testStoreUpdate
+	 *
+	 * @param int $id
+	 *
+	 * @return int
 	 */
 	public function testDelete($id)
 	{
@@ -551,11 +566,36 @@ class StorageTestCases extends TestCase
 
 	public function testParentRelation()
 	{
-		$article  = $this->repo->getById(2);
+		$article = $this->repo->getById(2);
 		$this->assertInstanceOf(RepositoryInterface::class, $article->children);
 
 		$children = $article->children->findAll()->getItems();
 
 		$this->assertEquals(2, count($children));
+	}
+
+	/**
+	 * @param \Exception $e
+	 *
+	 * @return string
+	 */
+	protected function dump($e)
+	{
+		$msg           = '';
+		$fmt           = "%s in %s(%d)\n";
+		$traceAsString = '';
+
+		while ($e instanceof \Exception)
+		{
+			$message       = $e->getMessage();
+			$file          = $e->getFile();
+			$line          = $e->getLine();
+			$traceAsString = $e->getTraceAsString();
+			$e             = $e->getPrevious();
+
+			$msg .= sprintf($fmt, $message, $file, $line);
+		}
+
+		return $msg . "\n" . $traceAsString;
 	}
 }

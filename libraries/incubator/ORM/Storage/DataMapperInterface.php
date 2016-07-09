@@ -19,7 +19,7 @@ use Joomla\ORM\Exception\OrmException;
  *
  * @since    1.0
  */
-interface DataMapperInterface
+interface DataMapperInterface extends PersistorInterface
 {
 	/**
 	 * Find an entity using its id.
@@ -53,39 +53,6 @@ interface DataMapperInterface
 	 * @throws  OrmException  if there was an error getting the entities
 	 */
 	public function findAll();
-
-	/**
-	 * Inserts an entity to the storage
-	 *
-	 * @param   object $entity The entity to insert
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be inserted
-	 */
-	public function insert($entity);
-
-	/**
-	 * Updates an entity in the storage
-	 *
-	 * @param   object $entity The entity to insert
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be updated
-	 */
-	public function update($entity);
-
-	/**
-	 * Deletes an entity from the storage
-	 *
-	 * @param   object $entity The entity to delete
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be deleted
-	 */
-	public function delete($entity);
 
 	/**
 	 * Persists all changes

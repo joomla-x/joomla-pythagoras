@@ -8,10 +8,11 @@
 
 namespace Joomla\ORM\Repository;
 
-use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Storage\CollectionFinderInterface;
+use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Storage\EntityFinderInterface;
 
 /**
@@ -29,6 +30,9 @@ class Repository implements RepositoryInterface
 	/** @var DataMapperInterface */
 	private $dataMapper;
 
+	/** @var  IdAccessorRegistry */
+	private $idAccessorRegistry;
+
 	/** @var  array */
 	private $restrictions = [];
 
@@ -37,11 +41,13 @@ class Repository implements RepositoryInterface
 	 *
 	 * @param   string              $entityName The name (type) of the entity
 	 * @param   DataMapperInterface $dataMapper The builder
+	 * @param IdAccessorRegistry    $idAccessorRegistry
 	 */
-	public function __construct($entityName, DataMapperInterface $dataMapper)
+	public function __construct($entityName, DataMapperInterface $dataMapper, IdAccessorRegistry $idAccessorRegistry)
 	{
-		$this->entityName = $entityName;
-		$this->dataMapper = $dataMapper;
+		$this->entityName         = $entityName;
+		$this->dataMapper         = $dataMapper;
+		$this->idAccessorRegistry = $idAccessorRegistry;
 	}
 
 	/**
@@ -113,11 +119,11 @@ class Repository implements RepositoryInterface
 	{
 		if (empty($entity->id))
 		{
-			$this->dataMapper->insert($entity);
+			$this->dataMapper->insert($entity, $this->idAccessorRegistry);
 		}
 		else
 		{
-			$this->dataMapper->update($entity);
+			$this->dataMapper->update($entity, $this->idAccessorRegistry);
 		}
 	}
 
@@ -132,7 +138,7 @@ class Repository implements RepositoryInterface
 	 */
 	public function remove($entity)
 	{
-		$this->dataMapper->delete($entity);
+		$this->dataMapper->delete($entity, $this->idAccessorRegistry);
 	}
 
 	/**

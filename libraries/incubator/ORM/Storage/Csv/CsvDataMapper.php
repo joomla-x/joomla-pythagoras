@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Storage\Csv;
 
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -49,6 +50,9 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 
 	/** @var EntityBuilder The entity builder */
 	private $builder;
+
+	/** @var array  */
+	private $columns = [];
 
 	/**
 	 * CsvDataMapper constructor.
@@ -115,37 +119,40 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	/**
 	 * Inserts an entity to the storage
 	 *
-	 * @param   object $entity The entity to insert
+	 * @param   object             $entity The entity to insert
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be inserted
 	 */
-	public function insert($entity)
+	public function insert($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
 		if (is_null($this->rows))
 		{
 			$this->loadData();
 		}
 
-		if (empty($entity->id))
+		$entityId = $idAccessorRegistry->getEntityId($entity);
+
+		if (empty($entityId))
 		{
-			$entity->id = 0;
+			$id = 0;
 
 			foreach ($this->rows as $row)
 			{
-				$entity->id = max($entity->id, $row['id']);
+				$id = max($id, $row['id']);
 			}
 
-			$entity->id += 1;
+			$idAccessorRegistry->setEntityId($entity, $id+1);
 		}
 		else
 		{
 			foreach ($this->rows as $row)
 			{
-				if ($entity->id == $row['id'])
+				if ($entityId == $row['id'])
 				{
-					throw new OrmException("Entity with id {$entity->id} already exists.");
+					throw new OrmException("Entity with id {$entityId} already exists.");
 				}
 			}
 		}
@@ -157,22 +164,25 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 	/**
 	 * Updates an entity in the storage
 	 *
-	 * @param   object $entity The entity to insert
+	 * @param   object             $entity The entity to insert
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be updated
 	 */
-	public function update($entity)
+	public function update($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
 		if (is_null($this->rows))
 		{
 			$this->loadData();
 		}
 
+		$entityId = $idAccessorRegistry->getEntityId($entity);
+
 		foreach ($this->rows as $index => $row)
 		{
-			if ($entity->id == $row['id'])
+			if ($entityId == $row['id'])
 			{
 				$this->rows[$index] = get_object_vars($entity);
 
@@ -180,28 +190,31 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 			}
 		}
 
-		throw new OrmException("Entity with id {$entity->id} not found.");
+		throw new OrmException("Entity with id {$entityId} not found.");
 	}
 
 	/**
 	 * Deletes an entity from the storage
 	 *
-	 * @param   object $entity The entity to delete
+	 * @param   object             $entity The entity to delete
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be deleted
 	 */
-	public function delete($entity)
+	public function delete($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
 		if (is_null($this->rows))
 		{
 			$this->loadData();
 		}
 
+		$entityId = $idAccessorRegistry->getEntityId($entity);
+
 		foreach ($this->rows as $index => $row)
 		{
-			if ($entity->id == $row['id'])
+			if ($entityId == $row['id'])
 			{
 				unset($this->rows[$index]);
 
@@ -209,7 +222,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 			}
 		}
 
-		throw new OrmException("Entity with id {$entity->id} not found.");
+		throw new OrmException("Entity with id {$entityId} not found.");
 	}
 
 	/**
@@ -553,7 +566,7 @@ class CsvDataMapper implements DataMapperInterface, EntityFinderInterface, Colle
 
 			foreach ($this->keys as $key)
 			{
-				$data[$key] = $row[$key];
+				$data[$key] = isset($row[$key]) ? $row[$key] : '';
 			}
 
 			fputcsv($fh, $data);

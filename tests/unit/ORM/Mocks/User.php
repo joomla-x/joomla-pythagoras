@@ -29,7 +29,7 @@ class User
 	 * @param int    $id       The user Id
 	 * @param string $username The username
 	 */
-	public function __construct($id, $username)
+	public function __construct($id = 0, $username = '')
 	{
 		$this->id       = $id;
 		$this->username = $username;

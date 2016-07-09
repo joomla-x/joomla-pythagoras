@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Unit\ORM;
+namespace Joomla\Tests\Unit\ORM\UnitOfWork;
 
 use PHPUnit\Framework\TestCase;
 

@@ -11,6 +11,7 @@ namespace Joomla\ORM\Storage\Doctrine;
 use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\OrmException;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Storage\PersistorInterface;
 
 /**
@@ -49,72 +50,80 @@ class DoctrinePersistor implements PersistorInterface
 	 * Insert an entity.
 	 *
 	 * @param   object $entity The entity to store
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 */
-	public function insert($entity)
+	public function insert($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
 		$data = $this->builder->reduce($entity);
+		$entityId = $idAccessorRegistry->getEntityId($entity);
 
 		try
 		{
 			$this->connection->insert($this->tableName, $data);
 
-			if (empty($entity->id))
+			if (empty($entityId))
 			{
-				$entity->id = $this->connection->lastInsertId();
+				$idAccessorRegistry->setEntityId($entity, $this->connection->lastInsertId());
 			}
 		}
 		catch (\Exception $e)
 		{
-			throw new OrmException("Entity with id {$entity->id} already exists.\n" . $e->getMessage());
+			throw new OrmException("Entity with id {$entityId} already exists.\n" . $e->getMessage(), 0, $e);
 		}
 	}
 
 	/**
 	 * Update an entity.
 	 *
-	 * @param   object $entity The entity to store
-	 *
+	 * @param   object             $entity The entity to insert
+	 * @param   IdAccessorRegistry $idAccessorRegistry
+	 * 
 	 * @return  void
 	 */
-	public function update($entity)
+	public function update($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
+		$entityId = $idAccessorRegistry->getEntityId($entity);
+
 		$data = $this->builder->reduce($entity);
 
 		$affectedRows = $this->connection->update(
 			$this->tableName,
 			$data,
 			[
-				'id' => $entity->id
+				'id' => $entityId
 			]
 		);
 
-		if ($affectedRows == 0)
-		{
-			throw new OrmException("Entity with id {$entity->id} not found.");
-		}
+		#if ($affectedRows == 0)
+		#{
+		#	throw new OrmException("Entity with id {$entityId} not found.");
+		#}
 	}
 
 	/**
 	 * Delete an entity.
 	 *
 	 * @param   object $entity The entity to sanitise
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 */
-	public function delete($entity)
+	public function delete($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
+		$entityId = $idAccessorRegistry->getEntityId($entity);
+
 		$affectedRows = $this->connection->delete(
 			$this->tableName,
 			[
-				'id' => $entity->id
+				'id' => $entityId
 			]
 		);
 
 		if ($affectedRows == 0)
 		{
-			throw new OrmException("Entity with id {$entity->id} not found.");
+			throw new OrmException("Entity with id {$entityId} not found.");
 		}
 	}
 }

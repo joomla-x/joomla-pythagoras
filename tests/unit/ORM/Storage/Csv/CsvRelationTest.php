@@ -16,9 +16,9 @@ class CsvRelationTest extends RelationTestCases
 {
 	public function setUp()
 	{
-		$dataPath = realpath(__DIR__ . '/../../data');
+		$dataPath = realpath(__DIR__ . '/../..');
 
-		$this->config = parse_ini_file($dataPath . '/entities.csv.ini', true);
+		$this->config = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
 
 		parent::setUp();
 
@@ -28,11 +28,11 @@ class CsvRelationTest extends RelationTestCases
 		{
 			$dataMapper              = new CsvDataMapper(
 				$entityName,
-				$dataPath . '/' . $entityName . '.xml',
+				$dataPath . '/Mocks/' . $entityName . '.xml',
 				$this->builder,
 				$this->config[$entityName]['data']
 			);
-			$this->repo[$entityName] = new Repository($entityName, $dataMapper);
+			$this->repo[$entityName] = new Repository($entityName, $dataMapper, $this->idAccessorRegistry);
 		}
 	}
 

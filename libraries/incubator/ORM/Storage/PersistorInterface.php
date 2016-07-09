@@ -8,6 +8,8 @@
 
 namespace Joomla\ORM\Storage;
 
+use Joomla\ORM\IdAccessorRegistry;
+
 /**
  * Interface PersistorInterface
  *
@@ -20,27 +22,30 @@ interface PersistorInterface
 	/**
 	 * Insert an entity.
 	 *
-	 * @param   object $entity The entity to store
+	 * @param   object             $entity The entity to store
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 */
-	public function insert($entity);
+	public function insert($entity, IdAccessorRegistry $idAccessorRegistry);
 
 	/**
 	 * Update an entity.
 	 *
-	 * @param   object $entity The entity to store
+	 * @param   object             $entity The entity to insert
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 */
-	public function update($entity);
+	public function update($entity, IdAccessorRegistry $idAccessorRegistry);
 
 	/**
 	 * Delete an entity.
 	 *
-	 * @param   object $entity The entity to sanitise
+	 * @param   object             $entity The entity to sanitise
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 */
-	public function delete($entity);
+	public function delete($entity, IdAccessorRegistry $idAccessorRegistry);
 }

@@ -48,7 +48,7 @@ class IdAccessorRegistry
 		}
 		catch (ReflectionException $e)
 		{
-			throw new OrmException("Failed to get entity Id", 0, $e);
+			throw new OrmException("Failed to get entity Id\n" . $e->getMessage(), 0, $e);
 		}
 	}
 
@@ -80,7 +80,7 @@ class IdAccessorRegistry
 		}
 		catch (ReflectionException $e)
 		{
-			throw new OrmException("Failed to set entity Id", 0, $e);
+			throw new OrmException("Failed to set entity Id\n" . $e->getMessage(), 0, $e);
 		}
 	}
 

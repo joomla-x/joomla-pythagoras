@@ -16,9 +16,9 @@ class DoctrineRelationTest extends RelationTestCases
 {
 	public function setUp()
 	{
-		$dataPath = realpath(__DIR__ . '/../../data');
+		$dataPath = realpath(__DIR__ . '/../..');
 
-		$this->config = parse_ini_file($dataPath . '/entities.doctrine.ini', true);
+		$this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
 
 		parent::setUp();
 
@@ -28,12 +28,12 @@ class DoctrineRelationTest extends RelationTestCases
 		{
 			$dataMapper              = new DoctrineDataMapper(
 				$entityName,
-				$dataPath . '/' . $entityName . '.xml',
+				$dataPath . '/Mocks/' . $entityName . '.xml',
 				$this->builder,
-				$this->config[$entityName]['dsn'],
+				'sqlite:///' . $dataPath . '/data/sqlite.test.db',
 				$this->config[$entityName]['table']
 			);
-			$this->repo[$entityName] = new Repository($entityName, $dataMapper);
+			$this->repo[$entityName] = new Repository($entityName, $dataMapper, $this->idAccessorRegistry);
 		}
 	}
 

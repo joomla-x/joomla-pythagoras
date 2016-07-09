@@ -6,10 +6,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Unit\ORM\TestData;
+namespace Joomla\Tests\Unit\ORM\Mocks;
 
-class Map
+class Test
 {
-	public $master_id;
-	public $tag_id;
+	public $id;
+	public $foo;
 }

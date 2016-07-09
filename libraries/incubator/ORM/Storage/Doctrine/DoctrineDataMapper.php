@@ -9,6 +9,7 @@
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\DriverManager;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -108,46 +109,49 @@ class DoctrineDataMapper implements DataMapperInterface
 	/**
 	 * Inserts an entity to the storage
 	 *
-	 * @param   object $entity The entity to insert
+	 * @param   object             $entity The entity to insert
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be inserted
 	 */
-	public function insert($entity)
+	public function insert($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
 		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
-		$persistor->insert($entity);
+		$persistor->insert($entity, $idAccessorRegistry);
 	}
 
 	/**
 	 * Updates an entity in the storage
 	 *
-	 * @param   object $entity The entity to insert
+	 * @param   object             $entity             The entity to insert
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be updated
 	 */
-	public function update($entity)
+	public function update($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
 		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
-		$persistor->update($entity);
+		$persistor->update($entity, $idAccessorRegistry);
 	}
 
 	/**
 	 * Deletes an entity from the storage
 	 *
-	 * @param   object $entity The entity to delete
+	 * @param   object             $entity The entity to delete
+	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be deleted
 	 */
-	public function delete($entity)
+	public function delete($entity, IdAccessorRegistry $idAccessorRegistry)
 	{
 		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
-		$persistor->delete($entity);
+		$persistor->delete($entity, $idAccessorRegistry);
 	}
 
 	/**

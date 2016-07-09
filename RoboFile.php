@@ -415,7 +415,13 @@ class RoboFile extends \Robo\Tasks
 			foreach ($columns as $column)
 			{
 				$type = preg_match('~\bid$~i', $column) ? 'integer' : 'string';
-				$table->addColumn($column, $type);
+				$table->addColumn(
+					$column,
+					$type,
+					[
+						'Notnull' => false,
+					]
+				);
 			}
 
 			if ($table->hasColumn('id'))

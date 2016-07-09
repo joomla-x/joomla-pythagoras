@@ -4,8 +4,9 @@ namespace Joomla\Tests\Unit\ORM\Storage;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Repository\RepositoryInterface;
-use Joomla\Tests\Unit\ORM\TestData\Extra;
+use Joomla\Tests\Unit\ORM\Mocks\Extra;
 use PHPUnit\Framework\TestCase;
 
 class RelationTestCases extends TestCase
@@ -19,11 +20,15 @@ class RelationTestCases extends TestCase
 	/** @var EntityBuilder The entity builder */
 	protected $builder;
 
+	/** @var  IdAccessorRegistry */
+	protected $idAccessorRegistry;
+
 	public function setUp()
 	{
-		$strategy      = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../data'));
-		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator, $this->config);
+		$this->idAccessorRegistry = new IdAccessorRegistry;
+		$strategy                 = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../Mocks'));
+		$locator                  = new Locator([$strategy]);
+		$this->builder            = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry);
 	}
 
 	/**
@@ -65,5 +70,29 @@ class RelationTestCases extends TestCase
 
 		$this->assertEquals('New info for Detail 2', $detail->extra->info);
 	}
-}
 
+	/**
+	 * @param \Exception $e
+	 *
+	 * @return string
+	 */
+	protected function dump($e)
+	{
+		$msg           = '';
+		$fmt           = "%s in %s(%d)\n";
+		$traceAsString = '';
+
+		while ($e instanceof \Exception)
+		{
+			$message       = $e->getMessage();
+			$file          = $e->getFile();
+			$line          = $e->getLine();
+			$traceAsString = $e->getTraceAsString();
+			$e             = $e->getPrevious();
+
+			$msg .= sprintf($fmt, $message, $file, $line);
+		}
+
+		return $msg . "\n" . $traceAsString;
+	}
+}

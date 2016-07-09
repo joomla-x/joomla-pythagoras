@@ -8,11 +8,11 @@
 
 namespace Joomla\ORM\UnitOfWork;
 
-use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
+use Joomla\ORM\Storage\DataMapperInterface;
 
 /**
  * Defines a unit of work that tracks changes made to entities and atomically persists them
@@ -44,10 +44,10 @@ class UnitOfWork
 	private $scheduledForDeletion = [];
 
 	/**
-	 * @param EntityRegistry      $entityRegistry      The entity registry to use
-	 * @param IdAccessorRegistry  $idAccessorRegistry  The Id accessor registry to use
-	 * @param ChangeTracker       $changeTracker       The change tracker to use
-	 * @param TransactionInterface          $connection          The connection to use in our unit of work
+	 * @param EntityRegistry       $entityRegistry     The entity registry to use
+	 * @param IdAccessorRegistry   $idAccessorRegistry The Id accessor registry to use
+	 * @param ChangeTracker        $changeTracker      The change tracker to use
+	 * @param TransactionInterface $connection         The connection to use in our unit of work
 	 */
 	public function __construct(
 		EntityRegistry $entityRegistry,
@@ -56,9 +56,9 @@ class UnitOfWork
 		TransactionInterface $connection = null
 	)
 	{
-		$this->entityRegistry      = $entityRegistry;
-		$this->idAccessorRegistry  = $idAccessorRegistry;
-		$this->changeTracker       = $changeTracker;
+		$this->entityRegistry     = $entityRegistry;
+		$this->idAccessorRegistry = $idAccessorRegistry;
+		$this->changeTracker      = $changeTracker;
 
 		if ($connection !== null)
 		{
@@ -91,7 +91,7 @@ class UnitOfWork
 		{
 			$this->connection->rollBack();
 			$this->postRollback();
-			throw new OrmException("Commit failed", 0, $e);
+			throw new OrmException("Commit failed.\n" . $e->getMessage(), 0, $e);
 		}
 
 		$this->postCommit();
@@ -208,7 +208,7 @@ class UnitOfWork
 		foreach ($this->scheduledForDeletion as $objectHashId => $entity)
 		{
 			$dataMapper = $this->getDataMapper($this->entityRegistry->getClassName($entity));
-			$dataMapper->delete($entity);
+			$dataMapper->delete($entity, $this->idAccessorRegistry);
 			// Order here matters
 			$this->detach($entity);
 			$this->entityRegistry->setState($entity, EntityStates::DEQUEUED);
@@ -272,10 +272,10 @@ class UnitOfWork
 		{
 			// If this entity was a child of aggregate roots, then call its methods to set the aggregate root Id
 			$this->entityRegistry->runAggregateRootCallbacks($entity);
-			$className   = $this->entityRegistry->getClassName($entity);
-			$dataMapper  = $this->getDataMapper($className);
+			$className  = $this->entityRegistry->getClassName($entity);
+			$dataMapper = $this->getDataMapper($className);
 
-			$dataMapper->insert($entity);
+			$dataMapper->insert($entity, $this->idAccessorRegistry);
 
 			$this->entityRegistry->registerEntity($entity);
 		}
@@ -319,7 +319,7 @@ class UnitOfWork
 			// If this entity was a child of aggregate roots, then call its methods to set the aggregate root Id
 			$this->entityRegistry->runAggregateRootCallbacks($entity);
 			$dataMapper = $this->getDataMapper($this->entityRegistry->getClassName($entity));
-			$dataMapper->update($entity);
+			$dataMapper->update($entity, $this->idAccessorRegistry);
 			$this->entityRegistry->registerEntity($entity);
 		}
 	}

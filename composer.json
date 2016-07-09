@@ -24,7 +24,8 @@
     "vlucas/phpdotenv": "^2.2",
     "joomla/registry": "^1.5",
     "aura/session": "^2.0",
-    "php": ">=5.5.9"
+    "php": ">=5.5.9",
+    "joomla/string": "^1.4"
   },
   "require-dev": {
     "codeception/codeception": "~2",
@@ -52,7 +53,7 @@
   "autoload-dev": {
     "psr-4": {
       "Joomla\\Tests\\Unit\\": "tests/unit/",
-      "Joomla\\Tests\\Unit\\ORM\\TestData\\": "tests/unit/ORM/data/",
+      "Joomla\\Tests\\Unit\\ORM\\Mocks\\": "tests/unit/ORM/Mocks/",
       "Joomla\\Tests\\Functional\\": "tests/functional/",
       "Joomla\\Tests\\System\\": "tests/acceptance/",
       "Joomla\\Tests\\Page\\": "tests/_support/Page/"

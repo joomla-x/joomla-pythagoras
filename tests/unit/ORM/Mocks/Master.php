@@ -6,12 +6,14 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Unit\ORM\TestData;
+namespace Joomla\Tests\Unit\ORM\Mocks;
 
-class Detail
+class Master
 {
 	public $id;
-	public $field_1;
-	public $field_2;
-	public $master_id = 0;
+	public $title;
+	public $fieldA;
+	public $fieldB;
+	public $fieldC;
+	public $parentId = 0;
 }

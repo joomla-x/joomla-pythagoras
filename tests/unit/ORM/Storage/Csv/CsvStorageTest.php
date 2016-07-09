@@ -16,19 +16,19 @@ class CsvStorageTest extends StorageTestCases
 {
 	public function setUp()
 	{
-		$dataPath = realpath(__DIR__ . '/../../data');
+		$dataPath = realpath(__DIR__ . '/../..');
 
-		$this->config = parse_ini_file($dataPath . '/entities.csv.ini', true);
+		$this->config = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
 
 		parent::setUp();
 
 		$dataMapper = new CsvDataMapper(
 			'Article',
-			'Article.xml',
+			$dataPath . '/Mocks/Article.xml',
 			$this->builder,
-			$dataPath . '/articles.csv'
+			$dataPath . '/data/articles.csv'
 		);
-		$this->repo = new Repository('Article', $dataMapper);
+		$this->repo = new Repository('Article', $dataMapper, $this->idAccessorRegistry);
 	}
 
 	public function tearDown()
