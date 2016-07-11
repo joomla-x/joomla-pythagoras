@@ -95,6 +95,7 @@ class EntityRegistryTest extends \PHPUnit\Framework\TestCase
 		               ->disableOriginalConstructor()
 		               ->setMockClassName("Foo")
 		               ->getMock();
+
 		$this->assertFalse($this->entityRegistry->isRegistered($entity));
 	}
 
@@ -106,6 +107,7 @@ class EntityRegistryTest extends \PHPUnit\Framework\TestCase
 		$this->entityRegistry->registerEntity($this->entity1);
 		$this->entityRegistry->registerEntity($this->entity2);
 		$this->entityRegistry->clear();
+
 		$this->assertFalse($this->entityRegistry->isRegistered($this->entity1));
 		$this->assertFalse($this->entityRegistry->isRegistered($this->entity2));
 		$this->assertEquals(EntityStates::NEVER_REGISTERED, $this->entityRegistry->getEntityState($this->entity1));

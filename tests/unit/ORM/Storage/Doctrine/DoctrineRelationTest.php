@@ -8,8 +8,14 @@
 
 namespace Joomla\Tests\Unit\ORM\Storage\Doctrine;
 
+use Doctrine\DBAL\DriverManager;
 use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
+use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
+use Joomla\Tests\Unit\ORM\Mocks\Detail;
+use Joomla\Tests\Unit\ORM\Mocks\Extra;
+use Joomla\Tests\Unit\ORM\Mocks\Master;
+use Joomla\Tests\Unit\ORM\Mocks\Tag;
 use Joomla\Tests\Unit\ORM\Storage\RelationTestCases;
 
 class DoctrineRelationTest extends RelationTestCases
@@ -20,20 +26,22 @@ class DoctrineRelationTest extends RelationTestCases
 
 		$this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
 
+		$connection       = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+		$this->transactor = new DoctrineTransactor($connection);
+
 		parent::setUp();
 
-		$entities = ['Master', 'Detail', 'Extra', 'Tag'];
+		$entities = [Master::class, Detail::class, Extra::class, Tag::class];
 
-		foreach ($entities as $entityName)
+		foreach ($entities as $className)
 		{
-			$dataMapper              = new DoctrineDataMapper(
-				$entityName,
-				$dataPath . '/Mocks/' . $entityName . '.xml',
+			$dataMapper             = new DoctrineDataMapper(
+				$connection,
+				$className,
 				$this->builder,
-				'sqlite:///' . $dataPath . '/data/sqlite.test.db',
-				$this->config[$entityName]['table']
+				$this->config[$className]['table']
 			);
-			$this->repo[$entityName] = new Repository($entityName, $dataMapper, $this->idAccessorRegistry);
+			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
 		}
 	}
 

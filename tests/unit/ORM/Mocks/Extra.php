@@ -12,4 +12,9 @@ class Extra
 {
 	public $detailId;
 	public $info;
+
+	public function __construct($info = null)
+	{
+		$this->info = $info;
+	}
 }

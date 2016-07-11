@@ -10,10 +10,11 @@ namespace Joomla\ORM\Repository;
 
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\IdAccessorRegistry;
+use Joomla\ORM\Operator;
 use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Storage\EntityFinderInterface;
+use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
 
 /**
  * Class Repository
@@ -24,14 +25,14 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  */
 class Repository implements RepositoryInterface
 {
-	/** @var  string  The name (type) of the entity */
-	private $entityName;
+	/** @var  string  The class of the entity */
+	private $className;
 
 	/** @var DataMapperInterface */
 	private $dataMapper;
 
-	/** @var  IdAccessorRegistry */
-	private $idAccessorRegistry;
+	/** @var  UnitOfWorkInterface */
+	private $unitOfWork;
 
 	/** @var  array */
 	private $restrictions = [];
@@ -39,22 +40,23 @@ class Repository implements RepositoryInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   string              $entityName The name (type) of the entity
+	 * @param   string              $className  The class of the entity
 	 * @param   DataMapperInterface $dataMapper The builder
-	 * @param IdAccessorRegistry    $idAccessorRegistry
+	 * @param   UnitOfWorkInterface $unitOfWork
 	 */
-	public function __construct($entityName, DataMapperInterface $dataMapper, IdAccessorRegistry $idAccessorRegistry)
+	public function __construct($className, DataMapperInterface $dataMapper, UnitOfWorkInterface $unitOfWork)
 	{
-		$this->entityName         = $entityName;
-		$this->dataMapper         = $dataMapper;
-		$this->idAccessorRegistry = $idAccessorRegistry;
+		$this->className  = $className;
+		$this->dataMapper = $dataMapper;
+		$this->unitOfWork = $unitOfWork;
+		$this->unitOfWork->registerDataMapper($this->className, $this->dataMapper);
 	}
 
 	/**
 	 * Find an entity using its id.
 	 *
 	 * getById() is a convenience method, It is equivalent to
-	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
+	 * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, $id)->getItem()
 	 *
 	 * @param   mixed $id The id value
 	 *
@@ -65,7 +67,7 @@ class Repository implements RepositoryInterface
 	 */
 	public function getById($id)
 	{
-		return $this->dataMapper->getById($id);
+		return $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
 	}
 
 	/**
@@ -117,14 +119,7 @@ class Repository implements RepositoryInterface
 	 */
 	public function add($entity)
 	{
-		if (empty($entity->id))
-		{
-			$this->dataMapper->insert($entity, $this->idAccessorRegistry);
-		}
-		else
-		{
-			$this->dataMapper->update($entity, $this->idAccessorRegistry);
-		}
+		$this->unitOfWork->scheduleForInsertion($entity);
 	}
 
 	/**
@@ -138,7 +133,7 @@ class Repository implements RepositoryInterface
 	 */
 	public function remove($entity)
 	{
-		$this->dataMapper->delete($entity, $this->idAccessorRegistry);
+		$this->unitOfWork->scheduleForDeletion($entity);
 	}
 
 	/**
@@ -148,7 +143,7 @@ class Repository implements RepositoryInterface
 	 */
 	public function commit()
 	{
-		$this->dataMapper->commit();
+		$this->unitOfWork->commit();
 	}
 
 	/**

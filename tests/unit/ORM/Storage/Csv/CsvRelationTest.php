@@ -9,7 +9,13 @@
 namespace Joomla\Tests\Unit\ORM\Storage\Csv;
 
 use Joomla\ORM\Repository\Repository;
+use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\Storage\Csv\CsvDataMapper;
+use Joomla\ORM\Storage\Csv\CsvTransactor;
+use Joomla\Tests\Unit\ORM\Mocks\Detail;
+use Joomla\Tests\Unit\ORM\Mocks\Extra;
+use Joomla\Tests\Unit\ORM\Mocks\Master;
+use Joomla\Tests\Unit\ORM\Mocks\Tag;
 use Joomla\Tests\Unit\ORM\Storage\RelationTestCases;
 
 class CsvRelationTest extends RelationTestCases
@@ -20,19 +26,22 @@ class CsvRelationTest extends RelationTestCases
 
 		$this->config = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
 
+		$gateway          = new CsvDataGateway($this->config['dataPath']);
+		$this->transactor = new CsvTransactor($gateway);
+
 		parent::setUp();
 
-		$entities = ['Master', 'Detail', 'Extra', 'Tag'];
+		$entities = [Master::class, Detail::class, Extra::class, Tag::class];
 
-		foreach ($entities as $entityName)
+		foreach ($entities as $className)
 		{
-			$dataMapper              = new CsvDataMapper(
-				$entityName,
-				$dataPath . '/Mocks/' . $entityName . '.xml',
+			$dataMapper             = new CsvDataMapper(
+				$gateway,
+				$className,
 				$this->builder,
-				$this->config[$entityName]['data']
+				basename($this->config[$className]['data'], '.csv')
 			);
-			$this->repo[$entityName] = new Repository($entityName, $dataMapper, $this->idAccessorRegistry);
+			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
 		}
 	}
 

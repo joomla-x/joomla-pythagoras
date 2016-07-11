@@ -17,10 +17,10 @@ use Joomla\ORM\Storage\DataMapperInterface;
 /**
  * Defines a unit of work that tracks changes made to entities and atomically persists them
  */
-class UnitOfWork
+class UnitOfWork implements UnitOfWorkInterface
 {
-	/** @var TransactionInterface The connection to use in our unit of work */
-	private $connection = null;
+	/** @var TransactionInterface The transactor to use in our unit of work */
+	private $transactor = null;
 
 	/** @var EntityRegistry What manages/tracks entities for our unit of work */
 	private $entityRegistry = null;
@@ -47,7 +47,7 @@ class UnitOfWork
 	 * @param EntityRegistry       $entityRegistry     The entity registry to use
 	 * @param IdAccessorRegistry   $idAccessorRegistry The Id accessor registry to use
 	 * @param ChangeTracker        $changeTracker      The change tracker to use
-	 * @param TransactionInterface $connection         The connection to use in our unit of work
+	 * @param TransactionInterface $connection         The transactor to use in our unit of work
 	 */
 	public function __construct(
 		EntityRegistry $entityRegistry,
@@ -62,34 +62,36 @@ class UnitOfWork
 
 		if ($connection !== null)
 		{
-			$this->setConnection($connection);
+			$this->setTransactor($connection);
 		}
 	}
 
 	/**
-	 * @inheritdoc
+	 * Commits any entities that have been scheduled for insertion/updating/deletion
+	 *
+	 * @throws OrmException Thrown if there was an error committing the transaction
 	 */
 	public function commit()
 	{
-		if (!$this->connection instanceof TransactionInterface)
+		if (!$this->transactor instanceof TransactionInterface)
 		{
 			throw new OrmException("Connection not set");
 		}
 
 		$this->checkForUpdates();
 		$this->preCommit();
-		$this->connection->beginTransaction();
+		$this->transactor->beginTransaction();
 
 		try
 		{
 			$this->insert();
 			$this->update();
 			$this->delete();
-			$this->connection->commit();
+			$this->transactor->commit();
 		}
 		catch (\Exception $e)
 		{
-			$this->connection->rollBack();
+			$this->transactor->rollBack();
 			$this->postRollback();
 			throw new OrmException("Commit failed.\n" . $e->getMessage(), 0, $e);
 		}
@@ -104,7 +106,9 @@ class UnitOfWork
 	}
 
 	/**
-	 * @inheritdoc
+	 * Detaches an entity from being managed
+	 *
+	 * @param object $entity The entity to detach
 	 */
 	public function detach($entity)
 	{
@@ -116,7 +120,7 @@ class UnitOfWork
 	}
 
 	/**
-	 * @inheritdoc
+	 * Disposes of all data in this unit of work
 	 */
 	public function dispose()
 	{
@@ -128,7 +132,9 @@ class UnitOfWork
 	}
 
 	/**
-	 * @inheritdoc
+	 * Gets the unit of work's entity registry
+	 *
+	 * @return EntityRegistry The entity registry used by the unit of work
 	 */
 	public function getEntityRegistry()
 	{
@@ -136,7 +142,11 @@ class UnitOfWork
 	}
 
 	/**
-	 * @inheritdoc
+	 * Registers a data mapper for a class
+	 * Registering a data mapper for a class will overwrite any previously-set data mapper for that class
+	 *
+	 * @param string              $className  The name of the class whose data mapper we're registering
+	 * @param DataMapperInterface $dataMapper The data mapper for the class
 	 */
 	public function registerDataMapper($className, DataMapperInterface $dataMapper)
 	{
@@ -144,7 +154,9 @@ class UnitOfWork
 	}
 
 	/**
-	 * @inheritdoc
+	 * Schedules an entity for deletion
+	 *
+	 * @param object $entity The entity to schedule for deletion
 	 */
 	public function scheduleForDeletion($entity)
 	{
@@ -152,7 +164,9 @@ class UnitOfWork
 	}
 
 	/**
-	 * @inheritdoc
+	 * Schedules an entity for insertion
+	 *
+	 * @param object $entity The entity to schedule for insertion
 	 */
 	public function scheduleForInsertion($entity)
 	{
@@ -162,7 +176,9 @@ class UnitOfWork
 	}
 
 	/**
-	 * @inheritdoc
+	 * Schedules an entity for insertion
+	 *
+	 * @param object $entity The entity to schedule for insertion
 	 */
 	public function scheduleForUpdate($entity)
 	{
@@ -172,9 +188,9 @@ class UnitOfWork
 	/**
 	 * @inheritdoc
 	 */
-	public function setConnection(TransactionInterface $connection)
+	public function setTransactor(TransactionInterface $transactor)
 	{
-		$this->connection = $connection;
+		$this->transactor = $transactor;
 	}
 
 	/**

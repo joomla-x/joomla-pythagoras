@@ -9,25 +9,24 @@
 namespace Joomla\Tests\Unit\ORM\UnitOfWork;
 
 use Doctrine\DBAL\DriverManager;
-use Joomla\ORM\Definition\Locator\Locator;
-use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
-use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
 use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
 use Joomla\ORM\UnitOfWork\ChangeTracker;
-use Joomla\Tests\Unit\ORM\Mocks\UnitOfWork;
+use Joomla\ORM\UnitOfWork\TransactionInterface;
+use Joomla\Tests\Unit\ORM\Mocks\UnitOfWorkAccessDecorator;
 use Joomla\Tests\Unit\ORM\Mocks\User;
 use PHPUnit\Framework\TestCase;
 
 class UnitOfWorkTest extends TestCase
 {
-	/** @var UnitOfWork The unit of work to use in the tests */
+	/** @var UnitOfWorkAccessDecorator The unit of work to use in the tests */
 	private $unitOfWork = null;
 
 	/** @var EntityRegistry The entity registry to use in tests */
@@ -57,6 +56,9 @@ class UnitOfWorkTest extends TestCase
 	/** @var  IdAccessorRegistry */
 	protected $idAccessorRegistry;
 
+	/** @var  TransactionInterface */
+	protected $transactor;
+
 	/**
 	 * Sets up the tests
 	 */
@@ -66,8 +68,11 @@ class UnitOfWorkTest extends TestCase
 
 		$this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
 
-		$this->idAccessorRegistry = new IdAccessorRegistry();
-		$this->idAccessorRegistry->registerIdAccessors(
+		$connection       = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+		$this->transactor = new DoctrineTransactor($connection);
+
+		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
+		$repositoryFactory->getIdAccessorRegistry()->registerIdAccessors(
 			User::class,
 			function (User $user)
 			{
@@ -79,28 +84,33 @@ class UnitOfWorkTest extends TestCase
 			}
 		);
 
-		$strategy      = new RecursiveDirectoryStrategy($dataPath . '/Mocks');
-		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry);
+//		$strategy      = new RecursiveDirectoryStrategy($dataPath . '/Mocks');
+//		$locator       = new Locator([$strategy]);
+//		$this->builder     = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
+//
+//		$transactor           = new DoctrineTransactor(DriverManager::getConnection(['url' => $databaseUrl]));
+//		$changeTracker        = new ChangeTracker();
+//		$this->entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
+//		$this->unitOfWork     = new UnitOfWork(
+//			$this->entityRegistry,
+//			$this->idAccessorRegistry,
+//			$changeTracker,
+//			$transactor
+//		);
+//
+//		$this->dataMapper = new DoctrineDataMapper(
+//			'User',
+//			'User.xml',
+//			$this->builder,
+//			$databaseUrl,
+//			'users'
+//		);
+//		$this->repo       = new Repository('User', $this->dataMapper, $this->idAccessorRegistry);
 
-		$transactor               = new DoctrineTransactor(DriverManager::getConnection(['url' => 'sqlite:///' . $dataPath . '/data/sqlite.test.db']));
-		$changeTracker            = new ChangeTracker();
-		$this->entityRegistry     = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
-		$this->unitOfWork         = new UnitOfWork(
-			$this->entityRegistry,
-			$this->idAccessorRegistry,
-			$changeTracker,
-			$transactor
-		);
-
-		$this->dataMapper = new DoctrineDataMapper(
-			'User',
-			'User.xml',
-			$this->builder,
-			'sqlite:///' . $dataPath . '/data/sqlite.test.db',
-			'users'
-		);
-		$this->repo       = new Repository('User', $this->dataMapper, $this->idAccessorRegistry);
+		$this->repo           = $repositoryFactory->forEntity('User');
+		$this->entityRegistry = $repositoryFactory->getEntityRegistry();
+		$this->unitOfWork     = new UnitOfWorkAccessDecorator($repositoryFactory->getUnitOfWork());
+		$this->dataMapper     = $this->unitOfWork->getDataMapper('User');
 
 		/**
 		 * The Ids are purposely unique so that we can identify them as such without having to first insert them to
@@ -118,13 +128,19 @@ class UnitOfWorkTest extends TestCase
 	 */
 	public function testCheckingIfEntityUpdateIsDetected()
 	{
-		$className = $this->entityRegistry->getClassName($this->entity1);
-		$this->unitOfWork->registerDataMapper($className, $this->dataMapper);
-		$this->entityRegistry->registerEntity($this->entity1);
-		$this->entity1->setUsername("blah");
-		$this->unitOfWork->checkForUpdates();
-		$scheduledFoUpdate = $this->unitOfWork->getScheduledEntityUpdates();
-		$this->unitOfWork->commit();
+		try
+		{
+			$this->prepareDatabase();
+			$this->repo->add($this->entity1);
+			$this->entity1->setUsername("blah");
+			$this->unitOfWork->checkForUpdates();
+			$scheduledFoUpdate = $this->unitOfWork->getScheduledEntityUpdates();
+			$this->unitOfWork->commit();
+		}
+		catch (\Exception $e)
+		{
+			throw new \Exception($this->dump($e));
+		}
 		$this->assertTrue(in_array($this->entity1, $scheduledFoUpdate));
 	}
 
@@ -225,7 +241,7 @@ class UnitOfWorkTest extends TestCase
 	}
 
 	/**
-	 * Tests not setting the connection
+	 * Tests not setting the transactor
 	 */
 	public function testNotSettingConnection()
 	{

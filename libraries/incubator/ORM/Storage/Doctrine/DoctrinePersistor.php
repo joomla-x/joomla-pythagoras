@@ -67,6 +67,8 @@ class DoctrinePersistor implements PersistorInterface
 			{
 				$idAccessorRegistry->setEntityId($entity, $this->connection->lastInsertId());
 			}
+
+			$this->builder->resolve($entity);
 		}
 		catch (\Exception $e)
 		{
@@ -95,6 +97,8 @@ class DoctrinePersistor implements PersistorInterface
 				'id' => $entityId
 			]
 		);
+
+		$this->builder->resolve($entity);
 
 		#if ($affectedRows == 0)
 		#{

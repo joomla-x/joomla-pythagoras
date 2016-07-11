@@ -9,7 +9,10 @@
 namespace Joomla\Tests\Unit\ORM\Storage\Csv;
 
 use Joomla\ORM\Repository\Repository;
+use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\Storage\Csv\CsvDataMapper;
+use Joomla\ORM\Storage\Csv\CsvTransactor;
+use Joomla\Tests\Unit\ORM\Mocks\Article;
 use Joomla\Tests\Unit\ORM\Storage\StorageTestCases;
 
 class CsvStorageTest extends StorageTestCases
@@ -18,17 +21,19 @@ class CsvStorageTest extends StorageTestCases
 	{
 		$dataPath = realpath(__DIR__ . '/../..');
 
-		$this->config = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
+		$this->config     = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
+		$gateway          = new CsvDataGateway($this->config['dataPath']);
+		$this->transactor = new CsvTransactor($gateway);
 
 		parent::setUp();
 
 		$dataMapper = new CsvDataMapper(
-			'Article',
-			$dataPath . '/Mocks/Article.xml',
+			$gateway,
+			Article::class,
 			$this->builder,
-			$dataPath . '/data/articles.csv'
+			'articles'
 		);
-		$this->repo = new Repository('Article', $dataMapper, $this->idAccessorRegistry);
+		$this->repo = new Repository(Article::class, $dataMapper, $this->unitOfWork);
 	}
 
 	public function tearDown()

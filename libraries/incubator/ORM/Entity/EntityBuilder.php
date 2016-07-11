@@ -21,13 +21,9 @@ use Joomla\ORM\Definition\Parser\XmlParser;
 use Joomla\ORM\Event\AfterCreateDefinitionEvent;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\FileNotFoundException;
-use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
-use Joomla\ORM\Repository\Repository;
-use Joomla\ORM\Repository\RepositoryInterface;
-use Joomla\ORM\Storage\Csv\CsvDataMapper;
-use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
+use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\String\Normalise;
 
 /**
@@ -50,8 +46,8 @@ class EntityBuilder
 	/** @var  EntityInterface[]  Entities */
 	private $entities;
 
-	/** @var  RepositoryInterface[] */
-	private $repositories;
+	/** @var  RepositoryFactory */
+	private $repositoryFactory;
 
 	/** @var  EntityReflector  Reflector to manipulate the entity */
 	private $reflector;
@@ -62,6 +58,9 @@ class EntityBuilder
 	/** @var  IdAccessorRegistry */
 	private $idAccessorRegistry;
 
+	/** @var array  */
+	private $alias = [];
+
 	/**
 	 * Constructor
 	 *
@@ -69,67 +68,60 @@ class EntityBuilder
 	 * @param   array            $config  The entity configurations
 	 * @param IdAccessorRegistry $idAccessorRegistry
 	 */
-	public function __construct(LocatorInterface $locator, array $config, IdAccessorRegistry $idAccessorRegistry)
+	public function __construct(LocatorInterface $locator, array $config, IdAccessorRegistry $idAccessorRegistry, RepositoryFactory $repositoryFactory)
 	{
 		$this->locator            = $locator;
 		$this->config             = $config;
 		$this->idAccessorRegistry = $idAccessorRegistry;
+		$this->repositoryFactory  = $repositoryFactory;
 	}
 
 	/**
 	 * Get a new instance of the entity.
 	 *
-	 * @param   string $entityName The name of the entity
+	 * @param   string $entityClass The class of the entity
 	 *
 	 * @return  object  An empty entity
 	 */
-	public function create($entityName)
+	public function create($entityClass)
 	{
-		if (!isset($this->entities[$entityName]))
+		if (!isset($this->entities[$entityClass]))
 		{
-			$this->readDefinition($entityName);
+			$this->readDefinition($entityClass);
 		}
 
-		$className = $this->config[$entityName]['class'];
-
-		return new $className;
+		return new $entityClass;
 	}
 
 	/**
 	 * Locate the description file
 	 *
-	 * @param   string $entityName The name of the entity
+	 * @param   string $entityClass The class of the entity
 	 *
 	 * @return  string  The definition file path
 	 */
-	private function locateDescription($entityName)
+	private function locateDescription($entityClass)
 	{
-		$search = $entityName . '.xml';
-
-		if (isset($this->config[$entityName]['definition']))
-		{
-			$search = $this->config[$entityName]['definition'];
-		}
-
-		$filename = $this->locator->findFile($search);
+		$definitionFile = $this->config[$entityClass]['definition'];
+		$filename       = $this->locator->findFile($definitionFile);
 
 		if (!is_null($filename))
 		{
 			return $filename;
 		}
 
-		throw new FileNotFoundException("Unable to locate definition file for entity '{$entityName}'");
+		throw new FileNotFoundException("Unable to locate definition file '{$definitionFile}' for entity '{$entityClass}'");
 	}
 
 	/**
 	 * Parse the description file
 	 *
-	 * @param   string $filename   The definition file path
-	 * @param   string $entityName The name of the entity
+	 * @param   string $filename    The definition file path
+	 * @param   string $entityClass The class of the entity
 	 *
 	 * @return  EntityStructure  The parsed description
 	 */
-	private function parseDescription($filename, $entityName)
+	private function parseDescription($filename, $entityClass)
 	{
 		$parser = new XmlParser();
 
@@ -147,7 +139,7 @@ class EntityBuilder
 
 		try
 		{
-			$this->getDispatcher()->dispatch(new AfterCreateDefinitionEvent($entityName, $definition, $this));
+			$this->getDispatcher()->dispatch(new AfterCreateDefinitionEvent($entityClass, $definition, $this));
 		}
 		catch (\UnexpectedValueException $e)
 		{
@@ -290,23 +282,22 @@ class EntityBuilder
 	/**
 	 * Cast array to entity
 	 *
-	 * @param   array  $matches    The records
-	 * @param   string $entityName The entity name
+	 * @param   array  $matches     The records
+	 * @param   string $entityClass The entity name
 	 *
 	 * @return array
 	 */
-	public function castToEntity($matches, $entityName)
+	public function castToEntity($matches, $entityClass)
 	{
 		$result = [];
 
-		$meta = $this->getMeta($entityName);
+		$meta = $this->getMeta($entityClass);
 
-		$className  = $this->config[$entityName]['class'];
-		$reflection = new \ReflectionClass($className);
+		$reflection = new \ReflectionClass($entityClass);
 
 		foreach ($matches as $match)
 		{
-			$entity = new $className;
+			$entity = new $entityClass;
 
 			foreach ($meta->fields as $key => $definition)
 			{
@@ -345,55 +336,23 @@ class EntityBuilder
 	/**
 	 * Get the meta data for the entity type
 	 *
-	 * @param   string $entityName The entity name
+	 * @param   string $entityClass The entity name
 	 *
-	 * @return EntityInterface
+	 * @return \Joomla\ORM\Definition\Parser\Entity
 	 */
-	private function getMeta($entityName)
+	private function getMeta($entityClass)
 	{
-		if (!isset($this->entities[$entityName]))
+		if (!isset($this->entities[$entityClass]))
 		{
-			$this->readDefinition($entityName);
+			$this->readDefinition($entityClass);
 		}
 
-		return $this->entities[$entityName]->getDefinition();
+		return $this->entities[$entityClass]->getDefinition();
 	}
 
-	public function getRepository($entityName)
+	public function getRepository($entityClass)
 	{
-		if (!isset($this->repositories[$entityName]))
-		{
-			$dataMapperClass = $this->config[$entityName]['dataMapper'];
-			switch ($dataMapperClass)
-			{
-				case CsvDataMapper::class:
-					$dataMapper = new CsvDataMapper(
-						$entityName,
-						$this->config[$entityName]['definition'],
-						$this,
-						$this->config[$entityName]['data']
-					);
-					break;
-
-				case DoctrineDataMapper::class:
-					$dataMapper = new DoctrineDataMapper(
-						$entityName,
-						$this->config[$entityName]['definition'],
-						$this,
-						$this->config[$entityName]['dsn'],
-						$this->config[$entityName]['table']
-					);
-					break;
-
-				default:
-					throw new OrmException("Unknown data mapper '$dataMapperClass'");
-					break;
-			}
-
-			$this->repositories[$entityName] = new Repository($entityName, $dataMapper, $this->idAccessorRegistry);
-		}
-
-		return $this->repositories[$entityName];
+		return $this->repositoryFactory->forEntity($this->resolveAlias($entityClass));
 	}
 
 	/**
@@ -406,8 +365,8 @@ class EntityBuilder
 	 */
 	public function reduce($entity)
 	{
-		$entityName = $this->getEntityName($entity);
-		$meta       = $this->getMeta($entityName);
+		$entityClass = get_class($entity);
+		$meta        = $this->getMeta($entityClass);
 
 		$reflection = new \ReflectionClass($entity);
 		$properties = [];
@@ -461,8 +420,8 @@ class EntityBuilder
 	 */
 	public function resolve($entity)
 	{
-		$entityName = $this->getEntityName($entity);
-		$meta       = $this->getMeta($entityName);
+		$entityClass = get_class($entity);
+		$meta        = $this->getMeta($entityClass);
 		$this->resolveRelations($entity, $meta);
 	}
 
@@ -499,38 +458,43 @@ class EntityBuilder
 	}
 
 	/**
-	 * @param object $entity
-	 *
-	 * @return string
-	 * @throws \Exception
+	 * @param $entityClass
 	 */
-	private function getEntityName($entity)
+	private function readDefinition($entityClass)
 	{
-		foreach ($this->config as $entityName => $config)
+		if (!class_exists($entityClass))
 		{
-			if ($entity instanceof $config['class'])
+			$alias = $entityClass;
+			foreach ($this->config as $class => $config)
 			{
-				return $entityName;
+				if (!is_array($config))
+				{
+					continue;
+				}
+
+				if ($alias == basename($config['definition'], '.xml'))
+				{
+					$entityClass = $class;
+					$this->alias[$alias] = $entityClass;
+					break;
+				}
 			}
 		}
 
-		throw new EntityNotFoundException("Unknown class " . get_class($entity));
-	}
-
-	/**
-	 * @param $entityName
-	 */
-	private function readDefinition($entityName)
-	{
 		$entity          = new Entity;
 		$this->reflector = new EntityReflector($entity);
-		$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityName), $entityName));
-		$this->entities[$entityName] = $entity;
+		$filename        = $this->locateDescription($entityClass);
+		$definition      = $this->parseDescription($filename, $entityClass);
+		$this->reflector->setDefinition($definition);
+		$this->entities[$entityClass] = $entity;
+
+		$meta = $this->getMeta($entityClass);
+
+		$this->alias[$meta->name] = $entityClass;
 
 		$key = $entity->key();
 		if (empty($key))
 		{
-			$meta = $this->getMeta($entityName);
 			if (isset($meta->relations->belongsTo))
 			{
 				foreach ($meta->relations->belongsTo as $relation)
@@ -545,7 +509,7 @@ class EntityBuilder
 			$key = 'id';
 		}
 		$this->idAccessorRegistry->registerReflectionIdAccessors(
-			$this->config[$entityName]['class'],
+			$entityClass,
 			$key
 		);
 	}
@@ -570,7 +534,8 @@ class EntityBuilder
 				->with($colRefName, Operator::EQUAL, $entityId)
 				->getItems();
 
-			$repository = $this->getRepository($relation->entity);
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
 			$repository->restrictTo('id', Operator::IN, $ids);
 
 			$entity->{$varObjName} = $repository;
@@ -589,7 +554,8 @@ class EntityBuilder
 			$varObjName = Normalise::toVariable($relation->name);
 			$colRefName = Normalise::toUnderscoreSeparated($relation->reference);
 
-			$repository = $this->getRepository($relation->entity);
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
 			$repository->restrictTo($colRefName, Operator::EQUAL, $entityId);
 
 			$entity->{$varObjName} = $repository;
@@ -608,7 +574,8 @@ class EntityBuilder
 			$varObjName = Normalise::toVariable($relation->name);
 			$colRefName = Normalise::toUnderscoreSeparated($relation->reference);
 
-			$repository = $this->getRepository($relation->entity);
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
 
 			try
 			{
@@ -626,6 +593,21 @@ class EntityBuilder
 		}
 	}
 
+	private function resolveAlias($alias)
+	{
+		while (isset($this->alias[$alias]))
+		{
+			$alias = $this->alias[$alias];
+		}
+
+		if (!isset($this->entities[$alias]))
+		{
+			$this->readDefinition($alias);
+		}
+
+		return $alias;
+	}
+
 	/**
 	 * @param BelongsTo[]      $relations
 	 * @param object           $entity
@@ -638,7 +620,8 @@ class EntityBuilder
 			$varIdName  = Normalise::toVariable($relation->name);
 			$varObjName = Normalise::toVariable($this->getBasename($relation->name));
 
-			$repository = $this->getRepository($relation->entity);
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
 
 			$property = $reflection->getProperty($varIdName);
 			$property->setAccessible(true);

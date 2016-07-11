@@ -8,15 +8,15 @@
 
 namespace Joomla\ORM\Storage\Doctrine;
 
-use Doctrine\DBAL\DriverManager;
-use Joomla\ORM\IdAccessorRegistry;
-use Joomla\ORM\Storage\DataMapperInterface;
+use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\Storage\CollectionFinderInterface;
-use Joomla\ORM\Storage\EntityFinderInterface;
+use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
+use Joomla\ORM\Storage\CollectionFinderInterface;
+use Joomla\ORM\Storage\DataMapperInterface;
+use Joomla\ORM\Storage\EntityFinderInterface;
 
 /**
  * Class DoctrineDataMapper
@@ -27,41 +27,32 @@ use Joomla\ORM\Operator;
  */
 class DoctrineDataMapper implements DataMapperInterface
 {
-	/** @var  string  Database information */
-	private $dsn;
-
-	/** @var  string  Name of the data table */
-	private $table;
-
-	/** @var  string  Name of the definition file */
-	private $definitionFile;
+	/** @var \Doctrine\DBAL\Connection The connection */
+	private $connection;
 
 	/** @var string  Class of the entity */
 	private $entityClass;
 
-	/** @var \Doctrine\DBAL\Connection The connection */
-	private $connection;
-
 	/** @var EntityBuilder The entity builder */
 	private $builder;
 
+	/** @var  string  Name of the data table */
+	private $table;
+
 	/**
-	 * CsvDataMapper constructor.
+	 * DoctrineDataMapper constructor.
 	 *
-	 * @param   string        $entityClass    The class name of the entity
-	 * @param   string        $definitionFile The definition file name
-	 * @param   EntityBuilder $builder        The entity builder
-	 * @param   string        $dsn            The dsn for the storage
-	 * @param   string        $table          The table
+	 * @param   Connection    $connection  The database connection
+	 * @param   string        $entityClass The class name of the entity
+	 * @param   EntityBuilder $builder     The entity builder
+	 * @param   string        $table       The table name
 	 */
-	public function __construct($entityClass, $definitionFile, $builder, $dsn, $table)
+	public function __construct(Connection $connection, $entityClass, $builder, $table)
 	{
-		$this->entityClass    = $entityClass;
-		$this->definitionFile = $definitionFile;
-		$this->dsn            = $dsn;
-		$this->table          = $table;
-		$this->connection     = DriverManager::getConnection(['url' => $this->dsn]);
-		$this->builder        = $builder;
+		$this->connection  = $connection;
+		$this->entityClass = $entityClass;
+		$this->builder     = $builder;
+		$this->table       = $table;
 	}
 
 	/**
@@ -125,7 +116,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	/**
 	 * Updates an entity in the storage
 	 *
-	 * @param   object             $entity             The entity to insert
+	 * @param   object             $entity The entity to insert
 	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
@@ -152,14 +143,5 @@ class DoctrineDataMapper implements DataMapperInterface
 	{
 		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
 		$persistor->delete($entity, $idAccessorRegistry);
-	}
-
-	/**
-	 * Persists all changes
-	 *
-	 * @return void
-	 */
-	public function commit()
-	{
 	}
 }

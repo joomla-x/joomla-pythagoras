@@ -4,8 +4,15 @@ namespace Joomla\Tests\Unit\ORM\Storage;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\ORM\Service\RepositoryFactory;
+use Joomla\ORM\UnitOfWork\ChangeTracker;
+use Joomla\ORM\UnitOfWork\TransactionInterface;
+use Joomla\ORM\UnitOfWork\UnitOfWork;
+use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
+use Joomla\Tests\Unit\ORM\Mocks\Detail;
 use Joomla\Tests\Unit\ORM\Mocks\Extra;
 use PHPUnit\Framework\TestCase;
 
@@ -23,12 +30,30 @@ class RelationTestCases extends TestCase
 	/** @var  IdAccessorRegistry */
 	protected $idAccessorRegistry;
 
+	/** @var  TransactionInterface */
+	protected $transactor;
+
+	/** @var  UnitOfWorkInterface */
+	protected $unitOfWork;
+
 	public function setUp()
 	{
 		$this->idAccessorRegistry = new IdAccessorRegistry;
-		$strategy                 = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../Mocks'));
-		$locator                  = new Locator([$strategy]);
-		$this->builder            = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry);
+
+		$changeTracker  = new ChangeTracker;
+		$entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
+
+		$this->unitOfWork = new UnitOfWork(
+			$entityRegistry,
+			$this->idAccessorRegistry,
+			$changeTracker,
+			$this->transactor
+		);
+
+		$strategy          = new RecursiveDirectoryStrategy($this->config['definitionPath']);
+		$locator           = new Locator([$strategy]);
+		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
+		$this->builder     = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
 	}
 
 	/**
@@ -41,7 +66,7 @@ class RelationTestCases extends TestCase
 	 */
 	public function testReadTheExtraOfADetail()
 	{
-		$repo   = $this->repo['Detail'];
+		$repo   = $this->repo[Detail::class];
 		$detail = $repo->getById(1);
 
 		$this->assertInstanceOf(Extra::class, $detail->extra);
@@ -58,17 +83,25 @@ class RelationTestCases extends TestCase
 	 */
 	private function testCreateAnExtraForADetail()
 	{
-		$repo   = $this->repo['Detail'];
-		$detail = $repo->getById(2);
+		try {
+			$repo   = $this->repo[Detail::class];
+			$detail = $repo->getById(2);
 
-		$detail->extra = new Extra('New info for Detail 2');
+			$this->assertFalse(isset($detail->extra), 'Detail record #2 should not have an initial Extra record.');
 
-		$repo->commit();
+			$detail->extra = new Extra('New info for Detail 2');
+			throw new \Exception(print_r($detail, true));
 
-		// Reload
-		$detail = $repo->getById(2);
+			$repo->commit();
 
-		$this->assertEquals('New info for Detail 2', $detail->extra->info);
+			// Reload
+			$detail = $repo->getById(2);
+			$info = $detail->extra->info;
+		} catch (\Exception $e) {
+			throw new \Exception($this->dump($e));
+		}
+
+		$this->assertEquals('New info for Detail 2', $info);
 	}
 
 	/**

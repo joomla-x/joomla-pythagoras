@@ -53,11 +53,4 @@ interface DataMapperInterface extends PersistorInterface
 	 * @throws  OrmException  if there was an error getting the entities
 	 */
 	public function findAll();
-
-	/**
-	 * Persists all changes
-	 *
-	 * @return void
-	 */
-	public function commit();
 }

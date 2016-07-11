@@ -4,10 +4,16 @@ namespace Joomla\Tests\Unit\ORM\Storage;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\ORM\Service\RepositoryFactory;
+use Joomla\ORM\UnitOfWork\ChangeTracker;
+use Joomla\ORM\UnitOfWork\TransactionInterface;
+use Joomla\ORM\UnitOfWork\UnitOfWork;
+use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
 use Joomla\Tests\Unit\ORM\Mocks\Article;
 use PHPUnit\Framework\TestCase;
 
@@ -25,12 +31,30 @@ class StorageTestCases extends TestCase
 	/** @var  IdAccessorRegistry */
 	protected $idAccessorRegistry;
 
+	/** @var  UnitOfWorkInterface */
+	protected $unitOfWork;
+
+	/** @var  TransactionInterface */
+	protected $transactor;
+
 	public function setUp()
 	{
 		$this->idAccessorRegistry = new IdAccessorRegistry;
-		$strategy                 = new RecursiveDirectoryStrategy(realpath(__DIR__ . '/../Mocks'));
-		$locator                  = new Locator([$strategy]);
-		$this->builder            = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry);
+
+		$changeTracker  = new ChangeTracker;
+		$entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
+
+		$this->unitOfWork = new UnitOfWork(
+			$entityRegistry,
+			$this->idAccessorRegistry,
+			$changeTracker,
+			$this->transactor
+		);
+
+		$strategy          = new RecursiveDirectoryStrategy($this->config['definitionPath']);
+		$locator           = new Locator([$strategy]);
+		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
+		$this->builder     = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
 	}
 
 	/**
@@ -471,11 +495,9 @@ class StorageTestCases extends TestCase
 
 		$this->assertNotEmpty($article->id);
 
-		$this->builder->resolve($article);
 		$loaded = $this->repo->getById($article->id);
 
-		// @todo Should be assertSame()
-		$this->assertEquals($article, $loaded);
+		$this->assertSame($article, $loaded);
 
 		return $article->id;
 	}
@@ -497,18 +519,13 @@ class StorageTestCases extends TestCase
 		$article->teaser = "This article was changed";
 		$article->author = __METHOD__;
 
-		// @todo Should add itself
-		$this->repo->add($article);
-
 		$this->repo->commit();
 
-		$loaded = $this->repo
-			->getById($id);
+		$loaded = $this->repo->getById($id);
 
-		// @todo Should be assertSame()
-		$this->assertEquals($article, $loaded);
+		$this->assertSame($article, $loaded);
 
-		return $article->id;
+		return $id;
 	}
 
 	/**
@@ -525,6 +542,9 @@ class StorageTestCases extends TestCase
 		$this->repo->remove($article);
 
 		$this->repo->commit();
+
+		$this->expectException(EntityNotFoundException::class);
+		$loaded = $this->repo->getById($id);
 	}
 
 	/**
