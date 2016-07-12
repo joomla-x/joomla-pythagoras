@@ -176,9 +176,9 @@ class UnitOfWork implements UnitOfWorkInterface
 	}
 
 	/**
-	 * Schedules an entity for insertion
+	 * Schedules an entity for update
 	 *
-	 * @param object $entity The entity to schedule for insertion
+	 * @param object $entity The entity to schedule for update
 	 */
 	public function scheduleForUpdate($entity)
 	{
@@ -195,6 +195,7 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/**
 	 * Checks for any changes made to entities, and if any are found, they're scheduled for update
+	 *
 	 */
 	protected function checkForUpdates()
 	{

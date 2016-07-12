@@ -9,6 +9,7 @@
 namespace Joomla\ORM\Storage\Csv;
 
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\InvalidOperatorException;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Storage\CollectionFinderInterface;
@@ -34,7 +35,8 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	/** @var  string  Name of the data table */
 	private $table;
 
-
+	/** @var  EntityRegistry */
+	private $entityRegistry;
 
 	/** @var  array  Conditions */
 	private $conditions = [];
@@ -48,17 +50,19 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	/**
 	 * CsvCollectionFinder constructor.
 	 *
-	 * @param   CsvDataGateway $gateway     The data gateway
-	 * @param   string $tableName The table name
-	 * @param   string         $entityClass The class name of the entity
-	 * @param   EntityBuilder  $builder     The entity builder
+	 * @param   CsvDataGateway $gateway        The data gateway
+	 * @param   string         $tableName      The table name
+	 * @param   string         $entityClass    The class name of the entity
+	 * @param   EntityBuilder  $builder        The entity builder
+	 * @param   EntityRegistry $entityRegistry The entity registry
 	 */
-	public function __construct(CsvDataGateway $gateway, $tableName, $entityClass, EntityBuilder $builder)
+	public function __construct(CsvDataGateway $gateway, $tableName, $entityClass, EntityBuilder $builder, EntityRegistry $entityRegistry)
 	{
-		$this->gateway     = $gateway;
-		$this->entityClass = $entityClass;
-		$this->builder     = $builder;
-		$this->table       = $tableName;
+		$this->gateway        = $gateway;
+		$this->entityClass    = $entityClass;
+		$this->builder        = $builder;
+		$this->table          = $tableName;
+		$this->entityRegistry = $entityRegistry;
 	}
 
 	/**
@@ -228,7 +232,14 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	 */
 	private function castToEntity($matches)
 	{
-		return $this->builder->castToEntity($matches, $this->entityClass);
+		$entities = $this->builder->castToEntity($matches, $this->entityClass);
+
+		foreach ($entities as &$entity)
+		{
+			$this->entityRegistry->registerEntity($entity);
+		}
+
+		return $entities;
 	}
 
 	/**

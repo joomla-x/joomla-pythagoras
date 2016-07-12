@@ -37,15 +37,18 @@ class StorageTestCases extends TestCase
 	/** @var  TransactionInterface */
 	protected $transactor;
 
+	/** @var  EntityRegistry */
+	protected $entityRegistry;
+
 	public function setUp()
 	{
 		$this->idAccessorRegistry = new IdAccessorRegistry;
 
 		$changeTracker  = new ChangeTracker;
-		$entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
+		$this->entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
 
 		$this->unitOfWork = new UnitOfWork(
-			$entityRegistry,
+			$this->entityRegistry,
 			$this->idAccessorRegistry,
 			$changeTracker,
 			$this->transactor

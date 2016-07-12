@@ -9,6 +9,8 @@
 namespace Joomla\Tests\Unit\ORM\UnitOfWork;
 
 use Doctrine\DBAL\DriverManager;
+use Joomla\ORM\Definition\Locator\Locator;
+use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
@@ -20,6 +22,7 @@ use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
 use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
 use Joomla\ORM\UnitOfWork\ChangeTracker;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
+use Joomla\ORM\UnitOfWork\UnitOfWork;
 use Joomla\Tests\Unit\ORM\Mocks\UnitOfWorkAccessDecorator;
 use Joomla\Tests\Unit\ORM\Mocks\User;
 use PHPUnit\Framework\TestCase;
@@ -71,8 +74,9 @@ class UnitOfWorkTest extends TestCase
 		$connection       = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
 		$this->transactor = new DoctrineTransactor($connection);
 
-		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
-		$repositoryFactory->getIdAccessorRegistry()->registerIdAccessors(
+		$repositoryFactory        = new RepositoryFactory($this->config, $this->transactor);
+		$this->idAccessorRegistry = $repositoryFactory->getIdAccessorRegistry();
+		$this->idAccessorRegistry->registerIdAccessors(
 			User::class,
 			function (User $user)
 			{
@@ -84,33 +88,14 @@ class UnitOfWorkTest extends TestCase
 			}
 		);
 
-//		$strategy      = new RecursiveDirectoryStrategy($dataPath . '/Mocks');
-//		$locator       = new Locator([$strategy]);
-//		$this->builder     = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
-//
-//		$transactor           = new DoctrineTransactor(DriverManager::getConnection(['url' => $databaseUrl]));
-//		$changeTracker        = new ChangeTracker();
-//		$this->entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
-//		$this->unitOfWork     = new UnitOfWork(
-//			$this->entityRegistry,
-//			$this->idAccessorRegistry,
-//			$changeTracker,
-//			$transactor
-//		);
-//
-//		$this->dataMapper = new DoctrineDataMapper(
-//			'User',
-//			'User.xml',
-//			$this->builder,
-//			$databaseUrl,
-//			'users'
-//		);
-//		$this->repo       = new Repository('User', $this->dataMapper, $this->idAccessorRegistry);
+		$strategy      = new RecursiveDirectoryStrategy($this->config['definitionPath']);
+		$locator       = new Locator([$strategy]);
+		$this->builder = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
 
-		$this->repo           = $repositoryFactory->forEntity('User');
+		$this->repo           = $repositoryFactory->forEntity(User::class);
 		$this->entityRegistry = $repositoryFactory->getEntityRegistry();
 		$this->unitOfWork     = new UnitOfWorkAccessDecorator($repositoryFactory->getUnitOfWork());
-		$this->dataMapper     = $this->unitOfWork->getDataMapper('User');
+		$this->dataMapper     = $this->unitOfWork->getDataMapper(User::class);
 
 		/**
 		 * The Ids are purposely unique so that we can identify them as such without having to first insert them to
@@ -124,24 +109,45 @@ class UnitOfWorkTest extends TestCase
 	}
 
 	/**
-	 * Tests seeing if the unit of work picks up on an update made outside of it
+	 * @testdox An entity is registered automatically when added to the repository
 	 */
-	public function testCheckingIfEntityUpdateIsDetected()
+	public function testAddingAnEntityToRepoAutomaticallyRegistersIt()
 	{
-		try
-		{
-			$this->prepareDatabase();
-			$this->repo->add($this->entity1);
-			$this->entity1->setUsername("blah");
-			$this->unitOfWork->checkForUpdates();
-			$scheduledFoUpdate = $this->unitOfWork->getScheduledEntityUpdates();
-			$this->unitOfWork->commit();
-		}
-		catch (\Exception $e)
-		{
-			throw new \Exception($this->dump($e));
-		}
-		$this->assertTrue(in_array($this->entity1, $scheduledFoUpdate));
+		$this->prepareDatabase();
+		$this->repo->add($this->entity1);
+
+		$this->assertTrue($this->entityRegistry->isRegistered($this->entity1));
+	}
+
+	/**
+	 * @testdox The UnitOfWork detects an update made outside of it
+	 */
+	public function testChangesAreDetected()
+	{
+		$this->prepareDatabase();
+		$this->repo->add($this->entity1);
+
+		$this->assertContains($this->entity1, $this->unitOfWork->getScheduledEntityInsertions(), "Entity should have been scheduled for insertion");
+		$this->assertNotContains($this->entity1, $this->unitOfWork->getScheduledEntityUpdates(), "Entity should not have been scheduled for update");
+
+		$this->entity1->setUsername("blah");
+
+		$this->unitOfWork->checkForUpdates();
+
+		/*
+		 * This is not a change, since the entity has not yet been inserted!
+		 */
+		$this->assertContains($this->entity1, $this->unitOfWork->getScheduledEntityInsertions(), "Entity should still be scheduled for insertion");
+		$this->assertNotContains($this->entity1, $this->unitOfWork->getScheduledEntityUpdates(), "Entity should still not be scheduled for update");
+		
+		$this->unitOfWork->commit();
+
+		$this->entity1->setUsername("blub");
+
+		$this->unitOfWork->checkForUpdates();
+
+		$this->assertNotContains($this->entity1, $this->unitOfWork->getScheduledEntityInsertions(), "Entity should not longer be scheduled for insertion");
+		$this->assertContains($this->entity1, $this->unitOfWork->getScheduledEntityUpdates(), "Entity should now be scheduled for update");
 	}
 
 	/**

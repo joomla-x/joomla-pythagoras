@@ -31,7 +31,8 @@ class CsvStorageTest extends StorageTestCases
 			$gateway,
 			Article::class,
 			$this->builder,
-			'articles'
+			'articles',
+			$this->entityRegistry
 		);
 		$this->repo = new Repository(Article::class, $dataMapper, $this->unitOfWork);
 	}

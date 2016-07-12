@@ -10,6 +10,7 @@ namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
@@ -39,20 +40,25 @@ class DoctrineDataMapper implements DataMapperInterface
 	/** @var  string  Name of the data table */
 	private $table;
 
+	/** @var  EntityRegistry */
+	private $entityRegistry;
+
 	/**
 	 * DoctrineDataMapper constructor.
 	 *
-	 * @param   Connection    $connection  The database connection
-	 * @param   string        $entityClass The class name of the entity
-	 * @param   EntityBuilder $builder     The entity builder
-	 * @param   string        $table       The table name
+	 * @param   Connection     $connection     The database connection
+	 * @param   string         $entityClass    The class name of the entity
+	 * @param   EntityBuilder  $builder        The entity builder
+	 * @param   string         $table          The table name
+	 * @param   EntityRegistry $entityRegistry The entity registry
 	 */
-	public function __construct(Connection $connection, $entityClass, $builder, $table)
+	public function __construct(Connection $connection, $entityClass, EntityBuilder $builder, $table, EntityRegistry $entityRegistry)
 	{
-		$this->connection  = $connection;
-		$this->entityClass = $entityClass;
-		$this->builder     = $builder;
-		$this->table       = $table;
+		$this->connection     = $connection;
+		$this->entityClass    = $entityClass;
+		$this->builder        = $builder;
+		$this->table          = $table;
+		$this->entityRegistry = $entityRegistry;
 	}
 
 	/**
@@ -82,7 +88,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function findOne()
 	{
-		return new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->builder);
+		return new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->builder, $this->entityRegistry);
 	}
 
 	/**
@@ -94,7 +100,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function findAll()
 	{
-		return new DoctrineCollectionFinder($this->connection, $this->table, $this->entityClass, $this->builder);
+		return new DoctrineCollectionFinder($this->connection, $this->table, $this->entityClass, $this->builder, $this->entityRegistry);
 	}
 
 	/**

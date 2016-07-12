@@ -39,7 +39,8 @@ class DoctrineRelationTest extends RelationTestCases
 				$connection,
 				$className,
 				$this->builder,
-				$this->config[$className]['table']
+				$this->config[$className]['table'],
+				$this->entityRegistry
 			);
 			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
 		}

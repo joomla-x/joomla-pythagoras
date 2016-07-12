@@ -12,9 +12,10 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\SyntaxErrorException;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\InvalidOperatorException;
-use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\ORM\Operator;
+use Joomla\ORM\Storage\CollectionFinderInterface;
 
 /**
  * Class DoctrineCollectionFinder
@@ -46,23 +47,28 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/** @var EntityBuilder */
 	private $builder = null;
 
+	/** @var  EntityRegistry */
+	private $entityRegistry;
+
 	/** @var array */
 	private $patterns = [];
 
 	/**
 	 * DoctrineCollectionFinder constructor.
 	 *
-	 * @param   Connection    $connection  The database connection
-	 * @param   string        $tableName   The name of the table
-	 * @param   string        $entityClass The class of the entity
-	 * @param   EntityBuilder $builder     The entity builder
+	 * @param   Connection     $connection     The database connection
+	 * @param   string         $tableName      The name of the table
+	 * @param   string         $entityClass    The class of the entity
+	 * @param   EntityBuilder  $builder        The entity builder
+	 * @param   EntityRegistry $entityRegistry The entity registry
 	 */
-	public function __construct(Connection $connection, $tableName, $entityClass, EntityBuilder $builder)
+	public function __construct(Connection $connection, $tableName, $entityClass, EntityBuilder $builder, EntityRegistry $entityRegistry)
 	{
-		$this->connection  = $connection;
-		$this->tableName   = $tableName;
-		$this->entityClass = $entityClass;
-		$this->builder     = $builder;
+		$this->connection     = $connection;
+		$this->tableName      = $tableName;
+		$this->entityClass    = $entityClass;
+		$this->builder        = $builder;
+		$this->entityRegistry = $entityRegistry;
 	}
 
 	/**
@@ -178,7 +184,8 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		{
 			$rows = array_filter(
 				$rows,
-				function ($row) use ($column, $pattern) {
+				function ($row) use ($column, $pattern)
+				{
 					return preg_match("~{$pattern}~", $row[$column]);
 				}
 			);
@@ -206,7 +213,14 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	private function castToEntity($matches)
 	{
-		return $this->builder->castToEntity($matches, $this->entityClass);
+		$entities = $this->builder->castToEntity($matches, $this->entityClass);
+
+		foreach ($entities as &$entity)
+		{
+			$this->entityRegistry->registerEntity($entity);
+		}
+
+		return $entities;
 	}
 
 	/**
@@ -233,7 +247,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	}
 
 	/**
-	 * @param   QueryBuilder $builder  The query builder
+	 * @param   QueryBuilder $builder The query builder
 	 *
 	 * @return  QueryBuilder
 	 */

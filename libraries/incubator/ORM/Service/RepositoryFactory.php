@@ -113,7 +113,8 @@ class RepositoryFactory
 						$gateway,
 						$entityClass,
 						$this->builder,
-						basename($this->config[$entityClass]['data'], '.csv')
+						basename($this->config[$entityClass]['data'], '.csv'),
+						$this->entityRegistry
 					);
 					break;
 
@@ -129,7 +130,8 @@ class RepositoryFactory
 						$connection,
 						$entityClass,
 						$this->builder,
-						$this->config[$entityClass]['table']
+						$this->config[$entityClass]['table'],
+						$this->entityRegistry
 					);
 					break;
 

@@ -9,8 +9,8 @@
 namespace Joomla\ORM\Storage\Csv;
 
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Exception\InvalidOperatorException;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
@@ -39,31 +39,25 @@ class CsvDataMapper implements DataMapperInterface
 	/** @var  string  Name of the data table */
 	private $table;
 
-
-
-	/** @var  array  Conditions */
-	private $conditions = [];
-
-	/** @var  array  Ordering instructions */
-	private $ordering = [];
-
-	/** @var array */
-	private $columns = [];
+	/** @var  EntityRegistry */
+	private $entityRegistry;
 
 	/**
 	 * CsvDataMapper constructor.
 	 *
-	 * @param   CsvDataGateway $gateway     The data gateway
-	 * @param   string         $entityClass The class name of the entity
-	 * @param   EntityBuilder  $builder     The entity builder
-	 * @param   string         $table       The table name
+	 * @param   CsvDataGateway $gateway        The data gateway
+	 * @param   string         $entityClass    The class name of the entity
+	 * @param   EntityBuilder  $builder        The entity builder
+	 * @param   string         $table          The table name
+	 * @param   EntityRegistry $entityRegistry The entity registry
 	 */
-	public function __construct(CsvDataGateway $gateway, $entityClass, $builder, $table)
+	public function __construct(CsvDataGateway $gateway, $entityClass, EntityBuilder $builder, $table, EntityRegistry $entityRegistry)
 	{
-		$this->gateway     = $gateway;
-		$this->entityClass = $entityClass;
-		$this->builder     = $builder;
-		$this->table       = $table;
+		$this->gateway        = $gateway;
+		$this->entityClass    = $entityClass;
+		$this->builder        = $builder;
+		$this->table          = $table;
+		$this->entityRegistry = $entityRegistry;
 	}
 
 	/**
@@ -81,7 +75,7 @@ class CsvDataMapper implements DataMapperInterface
 	 */
 	public function getById($id)
 	{
-		return $this->with('id', Operator::EQUAL, $id)->getItem();
+		return $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
 	}
 
 	/**
@@ -93,7 +87,7 @@ class CsvDataMapper implements DataMapperInterface
 	 */
 	public function findOne()
 	{
-		return new CsvEntityFinder($this->gateway, $this->table, $this->entityClass, $this->builder);
+		return new CsvEntityFinder($this->gateway, $this->table, $this->entityClass, $this->builder, $this->entityRegistry);
 	}
 
 	/**
@@ -105,7 +99,7 @@ class CsvDataMapper implements DataMapperInterface
 	 */
 	public function findAll()
 	{
-		return new CsvCollectionFinder($this->gateway, $this->table, $this->entityClass, $this->builder);
+		return new CsvCollectionFinder($this->gateway, $this->table, $this->entityClass, $this->builder, $this->entityRegistry);
 	}
 
 	/**

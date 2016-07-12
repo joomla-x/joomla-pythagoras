@@ -39,7 +39,8 @@ class CsvRelationTest extends RelationTestCases
 				$gateway,
 				$className,
 				$this->builder,
-				basename($this->config[$className]['data'], '.csv')
+				basename($this->config[$className]['data'], '.csv'),
+				$this->entityRegistry
 			);
 			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
 		}

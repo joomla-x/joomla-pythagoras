@@ -25,7 +25,8 @@ class DoctrineStorageTest extends StorageTestCases
 			$connection,
 			Article::class,
 			$this->builder,
-			'articles'
+			'articles',
+			$this->entityRegistry
 		);
 		$this->repo = new Repository(Article::class, $dataMapper, $this->unitOfWork);
 	}
