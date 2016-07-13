@@ -5,6 +5,7 @@ use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
+use Joomla\ORM\Entity\EntityStates;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
@@ -84,27 +85,43 @@ class RelationTestCases extends TestCase
 	 *
 	 * @testdox hasOne: Create an Extra for a Detail
 	 */
-	private function testCreateAnExtraForADetail()
+	public function testCreateAnExtraForADetail()
 	{
-		try {
-			$repo   = $this->repo[Detail::class];
-			$detail = $repo->getById(2);
+		$repo   = $this->repo[Detail::class];
+		$detail = $repo->getById(2);
 
-			$this->assertFalse(isset($detail->extra), 'Detail record #2 should not have an initial Extra record.');
+		$this->assertFalse(isset($detail->extra), 'Detail record #2 should not have an initial Extra record.');
 
-			$detail->extra = new Extra('New info for Detail 2');
-			throw new \Exception(print_r($detail, true));
+		$detail->extra = new Extra('New info for Detail 2');
 
-			$repo->commit();
+		$this->unitOfWork->commit();
 
-			// Reload
-			$detail = $repo->getById(2);
-			$info = $detail->extra->info;
-		} catch (\Exception $e) {
-			throw new \Exception($this->dump($e));
-		}
+		$this->assertEquals('New info for Detail 2', $repo->getById(2)->extra->info);
+	}
 
-		$this->assertEquals('New info for Detail 2', $info);
+	/**
+	 * Update the extra of a detail
+	 * 
+	 * The system will detect the change and save just the extra.
+	 *
+	 * @testdox Update the Extra of a Detail
+	 */
+	private function testUpdateTheExtraOfADetail()
+	{
+		$repo   = $this->repo[Detail::class];
+		$detail = $repo->getById(1);
+
+		$this->assertEquals(EntityStates::REGISTERED, $this->entityRegistry->getEntityState($detail), 'Detail state before');
+		$this->assertEquals(EntityStates::REGISTERED, $this->entityRegistry->getEntityState($detail->extra), 'Extra state before');
+
+		$detail->extra->info = 'Changed information';
+
+		$this->unitOfWork->commit();
+
+		$this->assertEquals('', $this->entityRegistry->getEntityState($detail), 'Detail state after');
+		$this->assertEquals('', $this->entityRegistry->getEntityState($detail->extra), 'Extra state after');
+
+		$this->assertEquals('Changed information', $repo->getById(1)->extra->info);
 	}
 
 	/**

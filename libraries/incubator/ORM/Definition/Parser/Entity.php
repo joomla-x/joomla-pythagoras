@@ -23,11 +23,14 @@ class Entity extends Element
 	/** @var  string  Parent type */
 	public $extends;
 
-	/** @var Relation[]  List of relations */
+	/** @var Relation[][]  List of relations */
 	public $relations = [];
 
 	/** @var  Field[]  List of fields */
 	public $fields = [];
+
+	/** @var array */
+	public $storage = null;
 
 	/**
 	 * Set the fields
@@ -53,6 +56,33 @@ class Entity extends Element
 	 */
 	protected function setRelations($values)
 	{
-		$this->relations = $values[0];
+		#throw new \Exception(print_r($values[0], true));
+		if (isset($values[0]->belongsTo))
+		{
+			$this->relations['belongsTo'] = $values[0]->belongsTo;
+		}
+		if (isset($values[0]->hasOne))
+		{
+			$this->relations['hasOne'] = $values[0]->hasOne;
+		}
+		if (isset($values[0]->hasMany))
+		{
+			$this->relations['hasMany'] = $values[0]->hasMany;
+		}
+		if (isset($values[0]->hasManyThrough))
+		{
+			$this->relations['hasManyThrough'] = $values[0]->hasManyThrough;
+		}
+	}
+
+	protected function setStorage($values)
+	{
+		$vars = get_object_vars($values[0]);
+		foreach ($vars as $type => $attributes)
+		{
+			$this->storage = get_object_vars($attributes[0]);
+			$this->storage['type'] = $type;
+			break;
+		}
 	}
 }

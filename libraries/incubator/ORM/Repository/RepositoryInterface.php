@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\Repository;
 
-
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Storage\CollectionFinderInterface;
@@ -29,7 +28,7 @@ interface RepositoryInterface
 	 * getById() is a convenience method, It is equivalent to
 	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
 	 *
-	 * @param   mixed  $id  The id value
+	 * @param   mixed $id The id value
 	 *
 	 * @return  object  The requested entity
 	 *
@@ -95,4 +94,11 @@ interface RepositoryInterface
 	 * @return  EntityFinderInterface  $this for chaining
 	 */
 	public function restrictTo($lValue, $op, $rValue);
+
+	/**
+	 * Gets the entity class managed with this repository
+	 *
+	 * @return string The entity class managed with this repository
+	 */
+	public function getEntityClass();
 }

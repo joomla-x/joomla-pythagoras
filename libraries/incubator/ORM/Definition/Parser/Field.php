@@ -32,6 +32,14 @@ class Field extends Element
 	/** @var  mixed  The value of the field */
 	public $value;
 
+	public $label;
+
+	public $description;
+
+	public $hint;
+
+	public $default;
+
 	/**
 	 * Set the validation rules
 	 *

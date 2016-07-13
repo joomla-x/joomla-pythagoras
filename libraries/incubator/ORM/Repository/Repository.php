@@ -163,4 +163,14 @@ class Repository implements RepositoryInterface
 			'value' => $rValue
 		];
 	}
+
+	/**
+	 * Gets the entity class managed with this repository
+	 *
+	 * @return string The entity class managed with this repository
+	 */
+	public function getEntityClass()
+	{
+		return $this->className;
+	}
 }

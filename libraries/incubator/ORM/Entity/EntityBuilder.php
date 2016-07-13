@@ -11,7 +11,6 @@ namespace Joomla\ORM\Entity;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
-use Joomla\ORM\Definition\Parser\Element;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Definition\Parser\HasMany;
@@ -19,10 +18,12 @@ use Joomla\ORM\Definition\Parser\HasManyThrough;
 use Joomla\ORM\Definition\Parser\HasOne;
 use Joomla\ORM\Definition\Parser\XmlParser;
 use Joomla\ORM\Event\AfterCreateDefinitionEvent;
+use Joomla\ORM\Exception\EntityNotDefinedException;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\FileNotFoundException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
+use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\String\Normalise;
 
@@ -58,15 +59,16 @@ class EntityBuilder
 	/** @var  IdAccessorRegistry */
 	private $idAccessorRegistry;
 
-	/** @var array  */
+	/** @var array */
 	private $alias = [];
 
 	/**
 	 * Constructor
 	 *
-	 * @param   LocatorInterface $locator The XML description file locator
-	 * @param   array            $config  The entity configurations
-	 * @param IdAccessorRegistry $idAccessorRegistry
+	 * @param   LocatorInterface   $locator            The XML description file locator
+	 * @param   array              $config             The entity configurations
+	 * @param   IdAccessorRegistry $idAccessorRegistry The id accessor registry
+	 * @param   RepositoryFactory  $repositoryFactory  The repository factory
 	 */
 	public function __construct(LocatorInterface $locator, array $config, IdAccessorRegistry $idAccessorRegistry, RepositoryFactory $repositoryFactory)
 	{
@@ -74,23 +76,6 @@ class EntityBuilder
 		$this->config             = $config;
 		$this->idAccessorRegistry = $idAccessorRegistry;
 		$this->repositoryFactory  = $repositoryFactory;
-	}
-
-	/**
-	 * Get a new instance of the entity.
-	 *
-	 * @param   string $entityClass The class of the entity
-	 *
-	 * @return  object  An empty entity
-	 */
-	public function create($entityClass)
-	{
-		if (!isset($this->entities[$entityClass]))
-		{
-			$this->readDefinition($entityClass);
-		}
-
-		return new $entityClass;
 	}
 
 	/**
@@ -102,6 +87,11 @@ class EntityBuilder
 	 */
 	private function locateDescription($entityClass)
 	{
+		if (!isset($this->config[$entityClass]))
+		{
+			throw new EntityNotDefinedException($entityClass);
+		}
+
 		$definitionFile = $this->config[$entityClass]['definition'];
 		$filename       = $this->locator->findFile($definitionFile);
 
@@ -128,13 +118,8 @@ class EntityBuilder
 		$parser->open($filename);
 
 		$definition = $parser->parse([
-			'onBeforeEntity'        => [$this, 'prepareEntity'],
-			'onAfterField'          => [$this, 'handleField'],
-			'onAfterBelongsTo'      => [$this, 'handleBelongsTo'],
-			'onAfterHasOne'         => [$this, 'handleHasOne'],
-			'onAfterHasMany'        => [$this, 'handleHasMany'],
-			'onAfterHasManyThrough' => [$this, 'handleHasManyThrough'],
-			'onAfterStorage'        => [$this, 'handleStorage'],
+			'onBeforeEntity' => [$this, 'prepareEntity'],
+			'onAfterField'   => [$this, 'handleField'],
 		], $this->locator);
 
 		try
@@ -152,6 +137,8 @@ class EntityBuilder
 	/**
 	 * Parser callback for onBeforeEntity event
 	 *
+	 * @internal
+	 *
 	 * @param   array $attributes The element attributes
 	 *
 	 * @return  void
@@ -163,6 +150,8 @@ class EntityBuilder
 
 	/**
 	 * Parser callback for onAfterField event
+	 *
+	 * @internal
 	 *
 	 * @param   Field $field The data structure
 	 *
@@ -215,68 +204,6 @@ class EntityBuilder
 	private function getBasename($name)
 	{
 		return preg_replace('~^(.*?)_?id$~i', '\1', $name);
-	}
-
-	/**
-	 * Parser callback for onAfterBelongsTo event
-	 *
-	 * @param   BelongsTo        $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
-	 *
-	 * @return  void
-	 */
-	public function handleBelongsTo(BelongsTo $relation, LocatorInterface $locator)
-	{
-		$basename = $this->getBasename($relation->name);
-
-		$field       = new Field(get_object_vars($relation));
-		$field->name = $basename . '_id';
-		$field->type = 'relationKey';
-
-		$this->reflector->addField($field);
-	}
-
-	/**
-	 * Parser callback for onAfterHasMany event
-	 *
-	 * @param   HasMany          $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
-	 *
-	 * @return  void
-	 */
-	public function handleHasMany(HasMany $relation, LocatorInterface $locator)
-	{
-		$basename = $this->getBasename($relation->name);
-	}
-
-	/**
-	 * Parser callback for onAfterHasOne event
-	 *
-	 * @param   HasOne           $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
-	 *
-	 * @return  void
-	 */
-	public function handleHasOne(HasOne $relation, LocatorInterface $locator)
-	{
-		$basename = $this->getBasename($relation->name);
-	}
-
-	/**
-	 * Parser callback for onAfterHasManyThrough event
-	 *
-	 * @param   HasManyThrough   $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
-	 *
-	 * @return  void
-	 */
-	public function handleHasManyThrough(HasManyThrough $relation, LocatorInterface $locator)
-	{
-		$basename = $this->getBasename($relation->name);
-	}
-
-	public function handleStorage(Element $storage)
-	{
 	}
 
 	/**
@@ -340,7 +267,7 @@ class EntityBuilder
 	 *
 	 * @return \Joomla\ORM\Definition\Parser\Entity
 	 */
-	private function getMeta($entityClass)
+	public function getMeta($entityClass)
 	{
 		if (!isset($this->entities[$entityClass]))
 		{
@@ -350,6 +277,13 @@ class EntityBuilder
 		return $this->entities[$entityClass]->getDefinition();
 	}
 
+	/**
+	 * Gets a repository for an entity class
+	 *
+	 * @param   string $entityClass The entity class
+	 *
+	 * @return  RepositoryInterface
+	 */
 	public function getRepository($entityClass)
 	{
 		return $this->repositoryFactory->forEntity($this->resolveAlias($entityClass));
@@ -389,7 +323,7 @@ class EntityBuilder
 		}
 
 		// Only belongsTo relations can have data in this entity
-		foreach ($meta->relations->belongsTo as $field => $relation)
+		foreach ($meta->relations['belongsTo'] as $field => $relation)
 		{
 			$colIdName  = Normalise::toUnderscoreSeparated($relation->name);
 			$varObjName = Normalise::toVariable($this->getBasename($relation->name));
@@ -436,24 +370,24 @@ class EntityBuilder
 		$reflection = new \ReflectionClass($entity);
 		$entityId   = $this->idAccessorRegistry->getEntityId($entity);
 
-		if (isset($meta->relations->belongsTo))
+		if (isset($meta->relations['belongsTo']))
 		{
-			$this->resolveBelongsTo($meta->relations->belongsTo, $entity, $reflection);
+			$this->resolveBelongsTo($meta->relations['belongsTo'], $entity, $reflection);
 		}
 
-		if (isset($meta->relations->hasOne))
+		if (isset($meta->relations['hasOne']))
 		{
-			$this->resolveHasOne($meta->relations->hasOne, $entity, $entityId);
+			$this->resolveHasOne($meta->relations['hasOne'], $entity, $entityId);
 		}
 
-		if (isset($meta->relations->hasMany))
+		if (isset($meta->relations['hasMany']))
 		{
-			$this->resolveHasMany($meta->relations->hasMany, $entity, $entityId);
+			$this->resolveHasMany($meta->relations['hasMany'], $entity, $entityId);
 		}
 
-		if (isset($meta->relations->hasManyThrough))
+		if (isset($meta->relations['hasManyThrough']))
 		{
-			$this->resolveHasManyThrough($meta->relations->hasManyThrough, $entity, $entityId);
+			$this->resolveHasManyThrough($meta->relations['hasManyThrough'], $entity, $entityId);
 		}
 	}
 
@@ -474,7 +408,7 @@ class EntityBuilder
 
 				if ($alias == basename($config['definition'], '.xml'))
 				{
-					$entityClass = $class;
+					$entityClass         = $class;
 					$this->alias[$alias] = $entityClass;
 					break;
 				}
@@ -495,9 +429,9 @@ class EntityBuilder
 		$key = $entity->key();
 		if (empty($key))
 		{
-			if (isset($meta->relations->belongsTo))
+			if (isset($meta->relations['belongsTo']))
 			{
-				foreach ($meta->relations->belongsTo as $relation)
+				foreach ($meta->relations['belongsTo'] as $relation)
 				{
 					$key = Normalise::toVariable($relation->name);
 					break;
