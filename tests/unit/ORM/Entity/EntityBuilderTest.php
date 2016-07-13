@@ -99,7 +99,7 @@ class EntityBuilderTest extends TestCase
 		$this->assertArrayHasKey('body', $meta->fields);
 		$this->assertArrayHasKey('author', $meta->fields);
 		$this->assertArrayHasKey('license', $meta->fields);
-		$this->assertArrayNotHasKey('parent_id', $meta->fields, 'parent_id should be identified as foreign key, not as a standard field.');
+		$this->assertArrayNotHasKey('parentId', $meta->fields, 'parent_id should be identified as foreign key, not as a standard field.');
 	}
 
 	/**
