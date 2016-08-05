@@ -23,7 +23,6 @@ use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWork;
-use Joomla\String\Inflector;
 
 /**
  * Repository Factory.
@@ -49,20 +48,17 @@ class RepositoryFactory
 	/** @var EntityRegistry The entity registry to use in tests */
 	private $entityRegistry = null;
 
-	/** @var Inflector The inflector */
-	private $inflector;
-
 	/**
 	 * RepositoryFactory constructor.
+	 *
+	 * @api
 	 *
 	 * @param   array                 $config      The configuration
 	 * @param   TransactionInterface  $transactor  A Transactor
 	 */
 	public function __construct(array $config, $transactor)
 	{
-		$this->config    = $config;
-		$this->inflector = Inflector::getInstance();
-
+		$this->config  = $config;
 		$this->builder = $this->createEntityBuilder($this->config['definitionPath']);
 
 		$this->entityRegistry = new EntityRegistry($this->builder);
@@ -70,14 +66,6 @@ class RepositoryFactory
 			$this->entityRegistry,
 			$transactor
 		);
-	}
-
-	/**
-	 * @return IdAccessorRegistry
-	 */
-	public function getIdAccessorRegistry()
-	{
-		return $this->entityRegistry->getIdAccessorRegistry();
 	}
 
 	/**
@@ -89,6 +77,8 @@ class RepositoryFactory
 	 * On creation, the Repository gets supplied with the provided DataMapper. If data mapper is omitted, looks for
 	 * a DataMapper for the given entity class registered to the UnitOfWork. If that fails, too, a new DataMapper is
 	 * created using the information from the configuration.
+	 *
+	 * @api
 	 *
 	 * @param   string               $entityClass  The Eintity's class
 	 * @param   DataMapperInterface  $dataMapper   An optional DataMapper
@@ -120,7 +110,21 @@ class RepositoryFactory
 	}
 
 	/**
+	 * Gets the IdAccessorRegistry
+	 *
+	 * @internal  This method is for internal ORM use only.
+	 *
+	 * @return  IdAccessorRegistry
+	 */
+	public function getIdAccessorRegistry()
+	{
+		return $this->entityRegistry->getIdAccessorRegistry();
+	}
+
+	/**
 	 * Gets the EntityRegistry
+	 *
+	 * @internal  This method is for internal ORM use only.
 	 *
 	 * @return  EntityRegistry
 	 */
@@ -131,6 +135,8 @@ class RepositoryFactory
 
 	/**
 	 * Gets the UnitOfWork
+	 *
+	 * @internal  This method is for internal ORM use only.
 	 *
 	 * @return  UnitOfWork
 	 */
@@ -162,7 +168,7 @@ class RepositoryFactory
 	 *
 	 * @return  DataMapperInterface
 	 */
-	protected function createDataMapper($entityClass)
+	private function createDataMapper($entityClass)
 	{
 		switch ($this->config[$entityClass]['dataMapper'])
 		{
