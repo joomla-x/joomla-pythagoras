@@ -13,15 +13,15 @@ namespace Joomla\ORM\Definition\Parser;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
-class Relation extends Element
+abstract class Relation extends Element
 {
 	/** @var  string  The relation name */
 	public $name = null;
 
 	/** @var  string  The relation type */
-	public $type = 'belongsTo';
+	public $type;
 
 	/** @var  Entity  The related Entity */
 	public $entity;

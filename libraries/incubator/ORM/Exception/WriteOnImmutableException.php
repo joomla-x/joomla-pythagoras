@@ -13,7 +13,7 @@ namespace Joomla\ORM\Exception;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class WriteOnImmutableException extends OrmException
 {

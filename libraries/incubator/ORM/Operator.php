@@ -13,7 +13,7 @@ namespace Joomla\ORM;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 abstract class Operator
 {

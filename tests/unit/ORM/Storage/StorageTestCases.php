@@ -1,8 +1,6 @@
 <?php
 namespace Joomla\Tests\Unit\ORM\Storage;
 
-use Joomla\ORM\Definition\Locator\Locator;
-use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -10,10 +8,9 @@ use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
-use Joomla\ORM\UnitOfWork\ChangeTracker;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
-use Joomla\ORM\UnitOfWork\UnitOfWork;
 use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
+use Joomla\Tests\Unit\DumpTrait;
 use Joomla\Tests\Unit\ORM\Mocks\Article;
 use PHPUnit\Framework\TestCase;
 
@@ -40,24 +37,13 @@ class StorageTestCases extends TestCase
 	/** @var  EntityRegistry */
 	protected $entityRegistry;
 
+	use DumpTrait;
+
 	public function setUp()
 	{
-		$this->idAccessorRegistry = new IdAccessorRegistry;
-
-		$changeTracker  = new ChangeTracker;
-		$this->entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
-
-		$this->unitOfWork = new UnitOfWork(
-			$this->entityRegistry,
-			$this->idAccessorRegistry,
-			$changeTracker,
-			$this->transactor
-		);
-
-		$strategy          = new RecursiveDirectoryStrategy($this->config['definitionPath']);
-		$locator           = new Locator([$strategy]);
-		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
-		$this->builder     = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
+		$repositoryFactory    = new RepositoryFactory($this->config, $this->transactor);
+		$this->entityRegistry = $repositoryFactory->getEntityRegistry();
+		$this->unitOfWork     = $repositoryFactory->getUnitOfWork();
 	}
 
 	/**
@@ -547,6 +533,7 @@ class StorageTestCases extends TestCase
 		$this->repo->commit();
 
 		$this->expectException(EntityNotFoundException::class);
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$loaded = $this->repo->getById($id);
 	}
 
@@ -555,13 +542,14 @@ class StorageTestCases extends TestCase
 	 */
 	public function testDeleteWrongId()
 	{
-		$article            = new Article;
-		$article->id        = PHP_INT_MAX;
-		$article->title     = "Non-existant Article";
-		$article->teaser    = "This article is not existant, but has an id";
-		$article->body      = "It serves test purposes only and should never go into the database.";
-		$article->author    = __METHOD__;
-		$article->license   = 'CC';
+		$article          = new Article;
+		$article->id      = PHP_INT_MAX;
+		$article->title   = "Non-existant Article";
+		$article->teaser  = "This article is not existant, but has an id";
+		$article->body    = "It serves test purposes only and should never go into the database.";
+		$article->author  = __METHOD__;
+		$article->license = 'CC';
+		/** @noinspection PhpUndefinedFieldInspection */
 		$article->parent_id = 0;
 
 		$this->repo->remove($article);
@@ -574,12 +562,13 @@ class StorageTestCases extends TestCase
 	 */
 	public function testDeleteEmptyId()
 	{
-		$article            = new Article;
-		$article->title     = "Non-existant Article";
-		$article->teaser    = "This article is not existant and has no id";
-		$article->body      = "It serves test purposes only and should never go into the database.";
-		$article->author    = __METHOD__;
-		$article->license   = 'CC';
+		$article          = new Article;
+		$article->title   = "Non-existant Article";
+		$article->teaser  = "This article is not existant and has no id";
+		$article->body    = "It serves test purposes only and should never go into the database.";
+		$article->author  = __METHOD__;
+		$article->license = 'CC';
+		/** @noinspection PhpUndefinedFieldInspection */
 		$article->parent_id = 0;
 
 		$this->repo->remove($article);
@@ -595,30 +584,5 @@ class StorageTestCases extends TestCase
 		$children = $article->children->findAll()->getItems();
 
 		$this->assertEquals(2, count($children));
-	}
-
-	/**
-	 * @param \Exception $e
-	 *
-	 * @return string
-	 */
-	protected function dump($e)
-	{
-		$msg           = '';
-		$fmt           = "%s in %s(%d)\n";
-		$traceAsString = '';
-
-		while ($e instanceof \Exception)
-		{
-			$message       = $e->getMessage();
-			$file          = $e->getFile();
-			$line          = $e->getLine();
-			$traceAsString = $e->getTraceAsString();
-			$e             = $e->getPrevious();
-
-			$msg .= sprintf($fmt, $message, $file, $line);
-		}
-
-		return $msg . "\n" . $traceAsString;
 	}
 }

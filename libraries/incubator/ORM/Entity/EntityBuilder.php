@@ -11,6 +11,7 @@ namespace Joomla\ORM\Entity;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
+use Joomla\ORM\Definition\Parser\Element;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Definition\Parser\HasMany;
@@ -21,18 +22,16 @@ use Joomla\ORM\Event\AfterCreateDefinitionEvent;
 use Joomla\ORM\Exception\EntityNotDefinedException;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\FileNotFoundException;
-use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
-use Joomla\String\Normalise;
 
 /**
  * Class EntityBuilder
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class EntityBuilder
 {
@@ -56,26 +55,21 @@ class EntityBuilder
 	/** @var  array */
 	private $config = [];
 
-	/** @var  IdAccessorRegistry */
-	private $idAccessorRegistry;
-
 	/** @var array */
 	private $alias = [];
 
 	/**
 	 * Constructor
 	 *
-	 * @param   LocatorInterface   $locator            The XML description file locator
-	 * @param   array              $config             The entity configurations
-	 * @param   IdAccessorRegistry $idAccessorRegistry The id accessor registry
-	 * @param   RepositoryFactory  $repositoryFactory  The repository factory
+	 * @param   LocatorInterface  $locator           The XML description file locator
+	 * @param   array             $config            The entity configurations
+	 * @param   RepositoryFactory $repositoryFactory The repository factory
 	 */
-	public function __construct(LocatorInterface $locator, array $config, IdAccessorRegistry $idAccessorRegistry, RepositoryFactory $repositoryFactory)
+	public function __construct(LocatorInterface $locator, array $config, RepositoryFactory $repositoryFactory)
 	{
-		$this->locator            = $locator;
-		$this->config             = $config;
-		$this->idAccessorRegistry = $idAccessorRegistry;
-		$this->repositoryFactory  = $repositoryFactory;
+		$this->locator           = $locator;
+		$this->config            = $config;
+		$this->repositoryFactory = $repositoryFactory;
 	}
 
 	/**
@@ -195,18 +189,6 @@ class EntityBuilder
 	}
 
 	/**
-	 * Determine the basename of an id field
-	 *
-	 * @param   string $name The field name
-	 *
-	 * @return  string  The name without 'id' suffix
-	 */
-	private function getBasename($name)
-	{
-		return preg_replace('~^(.*?)_?id$~i', '\1', $name);
-	}
-
-	/**
 	 * Cast array to entity
 	 *
 	 * @param   array  $matches     The records
@@ -216,6 +198,8 @@ class EntityBuilder
 	 */
 	public function castToEntity($matches, $entityClass)
 	{
+		$entityRegistry = $this->repositoryFactory->getEntityRegistry();
+
 		$result = [];
 
 		$meta = $this->getMeta($entityClass);
@@ -226,12 +210,13 @@ class EntityBuilder
 		{
 			$entity = new $entityClass;
 
-			foreach ($meta->fields as $key => $definition)
+			foreach (array_merge($meta->fields, $meta->relations['belongsTo']) as $key => $definition)
 			{
-				$varName = Normalise::toVariable($key);
-				$colName = Normalise::toUnderscoreSeparated($key);
+				/** @var Element $definition */
+				$varName = $definition->propertyName($key);
+				$colName = $definition->columnName($key);
 
-				$value = null;
+				$value = isset($definition->default) ? $definition->default : null;
 
 				if (array_key_exists($colName, $match))
 				{
@@ -247,13 +232,17 @@ class EntityBuilder
 				}
 				else
 				{
+					/** @noinspection PhpVariableVariableInspection */
 					$entity->$varName = $value;
 				}
 			}
 
+			$entityRegistry->stashEntity($entity);
 			$this->resolveRelations($entity, $meta);
+			$entityRegistry->registerEntity($entity);
 
 			$result[] = $entity;
+
 			unset($entity);
 		}
 
@@ -269,12 +258,7 @@ class EntityBuilder
 	 */
 	public function getMeta($entityClass)
 	{
-		if (!isset($this->entities[$entityClass]))
-		{
-			$this->readDefinition($entityClass);
-		}
-
-		return $this->entities[$entityClass]->getDefinition();
+		return $this->entities[$this->resolveAlias($entityClass)]->getDefinition();
 	}
 
 	/**
@@ -307,8 +291,8 @@ class EntityBuilder
 
 		foreach ($meta->fields as $name => $field)
 		{
-			$varName = Normalise::toVariable($field->name);
-			$colName = Normalise::toUnderscoreSeparated($field->name);
+			$varName = $field->propertyName($field->name);
+			$colName = $field->columnName($field->name);
 
 			$value = null;
 
@@ -325,18 +309,21 @@ class EntityBuilder
 		// Only belongsTo relations can have data in this entity
 		foreach ($meta->relations['belongsTo'] as $field => $relation)
 		{
-			$colIdName  = Normalise::toUnderscoreSeparated($relation->name);
-			$varObjName = Normalise::toVariable($this->getBasename($relation->name));
+			/** @var BelongsTo $relation */
+			$colIdName  = $relation->colIdName();
+			$varIdName = $relation->varIdName();
 
-			$value = null;
+			$value  = null;
 
-			if ($reflection->hasProperty($varObjName))
+			if (isset($entity->{$varIdName}))
 			{
-				$property = $reflection->getProperty($varObjName);
+				$value = $entity->{$varIdName};
+			}
+			elseif ($reflection->hasProperty($varIdName))
+			{
+				$property = $reflection->getProperty($varIdName);
 				$property->setAccessible(true);
-				$object = $property->getValue($entity);
-				$id     = $this->idAccessorRegistry->getEntityId($object);
-				$value  = $id;
+				$value = $property->getValue($entity);
 			}
 
 			$properties[$colIdName] = $value;
@@ -368,7 +355,7 @@ class EntityBuilder
 	private function resolveRelations($entity, $meta)
 	{
 		$reflection = new \ReflectionClass($entity);
-		$entityId   = $this->idAccessorRegistry->getEntityId($entity);
+		$entityId   = $this->repositoryFactory->getIdAccessorRegistry()->getEntityId($entity);
 
 		if (isset($meta->relations['belongsTo']))
 		{
@@ -393,12 +380,15 @@ class EntityBuilder
 
 	/**
 	 * @param $entityClass
+	 *
+	 * @return string
 	 */
 	private function readDefinition($entityClass)
 	{
 		if (!class_exists($entityClass))
 		{
 			$alias = $entityClass;
+
 			foreach ($this->config as $class => $config)
 			{
 				if (!is_array($config))
@@ -422,30 +412,21 @@ class EntityBuilder
 		$this->reflector->setDefinition($definition);
 		$this->entities[$entityClass] = $entity;
 
-		$meta = $this->getMeta($entityClass);
-
-		$this->alias[$meta->name] = $entityClass;
+		$this->alias[$definition->name] = $entityClass;
 
 		$key = $entity->key();
-		if (empty($key))
-		{
-			if (isset($meta->relations['belongsTo']))
-			{
-				foreach ($meta->relations['belongsTo'] as $relation)
-				{
-					$key = Normalise::toVariable($relation->name);
-					break;
-				}
-			}
-		}
+
 		if (empty($key))
 		{
 			$key = 'id';
 		}
-		$this->idAccessorRegistry->registerReflectionIdAccessors(
+
+		$this->repositoryFactory->getIdAccessorRegistry()->registerReflectionIdAccessors(
 			$entityClass,
 			$key
 		);
+
+		return $entityClass;
 	}
 
 	/**
@@ -457,12 +438,15 @@ class EntityBuilder
 	{
 		foreach ($relations as $field => $relation)
 		{
-			$varObjName  = Normalise::toVariable($relation->name);
-			$colRefName  = Normalise::toUnderscoreSeparated($relation->reference);
-			$colJoinName = Normalise::toUnderscoreSeparated($relation->joinRef);
+			/** @var HasManyThrough $relation */
+			$varObjName  = $relation->varObjectName();
+			$colRefName  = $relation->colReferenceName();
+			$colJoinName = $relation->colJoinName();
 
-			$mapRepo = $this->getRepository($relation->joinTable);
-			$ids     = $mapRepo
+			// @todo Use entity name instead of uppercase table
+			$mapClass = $this->resolveAlias(ucfirst($relation->joinTable));
+			$mapRepo  = $this->getRepository($mapClass);
+			$ids      = $mapRepo
 				->findAll()
 				->columns($colJoinName)
 				->with($colRefName, Operator::EQUAL, $entityId)
@@ -485,8 +469,9 @@ class EntityBuilder
 	{
 		foreach ($relations as $field => $relation)
 		{
-			$varObjName = Normalise::toVariable($relation->name);
-			$colRefName = Normalise::toUnderscoreSeparated($relation->reference);
+			/** @var HasMany $relation */
+			$varObjName = $relation->varObjectName();
+			$colRefName = $relation->colReferenceName();
 
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
@@ -503,43 +488,37 @@ class EntityBuilder
 	 */
 	private function resolveHasOne($relations, $entity, $entityId)
 	{
+		$entityRegistry = $this->repositoryFactory->getEntityRegistry();
+
 		foreach ($relations as $field => $relation)
 		{
-			$varObjName = Normalise::toVariable($relation->name);
-			$colRefName = Normalise::toUnderscoreSeparated($relation->reference);
+			/** @var HasOne $relation */
+			$varObjName = $relation->varObjectName();
+			$colRefName = $relation->colReferenceName();
 
 			$entityClass = $this->resolveAlias($relation->entity);
-			$repository  = $this->getRepository($entityClass);
 
-			try
+			$object = $entityRegistry->getEntity($entityClass, $entityId);
+
+			if (empty($object))
 			{
-				$object = $repository
-					->findOne()
-					->with($colRefName, Operator::EQUAL, $entityId)
-					->getItem();
-			}
-			catch (EntityNotFoundException $e)
-			{
-				$object = null;
+				$repository = $this->getRepository($entityClass);
+
+				try
+				{
+					$object = $repository
+						->findOne()
+						->with($colRefName, Operator::EQUAL, $entityId)
+						->getItem();
+				}
+				catch (EntityNotFoundException $e)
+				{
+					$object = null;
+				}
 			}
 
 			$entity->{$varObjName} = $object;
 		}
-	}
-
-	private function resolveAlias($alias)
-	{
-		while (isset($this->alias[$alias]))
-		{
-			$alias = $this->alias[$alias];
-		}
-
-		if (!isset($this->entities[$alias]))
-		{
-			$this->readDefinition($alias);
-		}
-
-		return $alias;
 	}
 
 	/**
@@ -551,8 +530,9 @@ class EntityBuilder
 	{
 		foreach ($relations as $field => $relation)
 		{
-			$varIdName  = Normalise::toVariable($relation->name);
-			$varObjName = Normalise::toVariable($this->getBasename($relation->name));
+			/** @var BelongsTo $relation */
+			$varIdName  = $relation->varIdName();
+			$varObjName = $relation->varObjectName();
 
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
@@ -572,5 +552,20 @@ class EntityBuilder
 
 			$entity->{$varObjName} = $object;
 		}
+	}
+
+	public function resolveAlias($alias)
+	{
+		while (isset($this->alias[$alias]))
+		{
+			$alias = $this->alias[$alias];
+		}
+
+		if (!isset($this->entities[$alias]))
+		{
+			$alias = $this->readDefinition($alias);
+		}
+
+		return $alias;
 	}
 }

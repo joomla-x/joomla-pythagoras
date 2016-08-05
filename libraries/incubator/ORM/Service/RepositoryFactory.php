@@ -19,9 +19,8 @@ use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\Storage\Csv\CsvDataMapper;
+use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
-use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
-use Joomla\ORM\UnitOfWork\ChangeTracker;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWork;
 use Joomla\String\Inflector;
@@ -37,9 +36,6 @@ class RepositoryFactory
 {
 	/** @var  array */
 	private $config;
-
-	/** @var  IdAccessorRegistry The Id Accessor Registry */
-	private $idAccessorRegistry;
 
 	/** @var EntityBuilder The entity builder */
 	private $builder;
@@ -59,23 +55,19 @@ class RepositoryFactory
 	/**
 	 * RepositoryFactory constructor.
 	 *
-	 * @param array $config
-	 * @param TransactionInterface $transactor
+	 * @param   array                 $config      The configuration
+	 * @param   TransactionInterface  $transactor  A Transactor
 	 */
 	public function __construct(array $config, $transactor)
 	{
-		$this->config             = $config;
-		$this->inflector          = Inflector::getInstance();
-		$this->idAccessorRegistry = new IdAccessorRegistry();
+		$this->config    = $config;
+		$this->inflector = Inflector::getInstance();
 
 		$this->builder = $this->createEntityBuilder($this->config['definitionPath']);
 
-		$changeTracker        = new ChangeTracker;
-		$this->entityRegistry = new EntityRegistry($this->idAccessorRegistry, $changeTracker);
+		$this->entityRegistry = new EntityRegistry($this->builder);
 		$this->unitOfWork     = new UnitOfWork(
 			$this->entityRegistry,
-			$this->idAccessorRegistry,
-			$changeTracker,
 			$transactor
 		);
 	}
@@ -85,63 +77,42 @@ class RepositoryFactory
 	 */
 	public function getIdAccessorRegistry()
 	{
-		return $this->idAccessorRegistry;
+		return $this->entityRegistry->getIdAccessorRegistry();
 	}
 
 	/**
-	 * @param $entityClass
+	 * Gets a repository for an entity class.
 	 *
-	 * @return Repository
+	 * The Repository is created on first call. Any subsequent call will return the same instance, so the DataMapper
+	 * can not be exchanged afterwards.
+	 *
+	 * On creation, the Repository gets supplied with the provided DataMapper. If data mapper is omitted, looks for
+	 * a DataMapper for the given entity class registered to the UnitOfWork. If that fails, too, a new DataMapper is
+	 * created using the information from the configuration.
+	 *
+	 * @param   string               $entityClass  The Eintity's class
+	 * @param   DataMapperInterface  $dataMapper   An optional DataMapper
+	 *
+	 * @return  Repository
 	 */
-	public function forEntity($entityClass)
+	public function forEntity($entityClass, DataMapperInterface $dataMapper = null)
 	{
 		if (!isset($this->repositories[$entityClass]))
 		{
-			$dataMapperClass = $this->config[$entityClass]['dataMapper'];
-			$dataPath        = $this->config['dataPath'];
-			switch ($dataMapperClass)
+			if (empty($dataMapper))
 			{
-				case CsvDataMapper::class:
-					static $gateway = null;
-
-					if (is_null($gateway))
-					{
-						$gateway = new CsvDataGateway($dataPath);
-					}
-
-					$dataMapper = new CsvDataMapper(
-						$gateway,
-						$entityClass,
-						$this->builder,
-						basename($this->config[$entityClass]['data'], '.csv'),
-						$this->entityRegistry
-					);
-					break;
-
-				case DoctrineDataMapper::class:
-					static $connection = null;
-
-					if (is_null($connection))
-					{
-						$connection = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
-					}
-
-					$dataMapper = new DoctrineDataMapper(
-						$connection,
-						$entityClass,
-						$this->builder,
-						$this->config[$entityClass]['table'],
-						$this->entityRegistry
-					);
-					break;
-
-				default:
-					throw new OrmException("Unknown data mapper '$dataMapperClass'");
-					break;
+				try
+				{
+					$dataMapper = $this->unitOfWork->getDataMapper($entityClass);
+				}
+				catch (\RuntimeException $e)
+				{
+					$dataMapper      = $this->createDataMapper($entityClass);
+				}
 			}
 
 			$this->unitOfWork->registerDataMapper($entityClass, $dataMapper);
-			
+
 			$this->repositories[$entityClass] = new Repository($entityClass, $dataMapper, $this->unitOfWork);
 		}
 
@@ -149,7 +120,9 @@ class RepositoryFactory
 	}
 
 	/**
-	 * @return EntityRegistry
+	 * Gets the EntityRegistry
+	 *
+	 * @return  EntityRegistry
 	 */
 	public function getEntityRegistry()
 	{
@@ -157,7 +130,9 @@ class RepositoryFactory
 	}
 
 	/**
-	 * @return UnitOfWork
+	 * Gets the UnitOfWork
+	 *
+	 * @return  UnitOfWork
 	 */
 	public function getUnitOfWork()
 	{
@@ -165,16 +140,69 @@ class RepositoryFactory
 	}
 
 	/**
-	 * @param $dataDirectory
+	 * Creates an EntityBuilder
 	 *
-	 * @return EntityBuilder
+	 * @param   string  $dataDirectory  The data directory
+	 *
+	 * @return  EntityBuilder
 	 */
 	private function createEntityBuilder($dataDirectory)
 	{
 		$strategy = new RecursiveDirectoryStrategy($dataDirectory);
 		$locator  = new Locator([$strategy]);
-		$builder  = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $this);
+		$builder  = new EntityBuilder($locator, $this->config, $this);
 
 		return $builder;
+	}
+
+	/**
+	 * Creates a DataMapper
+	 *
+	 * @param   string  $entityClass      The Entity's class
+	 *
+	 * @return  DataMapperInterface
+	 */
+	protected function createDataMapper($entityClass)
+	{
+		switch ($this->config[$entityClass]['dataMapper'])
+		{
+			case CsvDataMapper::class:
+				static $gateway = null;
+
+				if (is_null($gateway))
+				{
+					$gateway = new CsvDataGateway($this->config['dataPath']);
+				}
+
+				$dataMapper = new CsvDataMapper(
+					$gateway,
+					$entityClass,
+					basename($this->config[$entityClass]['data'], '.csv'),
+					$this->entityRegistry
+				);
+				break;
+
+			case DoctrineDataMapper::class:
+				static $connection = null;
+
+				if (is_null($connection))
+				{
+					$connection = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+				}
+
+				$dataMapper = new DoctrineDataMapper(
+					$connection,
+					$entityClass,
+					$this->config[$entityClass]['table'],
+					$this->entityRegistry
+				);
+				break;
+
+			default:
+				throw new OrmException("No data mapper '$entityClass'");
+				break;
+		}
+
+		return $dataMapper;
 	}
 }

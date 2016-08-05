@@ -20,33 +20,31 @@ use Joomla\Tests\Unit\ORM\Storage\RelationTestCases;
 
 class DoctrineRelationTest extends RelationTestCases
 {
-	public function setUp()
+	private $connection;
+
+	protected function onBeforeSetup()
 	{
 		$dataPath = realpath(__DIR__ . '/../..');
 
 		$this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
 
-		$connection       = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
-		$this->transactor = new DoctrineTransactor($connection);
+		$this->connection = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+		$this->transactor = new DoctrineTransactor($this->connection);
+	}
 
-		parent::setUp();
-
+	protected function onAfterSetUp()
+	{
 		$entities = [Master::class, Detail::class, Extra::class, Tag::class];
 
 		foreach ($entities as $className)
 		{
 			$dataMapper             = new DoctrineDataMapper(
-				$connection,
+				$this->connection,
 				$className,
-				$this->builder,
 				$this->config[$className]['table'],
 				$this->entityRegistry
 			);
 			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
 		}
-	}
-
-	public function tearDown()
-	{
 	}
 }

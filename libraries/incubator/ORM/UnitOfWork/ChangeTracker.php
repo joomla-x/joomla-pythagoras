@@ -13,6 +13,10 @@ use ReflectionClass;
 
 /**
  * Defines the change tracker
+ *
+ * @package  Joomla/ORM
+ *
+ * @since    __DEPLOY_VERSION__
  */
 class ChangeTracker
 {
@@ -30,10 +34,10 @@ class ChangeTracker
 	/**
 	 * Gets whether or not an entity has changed since it was registered
 	 *
-	 * @param object $entity The entity to check
+	 * @param   object  $entity  The entity to check
 	 *
-	 * @return bool True if the entity has changed, otherwise false
-	 * @throws OrmException Thrown if the entity was not registered in the first place
+	 * @return  boolean  True if the entity has changed, otherwise false
+	 * @throws  OrmException  if the entity was not registered in the first place
 	 */
 	public function hasChanged($entity)
 	{
@@ -55,8 +59,10 @@ class ChangeTracker
 	/**
 	 * Registers a function that compares two entities and determines whether or not they're the same
 	 *
-	 * @param string   $className  The name of the class whose comparator we're registering
-	 * @param callable $comparator The function that accepts two entities and returns whether or not they're the same
+	 * @param   string    $className   The name of the class whose comparator we're registering
+	 * @param   callable  $comparator  The function that accepts two entities and returns whether or not they're the same
+	 *
+	 * @return  void
 	 */
 	public function registerComparator($className, callable $comparator)
 	{
@@ -66,7 +72,9 @@ class ChangeTracker
 	/**
 	 * Starts tracking an entity
 	 *
-	 * @param object $entity The entity to start tracking
+	 * @param   object  $entity  The entity to start tracking
+	 *
+	 * @return  void
 	 */
 	public function startTracking($entity)
 	{
@@ -77,7 +85,9 @@ class ChangeTracker
 	/**
 	 * Stops tracking an entity
 	 *
-	 * @param object $entity The entity to deregister
+	 * @param   object  $entity  The entity to deregister
+	 *
+	 * @return  void
 	 */
 	public function stopTracking($entity)
 	{
@@ -87,6 +97,8 @@ class ChangeTracker
 
 	/**
 	 * Stops tracking all entities
+	 *
+	 * @return  void
 	 */
 	public function stopTrackingAll()
 	{
@@ -96,14 +108,14 @@ class ChangeTracker
 	/**
 	 * Checks to see if an entity has changed using a comparison function
 	 *
-	 * @param object $entity The entity to check for changes
+	 * @param   object  $entity  The entity to check for changes
 	 *
-	 * @return bool True if the entity has changed, otherwise false
+	 * @return  boolean  True if the entity has changed, otherwise false
 	 */
 	protected function hasChangedUsingComparisonFunction($entity)
 	{
-		$objectHashId = spl_object_hash($entity);
-		$originalData = $this->originalData[$objectHashId];
+		$hashId       = $this->getHashId($entity);
+		$originalData = $this->originalData[$hashId];
 
 		return !$this->comparators[get_class($entity)]($originalData, $entity);
 	}
@@ -111,19 +123,19 @@ class ChangeTracker
 	/**
 	 * Checks to see if an entity has changed using reflection
 	 *
-	 * @param object $entity The entity to check for changes
+	 * @param   object  $entity  The entity to check for changes
 	 *
-	 * @return bool True if the entity has changed, otherwise false
+	 * @return  boolean  True if the entity has changed, otherwise false
 	 */
 	protected function hasChangedUsingReflection($entity)
 	{
 		// Get all the properties in the original entity and the current one
-		$objectHashId            = $this->getHashId($entity);
+		$hashId                  = $this->getHashId($entity);
 		$currentEntityReflection = new ReflectionClass($entity);
 		$currentProperties       = $currentEntityReflection->getProperties();
 		$currentPropertiesAsHash = [];
 
-		$originalData             = $this->originalData[$objectHashId];
+		$originalData             = $this->originalData[$hashId];
 		$originalEntityReflection = new ReflectionClass($originalData);
 		$originalProperties       = $originalEntityReflection->getProperties();
 		$originalPropertiesAsHash = [];
@@ -161,12 +173,29 @@ class ChangeTracker
 	}
 
 	/**
-	 * @param $entity
+	 * Gets the hash id of an object
 	 *
-	 * @return string
+	 * @param   object  $entity  The entity
+	 *
+	 * @return  string  The hash id
 	 */
 	private function getHashId($entity)
 	{
 		return spl_object_hash($entity);
+	}
+
+	/**
+	 * Gets the original version of an entity for change detection
+	 *
+	 * @param   object  $entity  The current entity
+	 *
+	 * @return  object
+	 */
+	public function getOriginal($entity)
+	{
+		$hashId = $this->getHashId($entity);
+		$originalData = $this->originalData[$hashId];
+
+		return $originalData;
 	}
 }

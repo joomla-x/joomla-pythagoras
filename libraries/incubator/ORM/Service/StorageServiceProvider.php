@@ -10,6 +10,7 @@ namespace Joomla\ORM\Service;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Mockery\Generator\Method;
 
 /**
  * Storage Service Provider.
@@ -21,6 +22,8 @@ use Joomla\DI\ServiceProviderInterface;
 class StorageServiceProvider implements ServiceProviderInterface
 {
 	/**
+	 * Registers a RepositoryFactory with the container
+	 *
 	 * @param   Container $container The DI container
 	 * @param   string    $alias     An optional alias
 	 *
@@ -37,29 +40,14 @@ class StorageServiceProvider implements ServiceProviderInterface
 	}
 
 	/**
+	 * Creates a RepositoryFactory
+	 *
 	 * @param   Container  $container  The container
 	 *
-	 * @return  \Joomla\Service\CommandBus
+	 * @return  void
 	 */
 	public function createRepositoryFactory(Container $container)
 	{
-		// Construct the command handler middleware
-		$middleware = [];
-
-		if ($container->has('CommandBusMiddleware'))
-		{
-			$middleware = (array) $container->get('CommandBusMiddleware');
-		}
-
-		if ($container->has('extension_factory'))
-		{
-			$middleware[] = new ExtensionQueryMiddleware($container->get('extension_factory'));
-		}
-
-		$builder    = new CommandBusBuilder($container->get('EventDispatcher'));
-		$middleware = array_merge($middleware, $builder->getMiddleware());
-		$builder->setMiddleware($middleware);
-
-		return $builder->getCommandBus();
+		throw new \RuntimeException(__METHOD__ . ' is not yet implemented');
 	}
 }

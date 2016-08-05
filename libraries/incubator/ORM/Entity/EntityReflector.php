@@ -10,14 +10,13 @@ namespace Joomla\ORM\Entity;
 
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Definition\Parser\Field;
-use Joomla\ORM\Storage\StorageProviderInterface;
 
 /**
  * Class EntityReflector
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class EntityReflector
 {
@@ -33,7 +32,7 @@ class EntityReflector
 	/**
 	 * Constructor
 	 *
-	 * @param   object $entity The entity
+	 * @param   object  $entity  The entity
 	 */
 	public function __construct($entity)
 	{
@@ -59,7 +58,7 @@ class EntityReflector
 	/**
 	 * Get a value from an entity
 	 *
-	 * @param   string $property The name of the property
+	 * @param   string  $property  The name of the property
 	 *
 	 * @return  mixed  The value of the property
 	 */
@@ -71,7 +70,7 @@ class EntityReflector
 	/**
 	 * Add a field to the entity
 	 *
-	 * @param   Field $field The field to add
+	 * @param   Field  $field  The field to add
 	 *
 	 * @return  void
 	 */
@@ -92,8 +91,8 @@ class EntityReflector
 	/**
 	 * Add a relation handler to the entity
 	 *
-	 * @param   string   $name    Field name
-	 * @param   Callable $handler The relation handler
+	 * @param   string    $name     Field name
+	 * @param   Callable  $handler  The relation handler
 	 *
 	 * @return  void
 	 */
@@ -107,7 +106,7 @@ class EntityReflector
 	/**
 	 * Set the data definition
 	 *
-	 * @param   EntityStructure $definition The data definition
+	 * @param   EntityStructure  $definition  The data definition
 	 *
 	 * @return  void
 	 */
@@ -116,19 +115,5 @@ class EntityReflector
 		$tmp = new \ReflectionProperty('Joomla\ORM\Entity\Entity', 'definition');
 		$tmp->setAccessible(true);
 		$tmp->setValue($this->entity, $definition);
-	}
-
-	/**
-	 * Set the storage provider
-	 *
-	 * @param   StorageProviderInterface $provider The storage provider
-	 *
-	 * @return  void
-	 */
-	public function setStorageProvider(StorageProviderInterface $provider)
-	{
-		$tmp = new \ReflectionProperty('Joomla\ORM\Entity\Entity', 'storage');
-		$tmp->setAccessible(true);
-		$tmp->setValue($this->entity, $provider);
 	}
 }

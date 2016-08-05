@@ -19,7 +19,7 @@ use Joomla\ORM\Storage\CollectionFinderInterface;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class CsvCollectionFinder implements CollectionFinderInterface
 {
@@ -53,14 +53,12 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	 * @param   CsvDataGateway $gateway        The data gateway
 	 * @param   string         $tableName      The table name
 	 * @param   string         $entityClass    The class name of the entity
-	 * @param   EntityBuilder  $builder        The entity builder
 	 * @param   EntityRegistry $entityRegistry The entity registry
 	 */
-	public function __construct(CsvDataGateway $gateway, $tableName, $entityClass, EntityBuilder $builder, EntityRegistry $entityRegistry)
+	public function __construct(CsvDataGateway $gateway, $tableName, $entityClass, EntityRegistry $entityRegistry)
 	{
 		$this->gateway        = $gateway;
 		$this->entityClass    = $entityClass;
-		$this->builder        = $builder;
 		$this->table          = $tableName;
 		$this->entityRegistry = $entityRegistry;
 	}
@@ -114,45 +112,6 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	}
 
 	/**
-	 * Define the columns to be retrieved.
-	 *
-	 * @param   array $columns The column names
-	 *
-	 * @return  $this
-	 */
-	public function columns($columns)
-	{
-		if (!is_array($columns))
-		{
-			$columns = preg_split('~\s*,\s*~', trim($columns));
-		}
-
-		$this->columns = $columns;
-
-		return $this;
-	}
-
-	/**
-	 * Define a condition.
-	 *
-	 * @param   mixed  $lValue The left value for the comparision
-	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
-	 * @param   mixed  $rValue The right value for the comparision
-	 *
-	 * @return  $this
-	 */
-	public function with($lValue, $op, $rValue)
-	{
-		$this->conditions[] = [
-			'field' => $lValue,
-			'op'    => $op,
-			'value' => $rValue
-		];
-
-		return $this;
-	}
-
-	/**
 	 * Apply the conditions
 	 *
 	 * @param   array $matches The records
@@ -167,79 +126,6 @@ class CsvCollectionFinder implements CollectionFinderInterface
 		}
 
 		return $matches;
-	}
-
-	/**
-	 * Apply the ordering
-	 *
-	 * @param   array $matches The records
-	 *
-	 * @return  array
-	 */
-	private function applyOrdering($matches)
-	{
-		foreach ($this->ordering as $ordering)
-		{
-			usort(
-				$matches,
-				function ($aRow, $bRow) use ($ordering)
-				{
-					$a = $aRow[$ordering['column']];
-					$b = $bRow[$ordering['column']];
-
-					return $ordering['direction'] * ($a == $b ? 0 : ($a < $b ? -1 : 1));
-				}
-			);
-		}
-
-		return $matches;
-	}
-
-	/**
-	 * Apply the columns
-	 *
-	 * @param   array $matches The records
-	 *
-	 * @return  array
-	 */
-	private function applyColumns($matches)
-	{
-		if (empty($this->columns) || in_array('*', $this->columns))
-		{
-			return $matches;
-		}
-
-		$availableColumns = array_keys(reset($matches));
-		$requestedColumns = $this->columns;
-
-		foreach (array_diff($availableColumns, $requestedColumns) as $remove)
-		{
-			foreach ($matches as &$match)
-			{
-				unset($match[$remove]);
-			}
-		}
-
-		return $matches;
-	}
-
-	/**
-	 * Cast array to entity
-	 *
-	 * @param   array $matches The records
-	 *
-	 * @return  array
-	 */
-	private function castToEntity($matches)
-	{
-		$entities = $this->builder->castToEntity($matches, $this->entityClass);
-
-		foreach ($entities as &$entity)
-		{
-			$this->entityRegistry->registerEntity($entity);
-		}
-
-		return $entities;
 	}
 
 	/**
@@ -344,5 +230,111 @@ class CsvCollectionFinder implements CollectionFinderInterface
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Apply the ordering
+	 *
+	 * @param   array $matches The records
+	 *
+	 * @return  array
+	 */
+	private function applyOrdering($matches)
+	{
+		foreach ($this->ordering as $ordering)
+		{
+			usort(
+				$matches,
+				function ($aRow, $bRow) use ($ordering) {
+					$a = $aRow[$ordering['column']];
+					$b = $bRow[$ordering['column']];
+
+					return $ordering['direction'] * ($a == $b ? 0 : ($a < $b ? -1 : 1));
+				}
+			);
+		}
+
+		return $matches;
+	}
+
+	/**
+	 * Apply the columns
+	 *
+	 * @param   array $matches The records
+	 *
+	 * @return  array
+	 */
+	private function applyColumns($matches)
+	{
+		if (empty($this->columns) || in_array('*', $this->columns))
+		{
+			return $matches;
+		}
+
+		$availableColumns = array_keys(reset($matches));
+		$requestedColumns = $this->columns;
+
+		foreach (array_diff($availableColumns, $requestedColumns) as $remove)
+		{
+			foreach ($matches as &$match)
+			{
+				unset($match[$remove]);
+			}
+		}
+
+		return $matches;
+	}
+
+	/**
+	 * Cast array to entity
+	 *
+	 * @param   array $matches The records
+	 *
+	 * @return  array
+	 */
+	private function castToEntity($matches)
+	{
+		$entities = $this->entityRegistry->getEntityBuilder()->castToEntity($matches, $this->entityClass);
+
+		return $entities;
+	}
+
+	/**
+	 * Define the columns to be retrieved.
+	 *
+	 * @param   array $columns The column names
+	 *
+	 * @return  $this
+	 */
+	public function columns($columns)
+	{
+		if (!is_array($columns))
+		{
+			$columns = preg_split('~\s*,\s*~', trim($columns));
+		}
+
+		$this->columns = $columns;
+
+		return $this;
+	}
+
+	/**
+	 * Define a condition.
+	 *
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   mixed  $rValue The right value for the comparision
+	 *
+	 * @return  $this
+	 */
+	public function with($lValue, $op, $rValue)
+	{
+		$this->conditions[] = [
+			'field' => $lValue,
+			'op'    => $op,
+			'value' => $rValue
+		];
+
+		return $this;
 	}
 }

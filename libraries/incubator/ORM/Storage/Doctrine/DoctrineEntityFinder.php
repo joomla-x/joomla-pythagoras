@@ -16,7 +16,7 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  *
  * @package Joomla/ORM
  *
- * @since   1.0
+ * @since   __DEPLOY_VERSION__
  */
 class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFinderInterface
 {

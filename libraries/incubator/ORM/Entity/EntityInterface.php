@@ -13,7 +13,7 @@ namespace Joomla\ORM\Entity;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface EntityInterface
 {

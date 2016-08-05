@@ -11,7 +11,6 @@ namespace Joomla\Tests\Unit\ORM\Storage;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Statement;
-use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
 use Joomla\Tests\Unit\ORM\Mocks\Article;
 
@@ -64,6 +63,6 @@ class DoctrineDataMapperTest extends DataMapperTestCases
 
 		parent::setUp();
 
-		$this->dataMapper = new DoctrineDataMapper($this->connection, Article::class, $this->builder, 'articles', $this->entityRegistry);
+		$this->dataMapper = new DoctrineDataMapper($this->connection, Article::class, 'articles', $this->entityRegistry);
 	}
 }

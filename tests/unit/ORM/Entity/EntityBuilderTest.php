@@ -12,6 +12,7 @@ use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
@@ -26,11 +27,14 @@ class EntityBuilderTest extends TestCase
 	/** @var  EntityBuilder */
 	protected $builder;
 
-	/** @var  IdAccessorRegistry */
-	protected $idAccessorRegistry;
+	/** @var  IdAccessorRegistry|\PHPUnit_Framework_MockObject_MockObject */
+	#protected $idAccessorRegistry;
 
-	/** @var  TransactionInterface */
+	/** @var  TransactionInterface|\PHPUnit_Framework_MockObject_MockObject */
 	protected $transactor;
+
+	/** @var  EntityRegistry */
+	#protected $entityRegistry;
 
 	/** @var  array */
 	protected $config = [
@@ -46,6 +50,11 @@ class EntityBuilderTest extends TestCase
 			'dataMapper' => "Joomla\\ORM\\Storage\\Csv\\CsvDataMapper",
 			'definition' => "Master.xml",
 			'data'       => "masters.csv"
+		],
+		'Joomla\Tests\Unit\ORM\Mocks\Extra'   => [
+			'dataMapper' => "Joomla\\ORM\\Storage\\Csv\\CsvDataMapper",
+			'definition' => "Extra.xml",
+			'data'       => "extras.csv"
 		]
 	];
 
@@ -64,14 +73,12 @@ class EntityBuilderTest extends TestCase
 
 	public function setUp()
 	{
+		$this->transactor = $this->createMock(TransactionInterface::class);
 
-		$this->idAccessorRegistry = $this->createMock(IdAccessorRegistry::class);
-		$this->transactor         = $this->createMock(TransactionInterface::class);
-
+		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
 		$strategy          = new RecursiveDirectoryStrategy($this->config['definitionPath']);
 		$locator           = new Locator([$strategy]);
-		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
-		$this->builder     = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
+		$this->builder     = new EntityBuilder($locator, $this->config, $repositoryFactory);
 	}
 
 	/**

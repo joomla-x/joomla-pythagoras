@@ -30,7 +30,6 @@ class CsvStorageTest extends StorageTestCases
 		$dataMapper = new CsvDataMapper(
 			$gateway,
 			Article::class,
-			$this->builder,
 			'articles',
 			$this->entityRegistry
 		);

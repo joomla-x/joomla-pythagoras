@@ -16,17 +16,17 @@ use Joomla\ORM\UnitOfWork\TransactionInterface;
  *
  * @package Joomla/ORM
  *
- * @since   1.0
+ * @since   __DEPLOY_VERSION__
  */
 class CsvTransactor implements TransactionInterface
 {
-	/** @var CsvDataGateway  */
+	/** @var CsvDataGateway */
 	private $gateway;
 
 	/**
 	 * CsvTransactor constructor.
 	 *
-	 * @param CsvDataGateway $gateway
+	 * @param   CsvDataGateway  $gateway  The data gateway
 	 */
 	public function __construct(CsvDataGateway $gateway)
 	{
@@ -36,7 +36,8 @@ class CsvTransactor implements TransactionInterface
 	/**
 	 * Initiates a transaction.
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function beginTransaction()
 	{
@@ -53,7 +54,8 @@ class CsvTransactor implements TransactionInterface
 	/**
 	 * Commits a transaction.
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function commit()
 	{
@@ -70,7 +72,8 @@ class CsvTransactor implements TransactionInterface
 	/**
 	 * Rolls back the current transaction, as initiated by beginTransaction().
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function rollBack()
 	{

@@ -11,13 +11,14 @@ namespace Joomla\ORM\Entity;
 use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Exception\PropertyNotFoundException;
 use Joomla\ORM\Exception\WriteOnImmutableException;
+use Joomla\String\Normalise;
 
 /**
  * Class Entity
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Entity implements EntityInterface
 {
@@ -53,9 +54,26 @@ class Entity implements EntityInterface
 	 */
 	public function key()
 	{
-		if (!$this->key && $this->has('id'))
+		if (empty($this->key) && !empty($this->definition->primary))
 		{
-			return 'id';
+			$keys = array_values(
+				array_filter(
+					preg_split('~[\s,]+~', $this->definition->primary)
+				)
+			);
+			$keys = array_map(
+				function ($key) {
+					return Normalise::toVariable($key);
+				},
+				$keys
+			);
+
+			$this->key = count($keys) > 1 ? $keys : array_shift($keys);
+		}
+
+		if (empty($this->key) && $this->has('id'))
+		{
+			$this->key = 'id';
 		}
 
 		return $this->key;
@@ -74,7 +92,6 @@ class Entity implements EntityInterface
 		{
 			if ($this->has($property))
 			{
-				/** @noinspection PhpVariableVariableInspection */
 				$this->$property = $value;
 			}
 		}

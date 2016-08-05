@@ -13,7 +13,6 @@ use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\ORM\Storage\DataMapperInterface;
@@ -24,7 +23,7 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class DoctrineDataMapper implements DataMapperInterface
 {
@@ -48,15 +47,13 @@ class DoctrineDataMapper implements DataMapperInterface
 	 *
 	 * @param   Connection     $connection     The database connection
 	 * @param   string         $entityClass    The class name of the entity
-	 * @param   EntityBuilder  $builder        The entity builder
 	 * @param   string         $table          The table name
 	 * @param   EntityRegistry $entityRegistry The entity registry
 	 */
-	public function __construct(Connection $connection, $entityClass, EntityBuilder $builder, $table, EntityRegistry $entityRegistry)
+	public function __construct(Connection $connection, $entityClass, $table, EntityRegistry $entityRegistry)
 	{
 		$this->connection     = $connection;
 		$this->entityClass    = $entityClass;
-		$this->builder        = $builder;
 		$this->table          = $table;
 		$this->entityRegistry = $entityRegistry;
 	}
@@ -88,7 +85,7 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function findOne()
 	{
-		return new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->builder, $this->entityRegistry);
+		return new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
 	}
 
 	/**
@@ -100,54 +97,51 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function findAll()
 	{
-		return new DoctrineCollectionFinder($this->connection, $this->table, $this->entityClass, $this->builder, $this->entityRegistry);
+		return new DoctrineCollectionFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
 	}
 
 	/**
 	 * Inserts an entity to the storage
 	 *
-	 * @param   object             $entity The entity to insert
-	 * @param   IdAccessorRegistry $idAccessorRegistry
+	 * @param   object $entity The entity to insert
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be inserted
 	 */
-	public function insert($entity, IdAccessorRegistry $idAccessorRegistry)
+	public function insert($entity)
 	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
-		$persistor->insert($entity, $idAccessorRegistry);
+		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->entityRegistry->getEntityBuilder(), $this->entityRegistry);
+		$persistor->insert($entity);
 	}
 
 	/**
 	 * Updates an entity in the storage
 	 *
-	 * @param   object             $entity The entity to insert
-	 * @param   IdAccessorRegistry $idAccessorRegistry
+	 * @param   object $entity The entity to insert
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be updated
 	 */
-	public function update($entity, IdAccessorRegistry $idAccessorRegistry)
+	public function update($entity)
 	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
-		$persistor->update($entity, $idAccessorRegistry);
+		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->entityRegistry->getEntityBuilder(), $this->entityRegistry);
+		$persistor->update($entity);
 	}
 
 	/**
 	 * Deletes an entity from the storage
 	 *
-	 * @param   object             $entity The entity to delete
-	 * @param   IdAccessorRegistry $idAccessorRegistry
+	 * @param   object $entity The entity to delete
 	 *
 	 * @return  void
 	 *
 	 * @throws  OrmException  if the entity could not be deleted
 	 */
-	public function delete($entity, IdAccessorRegistry $idAccessorRegistry)
+	public function delete($entity)
 	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->builder);
-		$persistor->delete($entity, $idAccessorRegistry);
+		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->entityRegistry->getEntityBuilder(), $this->entityRegistry);
+		$persistor->delete($entity);
 	}
 }

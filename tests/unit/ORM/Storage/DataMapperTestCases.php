@@ -9,14 +9,15 @@
 namespace Joomla\Tests\Unit\ORM\Storage;
 
 use Doctrine\DBAL\Connection;
+use Joomla\ORM\Definition\Parser\Entity;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
-use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\Storage\Csv\CsvDataMapper;
 use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
 use Joomla\ORM\Storage\EntityFinderInterface;
+use Joomla\Tests\Unit\DumpTrait;
 use Joomla\Tests\Unit\ORM\Mocks\Article;
 use PHPUnit\Framework\TestCase;
 
@@ -34,10 +35,7 @@ class DataMapperTestCases extends TestCase
 	/** @var  \PHPUnit_Framework_MockObject_MockObject|EntityRegistry */
 	protected $entityRegistry;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject|IdAccessorRegistry */
-	protected $idAccessorRegistry;
-
-	/** @var array  */
+	/** @var array */
 	protected $articles = [
 		1 => [
 			'id'        => 1,
@@ -50,20 +48,22 @@ class DataMapperTestCases extends TestCase
 		]
 	];
 
+	use DumpTrait;
+
 	public function setUp()
 	{
-		$this->idAccessorRegistry = $this->createMock(IdAccessorRegistry::class);
-		$this->entityRegistry     = $this->createMock(EntityRegistry::class);
-		$this->builder            = $this->createMock(EntityBuilder::class);
+		$this->builder = $this->createMock(EntityBuilder::class);
 
 		$this->builder
 			->expects($this->any())
 			->method('reduce')
 			->willReturnCallback(
-				function ($entity) {
+				function ($entity)
+				{
 					return get_object_vars($entity);
 				}
 			);
+		$this->entityRegistry = new EntityRegistry($this->builder);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class DataMapperTestCases extends TestCase
 			->method('insert')
 			->with($this->anything());
 
-		$this->dataMapper->insert(new Article(), $this->idAccessorRegistry);
+		$this->dataMapper->insert(new Article());
 	}
 
 	/**
@@ -120,7 +120,16 @@ class DataMapperTestCases extends TestCase
 			->expects($this->once())
 			->method('update');
 
-		$this->dataMapper->update(new Article(), $this->idAccessorRegistry);
+		$meta          = $this->createMock(Entity::class);
+		$meta->primary = 'id';
+
+		$this->builder
+			->expects($this->any())
+			->method('getMeta')
+			->with(Article::class)
+			->willReturn($meta);
+
+		$this->dataMapper->update(new Article());
 	}
 
 	/**
@@ -133,6 +142,15 @@ class DataMapperTestCases extends TestCase
 			->method('delete')
 			->willReturn(1);
 
-		$this->dataMapper->delete(new Article(), $this->idAccessorRegistry);
+		$meta          = $this->createMock(Entity::class);
+		$meta->primary = 'id';
+
+		$this->builder
+			->expects($this->any())
+			->method('getMeta')
+			->with(Article::class)
+			->willReturn($meta);
+
+		$this->dataMapper->delete(new Article());
 	}
 }

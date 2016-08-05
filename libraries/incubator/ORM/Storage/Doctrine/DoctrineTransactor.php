@@ -16,9 +16,9 @@ use Joomla\ORM\UnitOfWork\TransactionInterface;
 /**
  * Class DoctrineTransactor
  *
- * @package Joomla/ORM
+ * @package  Joomla/ORM
  *
- * @since   1.0
+ * @since    __DEPLOY_VERSION__
  */
 class DoctrineTransactor implements TransactionInterface
 {
@@ -38,7 +38,8 @@ class DoctrineTransactor implements TransactionInterface
 	/**
 	 * Initiates a transaction.
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function beginTransaction()
 	{
@@ -55,7 +56,8 @@ class DoctrineTransactor implements TransactionInterface
 	/**
 	 * Commits a transaction.
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function commit()
 	{
@@ -72,7 +74,8 @@ class DoctrineTransactor implements TransactionInterface
 	/**
 	 * Rolls back the current transaction, as initiated by beginTransaction().
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function rollBack()
 	{

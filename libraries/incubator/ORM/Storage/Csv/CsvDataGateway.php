@@ -13,7 +13,7 @@ namespace Joomla\ORM\Storage\Csv;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class CsvDataGateway
 {
@@ -29,6 +29,11 @@ class CsvDataGateway
 	/** @var  string  Path of the data directory */
 	private $dataPath;
 
+	/**
+	 * CsvDataGateway constructor.
+	 *
+	 * @param   string  $dataPath  The path to the CSV data
+	 */
 	public function __construct($dataPath)
 	{
 		$this->dataPath = $dataPath;
@@ -36,6 +41,10 @@ class CsvDataGateway
 
 	/**
 	 * Find multiple entities.
+	 *
+	 * @param   string  $table  The name of the table
+	 *
+	 * @return  mixed
 	 */
 	public function getAll($table)
 	{
@@ -48,114 +57,9 @@ class CsvDataGateway
 	}
 
 	/**
-	 * Inserts an entity to the storage
-	 */
-	public function insert($table, $row)
-	{
-		if (!array_key_exists($table, $this->rows))
-		{
-			$this->loadTable($table);
-		}
-
-		$data = $this->sanitiseRow($table, $row);
-
-		if ($this->hasId($table) && isset($this->rows[$table][$data['id']]))
-		{
-			throw new \RuntimeException("Id {$data['id']} already exists in {$table}.csv");
-		}
-
-		$this->rows[$table][$data['id']] = $data;
-	}
-
-	/**
-	 * Updates an entity in the storage
-	 */
-	public function update($table, $row)
-	{
-		if (!array_key_exists($table, $this->rows))
-		{
-			$this->loadTable($table);
-		}
-
-		$data = $this->sanitiseRow($table, $row);
-
-		if ($this->hasId($table) && isset($this->rows[$table][$data['id']]))
-		{
-			foreach ($data as $key => $value)
-			{
-				if (is_null($value))
-				{
-					continue;
-				}
-
-				$this->rows[$table][$data['id']][$key] = $value;
-			}
-
-			return;
-		}
-
-		throw new \RuntimeException("No entry with Id {$data['id']} found in {$table}.csv");
-	}
-
-	/**
-	 * Deletes an entity from the storage
-	 */
-	public function delete($table, $row)
-	{
-		if (!array_key_exists($table, $this->rows))
-		{
-			$this->loadTable($table);
-		}
-
-		$data = $this->sanitiseRow($table, $row);
-
-		if ($this->hasId($table) && isset($this->rows[$table][$data['id']]))
-		{
-			unset($this->rows[$table][$data['id']]);
-
-			return;
-		}
-
-		throw new \RuntimeException("No entry with Id {$data['id']} found in {$table}.csv");
-	}
-
-	public function beginTransaction()
-	{
-		$this->snapshot = $this->rows;
-	}
-
-	public function commit()
-	{
-		try
-		{
-			$this->storeAllTables();
-
-			$this->snapshot = [];
-		}
-		catch (\Exception $e)
-		{
-			throw new \RuntimeException('Commit failed: ' . $e->getMessage(), 0, $e);
-		}
-	}
-
-	public function rollBack()
-	{
-		try
-		{
-			$this->rows = $this->snapshot;
-
-			$this->storeAllTables();
-
-			$this->snapshot = [];
-		}
-		catch (\Exception $e)
-		{
-			throw new \RuntimeException('Rollback failed: ' . $e->getMessage(), 0, $e);
-		}
-	}
-
-	/**
 	 * Load the data from the file
+	 *
+	 * @param   string  $table  The name of the table
 	 *
 	 * @return  void
 	 */
@@ -175,25 +79,223 @@ class CsvDataGateway
 				break;
 			}
 
-			$data = array_combine($this->keys[$table], $row);
-
-			if ($this->hasId($table))
-			{
-				$this->rows[$table][$data['id']] = $data;
-			}
-			else
-			{
-				$this->rows[$table][] = $data;
-			}
+			$this->rows[$table][] = array_combine($this->keys[$table], $row);
 		}
 
 		fclose($fh);
 	}
 
 	/**
+	 * Gets the path for the data file for a table
+	 *
+	 * @param   string  $table  The name of the table
+	 *
+	 * @return  string  The path to the data file
+	 */
+	protected function dataFile($table)
+	{
+		return $this->dataPath . '/' . $table . '.csv';
+	}
+
+	/**
+	 * Inserts an entity to the storage
+	 *
+	 * @param   string  $table  The name of the table
+	 * @param   array   $row    The data row
+	 *
+	 * @return  void
+	 */
+	public function insert($table, $row)
+	{
+		if (!array_key_exists($table, $this->rows))
+		{
+			$this->loadTable($table);
+		}
+
+		$data = $this->sanitiseRow($table, $row);
+
+		$this->rows[$table][] = $data;
+	}
+
+	/**
+	 * Sanitises a row
+	 *
+	 * @param   string  $table  The name of the table
+	 * @param   array   $row    The data row
+	 *
+	 * @return  array  The sanitised row
+	 */
+	protected function sanitiseRow($table, $row)
+	{
+		$data = [];
+
+		foreach ($this->keys[$table] as $key)
+		{
+			$data[$key] = isset($row[$key]) ? $row[$key] : null;
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Updates an entity in the storage
+	 *
+	 * @param   string  $table       The name of the table
+	 * @param   array   $row         The data row
+	 * @param   array   $identifier  key-value pairs to identify the record(s)
+	 *
+	 * @return  void
+	 */
+	public function update($table, $row, $identifier = [])
+	{
+		if (!array_key_exists($table, $this->rows))
+		{
+			$this->loadTable($table);
+		}
+
+		$data = array_filter($this->sanitiseRow($table, $row));
+
+		if (empty($identifier) && isset($data['id']))
+		{
+			$identifier = ['id' => $data['id']];
+		}
+
+		$rows = [];
+
+		foreach ($this->rows[$table] as $key => $row)
+		{
+			if ($this->match($row, $identifier))
+			{
+				$rows[] = $key;
+			}
+		}
+
+		if (empty($rows))
+		{
+			throw new \RuntimeException("No matching entry found in {$table}.csv");
+		}
+
+		foreach ($rows as $key)
+		{
+			foreach ($data as $field => $value)
+			{
+				$this->rows[$table][$key][$field] = $value;
+			}
+		}
+	}
+
+	/**
+	 * Checks if a row matches an identifier
+	 *
+	 * @param   array  $row         The row to check
+	 * @param   array  $identifier  List of key-value pairs
+	 *
+	 * @return  boolean
+	 */
+	protected function match($row, $identifier)
+	{
+		foreach ($identifier as $key => $value)
+		{
+			if ($row[$key] != $value)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Deletes an entity from the storage
+	 *
+	 * @param   string  $table       The name of the table
+	 * @param   array   $row         The data row
+	 * @param   array   $identifier  key-value pairs to identify the record(s)
+	 *
+	 * @return  void
+	 */
+	public function delete($table, $row, $identifier = [])
+	{
+		if (!array_key_exists($table, $this->rows))
+		{
+			$this->loadTable($table);
+		}
+
+		if (empty($identifier))
+		{
+			$identifier = $this->sanitiseRow($table, $row);
+		}
+
+		$rows = [];
+
+		foreach ($this->rows[$table] as $key => $row)
+		{
+			if ($this->match($row, $identifier))
+			{
+				$rows[] = $key;
+			}
+		}
+
+		if (empty($rows))
+		{
+			throw new \RuntimeException("No matching entry found in {$table}.csv");
+		}
+
+		foreach ($rows as $key)
+		{
+			unset($this->rows[$table][$key]);
+		}
+	}
+
+	/**
+	 * Starts a transaction
+	 *
+	 * @return  void
+	 */
+	public function beginTransaction()
+	{
+		$this->snapshot = $this->rows;
+	}
+
+	/**
+	 * Commit all changes
+	 *
+	 * @return  void
+	 * @throws  \RuntimeException  on failure
+	 */
+	public function commit()
+	{
+		try
+		{
+			$this->storeAllTables();
+
+			$this->snapshot = [];
+		}
+		catch (\Exception $e)
+		{
+			throw new \RuntimeException('Commit failed: ' . $e->getMessage(), 0, $e);
+		}
+	}
+
+	/**
+	 * Stores all tables
+	 *
+	 * @return  void
+	 */
+	protected function storeAllTables()
+	{
+		foreach (array_keys($this->rows) as $table)
+		{
+			$this->storeTable($table);
+		}
+	}
+
+	/**
 	 * Persists all changes
 	 *
-	 * @return void
+	 * @param   string  $table  The name of the table
+	 *
+	 * @return  void
 	 */
 	protected function storeTable($table)
 	{
@@ -210,43 +312,24 @@ class CsvDataGateway
 	}
 
 	/**
-	 * @param $table
+	 * Roll back the changes
 	 *
-	 * @return string
+	 * @return  void
+	 * @throws  \RuntimeException  on failure
 	 */
-	protected function dataFile($table)
+	public function rollBack()
 	{
-		return $this->dataPath . '/' . $table . '.csv';
-	}
-
-	/**
-	 * @param $table
-	 * @param $row
-	 *
-	 * @return array
-	 */
-	protected function sanitiseRow($table, $row)
-	{
-		$data = [];
-
-		foreach ($this->keys[$table] as $key)
+		try
 		{
-			$data[$key] = isset($row[$key]) ? $row[$key] : null;
+			$this->rows = $this->snapshot;
+
+			$this->storeAllTables();
+
+			$this->snapshot = [];
 		}
-
-		return $data;
-	}
-
-	protected function hasId($table)
-	{
-		return in_array('id', $this->keys[$table]);
-	}
-
-	protected function storeAllTables()
-	{
-		foreach (array_keys($this->rows) as $table)
+		catch (\Exception $e)
 		{
-			$this->storeTable($table);
+			throw new \RuntimeException('Rollback failed: ' . $e->getMessage(), 0, $e);
 		}
 	}
 }

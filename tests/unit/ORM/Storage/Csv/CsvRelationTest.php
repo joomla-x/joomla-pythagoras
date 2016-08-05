@@ -20,33 +20,34 @@ use Joomla\Tests\Unit\ORM\Storage\RelationTestCases;
 
 class CsvRelationTest extends RelationTestCases
 {
-	public function setUp()
+	private $gateway;
+
+	/**
+	 * @return CsvDataGateway
+	 */
+	protected function onBeforeSetup()
 	{
 		$dataPath = realpath(__DIR__ . '/../..');
 
 		$this->config = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
 
-		$gateway          = new CsvDataGateway($this->config['dataPath']);
-		$this->transactor = new CsvTransactor($gateway);
+		$this->gateway          = new CsvDataGateway($this->config['dataPath']);
+		$this->transactor = new CsvTransactor($this->gateway);
+	}
 
-		parent::setUp();
-
+	protected function onAfterSetUp()
+	{
 		$entities = [Master::class, Detail::class, Extra::class, Tag::class];
 
 		foreach ($entities as $className)
 		{
 			$dataMapper             = new CsvDataMapper(
-				$gateway,
+				$this->gateway,
 				$className,
-				$this->builder,
 				basename($this->config[$className]['data'], '.csv'),
 				$this->entityRegistry
 			);
 			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
 		}
-	}
-
-	public function tearDown()
-	{
 	}
 }

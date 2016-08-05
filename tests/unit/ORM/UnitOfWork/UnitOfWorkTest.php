@@ -20,9 +20,9 @@ use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\ORM\Storage\Doctrine\DoctrineDataMapper;
 use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
-use Joomla\ORM\UnitOfWork\ChangeTracker;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWork;
+use Joomla\Tests\Unit\DumpTrait;
 use Joomla\Tests\Unit\ORM\Mocks\UnitOfWorkAccessDecorator;
 use Joomla\Tests\Unit\ORM\Mocks\User;
 use PHPUnit\Framework\TestCase;
@@ -62,6 +62,8 @@ class UnitOfWorkTest extends TestCase
 	/** @var  TransactionInterface */
 	protected $transactor;
 
+	use DumpTrait;
+
 	/**
 	 * Sets up the tests
 	 */
@@ -71,11 +73,11 @@ class UnitOfWorkTest extends TestCase
 
 		$this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
 
-		$connection       = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
-		$this->transactor = new DoctrineTransactor($connection);
+		$connection               = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+		$this->transactor         = new DoctrineTransactor($connection);
+		$this->idAccessorRegistry = new IdAccessorRegistry;
 
-		$repositoryFactory        = new RepositoryFactory($this->config, $this->transactor);
-		$this->idAccessorRegistry = $repositoryFactory->getIdAccessorRegistry();
+		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
 		$this->idAccessorRegistry->registerIdAccessors(
 			User::class,
 			function (User $user)
@@ -90,7 +92,7 @@ class UnitOfWorkTest extends TestCase
 
 		$strategy      = new RecursiveDirectoryStrategy($this->config['definitionPath']);
 		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator, $this->config, $this->idAccessorRegistry, $repositoryFactory);
+		$this->builder = new EntityBuilder($locator, $this->config, $repositoryFactory);
 
 		$this->repo           = $repositoryFactory->forEntity(User::class);
 		$this->entityRegistry = $repositoryFactory->getEntityRegistry();
@@ -139,7 +141,7 @@ class UnitOfWorkTest extends TestCase
 		 */
 		$this->assertContains($this->entity1, $this->unitOfWork->getScheduledEntityInsertions(), "Entity should still be scheduled for insertion");
 		$this->assertNotContains($this->entity1, $this->unitOfWork->getScheduledEntityUpdates(), "Entity should still not be scheduled for update");
-		
+
 		$this->unitOfWork->commit();
 
 		$this->entity1->setUsername("blub");
@@ -253,9 +255,7 @@ class UnitOfWorkTest extends TestCase
 	{
 		$this->expectException(OrmException::class);
 		$unitOfWork = new UnitOfWork(
-			$this->entityRegistry,
-			new IdAccessorRegistry(),
-			new ChangeTracker()
+			$this->entityRegistry
 		);
 		$unitOfWork->commit();
 	}
@@ -352,7 +352,7 @@ class UnitOfWorkTest extends TestCase
 	 */
 	public function testSettingAggregateRootOnUpdatedEntities()
 	{
-		$this->prepareDatabase();
+		$this->prepareDatabase([$this->entity2]);
 
 		$originalAggregateRootId = $this->entity2->getAggregateRootId();
 		$className               = $this->entityRegistry->getClassName($this->entity1);
@@ -402,8 +402,6 @@ class UnitOfWorkTest extends TestCase
 			$connection       = null;
 			$this->unitOfWork = new UnitOfWork(
 				$this->entityRegistry,
-				$idAccessorRegistry,
-				new ChangeTracker(),
 				$connection
 			);
 			$this->entity1    = new User(1, "foo");
@@ -443,43 +441,18 @@ class UnitOfWorkTest extends TestCase
 	}
 
 	/**
-	 * @param \Exception $e
-	 *
-	 * @return string
-	 */
-	private function dump($e)
-	{
-		$msg           = '';
-		$fmt           = "%s in %s(%d)\n";
-		$traceAsString = '';
-
-		while ($e instanceof \Exception)
-		{
-			$message       = $e->getMessage();
-			$file          = $e->getFile();
-			$line          = $e->getLine();
-			$traceAsString = $e->getTraceAsString();
-			$e             = $e->getPrevious();
-
-			$msg .= sprintf($fmt, $message, $file, $line);
-		}
-
-		return $msg . "\n" . $traceAsString;
-	}
-
-	/**
 	 * @param array $entities
 	 */
 	private function prepareDatabase($entities = [])
 	{
 		foreach ($this->dataMapper->findAll()->getItems() as $entity)
 		{
-			$this->dataMapper->delete($entity, $this->idAccessorRegistry);
+			$this->dataMapper->delete($entity);
 		}
 
 		foreach ($entities as $entity)
 		{
-			$this->dataMapper->insert($entity, $this->idAccessorRegistry);
+			$this->dataMapper->insert($entity);
 		}
 	}
 }

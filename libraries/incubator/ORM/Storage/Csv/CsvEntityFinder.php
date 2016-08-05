@@ -16,21 +16,18 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class CsvEntityFinder extends CsvCollectionFinder implements EntityFinderInterface
 {
-
 	/**
-	 * Fetch the entity
+	 * Gets the entity
 	 *
-	 * @return  object
-	 *
+	 * @return  object  The requested item
 	 * @throws  EntityNotFoundException  if the specified entity does not exist.
 	 */
 	public function getItem()
 	{
-		
 		$items = $this->getItems();
 
 		if (empty($items))

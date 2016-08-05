@@ -21,7 +21,7 @@ use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Repository implements RepositoryInterface
 {
@@ -40,9 +40,9 @@ class Repository implements RepositoryInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   string              $className  The class of the entity
-	 * @param   DataMapperInterface $dataMapper The builder
-	 * @param   UnitOfWorkInterface $unitOfWork
+	 * @param   string               $className   The class of the entity
+	 * @param   DataMapperInterface  $dataMapper  The builder
+	 * @param   UnitOfWorkInterface  $unitOfWork  The UnitOfWork
 	 */
 	public function __construct($className, DataMapperInterface $dataMapper, UnitOfWorkInterface $unitOfWork)
 	{
@@ -67,7 +67,14 @@ class Repository implements RepositoryInterface
 	 */
 	public function getById($id)
 	{
-		return $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
+		$entity = $this->unitOfWork->getEntityRegistry()->getEntity($this->className, $id);
+
+		if (empty($entity))
+		{
+			$entity = $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
+		}
+
+		return $entity;
 	}
 
 	/**
@@ -159,7 +166,7 @@ class Repository implements RepositoryInterface
 	{
 		$this->restrictions[] = [
 			'field' => $lValue,
-			'op'    => $op,
+			'op'    => Operator::EQUAL,
 			'value' => $rValue
 		];
 	}

@@ -3,9 +3,9 @@
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
 <entity name="test">
 
-    <storage>
+    <!--<storage>
         <special dsn="sqlite:///:memory:" table="test" />
-    </storage>
+    </storage>-->
 
     <fields>
         <field name="id"

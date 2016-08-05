@@ -18,7 +18,7 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface RepositoryInterface
 {

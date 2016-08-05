@@ -8,17 +8,18 @@
 
 namespace Joomla\Tests\Unit\ORM\Entity;
 
-use Joomla\ORM\UnitOfWork\ChangeTracker;
+use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\Tests\Unit\ORM\Mocks\User;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the entity registry
  */
-class EntityRegistryTest extends \PHPUnit\Framework\TestCase
+class EntityRegistryTest extends TestCase
 {
 	/** @var EntityRegistry The entity registry to use in tests */
 	private $entityRegistry = null;
@@ -46,6 +47,7 @@ class EntityRegistryTest extends \PHPUnit\Framework\TestCase
 	 */
 	public function setUp()
 	{
+		$builder            = $this->createMock(EntityBuilder::class);
 		$idAccessorRegistry = new IdAccessorRegistry();
 		$idAccessorRegistry->registerIdAccessors(
 			User::class,
@@ -60,7 +62,7 @@ class EntityRegistryTest extends \PHPUnit\Framework\TestCase
 				$user->setId($id);
 			}
 		);
-		$this->entityRegistry = new EntityRegistry($idAccessorRegistry, new ChangeTracker());
+		$this->entityRegistry = new EntityRegistry($builder);
 
 		/*
 		 * The Ids are purposely unique so that we can identify them as such without having to first insert them to

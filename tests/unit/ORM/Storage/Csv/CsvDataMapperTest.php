@@ -12,7 +12,7 @@ use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\Storage\Csv\CsvDataMapper;
 use Joomla\Tests\Unit\ORM\Mocks\Article;
 
-class CsvDataMapperTestCases extends DataMapperTestCases
+class CsvDataMapperTest extends DataMapperTestCases
 {
 	/** @var  CsvDataMapper */
 	protected $dataMapper;
@@ -34,6 +34,6 @@ class CsvDataMapperTestCases extends DataMapperTestCases
 
 		parent::setUp();
 
-		$this->dataMapper = new CsvDataMapper($this->connection, Article::class, $this->builder, 'articles', $this->entityRegistry);
+		$this->dataMapper = new CsvDataMapper($this->connection, Article::class, 'articles', $this->entityRegistry);
 	}
 }

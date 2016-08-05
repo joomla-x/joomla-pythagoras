@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\Storage;
 
-
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
 
@@ -17,7 +16,7 @@ use Joomla\ORM\Exception\OrmException;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface DataMapperInterface extends PersistorInterface
 {
@@ -27,7 +26,7 @@ interface DataMapperInterface extends PersistorInterface
 	 * getById() is a convenience method, It is equivalent to
 	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
 	 *
-	 * @param   mixed  $id  The id value
+	 * @param   mixed $id The id value
 	 *
 	 * @return  object  The requested entity
 	 *

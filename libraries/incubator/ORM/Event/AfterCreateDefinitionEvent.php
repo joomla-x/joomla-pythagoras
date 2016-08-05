@@ -17,7 +17,7 @@ use Joomla\ORM\Entity\EntityBuilder;
  *
  * @package Joomla\ORM
  *
- * @since  1.0
+ * @since  __DEPLOY_VERSION__
  */
 class AfterCreateDefinitionEvent extends Event
 {

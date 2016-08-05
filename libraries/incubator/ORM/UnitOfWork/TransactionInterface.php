@@ -10,26 +10,36 @@ namespace Joomla\ORM\UnitOfWork;
 
 use Joomla\ORM\Exception\OrmException;
 
+/**
+ * Interface TransactionInterface
+ *
+ * @package  Joomla/ORM
+ *
+ * @since    __DEPLOY_VERSION__
+ */
 interface TransactionInterface
 {
 	/**
 	 * Initiates a transaction.
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function beginTransaction();
 
 	/**
 	 * Commits a transaction.
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function commit();
 
 	/**
 	 * Rolls back the current transaction, as initiated by beginTransaction().
 	 *
-	 * @throws OrmException on failure.
+	 * @return  void
+	 * @throws  OrmException  on failure.
 	 */
 	public function rollBack();
 }

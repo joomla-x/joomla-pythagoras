@@ -13,7 +13,7 @@ namespace Joomla\ORM\Definition\Parser;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class HasManyThrough extends Relation
 {
@@ -22,4 +22,34 @@ class HasManyThrough extends Relation
 
 	/** @var  string  Name of the field in the joinTable with the remote id */
 	public $joinRef;
+
+	/**
+	 * Gets the property name for the entity
+	 *
+	 * @return  string
+	 */
+	public function varObjectName()
+	{
+		return $this->propertyName($this->name);
+	}
+
+	/**
+	 * Gets the column name for the reference
+	 *
+	 * @return  string
+	 */
+	public function colReferenceName()
+	{
+		return $this->columnName($this->reference);
+	}
+
+	/**
+	 * Gets the column name for the join reference
+	 *
+	 * @return  string
+	 */
+	public function colJoinName()
+	{
+		return $this->columnName($this->joinRef);
+	}
 }

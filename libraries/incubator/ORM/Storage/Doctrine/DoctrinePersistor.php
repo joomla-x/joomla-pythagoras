@@ -10,16 +10,16 @@ namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Storage\PersistorInterface;
 
 /**
  * Class DoctrineCollectionPersistor
  *
- * @package Joomla/ORM
+ * @package  Joomla/ORM
  *
- * @since   1.0
+ * @since    __DEPLOY_VERSION__
  */
 class DoctrinePersistor implements PersistorInterface
 {
@@ -32,32 +32,36 @@ class DoctrinePersistor implements PersistorInterface
 	/** @var  EntityBuilder */
 	private $builder;
 
+	/** @var EntityRegistry */
+	private $entityRegistry;
+
 	/**
 	 * DoctrinePersistor constructor.
 	 *
-	 * @param   Connection    $connection The database connection
-	 * @param   string        $tableName  The name of the table
-	 * @param   EntityBuilder $builder    The entity builder
+	 * @param   Connection      $connection      The database connection
+	 * @param   string          $tableName       The name of the table
+	 * @param   EntityBuilder   $builder         The entity builder
+	 * @param   EntityRegistry  $entityRegistry  The EntityRegistry
 	 */
-	public function __construct(Connection $connection, $tableName, $builder)
+	public function __construct(Connection $connection, $tableName, EntityBuilder $builder, EntityRegistry $entityRegistry)
 	{
-		$this->connection = $connection;
-		$this->tableName  = $tableName;
-		$this->builder    = $builder;
+		$this->connection     = $connection;
+		$this->tableName      = $tableName;
+		$this->builder        = $builder;
+		$this->entityRegistry = $entityRegistry;
 	}
 
 	/**
 	 * Insert an entity.
 	 *
 	 * @param   object $entity The entity to store
-	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 */
-	public function insert($entity, IdAccessorRegistry $idAccessorRegistry)
+	public function insert($entity)
 	{
-		$data = $this->builder->reduce($entity);
-		$entityId = $idAccessorRegistry->getEntityId($entity);
+		$data     = $this->builder->reduce($entity);
+		$entityId = $this->entityRegistry->getEntityId($entity);
 
 		try
 		{
@@ -65,7 +69,7 @@ class DoctrinePersistor implements PersistorInterface
 
 			if (empty($entityId))
 			{
-				$idAccessorRegistry->setEntityId($entity, $this->connection->lastInsertId());
+				$this->entityRegistry->setEntityId($entity, $this->connection->lastInsertId());
 			}
 
 			$this->builder->resolve($entity);
@@ -79,55 +83,39 @@ class DoctrinePersistor implements PersistorInterface
 	/**
 	 * Update an entity.
 	 *
-	 * @param   object             $entity The entity to insert
-	 * @param   IdAccessorRegistry $idAccessorRegistry
-	 * 
+	 * @param   object $entity The entity to insert
+	 *
 	 * @return  void
 	 */
-	public function update($entity, IdAccessorRegistry $idAccessorRegistry)
+	public function update($entity)
 	{
-		$entityId = $idAccessorRegistry->getEntityId($entity);
+		$primary    = $this->builder->getMeta(get_class($entity))->primary;
+		$entityId   = $this->entityRegistry->getEntityId($entity);
+		$identifier = [$primary => $entityId];
+		$data       = $this->builder->reduce($entity);
 
-		$data = $this->builder->reduce($entity);
-
-		$affectedRows = $this->connection->update(
-			$this->tableName,
-			$data,
-			[
-				'id' => $entityId
-			]
-		);
+		$this->connection->update($this->tableName, $data, $identifier);
 
 		$this->builder->resolve($entity);
-
-		#if ($affectedRows == 0)
-		#{
-		#	throw new OrmException("Entity with id {$entityId} not found.");
-		#}
 	}
 
 	/**
 	 * Delete an entity.
 	 *
 	 * @param   object $entity The entity to sanitise
-	 * @param   IdAccessorRegistry $idAccessorRegistry
 	 *
 	 * @return  void
 	 */
-	public function delete($entity, IdAccessorRegistry $idAccessorRegistry)
+	public function delete($entity)
 	{
-		$entityId = $idAccessorRegistry->getEntityId($entity);
-
-		$affectedRows = $this->connection->delete(
-			$this->tableName,
-			[
-				'id' => $entityId
-			]
-		);
+		$primary      = $this->builder->getMeta(get_class($entity))->primary;
+		$entityId     = $this->entityRegistry->getEntityId($entity);
+		$identifier   = [$primary => $entityId];
+		$affectedRows = $this->connection->delete($this->tableName, $identifier);
 
 		if ($affectedRows == 0)
 		{
-			throw new OrmException("Entity with id {$entityId} not found.");
+			throw new OrmException("Entity not found.");
 		}
 	}
 }

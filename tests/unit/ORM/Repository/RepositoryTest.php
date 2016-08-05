@@ -8,6 +8,7 @@
 
 namespace Joomla\Tests\Unit\ORM\Repository;
 
+use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryInterface;
@@ -63,7 +64,14 @@ class RepositoryTest extends TestCase
 			->method('findAll')
 			->willReturn($this->collectionFinder);
 
+		$entityRegistry = $this->createMock(EntityRegistry::class);
+
 		$this->unitOfWork = $this->createMock(UnitOfWorkInterface::class);
+
+		$this->unitOfWork
+			->expects($this->any())
+			->method('getEntityRegistry')
+			->willReturn($entityRegistry);
 
 		$this->repo = new Repository(Article::class, $this->dataMapper, $this->unitOfWork);
 	}
@@ -77,6 +85,7 @@ class RepositoryTest extends TestCase
 			->expects($this->once())
 			->method('findOne');
 
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$article = $this->repo->getById(1);
 	}
 
@@ -89,6 +98,7 @@ class RepositoryTest extends TestCase
 			->expects($this->once())
 			->method('findOne');
 
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$article = $this->repo->findOne()->getItem();
 	}
 
@@ -108,6 +118,7 @@ class RepositoryTest extends TestCase
 
 		$this->repo->restrictTo('key', Operator::EQUAL, 'value');
 
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$article = $this->repo->findOne()->getItem();
 	}
 
@@ -120,6 +131,7 @@ class RepositoryTest extends TestCase
 			->expects($this->once())
 			->method('findAll');
 
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$article = $this->repo->findAll()->getItems();
 	}
 
@@ -139,6 +151,7 @@ class RepositoryTest extends TestCase
 
 		$this->repo->restrictTo('key', Operator::EQUAL, 'value');
 
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$article = $this->repo->findAll()->getItems();
 	}
 

@@ -8,14 +8,22 @@
 
 namespace Joomla\ORM\UnitOfWork;
 
+use Joomla\ORM\Definition\Parser\BelongsTo;
+use Joomla\ORM\Definition\Parser\HasMany;
+use Joomla\ORM\Definition\Parser\HasManyThrough;
+use Joomla\ORM\Definition\Parser\HasOne;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
 use Joomla\ORM\Exception\OrmException;
-use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Storage\DataMapperInterface;
+use ReflectionClass;
 
 /**
  * Defines a unit of work that tracks changes made to entities and atomically persists them
+ *
+ * @package  Joomla/ORM
+ *
+ * @since    __DEPLOY_VERSION__
  */
 class UnitOfWork implements UnitOfWorkInterface
 {
@@ -24,12 +32,6 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/** @var EntityRegistry What manages/tracks entities for our unit of work */
 	private $entityRegistry = null;
-
-	/** @var IdAccessorRegistry The Id accessor registry */
-	private $idAccessorRegistry = null;
-
-	/** @var ChangeTracker The change tracker */
-	private $changeTracker = null;
 
 	/** @var array The mapping of class names to their data mappers */
 	private $dataMappers = [];
@@ -44,21 +46,12 @@ class UnitOfWork implements UnitOfWorkInterface
 	private $scheduledForDeletion = [];
 
 	/**
-	 * @param EntityRegistry       $entityRegistry     The entity registry to use
-	 * @param IdAccessorRegistry   $idAccessorRegistry The Id accessor registry to use
-	 * @param ChangeTracker        $changeTracker      The change tracker to use
-	 * @param TransactionInterface $connection         The transactor to use in our unit of work
+	 * @param   EntityRegistry        $entityRegistry  The entity registry to use
+	 * @param   TransactionInterface  $connection      The transactor to use in our unit of work
 	 */
-	public function __construct(
-		EntityRegistry $entityRegistry,
-		IdAccessorRegistry $idAccessorRegistry,
-		ChangeTracker $changeTracker,
-		TransactionInterface $connection = null
-	)
+	public function __construct(EntityRegistry $entityRegistry, TransactionInterface $connection = null)
 	{
-		$this->entityRegistry     = $entityRegistry;
-		$this->idAccessorRegistry = $idAccessorRegistry;
-		$this->changeTracker      = $changeTracker;
+		$this->entityRegistry = $entityRegistry;
 
 		if ($connection !== null)
 		{
@@ -69,7 +62,8 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Commits any entities that have been scheduled for insertion/updating/deletion
 	 *
-	 * @throws OrmException Thrown if there was an error committing the transaction
+	 * @return  void
+	 * @throws  OrmException  if there was an error committing the transaction
 	 */
 	public function commit()
 	{
@@ -78,6 +72,7 @@ class UnitOfWork implements UnitOfWorkInterface
 			throw new OrmException("Connection not set");
 		}
 
+		$this->checkForChangedRelations();
 		$this->checkForUpdates();
 		$this->preCommit();
 		$this->transactor->beginTransaction();
@@ -108,7 +103,9 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Detaches an entity from being managed
 	 *
-	 * @param object $entity The entity to detach
+	 * @param   object  $entity  The entity to detach
+	 *
+	 * @return  void
 	 */
 	public function detach($entity)
 	{
@@ -121,6 +118,8 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/**
 	 * Disposes of all data in this unit of work
+	 *
+	 * @return  void
 	 */
 	public function dispose()
 	{
@@ -134,7 +133,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Gets the unit of work's entity registry
 	 *
-	 * @return EntityRegistry The entity registry used by the unit of work
+	 * @return  EntityRegistry  The entity registry used by the unit of work
 	 */
 	public function getEntityRegistry()
 	{
@@ -145,8 +144,10 @@ class UnitOfWork implements UnitOfWorkInterface
 	 * Registers a data mapper for a class
 	 * Registering a data mapper for a class will overwrite any previously-set data mapper for that class
 	 *
-	 * @param string              $className  The name of the class whose data mapper we're registering
-	 * @param DataMapperInterface $dataMapper The data mapper for the class
+	 * @param   string                $className   The name of the class whose data mapper we're registering
+	 * @param   DataMapperInterface   $dataMapper  The data mapper for the class
+	 *
+	 * @return  void
 	 */
 	public function registerDataMapper($className, DataMapperInterface $dataMapper)
 	{
@@ -156,7 +157,9 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Schedules an entity for deletion
 	 *
-	 * @param object $entity The entity to schedule for deletion
+	 * @param   object  $entity  The entity to schedule for deletion
+	 *
+	 * @return  void
 	 */
 	public function scheduleForDeletion($entity)
 	{
@@ -166,7 +169,9 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Schedules an entity for insertion
 	 *
-	 * @param object $entity The entity to schedule for insertion
+	 * @param   object  $entity  The entity to schedule for insertion
+	 *
+	 * @return  void
 	 */
 	public function scheduleForInsertion($entity)
 	{
@@ -178,7 +183,9 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Schedules an entity for update
 	 *
-	 * @param object $entity The entity to schedule for update
+	 * @param   object  $entity  The entity to schedule for update
+	 *
+	 * @return  void
 	 */
 	public function scheduleForUpdate($entity)
 	{
@@ -186,7 +193,11 @@ class UnitOfWork implements UnitOfWorkInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Sets the database transactor
+	 *
+	 * @param   TransactionInterface  $transactor  The transactor to use
+	 *
+	 * @return  void
 	 */
 	public function setTransactor(TransactionInterface $transactor)
 	{
@@ -194,23 +205,107 @@ class UnitOfWork implements UnitOfWorkInterface
 	}
 
 	/**
+	 * Checks for changed children
+	 *
+	 * @return  void
+	 */
+	protected function checkForChangedRelations()
+	{
+		foreach ($this->entityRegistry->getEntities() as $entity)
+		{
+			$meta     = $this->entityRegistry->getMeta($entity);
+			$objectHashId = $this->entityRegistry->getObjectHashId($entity);
+
+			foreach ($meta->relations['belongsTo'] as $field => $relation)
+			{
+			}
+
+			foreach ($meta->relations['hasOne'] as $field => $relation)
+			{
+				/*
+				 * We are handling a Detail and checking the Extra.
+				 * Extra->detailId = Detail->id
+				 */
+				$varObjName = $relation->varObjectName();
+				$varReferenceName = $relation->varReferenceName();
+
+				$currentRelation = $this->getValue($entity, $varObjName);
+				$originalRelation = $this->getValue($this->entityRegistry->getOriginal($entity), $varObjName);
+
+				if (empty($currentRelation))
+				{
+					// Current entity has no relation
+					if (!empty($originalRelation))
+					{
+						// Original had a relation, so relation was removed
+						$this->scheduleForDeletion($originalRelation);
+					}
+
+					continue;
+				}
+
+				// Current entity has a relation
+				$currentRelationHash = $this->entityRegistry->getObjectHashId($currentRelation);
+
+				if (isset($this->scheduledForDeletion[$objectHashId]) && $relation->cascadeDelete())
+				{
+					$this->scheduleForDeletion($currentRelation);
+				}
+
+				if (empty($originalRelation))
+				{
+					// Original had no relation, so relation was newly created
+					$this->scheduleRelationForInsertion($entity, $currentRelation, $varReferenceName);
+
+					continue;
+				}
+
+				$originalRelationHash = $this->entityRegistry->getObjectHashId($originalRelation);
+
+				if ($currentRelationHash != $originalRelationHash)
+				{
+					// Relation was exchanged
+					$this->scheduleForDeletion($originalRelation);
+					$this->scheduleRelationForInsertion($entity, $currentRelation, $varReferenceName);
+
+					continue;
+				}
+			}
+
+			foreach ($meta->relations['hasMany'] as $field => $relation)
+			{
+				/*
+				 * We are handling a Master and checking the Details.
+				 * Details[i]->masterId = Master->id
+				 * or
+				 * We are handling a Master and checking the children.
+				 * Children[i]->parentId = Master->id
+				 */
+			}
+
+			foreach ($meta->relations['hasManyThrough'] as $field => $relation)
+			{
+				/*
+				 * We are handling a Master and checking the Tags.
+				 * Map[i]->masterId = Master->id
+				 * Map[i]->tagId = Tag->id
+				 */
+			}
+		}
+	}
+
+	/**
 	 * Checks for any changes made to entities, and if any are found, they're scheduled for update
 	 *
+	 * @return  void
 	 */
 	protected function checkForUpdates()
 	{
-		$managedEntities = $this->entityRegistry->getEntities();
-
-		foreach ($managedEntities as $entity)
+		foreach ($this->entityRegistry->getEntities() as $entity)
 		{
 			$objectHashId = $this->entityRegistry->getObjectHashId($entity);
 
-			if ($this->entityRegistry->isRegistered($entity)
-			    && !isset($this->scheduledForInsertion[$objectHashId])
-			    && !isset($this->scheduledForUpdate[$objectHashId])
-			    && !isset($this->scheduledForDeletion[$objectHashId])
-			    && $this->changeTracker->hasChanged($entity)
-			)
+			if ($this->entityRegistry->isRegistered($entity) && !$this->isScheduled($objectHashId) && $this->entityRegistry->hasChanged($entity))
 			{
 				$this->scheduleForUpdate($entity);
 			}
@@ -219,13 +314,16 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/**
 	 * Attempts to update all the entities scheduled for deletion
+	 *
+	 * @return  void
 	 */
 	protected function delete()
 	{
 		foreach ($this->scheduledForDeletion as $objectHashId => $entity)
 		{
 			$dataMapper = $this->getDataMapper($this->entityRegistry->getClassName($entity));
-			$dataMapper->delete($entity, $this->idAccessorRegistry);
+			$dataMapper->delete($entity);
+
 			// Order here matters
 			$this->detach($entity);
 			$this->entityRegistry->setState($entity, EntityStates::DEQUEUED);
@@ -235,12 +333,12 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Gets the data mapper for the input class
 	 *
-	 * @param string $className The name of the class whose data mapper we're searching for
+	 * @param   string  $className  The name of the class whose data mapper we're searching for
 	 *
-	 * @return DataMapperInterface The data mapper for the input class
-	 * @throws \RuntimeException Thrown if there was no data mapper for the input class name
+	 * @return  DataMapperInterface  The data mapper for the input class
+	 * @throws \ RuntimeException Thrown if there was no data mapper for the input class name
 	 */
-	protected function getDataMapper($className)
+	public function getDataMapper($className)
 	{
 		if (!isset($this->dataMappers[$className]))
 		{
@@ -253,7 +351,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Gets the list of entities that are scheduled for deletion
 	 *
-	 * @return object[] The list of entities scheduled for deletion
+	 * @return  object[]  The list of entities scheduled for deletion
 	 */
 	protected function getScheduledEntityDeletions()
 	{
@@ -263,7 +361,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Gets the list of entities that are scheduled for insertion
 	 *
-	 * @return object[] The list of entities scheduled for insertion
+	 * @return  object[]  The list of entities scheduled for insertion
 	 */
 	protected function getScheduledEntityInsertions()
 	{
@@ -273,7 +371,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Gets the list of entities that are scheduled for update
 	 *
-	 * @return object[] The list of entities scheduled for update
+	 * @return  object[]  The list of entities scheduled for update
 	 */
 	protected function getScheduledEntityUpdates()
 	{
@@ -282,6 +380,8 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/**
 	 * Attempts to insert all the entities scheduled for insertion
+	 *
+	 * @return  void
 	 */
 	protected function insert()
 	{
@@ -292,7 +392,7 @@ class UnitOfWork implements UnitOfWorkInterface
 			$className  = $this->entityRegistry->getClassName($entity);
 			$dataMapper = $this->getDataMapper($className);
 
-			$dataMapper->insert($entity, $this->idAccessorRegistry);
+			$dataMapper->insert($entity);
 
 			$this->entityRegistry->registerEntity($entity);
 		}
@@ -300,6 +400,8 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/**
 	 * Performs any actions after the commit
+	 *
+	 * @return  void
 	 */
 	protected function postCommit()
 	{
@@ -308,18 +410,22 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/**
 	 * Performs any actions after a rollback
+	 *
+	 * @return  void
 	 */
 	protected function postRollback()
 	{
 		// Unset each of the new entities' Ids
 		foreach ($this->scheduledForInsertion as $objectHashId => $entity)
 		{
-			$this->idAccessorRegistry->setEntityId($entity, null);
+			$this->entityRegistry->setEntityId($entity, null);
 		}
 	}
 
 	/**
 	 * Performs any actions before a commit
+	 *
+	 * @return  void
 	 */
 	protected function preCommit()
 	{
@@ -328,6 +434,8 @@ class UnitOfWork implements UnitOfWorkInterface
 
 	/**
 	 * Attempts to update all the entities scheduled for updating
+	 *
+	 * @return  void
 	 */
 	protected function update()
 	{
@@ -336,8 +444,104 @@ class UnitOfWork implements UnitOfWorkInterface
 			// If this entity was a child of aggregate roots, then call its methods to set the aggregate root Id
 			$this->entityRegistry->runAggregateRootCallbacks($entity);
 			$dataMapper = $this->getDataMapper($this->entityRegistry->getClassName($entity));
-			$dataMapper->update($entity, $this->idAccessorRegistry);
+			$dataMapper->update($entity);
 			$this->entityRegistry->registerEntity($entity);
 		}
+	}
+
+	/**
+	 * Checks if an object is scheduled
+	 *
+	 * @param   string  $objectHashId  The object's hash
+	 *
+	 * @return  boolean
+	 */
+	protected function isScheduled($objectHashId)
+	{
+		return isset($this->scheduledForInsertion[$objectHashId])
+			|| isset($this->scheduledForUpdate[$objectHashId])
+			|| isset($this->scheduledForDeletion[$objectHashId]);
+	}
+
+	/**
+	 * Schedules an entity for insertion creating an aggregate root callback
+	 *
+	 * @param   object  $root        The root object
+	 * @param   object  $child       The child object (containing the foreign key)
+	 * @param   string  $foreignKey  The name of the foreign key property in the child object
+	 *
+	 * @return  void
+	 */
+	protected function scheduleRelationForInsertion($root, $child, $foreignKey)
+	{
+		if (!$this->entityRegistry->isRegistered($child))
+		{
+			$this->scheduleForInsertion($child);
+		}
+
+		$isAccessorRegistry = $this->entityRegistry->getIdAccessorRegistry();
+		$this->entityRegistry->registerAggregateRootCallback(
+			$root,
+			$child,
+			function ($root, $child) use ($foreignKey, $isAccessorRegistry) {
+				$reflection = new \ReflectionProperty(get_class($child), $foreignKey);
+				$reflection->setAccessible(true);
+				$reflection->setValue($child, $isAccessorRegistry->getEntityId($root));
+			}
+		);
+	}
+
+	/**
+	 * Gets a value from an object
+	 *
+	 * @param   object $object   The object
+	 * @param   string $property The property
+	 *
+	 * @return mixed
+	 */
+	protected function getValue($object, $property)
+	{
+		if (isset($object->{$property}))
+		{
+			return $object->{$property};
+		}
+
+		$reflectionClass = new ReflectionClass($object);
+
+		if (!$reflectionClass->hasProperty($property))
+		{
+			return null;
+		}
+
+		$reflectionProperty = $reflectionClass->getProperty($property);
+		$reflectionProperty->setAccessible(true);
+
+		return $reflectionProperty->getValue($object);
+	}
+
+	/**
+	 * Sets the value in an object
+	 *
+	 * @param   object  $object    The object
+	 * @param   string  $property  The property
+	 * @param   mixed   $value     The value
+	 *
+	 * @return  void
+	 */
+	protected function setValue($object, $property, $value)
+	{
+		$reflectionClass = new ReflectionClass($object);
+
+		if (!$reflectionClass->hasProperty($property))
+		{
+			$object->{$property} = $value;
+
+			return;
+		}
+
+		$reflectionProperty = $reflectionClass->getProperty($property);
+		$reflectionProperty->setAccessible(true);
+
+		$reflectionProperty->setValue($object, $value);
 	}
 }

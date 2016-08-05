@@ -13,7 +13,7 @@ namespace Joomla\ORM\Definition\Parser;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Entity extends Element
 {
@@ -23,8 +23,16 @@ class Entity extends Element
 	/** @var  string  Parent type */
 	public $extends;
 
+	/** @var  string  Name(s) of the primary key column(s) */
+	public $primary = 'id';
+
 	/** @var Relation[][]  List of relations */
-	public $relations = [];
+	public $relations = [
+		'belongsTo'      => [],
+		'hasOne'         => [],
+		'hasMany'        => [],
+		'hasManyThrough' => []
+	];
 
 	/** @var  Field[]  List of fields */
 	public $fields = [];
@@ -56,31 +64,41 @@ class Entity extends Element
 	 */
 	protected function setRelations($values)
 	{
-		#throw new \Exception(print_r($values[0], true));
 		if (isset($values[0]->belongsTo))
 		{
 			$this->relations['belongsTo'] = $values[0]->belongsTo;
 		}
+
 		if (isset($values[0]->hasOne))
 		{
 			$this->relations['hasOne'] = $values[0]->hasOne;
 		}
+
 		if (isset($values[0]->hasMany))
 		{
 			$this->relations['hasMany'] = $values[0]->hasMany;
 		}
+
 		if (isset($values[0]->hasManyThrough))
 		{
 			$this->relations['hasManyThrough'] = $values[0]->hasManyThrough;
 		}
 	}
 
+	/**
+	 * Sets the storage
+	 *
+	 * @param   array  $values  The values
+	 *
+	 * @return  void
+	 */
 	protected function setStorage($values)
 	{
 		$vars = get_object_vars($values[0]);
+
 		foreach ($vars as $type => $attributes)
 		{
-			$this->storage = get_object_vars($attributes[0]);
+			$this->storage         = get_object_vars($attributes[0]);
 			$this->storage['type'] = $type;
 			break;
 		}

@@ -14,6 +14,10 @@ use ReflectionException;
 
 /**
  * Defines the Id accessor registry
+ *
+ * @package  Joomla/ORM
+ *
+ * @since    __DEPLOY_VERSION__
  */
 class IdAccessorRegistry
 {
@@ -23,10 +27,10 @@ class IdAccessorRegistry
 	/**
 	 * Gets the Id of an entity
 	 *
-	 * @param object $entity The entity whose Id we want
+	 * @param   object  $entity  The entity whose Id we want
 	 *
-	 * @return mixed The Id of the entity
-	 * @throws OrmException Thrown if no Id getter is registered for the entity
+	 * @return  mixed  The Id of the entity
+	 * @throws  OrmException  if no Id getter is registered for the entity
 	 */
 	public function getEntityId($entity)
 	{
@@ -55,10 +59,11 @@ class IdAccessorRegistry
 	/**
 	 * Sets the entity Id
 	 *
-	 * @param object $entity The entity whose Id we're setting
-	 * @param mixed  $id     The Id to set
+	 * @param   object  $entity  The entity whose Id we're setting
+	 * @param   mixed   $id      The Id to set
 	 *
-	 * @throws OrmException Thrown if no Id setter has been registered for this entity
+	 * @return  void
+	 * @throws  OrmException  if no Id setter has been registered for this entity
 	 */
 	public function setEntityId($entity, $id)
 	{
@@ -87,9 +92,11 @@ class IdAccessorRegistry
 	/**
 	 * Registers functions that get an Id and set the Id for all instances of the input class name
 	 *
-	 * @param string|array $classNames The name or list of names of classes whose Id getter functions we're registering
-	 * @param callable     $getter     The function that accepts an entity as a parameter and returns its Id
-	 * @param callable     $setter     The function that accepts an entity and new Id as parameters and sets the Id
+	 * @param   string|array  $classNames  The name or list of names of classes whose Id getter functions we're registering
+	 * @param   callable      $getter      The function that accepts an entity as a parameter and returns its Id
+	 * @param   callable      $setter      The function that accepts an entity and new Id as parameters and sets the Id
+	 *
+	 * @return  void
 	 */
 	public function registerIdAccessors($classNames, callable $getter, callable $setter = null)
 	{
@@ -105,23 +112,23 @@ class IdAccessorRegistry
 	/**
 	 * Registers accessors that use reflection to set Id properties in the input classes
 	 *
-	 * @param string|array $classNames     The name or list of names of classes whose Id accessors we're registering
-	 * @param string       $idPropertyName The name of the Id property we're registering
+	 * @param   string|array  $classNames      The name or list of names of classes whose Id accessors we're registering
+	 * @param   string        $idPropertyName  The name of the Id property we're registering
+	 *
+	 * @return  void
 	 */
 	public function registerReflectionIdAccessors($classNames, $idPropertyName)
 	{
 		foreach ((array) $classNames as $className)
 		{
-			$getter = function ($entity) use ($className, $idPropertyName)
-			{
+			$getter = function ($entity) use ($className, $idPropertyName) {
 				$reflectionClass = new ReflectionClass($className);
 				$property        = $reflectionClass->getProperty($idPropertyName);
 				$property->setAccessible(true);
 
 				return $property->getValue($entity);
 			};
-			$setter = function ($entity, $id) use ($className, $idPropertyName)
-			{
+			$setter = function ($entity, $id) use ($className, $idPropertyName) {
 				$reflectionClass = new ReflectionClass($className);
 				$property        = $reflectionClass->getProperty($idPropertyName);
 				$property->setAccessible(true);
@@ -132,9 +139,11 @@ class IdAccessorRegistry
 	}
 
 	/**
-	 * @param $entity
+	 * Checks whether an entity has an ID property
 	 *
-	 * @return bool
+	 * @param   object  $entity  The entity
+	 *
+	 * @return  boolean
 	 */
 	private function hasId($entity)
 	{

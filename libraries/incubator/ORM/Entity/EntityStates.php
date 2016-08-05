@@ -10,6 +10,10 @@ namespace Joomla\ORM\Entity;
 
 /**
  * Defines different states of entities
+ *
+ * @package  Joomla/ORM
+ *
+ * @since    __DEPLOY_VERSION__
  */
 class EntityStates
 {

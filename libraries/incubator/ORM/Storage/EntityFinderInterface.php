@@ -16,14 +16,14 @@ use Joomla\ORM\Exception\EntityNotFoundException;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface EntityFinderInterface
 {
 	/**
 	 * Define the columns to be retrieved.
 	 *
-	 * @param   array  $columns  The column names
+	 * @param   array $columns The column names
 	 *
 	 * @return  EntityFinderInterface  $this for chaining
 	 */
@@ -32,9 +32,9 @@ interface EntityFinderInterface
 	/**
 	 * Define a condition.
 	 *
-	 * @param   mixed   $lValue  The left value for the comparision
-	 * @param   string  $op      The comparision operator, one of the \Joomla\ORM\Operator constants
-	 * @param   mixed   $rValue  The right value for the comparision
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Operator constants
+	 * @param   mixed  $rValue The right value for the comparision
 	 *
 	 * @return  EntityFinderInterface  $this for chaining
 	 */

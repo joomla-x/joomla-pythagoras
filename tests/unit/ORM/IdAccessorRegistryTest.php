@@ -10,6 +10,7 @@ namespace Joomla\Tests\Unit\ORM;
 
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
+use Joomla\Tests\Unit\ORM\Mocks\Extra;
 use Joomla\Tests\Unit\ORM\Mocks\Foo;
 use Joomla\Tests\Unit\ORM\Mocks\User;
 use PHPUnit\Framework\TestCase;
@@ -87,7 +88,7 @@ class IdAccessorRegistryTest extends TestCase
 		$this->expectException(OrmException::class);
 		$this->registry->registerReflectionIdAccessors(Foo::class, "doesNotExist");
 		$foo = new Foo();
-		$this->registry->getEntityId(new Foo());
+		$this->registry->getEntityId($foo);
 	}
 
 	/**
@@ -99,6 +100,21 @@ class IdAccessorRegistryTest extends TestCase
 		$foo = new Foo();
 		$this->registry->setEntityId($foo, 24);
 		$this->assertEquals(24, $this->registry->getEntityId($foo));
+	}
+
+	/**
+	 * Tests reflection accessors
+	 */
+	public function testReflectionAccessorsForOtherProperty()
+	{
+		$this->registry->registerReflectionIdAccessors(Extra::class, "detailId");
+		$extra           = new Extra('Any info');
+		$extra->detailId = 24;
+
+		$this->assertEquals(24, $this->registry->getEntityId($extra));
+
+		$this->registry->setEntityId($extra, 42);
+		$this->assertEquals(42, $extra->detailId);
 	}
 
 	/**

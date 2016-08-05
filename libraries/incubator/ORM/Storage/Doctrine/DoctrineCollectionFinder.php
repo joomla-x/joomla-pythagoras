@@ -20,9 +20,9 @@ use Joomla\ORM\Storage\CollectionFinderInterface;
 /**
  * Class DoctrineCollectionFinder
  *
- * @package Joomla/ORM
+ * @package  Joomla/ORM
  *
- * @since   1.0
+ * @since    __DEPLOY_VERSION__
  */
 class DoctrineCollectionFinder implements CollectionFinderInterface
 {
@@ -44,9 +44,6 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	/** @var string */
 	private $entityClass = null;
 
-	/** @var EntityBuilder */
-	private $builder = null;
-
 	/** @var  EntityRegistry */
 	private $entityRegistry;
 
@@ -59,15 +56,13 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 * @param   Connection     $connection     The database connection
 	 * @param   string         $tableName      The name of the table
 	 * @param   string         $entityClass    The class of the entity
-	 * @param   EntityBuilder  $builder        The entity builder
 	 * @param   EntityRegistry $entityRegistry The entity registry
 	 */
-	public function __construct(Connection $connection, $tableName, $entityClass, EntityBuilder $builder, EntityRegistry $entityRegistry)
+	public function __construct(Connection $connection, $tableName, $entityClass, EntityRegistry $entityRegistry)
 	{
 		$this->connection     = $connection;
 		$this->tableName      = $tableName;
 		$this->entityClass    = $entityClass;
-		$this->builder        = $builder;
 		$this->entityRegistry = $entityRegistry;
 	}
 
@@ -184,8 +179,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		{
 			$rows = array_filter(
 				$rows,
-				function ($row) use ($column, $pattern)
-				{
+				function ($row) use ($column, $pattern) {
 					return preg_match("~{$pattern}~", $row[$column]);
 				}
 			);
@@ -202,25 +196,6 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		}
 
 		return array_values($rows);
-	}
-
-	/**
-	 * Cast array to entity
-	 *
-	 * @param   array $matches The records
-	 *
-	 * @return  array
-	 */
-	private function castToEntity($matches)
-	{
-		$entities = $this->builder->castToEntity($matches, $this->entityClass);
-
-		foreach ($entities as &$entity)
-		{
-			$this->entityRegistry->registerEntity($entity);
-		}
-
-		return $entities;
 	}
 
 	/**
@@ -259,5 +234,19 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		}
 
 		return $builder;
+	}
+
+	/**
+	 * Cast array to entity
+	 *
+	 * @param   array $matches The records
+	 *
+	 * @return  array
+	 */
+	private function castToEntity($matches)
+	{
+		$entities = $this->entityRegistry->getEntityBuilder()->castToEntity($matches, $this->entityClass);
+
+		return $entities;
 	}
 }

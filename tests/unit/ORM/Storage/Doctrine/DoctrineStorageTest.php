@@ -24,7 +24,6 @@ class DoctrineStorageTest extends StorageTestCases
 		$dataMapper = new DoctrineDataMapper(
 			$connection,
 			Article::class,
-			$this->builder,
 			'articles',
 			$this->entityRegistry
 		);

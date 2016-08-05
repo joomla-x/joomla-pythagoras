@@ -1,6 +1,7 @@
 <!ELEMENT entity ((storage)?, fields, (relations)?)>
     <!ATTLIST entity
-        name NMTOKEN #REQUIRED>
+        name NMTOKEN #REQUIRED
+        primary NMTOKEN #IMPLIED>
 
     <!ELEMENT storage (default|api|special)>
 
