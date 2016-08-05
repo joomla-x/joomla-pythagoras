@@ -13,6 +13,7 @@ use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
+use Joomla\Tests\Unit\DataTrait;
 use Joomla\Tests\Unit\DumpTrait;
 use Joomla\Tests\Unit\ORM\Mocks\Detail;
 use Joomla\Tests\Unit\ORM\Mocks\Extra;
@@ -47,6 +48,7 @@ abstract class RelationTestCases extends TestCase
 	abstract protected function onAfterSetUp();
 
 	use DumpTrait;
+	use DataTrait;
 
 	public function setUp()
 	{
@@ -320,74 +322,5 @@ abstract class RelationTestCases extends TestCase
 		$this->expectException(EntityNotFoundException::class);
 		$repo   = $this->repo[Detail::class];
 		$detail = $repo->getById(3);
-	}
-
-	private function restoreData($tables = [])
-	{
-		$dataDir  = realpath(__DIR__ . '/../data');
-		$database = $dataDir . '/sqlite.test.db';
-
-		$connection = DriverManager::getConnection(['url' => 'sqlite:///' . $database]);
-
-		$files = glob($dataDir . '/original/*.csv');
-
-		foreach ($files as $file)
-		{
-			$tableName = basename($file, '.csv');
-
-			if (!empty($tables) && !in_array($tableName, $tables))
-			{
-				continue;
-			}
-
-			$csvFilename = $dataDir . '/' . $tableName . '.csv';
-			unlink($csvFilename);
-			copy($file, $csvFilename);
-
-			$records = $this->loadData($file);
-
-			$connection->beginTransaction();
-
-			$connection->query('DELETE FROM ' . $tableName);
-			foreach ($records as $record)
-			{
-				$connection->insert($tableName, $record);
-			}
-			$connection->commit();
-		}
-	}
-
-	/**
-	 * Load the data from the file
-	 *
-	 * @return  array
-	 */
-	private function loadData($dataFile)
-	{
-		static $data = [];
-
-		if (!isset($data[$dataFile]))
-		{
-			$data[$dataFile] = [];
-
-			$fh   = fopen($dataFile, 'r');
-			$keys = fgetcsv($fh);
-
-			while (!feof($fh))
-			{
-				$row = fgetcsv($fh);
-
-				if ($row === false)
-				{
-					break;
-				}
-
-				$data[$dataFile][] = array_combine($keys, $row);
-			}
-
-			fclose($fh);
-		}
-
-		return $data[$dataFile];
 	}
 }
