@@ -213,7 +213,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	{
 		foreach ($this->entityRegistry->getEntities() as $entity)
 		{
-			$meta     = $this->entityRegistry->getMeta($entity);
+			$meta         = $this->entityRegistry->getMeta($entity);
 			$objectHashId = $this->entityRegistry->getObjectHashId($entity);
 
 			foreach ($meta->relations['belongsTo'] as $field => $relation)

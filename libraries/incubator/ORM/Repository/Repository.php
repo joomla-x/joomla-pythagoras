@@ -15,6 +15,7 @@ use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\ORM\Storage\DataMapperInterface;
 use Joomla\ORM\Storage\EntityFinderInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
+use Joomla\String\Normalise;
 
 /**
  * Class Repository
@@ -126,6 +127,15 @@ class Repository implements RepositoryInterface
 	 */
 	public function add($entity)
 	{
+		foreach ($this->restrictions as $preset)
+		{
+			if ($preset['op'] == Operator::EQUAL)
+			{
+				$property = Normalise::toVariable($preset['field']);
+				$entity->$property = $preset['value'];
+			}
+		}
+
 		$this->unitOfWork->scheduleForInsertion($entity);
 	}
 
@@ -157,7 +167,7 @@ class Repository implements RepositoryInterface
 	 * Define a condition.
 	 *
 	 * @param   mixed  $lValue The left value for the comparision
-	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants EQUAL or IN
 	 * @param   mixed  $rValue The right value for the comparision
 	 *
 	 * @return  void
@@ -166,7 +176,7 @@ class Repository implements RepositoryInterface
 	{
 		$this->restrictions[] = [
 			'field' => $lValue,
-			'op'    => Operator::EQUAL,
+			'op'    => $op,
 			'value' => $rValue
 		];
 	}

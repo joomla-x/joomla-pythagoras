@@ -134,6 +134,18 @@ class RepositoryFactory
 	}
 
 	/**
+	 * Gets the EntityBuilder
+	 *
+	 * @internal  This method is for internal ORM use only.
+	 *
+	 * @return  EntityBuilder
+	 */
+	public function getEntityBuilder()
+	{
+		return $this->builder;
+	}
+
+	/**
 	 * Gets the UnitOfWork
 	 *
 	 * @internal  This method is for internal ORM use only.

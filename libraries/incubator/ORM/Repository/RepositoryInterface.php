@@ -88,7 +88,7 @@ interface RepositoryInterface
 	 * Define a condition.
 	 *
 	 * @param   mixed  $lValue The left value for the comparision
-	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants EQUAL or IN
 	 * @param   mixed  $rValue The right value for the comparision
 	 *
 	 * @return  EntityFinderInterface  $this for chaining

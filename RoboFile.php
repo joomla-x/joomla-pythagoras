@@ -382,12 +382,12 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
-	 * Creates the unit test database
+	 * Creates the sqlite unit test database
 	 */
-	public function createTestdata()
+	public function createSqlData()
 	{
 		$dataDir = __DIR__ . '/tests/unit/ORM/data';
-		$database   = $dataDir . '/sqlite.test.db';
+		$database   = $dataDir . '/original/sqlite.test.db';
 
 		$this->say('Creating test database in ' . $database);
 
@@ -403,10 +403,6 @@ class RoboFile extends \Robo\Tasks
 
 		foreach ($files as $file)
 		{
-			$csvFilename = $dataDir . '/' . basename($file);
-			$this->_remove($csvFilename);
-			$this->_copy($file, $csvFilename);
-
 			$tableName = basename($file, '.csv');
 			$table     = new Table($tableName);
 			$records   = $this->loadData($file);
@@ -437,6 +433,41 @@ class RoboFile extends \Robo\Tasks
 			{
 				$connection->insert($tableName, $record);
 			}
+		}
+	}
+
+	/**
+	 * Creates the unit test database
+	 */
+	public function createTestdata()
+	{
+		$dataDir  = __DIR__ . '/tests/unit/ORM/data';
+		$database = 'sqlite.test.db';
+
+		$originalDatabase = $dataDir . '/original/' . $database;
+		$workingDatabase = $dataDir . '/' . $database;
+
+		if (!file_exists($originalDatabase))
+		{
+			$this->createSqlData();
+		}
+
+		$this->say('Creating test database in ' . $database);
+
+		if (file_exists($workingDatabase))
+		{
+			#$this->_remove($workingDatabase);
+		}
+
+		$this->_copy($originalDatabase, $workingDatabase);
+
+		$files = glob($dataDir . '/original/*.csv');
+
+		foreach ($files as $file)
+		{
+			$csvFilename = $dataDir . '/' . basename($file);
+			$this->_remove($csvFilename);
+			$this->_copy($file, $csvFilename);
 		}
 	}
 

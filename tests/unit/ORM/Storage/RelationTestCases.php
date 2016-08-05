@@ -1,12 +1,14 @@
 <?php
 namespace Joomla\Tests\Unit\ORM\Storage;
 
-use Joomla\ORM\Definition\Locator\Locator;
-use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
+use Doctrine\DBAL\DriverManager;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
+use Joomla\ORM\Exception\EntityNotFoundException;
+use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
+use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
@@ -14,6 +16,7 @@ use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
 use Joomla\Tests\Unit\DumpTrait;
 use Joomla\Tests\Unit\ORM\Mocks\Detail;
 use Joomla\Tests\Unit\ORM\Mocks\Extra;
+use Joomla\Tests\Unit\ORM\Mocks\Master;
 use PHPUnit\Framework\TestCase;
 
 abstract class RelationTestCases extends TestCase
@@ -49,20 +52,19 @@ abstract class RelationTestCases extends TestCase
 	{
 		$this->onBeforeSetup();
 
-		$this->idAccessorRegistry = new IdAccessorRegistry;
-
-		$strategy             = new RecursiveDirectoryStrategy($this->config['definitionPath']);
-		$locator              = new Locator([$strategy]);
-		$repositoryFactory    = new RepositoryFactory($this->config, $this->transactor);
-		$this->builder        = new EntityBuilder($locator, $this->config, $repositoryFactory);
-		$this->entityRegistry = $repositoryFactory->getEntityRegistry();
-		$this->unitOfWork     = $repositoryFactory->getUnitOfWork();
+		$repositoryFactory        = new RepositoryFactory($this->config, $this->transactor);
+		$this->entityRegistry     = $repositoryFactory->getEntityRegistry();
+		$this->builder            = $repositoryFactory->getEntityBuilder();
+		$this->unitOfWork         = $repositoryFactory->getUnitOfWork();
+		$this->idAccessorRegistry = $repositoryFactory->getIdAccessorRegistry();
 
 		$this->onAfterSetUp();
 	}
 
 	public function testRelatedEntitiesAreRegistered()
 	{
+		$this->restoreData(['details', 'extras']);
+
 		$repo = $this->repo[Detail::class];
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$detail = $repo->getById(3);
@@ -82,6 +84,8 @@ abstract class RelationTestCases extends TestCase
 	 */
 	public function testReadTheExtraOfADetail()
 	{
+		$this->restoreData(['details', 'extras']);
+
 		$repo   = $this->repo[Detail::class];
 		$detail = $repo->getById(1);
 
@@ -99,6 +103,8 @@ abstract class RelationTestCases extends TestCase
 	 */
 	public function testCreateAnExtraForADetail()
 	{
+		$this->restoreData(['details', 'extras']);
+
 		$repo   = $this->repo[Detail::class];
 		$detail = $repo->getById(2);
 
@@ -108,6 +114,7 @@ abstract class RelationTestCases extends TestCase
 		$detail->extra = new Extra($newValue);
 
 		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
 
 		$detail = $repo->getById(2);
 		$this->assertInstanceOf(Extra::class, $detail->extra, "The new Extra did not make it into the storage");
@@ -123,6 +130,8 @@ abstract class RelationTestCases extends TestCase
 	 */
 	public function testUpdateTheExtraOfADetail()
 	{
+		$this->restoreData(['details', 'extras']);
+
 		$repo   = $this->repo[Detail::class];
 		$detail = $repo->getById(1);
 
@@ -130,6 +139,7 @@ abstract class RelationTestCases extends TestCase
 		$detail->extra->info = 'Changed information';
 
 		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
 
 		$detail = $repo->getById(1);
 		$this->assertInstanceOf(Extra::class, $detail->extra);
@@ -146,6 +156,8 @@ abstract class RelationTestCases extends TestCase
 	 */
 	public function testDeleteNull()
 	{
+		$this->restoreData(['details', 'extras']);
+
 		$detailRepo = $this->repo[Detail::class];
 		$detail     = $detailRepo->getById(1);
 
@@ -155,6 +167,7 @@ abstract class RelationTestCases extends TestCase
 		$detail->extra = null;
 
 		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
 
 		$extraRepo = $this->repo[Extra::class];
 		$extraRepo->findOne()->with('detail_id', Operator::EQUAL, 1)->getItem();
@@ -170,7 +183,7 @@ abstract class RelationTestCases extends TestCase
 	 */
 	public function testDeleteUnset()
 	{
-		$this->restoreExtra(1, 'Extra info for Detail 1');
+		$this->restoreData(['details', 'extras']);
 
 		$detailRepo = $this->repo[Detail::class];
 		$detail     = $detailRepo->getById(1);
@@ -181,6 +194,7 @@ abstract class RelationTestCases extends TestCase
 		unset($detail->extra);
 
 		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
 
 		$extraRepo = $this->repo[Extra::class];
 		$extraRepo->findOne()->with('detail_id', Operator::EQUAL, 1)->getItem();
@@ -196,7 +210,7 @@ abstract class RelationTestCases extends TestCase
 	 */
 	public function testDeleteCascade()
 	{
-		$this->restoreExtra(1, 'Extra info for Detail 1');
+		$this->restoreData(['details', 'extras']);
 
 		$detailRepo = $this->repo[Detail::class];
 		$detail     = $detailRepo->getById(1);
@@ -207,22 +221,173 @@ abstract class RelationTestCases extends TestCase
 		$detailRepo->remove($detail);
 
 		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
 
 		$extraRepo = $this->repo[Extra::class];
 		$extraRepo->findOne()->with('detail_id', Operator::EQUAL, 1)->getItem();
-
-		$this->restoreExtra(1, 'Extra info for Detail 1');
 	}
 
-	private function restoreExtra($detailId, $info)
+	/**
+	 * Read the details of a master
+	 *
+	 * The master record is read from the database, and a Master object is created and populated with the data.
+	 * The virtual details property is populated with a Repository for Detail objects, instead of the related details
+	 * themselves.
+	 * The repository gives access to the related objects and allows all kind of filtering.
+	 */
+	public function testReadTheDetailsOfAMaster()
 	{
-		$this->builder->getMeta(Extra::class);
-		$this->unitOfWork->dispose();
+		$this->restoreData(['masters', 'details']);
 
-		$extra = new Extra($info);
-		$extra->detailId = $detailId;
-		$this->repo[Extra::class]->add($extra);
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(1);
+
+		$this->assertInstanceOf(Repository::class, $master->details);
+		$this->assertEquals(Detail::class, $master->details->getEntityClass());
+
+		$details = $master->details->findAll()->getItems();
+
+		$this->assertEquals(2, count($details));
+	}
+
+	/**
+	 * Create a detail for a master
+	 *
+	 * The system will store the detail automatically.
+	 */
+	public function testCreateADetailForAMaster()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo    = $this->repo[Master::class];
+		$master  = $repo->getById(1);
+		$details = $master->details->findAll()->getItems();
+
+		$this->assertEquals(2, count($details));
+
+		$master->details->add(new Detail);
 
 		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$master  = $repo->getById(1);
+		$details = $master->details->findAll()->getItems();
+
+		$this->assertEquals(3, count($details));
+	}
+
+	/**
+	 * Update a detail of a master
+	 *
+	 * The system will detect the change and save just the detail2.
+	 */
+	public function testUpdateADetailOfAMaster()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(1);
+
+		$detail         = $master->details->findOne()->with('id', Operator::EQUAL, 3)->getItem();
+		$detail->field1 = 'Changed content';
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$repo   = $this->repo[Detail::class];
+		$detail = $repo->getById(3);
+		$this->assertEquals('Changed content', $detail->field1);
+	}
+
+	/**
+	 * Delete a detail of a master
+	 *
+	 * The system will detect the change and delete the detail.
+	 */
+	public function testDeleteADetailOfAMaster()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(1);
+
+		$detail = $master->details->findOne()->with('id', Operator::EQUAL, 3)->getItem();
+		$master->details->remove($detail);
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$this->expectException(EntityNotFoundException::class);
+		$repo   = $this->repo[Detail::class];
+		$detail = $repo->getById(3);
+	}
+
+	private function restoreData($tables = [])
+	{
+		$dataDir  = realpath(__DIR__ . '/../data');
+		$database = $dataDir . '/sqlite.test.db';
+
+		$connection = DriverManager::getConnection(['url' => 'sqlite:///' . $database]);
+
+		$files = glob($dataDir . '/original/*.csv');
+
+		foreach ($files as $file)
+		{
+			$tableName = basename($file, '.csv');
+
+			if (!empty($tables) && !in_array($tableName, $tables))
+			{
+				continue;
+			}
+
+			$csvFilename = $dataDir . '/' . $tableName . '.csv';
+			unlink($csvFilename);
+			copy($file, $csvFilename);
+
+			$records = $this->loadData($file);
+
+			$connection->beginTransaction();
+
+			$connection->query('DELETE FROM ' . $tableName);
+			foreach ($records as $record)
+			{
+				$connection->insert($tableName, $record);
+			}
+			$connection->commit();
+		}
+	}
+
+	/**
+	 * Load the data from the file
+	 *
+	 * @return  array
+	 */
+	private function loadData($dataFile)
+	{
+		static $data = [];
+
+		if (!isset($data[$dataFile]))
+		{
+			$data[$dataFile] = [];
+
+			$fh   = fopen($dataFile, 'r');
+			$keys = fgetcsv($fh);
+
+			while (!feof($fh))
+			{
+				$row = fgetcsv($fh);
+
+				if ($row === false)
+				{
+					break;
+				}
+
+				$data[$dataFile][] = array_combine($keys, $row);
+			}
+
+			fclose($fh);
+		}
+
+		return $data[$dataFile];
 	}
 }
