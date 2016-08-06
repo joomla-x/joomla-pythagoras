@@ -1,11 +1,9 @@
 <?php
 namespace Joomla\Tests\Unit\ORM\Storage;
 
-use Doctrine\DBAL\DriverManager;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\Repository;
@@ -320,7 +318,123 @@ abstract class RelationTestCases extends TestCase
 		$this->entityRegistry->clear();
 
 		$this->expectException(EntityNotFoundException::class);
-		$repo   = $this->repo[Detail::class];
+		$repo = $this->repo[Detail::class];
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$detail = $repo->getById(3);
+	}
+
+	/**
+	 * Read the master of a detail
+	 *
+	 * The detail record is read from the database, and a Detail object is created and populated with the data.
+	 * The virtual master property is populated, and will contain a Master object.
+	 */
+	public function testReadTheMasterOfADetail()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo   = $this->repo[Detail::class];
+		$detail = $repo->getById(2);
+
+		$this->assertInstanceOf(Master::class, $detail->master);
+		$this->assertEquals('Title 2', $detail->master->title);
+	}
+
+	/**
+	 * Create the master of a detail
+	 *
+	 * The system will detect the change, create the master and update the foreign key in the detail.
+	 * The original master will not be affected.
+	 */
+	public function testCreateTheMasterOfADetail()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo           = $this->repo[Detail::class];
+		$detail         = $repo->getById(2);
+		$master         = new Master();
+		$master->title  = 'New Master for Detail 2';
+		$detail->master = $master;
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$detail = $repo->getById(2);
+		$this->assertEquals('New Master for Detail 2', $detail->master->title);
+
+		$oldMaster = $this->repo[Master::class]->getById(2);
+		$this->assertEquals('Title 2', $oldMaster->title);
+	}
+
+	/**
+	 * Update the master of a detail
+	 *
+	 * The system will detect the change and save the master.
+	 */
+	public function testUpdateTheMasterOfADetail()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo                   = $this->repo[Detail::class];
+		$detail                 = $repo->getById(2);
+		$detail->master->fieldA = 'Changed data';
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$master = $this->repo[Master::class]->getById(2);
+		$this->assertEquals('Changed data', $master->fieldA);
+	}
+
+	/**
+	 * Delete the master of a detail
+	 *
+	 * If master_id is not required, it will be set to null on the detail. Otherwise, an exception is thrown.
+	 * The associated master will not be affected.
+	 */
+	public function testDeleteTheMasterOfADetail()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo           = $this->repo[Detail::class];
+		$detail         = $repo->getById(2);
+		$detail->master = null;
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$detail = $repo->getById(2);
+		$this->assertNull($detail->masterId);
+		$this->assertEmpty($detail->master);
+
+		// Expect no exception
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$master = $this->repo[Master::class]->getById(2);
+	}
+
+	/**
+	 * Unset the master of a detail
+	 *
+	 * If master_id is not required, it will be set to null on the detail. Otherwise, an exception is thrown.
+	 * The associated master will not be affected.
+	 */
+	public function testUnsetTheMasterOfADetail()
+	{
+		$this->restoreData(['masters', 'details']);
+
+		$repo   = $this->repo[Detail::class];
+		$detail = $repo->getById(2);
+		unset($detail->master);
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$detail = $repo->getById(2);
+		$this->assertNull($detail->masterId);
+		$this->assertEmpty($detail->master);
+
+		// Expect no exception
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$master = $this->repo[Master::class]->getById(2);
 	}
 }

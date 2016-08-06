@@ -39,9 +39,6 @@ class RepositoryFactory
 	/** @var EntityBuilder The entity builder */
 	private $builder;
 
-	/** @var  RepositoryInterface[] */
-	private $repositories;
-
 	/** @var UnitOfWork The unit of work to use in the tests */
 	private $unitOfWork = null;
 
@@ -87,26 +84,21 @@ class RepositoryFactory
 	 */
 	public function forEntity($entityClass, DataMapperInterface $dataMapper = null)
 	{
-		if (!isset($this->repositories[$entityClass]))
+		if (empty($dataMapper))
 		{
-			if (empty($dataMapper))
+			try
 			{
-				try
-				{
-					$dataMapper = $this->unitOfWork->getDataMapper($entityClass);
-				}
-				catch (\RuntimeException $e)
-				{
-					$dataMapper      = $this->createDataMapper($entityClass);
-				}
+				$dataMapper = $this->unitOfWork->getDataMapper($entityClass);
 			}
-
-			$this->unitOfWork->registerDataMapper($entityClass, $dataMapper);
-
-			$this->repositories[$entityClass] = new Repository($entityClass, $dataMapper, $this->unitOfWork);
+			catch (\RuntimeException $e)
+			{
+				$dataMapper = $this->createDataMapper($entityClass);
+			}
 		}
 
-		return $this->repositories[$entityClass];
+		$this->unitOfWork->registerDataMapper($entityClass, $dataMapper);
+
+		return new Repository($entityClass, $dataMapper, $this->unitOfWork);
 	}
 
 	/**

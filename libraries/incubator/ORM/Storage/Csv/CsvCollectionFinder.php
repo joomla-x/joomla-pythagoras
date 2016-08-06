@@ -266,7 +266,7 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	 */
 	private function applyColumns($matches)
 	{
-		if (empty($this->columns) || in_array('*', $this->columns))
+		if (empty($matches) || empty($this->columns) || in_array('*', $this->columns))
 		{
 			return $matches;
 		}

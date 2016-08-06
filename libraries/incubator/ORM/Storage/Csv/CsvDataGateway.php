@@ -153,7 +153,7 @@ class CsvDataGateway
 			$this->loadTable($table);
 		}
 
-		$data = array_filter($this->sanitiseRow($table, $row));
+		$data = $this->sanitiseRow($table, $row);
 
 		if (empty($identifier) && isset($data['id']))
 		{

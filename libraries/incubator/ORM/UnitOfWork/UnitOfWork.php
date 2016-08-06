@@ -9,8 +9,6 @@
 namespace Joomla\ORM\UnitOfWork;
 
 use Joomla\ORM\Definition\Parser\BelongsTo;
-use Joomla\ORM\Definition\Parser\HasMany;
-use Joomla\ORM\Definition\Parser\HasManyThrough;
 use Joomla\ORM\Definition\Parser\HasOne;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
@@ -46,8 +44,8 @@ class UnitOfWork implements UnitOfWorkInterface
 	private $scheduledForDeletion = [];
 
 	/**
-	 * @param   EntityRegistry        $entityRegistry  The entity registry to use
-	 * @param   TransactionInterface  $connection      The transactor to use in our unit of work
+	 * @param   EntityRegistry       $entityRegistry The entity registry to use
+	 * @param   TransactionInterface $connection     The transactor to use in our unit of work
 	 */
 	public function __construct(EntityRegistry $entityRegistry, TransactionInterface $connection = null)
 	{
@@ -103,7 +101,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Detaches an entity from being managed
 	 *
-	 * @param   object  $entity  The entity to detach
+	 * @param   object $entity The entity to detach
 	 *
 	 * @return  void
 	 */
@@ -144,8 +142,8 @@ class UnitOfWork implements UnitOfWorkInterface
 	 * Registers a data mapper for a class
 	 * Registering a data mapper for a class will overwrite any previously-set data mapper for that class
 	 *
-	 * @param   string                $className   The name of the class whose data mapper we're registering
-	 * @param   DataMapperInterface   $dataMapper  The data mapper for the class
+	 * @param   string              $className  The name of the class whose data mapper we're registering
+	 * @param   DataMapperInterface $dataMapper The data mapper for the class
 	 *
 	 * @return  void
 	 */
@@ -157,7 +155,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Schedules an entity for deletion
 	 *
-	 * @param   object  $entity  The entity to schedule for deletion
+	 * @param   object $entity The entity to schedule for deletion
 	 *
 	 * @return  void
 	 */
@@ -169,7 +167,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Schedules an entity for insertion
 	 *
-	 * @param   object  $entity  The entity to schedule for insertion
+	 * @param   object $entity The entity to schedule for insertion
 	 *
 	 * @return  void
 	 */
@@ -183,7 +181,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Schedules an entity for update
 	 *
-	 * @param   object  $entity  The entity to schedule for update
+	 * @param   object $entity The entity to schedule for update
 	 *
 	 * @return  void
 	 */
@@ -195,7 +193,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Sets the database transactor
 	 *
-	 * @param   TransactionInterface  $transactor  The transactor to use
+	 * @param   TransactionInterface $transactor The transactor to use
 	 *
 	 * @return  void
 	 */
@@ -214,65 +212,18 @@ class UnitOfWork implements UnitOfWorkInterface
 		foreach ($this->entityRegistry->getEntities() as $entity)
 		{
 			$meta         = $this->entityRegistry->getMeta($entity);
-			$objectHashId = $this->entityRegistry->getObjectHashId($entity);
 
-			foreach ($meta->relations['belongsTo'] as $field => $relation)
+			foreach ($meta->relations['belongsTo'] as $relation)
 			{
+				$this->checkBelongsToRelation($entity, $relation);
 			}
 
-			foreach ($meta->relations['hasOne'] as $field => $relation)
+			foreach ($meta->relations['hasOne'] as $relation)
 			{
-				/*
-				 * We are handling a Detail and checking the Extra.
-				 * Extra->detailId = Detail->id
-				 */
-				$varObjName = $relation->varObjectName();
-				$varReferenceName = $relation->varReferenceName();
-
-				$currentRelation = $this->getValue($entity, $varObjName);
-				$originalRelation = $this->getValue($this->entityRegistry->getOriginal($entity), $varObjName);
-
-				if (empty($currentRelation))
-				{
-					// Current entity has no relation
-					if (!empty($originalRelation))
-					{
-						// Original had a relation, so relation was removed
-						$this->scheduleForDeletion($originalRelation);
-					}
-
-					continue;
-				}
-
-				// Current entity has a relation
-				$currentRelationHash = $this->entityRegistry->getObjectHashId($currentRelation);
-
-				if (isset($this->scheduledForDeletion[$objectHashId]) && $relation->cascadeDelete())
-				{
-					$this->scheduleForDeletion($currentRelation);
-				}
-
-				if (empty($originalRelation))
-				{
-					// Original had no relation, so relation was newly created
-					$this->scheduleRelationForInsertion($entity, $currentRelation, $varReferenceName);
-
-					continue;
-				}
-
-				$originalRelationHash = $this->entityRegistry->getObjectHashId($originalRelation);
-
-				if ($currentRelationHash != $originalRelationHash)
-				{
-					// Relation was exchanged
-					$this->scheduleForDeletion($originalRelation);
-					$this->scheduleRelationForInsertion($entity, $currentRelation, $varReferenceName);
-
-					continue;
-				}
+				$this->checkHasOneRelation($entity, $relation);
 			}
 
-			foreach ($meta->relations['hasMany'] as $field => $relation)
+			foreach ($meta->relations['hasMany'] as $relation)
 			{
 				/*
 				 * We are handling a Master and checking the Details.
@@ -283,7 +234,7 @@ class UnitOfWork implements UnitOfWorkInterface
 				 */
 			}
 
-			foreach ($meta->relations['hasManyThrough'] as $field => $relation)
+			foreach ($meta->relations['hasManyThrough'] as $relation)
 			{
 				/*
 				 * We are handling a Master and checking the Tags.
@@ -333,7 +284,7 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Gets the data mapper for the input class
 	 *
-	 * @param   string  $className  The name of the class whose data mapper we're searching for
+	 * @param   string $className The name of the class whose data mapper we're searching for
 	 *
 	 * @return  DataMapperInterface  The data mapper for the input class
 	 * @throws \ RuntimeException Thrown if there was no data mapper for the input class name
@@ -452,28 +403,33 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Checks if an object is scheduled
 	 *
-	 * @param   string  $objectHashId  The object's hash
+	 * @param   string $objectHashId The object's hash
 	 *
 	 * @return  boolean
 	 */
 	protected function isScheduled($objectHashId)
 	{
 		return isset($this->scheduledForInsertion[$objectHashId])
-			|| isset($this->scheduledForUpdate[$objectHashId])
-			|| isset($this->scheduledForDeletion[$objectHashId]);
+		       || isset($this->scheduledForUpdate[$objectHashId])
+		       || isset($this->scheduledForDeletion[$objectHashId]);
 	}
 
 	/**
 	 * Schedules an entity for insertion creating an aggregate root callback
 	 *
-	 * @param   object  $root        The root object
-	 * @param   object  $child       The child object (containing the foreign key)
-	 * @param   string  $foreignKey  The name of the foreign key property in the child object
+	 * @param   object $root       The root object
+	 * @param   object $child      The child object (containing the foreign key)
+	 * @param   string $foreignKey The name of the foreign key property in the child object
 	 *
 	 * @return  void
 	 */
 	protected function scheduleRelationForInsertion($root, $child, $foreignKey)
 	{
+		if (!$this->entityRegistry->isRegistered($root))
+		{
+			$this->scheduleForInsertion($root);
+		}
+
 		if (!$this->entityRegistry->isRegistered($child))
 		{
 			$this->scheduleForInsertion($child);
@@ -483,7 +439,8 @@ class UnitOfWork implements UnitOfWorkInterface
 		$this->entityRegistry->registerAggregateRootCallback(
 			$root,
 			$child,
-			function ($root, $child) use ($foreignKey, $isAccessorRegistry) {
+			function ($root, $child) use ($foreignKey, $isAccessorRegistry)
+			{
 				$reflection = new \ReflectionProperty(get_class($child), $foreignKey);
 				$reflection->setAccessible(true);
 				$reflection->setValue($child, $isAccessorRegistry->getEntityId($root));
@@ -522,9 +479,9 @@ class UnitOfWork implements UnitOfWorkInterface
 	/**
 	 * Sets the value in an object
 	 *
-	 * @param   object  $object    The object
-	 * @param   string  $property  The property
-	 * @param   mixed   $value     The value
+	 * @param   object $object   The object
+	 * @param   string $property The property
+	 * @param   mixed  $value    The value
 	 *
 	 * @return  void
 	 */
@@ -543,5 +500,120 @@ class UnitOfWork implements UnitOfWorkInterface
 		$reflectionProperty->setAccessible(true);
 
 		$reflectionProperty->setValue($object, $value);
+	}
+
+	/**
+	 * Check for changes in a hasOne relation
+	 *
+	 * We are handling a Detail and checking the Extra.
+	 * Extra->detailId = Detail->id
+	 *
+	 * @param   object $entity   The entity
+	 * @param   HasOne $relation The relation
+	 *
+	 * @return  void
+	 */
+	private function checkHasOneRelation($entity, $relation)
+	{
+		$objectHashId     = $this->entityRegistry->getObjectHashId($entity);
+		$varObjName       = $relation->varObjectName();
+		$varReferenceName = $relation->varReferenceName();
+
+		$currentRelation  = $this->getValue($entity, $varObjName);
+		$originalRelation = $this->getValue($this->entityRegistry->getOriginal($entity), $varObjName);
+
+		if (empty($currentRelation))
+		{
+			// Current entity has no relation
+			if (!empty($originalRelation))
+			{
+				// Original had a relation, so relation was removed
+				$this->scheduleForDeletion($originalRelation);
+			}
+
+			return;
+		}
+
+		// Current entity has a relation
+		$currentRelationHash = $this->entityRegistry->getObjectHashId($currentRelation);
+
+		if (isset($this->scheduledForDeletion[$objectHashId]) && $relation->cascadeDelete())
+		{
+			$this->scheduleForDeletion($currentRelation);
+		}
+
+		if (empty($originalRelation))
+		{
+			// Original had no relation, so relation was newly created
+			$this->scheduleRelationForInsertion($entity, $currentRelation, $varReferenceName);
+
+			return;
+		}
+
+		$originalRelationHash = $this->entityRegistry->getObjectHashId($originalRelation);
+
+		if ($currentRelationHash != $originalRelationHash)
+		{
+			// Relation was exchanged
+			$this->scheduleForDeletion($originalRelation);
+			$this->scheduleRelationForInsertion($entity, $currentRelation, $varReferenceName);
+		}
+	}
+
+	/**
+	 * Check for changes in a belongsTo relation
+	 *
+	 * We are handling a Detail and checking the Master.
+	 * Detail->masterId = Master->id
+	 *
+	 * @param   object    $entity   The entity
+	 * @param   BelongsTo $relation The relation
+	 *
+	 * @return  void
+	 */
+	private function checkBelongsToRelation($entity, $relation)
+	{
+		$varObjName   = $relation->varObjectName();
+		$varIdName    = $relation->varIdName();
+
+		$currentRelation  = $this->getValue($entity, $varObjName);
+		$originalRelation = $this->getValue($this->entityRegistry->getOriginal($entity), $varObjName);
+
+		if (empty($currentRelation))
+		{
+			// Current entity has no relation
+			if (!empty($originalRelation))
+			{
+				// Original had a relation, so relation was removed
+				$this->setValue($entity, $varIdName, null);
+
+				if ($relation->isRequired())
+				{
+					$this->scheduleForDeletion($entity);
+				}
+			}
+
+			return;
+		}
+
+		// Current entity has a relation
+		$currentRelationHash = $this->entityRegistry->getObjectHashId($currentRelation);
+
+		if (empty($originalRelation))
+		{
+			// Original had no relation, so relation was newly created
+			$this->scheduleRelationForInsertion($currentRelation, $entity, $varIdName);
+
+			return;
+		}
+
+		$originalRelationHash = $this->entityRegistry->getObjectHashId($originalRelation);
+
+		if ($currentRelationHash != $originalRelationHash)
+		{
+			// Relation was exchanged
+			$this->scheduleRelationForInsertion($currentRelation, $entity, $varIdName);
+			$this->setValue($entity, $varIdName, null);
+		}
 	}
 }
