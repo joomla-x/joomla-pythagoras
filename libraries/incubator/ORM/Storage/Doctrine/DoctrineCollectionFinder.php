@@ -75,6 +75,11 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	public function columns($columns)
 	{
+		if (!is_array($columns))
+		{
+			$columns = preg_split('~\s*,\s*~', trim($columns));
+		}
+
 		$this->columns = $columns;
 
 		return $this;
@@ -193,6 +198,18 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		if (empty($this->columns))
 		{
 			$rows = $this->castToEntity($rows);
+		}
+
+		if (count($this->columns) == 1 && $this->columns[0] != '*')
+		{
+			$result = [];
+
+			foreach ($rows as $match)
+			{
+				$result[] = $match[$this->columns[0]];
+			}
+
+			return $result;
 		}
 
 		return array_values($rows);

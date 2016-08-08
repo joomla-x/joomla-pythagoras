@@ -16,6 +16,7 @@ use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
+use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\Tests\Unit\ORM\Mocks\Article;
 use Joomla\Tests\Unit\ORM\Mocks\Detail;
@@ -74,8 +75,13 @@ class EntityBuilderTest extends TestCase
 	public function setUp()
 	{
 		$this->transactor = $this->createMock(TransactionInterface::class);
+		$connection       = $this->createMock(CsvDataGateway::class);
+		$connection
+			->expects($this->any())
+			->method('getAll')
+			->willReturn([]);
 
-		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
+		$repositoryFactory = new RepositoryFactory($this->config, $connection, $this->transactor);
 		$strategy          = new RecursiveDirectoryStrategy($this->config['definitionPath']);
 		$locator           = new Locator([$strategy]);
 		$this->builder     = new EntityBuilder($locator, $this->config, $repositoryFactory);

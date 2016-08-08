@@ -1,6 +1,7 @@
 <?php
 namespace Joomla\Tests\Unit\ORM\Storage;
 
+use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -9,6 +10,7 @@ use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
+use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
 use Joomla\Tests\Unit\DataTrait;
@@ -16,12 +18,16 @@ use Joomla\Tests\Unit\DumpTrait;
 use Joomla\Tests\Unit\ORM\Mocks\Detail;
 use Joomla\Tests\Unit\ORM\Mocks\Extra;
 use Joomla\Tests\Unit\ORM\Mocks\Master;
+use Joomla\Tests\Unit\ORM\Mocks\Tag;
 use PHPUnit\Framework\TestCase;
 
 abstract class RelationTestCases extends TestCase
 {
 	/** @var  array */
 	protected $config;
+
+	/** @var  CsvDataGateway|Connection */
+	protected $connection;
 
 	/** @var  RepositoryInterface[] */
 	protected $repo;
@@ -52,7 +58,7 @@ abstract class RelationTestCases extends TestCase
 	{
 		$this->onBeforeSetup();
 
-		$repositoryFactory        = new RepositoryFactory($this->config, $this->transactor);
+		$repositoryFactory        = new RepositoryFactory($this->config, $this->connection, $this->transactor);
 		$this->entityRegistry     = $repositoryFactory->getEntityRegistry();
 		$this->builder            = $repositoryFactory->getEntityBuilder();
 		$this->unitOfWork         = $repositoryFactory->getUnitOfWork();
@@ -407,7 +413,7 @@ abstract class RelationTestCases extends TestCase
 		$this->assertNull($detail->masterId);
 		$this->assertEmpty($detail->master);
 
-		// Expect no exception
+		// Expect no exception, because old master still exists
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$master = $this->repo[Master::class]->getById(2);
 	}
@@ -433,8 +439,139 @@ abstract class RelationTestCases extends TestCase
 		$this->assertNull($detail->masterId);
 		$this->assertEmpty($detail->master);
 
-		// Expect no exception
+		// Expect no exception, because old master still exists
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$master = $this->repo[Master::class]->getById(2);
+	}
+
+	/**
+	 * Read the tags of a master
+	 *
+	 * The master record is read from the database, and a Master object is created and populated with the data.
+	 * The virtual tags property is populated with a Repository for Tag objects, instead of the related tags themselves.
+	 * The repository gives access to the objects and allows all kind of filtering.
+	 */
+	public function testReadTheTagsOfAMaster()
+	{
+		$this->restoreData(['masters', 'maps', 'tags']);
+
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(1);
+
+		$this->assertInstanceOf(RepositoryInterface::class, $master->tags);
+		$this->assertEquals(Tag::class, $master->tags->getEntityClass());
+
+		$tags = $master->tags->findAll()->getItems();
+
+		$this->assertEquals(3, count($tags));
+	}
+
+	/**
+	 * Add an existing tag for a master
+	 */
+	public function testAddAnExistingTagForAMaster()
+	{
+		$this->restoreData(['masters', 'maps', 'tags']);
+
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(4);
+		$tags   = $master->tags->findAll()->columns('tag')->getItems();
+
+		$this->assertEquals(['Tag 1', 'Tag 2'], $tags);
+
+		$tag = $this->repo[Tag::class]->getById(3);
+		$master->tags->add($tag);
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$master = $repo->getById(1);
+		$tags   = $master->tags->findAll()->columns('tag')->getItems();
+
+		$this->assertEquals(['Tag 1', 'Tag 2', 'Tag 3'], $tags);
+	}
+
+	/**
+	 * Create a tag for a master
+	 *
+	 * The system will store the tag automatically.
+	 */
+	public function testCreateATagForAMaster()
+	{
+		$this->restoreData(['masters', 'maps', 'tags']);
+
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(4);
+		$tags = $master->tags->findAll()->columns('tag')->getItems();
+
+		$this->assertEquals(['Tag 1', 'Tag 2'], $tags);
+
+		$tag = new Tag('Tag 4', 'Newly defined tag');
+		$master->tags->add($tag);
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$master = $repo->getById(4);
+		$tags   = $master->tags->findAll()->columns('tag')->getItems();
+
+		$this->assertEquals(['Tag 1', 'Tag 2', 'Tag 4'], $tags);
+	}
+
+	/**
+	 * Update a tag for a master
+	 *
+	 * The system will detect the change2 and save just the tag.
+	 * After this action, all masters associated with the tag 'Old Label' will show 'Changed Label'.
+	 */
+	public function testUpdateATagForAMaster()
+	{
+		$this->restoreData(['masters', 'maps', 'tags']);
+
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(1);
+		$tag    = $master->tags->getById(3);
+
+		$this->assertEquals('Tag 3', $tag->tag);
+
+		$tag->tag = 'Changed Label';
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$master = $repo->getById(1);
+		$tags   = $master->tags->findAll()->columns('tag')->getItems();
+
+		$this->assertEquals(['Tag 1', 'Tag 2', 'Changed Label'], $tags);
+	}
+
+	/**
+	 * Delete a tag for a master
+	 *
+	 * The system will detect the change and delete the entry in the map.
+	 * The tag itself will not be affected.
+	 */
+	public function testDeleteATagForAMaster()
+	{
+		$this->restoreData(['masters', 'maps', 'tags']);
+
+		$repo   = $this->repo[Master::class];
+		$master = $repo->getById(1);
+		$tag = $master->tags->getById(1);
+
+		$master->tags->remove($tag);
+
+		$this->unitOfWork->commit();
+		$this->entityRegistry->clear();
+
+		$master = $repo->getById(1);
+		$tags   = $master->tags->findAll()->columns('tag')->getItems();
+
+		$this->assertEquals(['Tag 2', 'Tag 3'], $tags);
+
+		$tagRepo = $this->repo[Tag::class];
+		$tag     = $tagRepo->getById(1);
+
+		$this->assertEquals('Tag 1', $tag->tag);
 	}
 }

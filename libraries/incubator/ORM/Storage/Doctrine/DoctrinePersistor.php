@@ -13,6 +13,7 @@ use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Storage\PersistorInterface;
+use Joomla\String\Normalise;
 
 /**
  * Class DoctrineCollectionPersistor
@@ -89,9 +90,7 @@ class DoctrinePersistor implements PersistorInterface
 	 */
 	public function update($entity)
 	{
-		$primary    = $this->builder->getMeta(get_class($entity))->primary;
-		$entityId   = $this->entityRegistry->getEntityId($entity);
-		$identifier = [$primary => $entityId];
+		$identifier = $this->getIdentifier($entity);
 		$data       = $this->builder->reduce($entity);
 
 		$this->connection->update($this->tableName, $data, $identifier);
@@ -108,14 +107,41 @@ class DoctrinePersistor implements PersistorInterface
 	 */
 	public function delete($entity)
 	{
-		$primary      = $this->builder->getMeta(get_class($entity))->primary;
-		$entityId     = $this->entityRegistry->getEntityId($entity);
-		$identifier   = [$primary => $entityId];
+		$identifier   = $this->getIdentifier($entity);
 		$affectedRows = $this->connection->delete($this->tableName, $identifier);
 
 		if ($affectedRows == 0)
 		{
 			throw new OrmException("Entity not found.");
 		}
+	}
+
+	/**
+	 * Gets the identifier for an entity
+	 *
+	 * @param   object $entity The entity
+	 *
+	 * @return  array  The identifier as key-value pair(s)
+	 */
+	protected function getIdentifier($entity)
+	{
+		$entityId = json_decode($this->entityRegistry->getEntityId($entity), true);
+
+		if (is_array($entityId))
+		{
+			$identifier = [];
+
+			foreach ($entityId as $key => $value)
+			{
+				$key              = strtolower(Normalise::toUnderscoreSeparated(Normalise::fromCamelCase($key)));
+				$identifier[$key] = $value;
+			}
+
+			return $identifier;
+		}
+
+		$primary = $this->builder->getMeta(get_class($entity))->primary;
+
+		return [$primary => $entityId];
 	}
 }

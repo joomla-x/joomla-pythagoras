@@ -77,7 +77,7 @@ class UnitOfWorkTest extends TestCase
 		$this->transactor         = new DoctrineTransactor($connection);
 		$this->idAccessorRegistry = new IdAccessorRegistry;
 
-		$repositoryFactory = new RepositoryFactory($this->config, $this->transactor);
+		$repositoryFactory = new RepositoryFactory($this->config, $connection, $this->transactor);
 		$this->idAccessorRegistry->registerIdAccessors(
 			User::class,
 			function (User $user)

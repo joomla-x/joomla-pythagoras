@@ -104,7 +104,7 @@ class EntityRegistry
 		{
 			$className                         = $this->getClassName($entity);
 			$objectHashId                      = $this->getObjectHashId($entity);
-			$entityId                          = $this->idAccessorRegistry->getEntityId($entity);
+			$entityId                          = $this->getEntityId($entity);
 			$this->entityStates[$objectHashId] = EntityStates::UNREGISTERED;
 			unset($this->entities[$className][$entityId]);
 			$this->changeTracker->stopTracking($entity);
@@ -212,7 +212,7 @@ class EntityRegistry
 	{
 		try
 		{
-			$entityId = $this->idAccessorRegistry->getEntityId($entity);
+			$entityId = $this->getEntityId($entity);
 
 			return ($this->getEntityState($entity) == EntityStates::REGISTERED) || isset($this->entities[$this->getClassName($entity)][$entityId]);
 		}
@@ -258,7 +258,7 @@ class EntityRegistry
 	public function stashEntity($entity)
 	{
 		$className = $this->getClassName($entity);
-		$entityId  = $this->idAccessorRegistry->getEntityId($entity);
+		$entityId  = $this->getEntityId($entity);
 
 		if (!isset($this->stashedEntities[$className]))
 		{
@@ -279,7 +279,7 @@ class EntityRegistry
 	public function unstashEntity($entity)
 	{
 		$className = $this->getClassName($entity);
-		$entityId  = $this->idAccessorRegistry->getEntityId($entity);
+		$entityId  = $this->getEntityId($entity);
 
 		if (isset($this->stashedEntities[$className]) && isset($this->stashedEntities[$className][$entityId]))
 		{
@@ -301,7 +301,7 @@ class EntityRegistry
 
 		$className    = $this->getClassName($entity);
 		$objectHashId = $this->getObjectHashId($entity);
-		$entityId     = $this->idAccessorRegistry->getEntityId($entity);
+		$entityId     = $this->getEntityId($entity);
 
 		if (!isset($this->entities[$className]))
 		{
@@ -405,7 +405,15 @@ class EntityRegistry
 	 */
 	public function getEntityId($entity)
 	{
-		return $this->idAccessorRegistry->getEntityId($entity);
+		$entityId = $this->idAccessorRegistry->getEntityId($entity);
+
+		if (is_array($entityId))
+		{
+			ksort($entityId);
+			$entityId = json_encode($entityId);
+		}
+
+		return $entityId;
 	}
 
 	/**

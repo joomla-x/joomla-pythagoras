@@ -13,4 +13,10 @@ class Tag
 	public $id;
 	public $tag;
 	public $description;
+
+	public function __construct($tag = '', $description = '')
+	{
+		$this->tag         = $tag;
+		$this->description = $description;
+	}
 }

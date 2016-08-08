@@ -23,6 +23,7 @@ use Joomla\ORM\Exception\EntityNotDefinedException;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\FileNotFoundException;
 use Joomla\ORM\Operator;
+use Joomla\ORM\Repository\MappingRepository;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
 
@@ -357,25 +358,10 @@ class EntityBuilder
 		$reflection = new \ReflectionClass($entity);
 		$entityId   = $this->repositoryFactory->getIdAccessorRegistry()->getEntityId($entity);
 
-		if (isset($meta->relations['belongsTo']))
-		{
-			$this->resolveBelongsTo($meta->relations['belongsTo'], $entity, $reflection);
-		}
-
-		if (isset($meta->relations['hasOne']))
-		{
-			$this->resolveHasOne($meta->relations['hasOne'], $entity, $entityId);
-		}
-
-		if (isset($meta->relations['hasMany']))
-		{
-			$this->resolveHasMany($meta->relations['hasMany'], $entity, $entityId);
-		}
-
-		if (isset($meta->relations['hasManyThrough']))
-		{
-			$this->resolveHasManyThrough($meta->relations['hasManyThrough'], $entity, $entityId);
-		}
+		$this->resolveBelongsTo($meta->relations['belongsTo'], $entity, $reflection);
+		$this->resolveHasOne($meta->relations['hasOne'], $entity, $entityId);
+		$this->resolveHasMany($meta->relations['hasMany'], $entity, $entityId);
+		$this->resolveHasManyThrough($meta->relations['hasManyThrough'], $entity, $entityId);
 	}
 
 	/**
@@ -414,17 +400,7 @@ class EntityBuilder
 
 		$this->alias[$definition->name] = $entityClass;
 
-		$key = $entity->key();
-
-		if (empty($key))
-		{
-			$key = 'id';
-		}
-
-		$this->repositoryFactory->getIdAccessorRegistry()->registerReflectionIdAccessors(
-			$entityClass,
-			$key
-		);
+		$this->setIdAccessors($entityClass, $entity->key());
 
 		return $entityClass;
 	}
@@ -441,22 +417,16 @@ class EntityBuilder
 			/** @var HasManyThrough $relation */
 			$varObjName  = $relation->varObjectName();
 			$colRefName  = $relation->colReferenceName();
-			$colJoinName = $relation->colJoinName();
 
 			// @todo Use entity name instead of uppercase table
 			$mapClass = $this->resolveAlias(ucfirst($relation->joinTable));
 			$mapRepo  = $this->getRepository($mapClass);
-			$ids      = $mapRepo
-				->findAll()
-				->columns($colJoinName)
-				->with($colRefName, Operator::EQUAL, $entityId)
-				->getItems();
+			$mapRepo->restrictTo($colRefName, Operator::EQUAL, $entityId);
 
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
-			$repository->restrictTo('id', Operator::IN, $ids);
 
-			$entity->{$varObjName} = $repository;
+			$entity->{$varObjName} = new MappingRepository($repository, $mapRepo, $relation, $this->repositoryFactory->getUnitOfWork());
 		}
 	}
 
@@ -567,5 +537,41 @@ class EntityBuilder
 		}
 
 		return $alias;
+	}
+
+	/**
+	 * @param $entityClass
+	 * @param $key
+	 */
+	private function setIdAccessors($entityClass, $key)
+	{
+		$idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
+
+		if (is_array($key))
+		{
+			$getter = function ($entity) use ($key) {
+				$id = [];
+				foreach ($key as $property)
+				{
+					$id[$property] = $entity->{$property};
+				}
+
+				return $id;
+			};
+			$setter = function ($entity, $id) use ($key) {
+				foreach ($key as $property)
+				{
+					$entity->{$property} = $id[$property];
+				}
+			};
+			$idAccessorRegistry->registerIdAccessors($entityClass, $getter, $setter);
+
+			return;
+		}
+
+		if (!empty($key))
+		{
+			$idAccessorRegistry->registerReflectionIdAccessors($entityClass, $key);
+		}
 	}
 }

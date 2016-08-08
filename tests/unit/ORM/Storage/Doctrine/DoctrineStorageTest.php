@@ -16,13 +16,13 @@ class DoctrineStorageTest extends StorageTestCases
 
 		$this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
 
-		$connection       = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
-		$this->transactor = new DoctrineTransactor($connection);
+		$this->connection = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+		$this->transactor = new DoctrineTransactor($this->connection);
 
 		parent::setUp();
 
 		$dataMapper = new DoctrineDataMapper(
-			$connection,
+			$this->connection,
 			Article::class,
 			'articles',
 			$this->entityRegistry

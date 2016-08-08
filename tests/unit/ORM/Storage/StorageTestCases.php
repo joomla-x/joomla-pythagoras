@@ -1,6 +1,7 @@
 <?php
 namespace Joomla\Tests\Unit\ORM\Storage;
 
+use Doctrine\DBAL\Connection;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -8,6 +9,7 @@ use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\ORM\Service\RepositoryFactory;
+use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
 use Joomla\Tests\Unit\DumpTrait;
@@ -18,6 +20,9 @@ class StorageTestCases extends TestCase
 {
 	/** @var  array */
 	protected $config;
+
+	/** @var  CsvDataGateway|Connection */
+	protected $connection;
 
 	/** @var  RepositoryInterface */
 	protected $repo;
@@ -41,7 +46,7 @@ class StorageTestCases extends TestCase
 
 	public function setUp()
 	{
-		$repositoryFactory    = new RepositoryFactory($this->config, $this->transactor);
+		$repositoryFactory    = new RepositoryFactory($this->config, $this->connection, $this->transactor);
 		$this->entityRegistry = $repositoryFactory->getEntityRegistry();
 		$this->unitOfWork     = $repositoryFactory->getUnitOfWork();
 	}

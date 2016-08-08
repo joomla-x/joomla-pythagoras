@@ -22,13 +22,13 @@ class CsvStorageTest extends StorageTestCases
 		$dataPath = realpath(__DIR__ . '/../..');
 
 		$this->config     = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
-		$gateway          = new CsvDataGateway($this->config['dataPath']);
-		$this->transactor = new CsvTransactor($gateway);
+		$this->connection = new CsvDataGateway($this->config['dataPath']);
+		$this->transactor = new CsvTransactor($this->connection);
 
 		parent::setUp();
 
 		$dataMapper = new CsvDataMapper(
-			$gateway,
+			$this->connection,
 			Article::class,
 			'articles',
 			$this->entityRegistry

@@ -12,6 +12,7 @@ use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Storage\PersistorInterface;
+use Joomla\String\Normalise;
 use Joomla\Tests\Unit\DumpTrait;
 
 /**
@@ -113,8 +114,22 @@ class CsvPersistor implements PersistorInterface
 	 */
 	protected function getIdentifier($entity)
 	{
-		$primary    = $this->builder->getMeta(get_class($entity))->primary;
-		$entityId   = $this->entityRegistry->getEntityId($entity);
+		$entityId   = json_decode($this->entityRegistry->getEntityId($entity), true);
+
+		if (is_array($entityId))
+		{
+			$identifier = [];
+
+			foreach ($entityId as $key => $value)
+			{
+				$key              = strtolower(Normalise::toUnderscoreSeparated(Normalise::fromCamelCase($key)));
+				$identifier[$key] = $value;
+			}
+
+			return $identifier;
+		}
+
+		$primary = $this->builder->getMeta(get_class($entity))->primary;
 
 		return [$primary => $entityId];
 	}

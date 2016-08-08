@@ -29,9 +29,6 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	/** @var string  Class of the entity */
 	private $entityClass;
 
-	/** @var EntityBuilder The entity builder */
-	private $builder;
-
 	/** @var  string  Name of the data table */
 	private $table;
 
@@ -140,9 +137,9 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	{
 		$result = [];
 
-		foreach ($rows as $row)
+		foreach ((array) $rows as $row)
 		{
-			$actual = $row[$condition['field']] ? $row[$condition['field']] : null;
+			$actual = isset($row[$condition['field']]) ? $row[$condition['field']] : null;
 
 			switch ($condition['op'])
 			{
@@ -274,7 +271,19 @@ class CsvCollectionFinder implements CollectionFinderInterface
 		$availableColumns = array_keys(reset($matches));
 		$requestedColumns = $this->columns;
 
-		foreach (array_diff($availableColumns, $requestedColumns) as $remove)
+		if (count($this->columns) == 1 && $this->columns[0] != '*')
+		{
+			$result = [];
+
+			foreach ($matches as $match)
+			{
+				$result[] = $match[$this->columns[0]];
+			}
+
+			return $result;
+		}
+
+		foreach (array_diff($availableColumns, $this->columns) as $remove)
 		{
 			foreach ($matches as &$match)
 			{

@@ -34,7 +34,7 @@ class Entity implements EntityInterface
 	/** @var  Callable[]  Relation resolvers */
 	private $relationHandlers;
 
-	/** @var  string  The name of the id field */
+	/** @var  string|array  The name(s) of the id field */
 	private $key;
 
 	/**

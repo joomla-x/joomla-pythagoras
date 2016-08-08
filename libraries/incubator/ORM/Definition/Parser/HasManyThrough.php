@@ -34,6 +34,26 @@ class HasManyThrough extends Relation
 	}
 
 	/**
+	 * Gets the property name for the reference
+	 *
+	 * @return  string
+	 */
+	public function varReferenceName()
+	{
+		return $this->propertyName($this->reference);
+	}
+
+	/**
+	 * Gets the property name for the join reference
+	 *
+	 * @return  string
+	 */
+	public function varJoinName()
+	{
+		return $this->propertyName($this->joinRef);
+	}
+
+	/**
 	 * Gets the column name for the reference
 	 *
 	 * @return  string

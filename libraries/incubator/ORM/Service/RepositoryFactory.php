@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Service;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
@@ -36,6 +37,12 @@ class RepositoryFactory
 	/** @var  array */
 	private $config;
 
+	/** @var  CsvDataGateway|Connection */
+	private $connection;
+
+	/** @var  array */
+	private $connections;
+
 	/** @var EntityBuilder The entity builder */
 	private $builder;
 
@@ -50,19 +57,23 @@ class RepositoryFactory
 	 *
 	 * @api
 	 *
-	 * @param   array                 $config      The configuration
-	 * @param   TransactionInterface  $transactor  A Transactor
+	 * @param   array                      $config     The configuration
+	 * @param   CsvDataGateway|Connection  $connection The connection / gateway
+	 * @param   TransactionInterface       $transactor A Transactor
 	 */
-	public function __construct(array $config, $transactor)
+	public function __construct(array $config, $connection, $transactor)
 	{
-		$this->config  = $config;
-		$this->builder = $this->createEntityBuilder($this->config['definitionPath']);
+		$this->config     = $config;
+		$this->connection = $connection;
+		$this->builder    = $this->createEntityBuilder($this->config['definitionPath']);
 
 		$this->entityRegistry = new EntityRegistry($this->builder);
 		$this->unitOfWork     = new UnitOfWork(
 			$this->entityRegistry,
 			$transactor
 		);
+
+		$this->connections[get_class($connection)] = $connection;
 	}
 
 	/**
@@ -77,7 +88,7 @@ class RepositoryFactory
 	 *
 	 * @api
 	 *
-	 * @param   string               $entityClass  The Eintity's class
+	 * @param   string               $entityClass  The Entity's class
 	 * @param   DataMapperInterface  $dataMapper   An optional DataMapper
 	 *
 	 * @return  Repository
@@ -177,15 +188,13 @@ class RepositoryFactory
 		switch ($this->config[$entityClass]['dataMapper'])
 		{
 			case CsvDataMapper::class:
-				static $gateway = null;
-
-				if (is_null($gateway))
+				if (!isset($this->connections[CsvDataGateway::class]))
 				{
-					$gateway = new CsvDataGateway($this->config['dataPath']);
+					$this->connections[CsvDataGateway::class] = new CsvDataGateway($this->config['dataPath']);
 				}
 
 				$dataMapper = new CsvDataMapper(
-					$gateway,
+					$this->connections[CsvDataGateway::class],
 					$entityClass,
 					basename($this->config[$entityClass]['data'], '.csv'),
 					$this->entityRegistry
@@ -193,15 +202,13 @@ class RepositoryFactory
 				break;
 
 			case DoctrineDataMapper::class:
-				static $connection = null;
-
-				if (is_null($connection))
+				if (!isset($this->connections[Connection::class]))
 				{
-					$connection = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+					$this->connections[Connection::class] = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
 				}
 
 				$dataMapper = new DoctrineDataMapper(
-					$connection,
+					$this->connections[Connection::class],
 					$entityClass,
 					$this->config[$entityClass]['table'],
 					$this->entityRegistry

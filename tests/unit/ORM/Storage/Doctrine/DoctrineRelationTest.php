@@ -20,8 +20,6 @@ use Joomla\Tests\Unit\ORM\Storage\RelationTestCases;
 
 class DoctrineRelationTest extends RelationTestCases
 {
-	private $connection;
-
 	protected function onBeforeSetup()
 	{
 		$dataPath = realpath(__DIR__ . '/../..');
