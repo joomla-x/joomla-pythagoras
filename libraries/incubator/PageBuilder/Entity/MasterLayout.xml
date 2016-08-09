@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="master">
-
-    <storage>
-        <default table="masters"/>
-    </storage>
+<entity name="MasterLayout">
 
     <fields>
         <field name="id"
@@ -29,10 +25,10 @@
 
     <relations>
         <belongsTo name="template_id"
-                   entity="template"
+                   entity="Template"
         />
         <hasMany name="pages"
-                 entity="page"
+                 entity="Page"
                  reference="master_id"
         />
     </relations>

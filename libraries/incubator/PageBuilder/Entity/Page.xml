@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="page">
-
-    <storage>
-        <default table="pages"/>
-    </storage>
+<entity name="Page">
 
     <fields>
         <field name="id"
@@ -35,9 +31,9 @@
                    label="JFIELD_PARENT_LABEL"
                    description="JFIELD_PARENT_DESC"
         />
-        <belongsTo name="master_id" entity="master"/>
-        <hasMany name="children" entity="page" reference="parent_id"/>
-        <hasMany name="content" entity="page_content" reference="page_id"/>
+        <belongsTo name="master_id" entity="MasterLayout"/>
+        <hasMany name="children" entity="Page" reference="parent_id"/>
+        <hasMany name="content" entity="PageContent" reference="page_id"/>
     </relations>
 
 </entity>
