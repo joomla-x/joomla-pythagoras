@@ -16,14 +16,14 @@ use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface ParserInterface
 {
 	/**
 	 * Open the description of the entity
 	 *
-	 * @param   string $descriptionFile  The file with the entity description
+	 * @param   string $descriptionFile The file with the entity description
 	 *
 	 * @return mixed
 	 */

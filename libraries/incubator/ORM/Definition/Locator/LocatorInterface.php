@@ -13,7 +13,7 @@ namespace Joomla\ORM\Definition\Locator;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface LocatorInterface
 {

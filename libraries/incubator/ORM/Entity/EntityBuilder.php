@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Entity;
 
+use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
 use Joomla\ORM\Definition\Parser\Element;
@@ -16,21 +17,22 @@ use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Definition\Parser\HasMany;
 use Joomla\ORM\Definition\Parser\HasManyThrough;
 use Joomla\ORM\Definition\Parser\HasOne;
-use Joomla\ORM\Definition\Parser\JsonParser;
 use Joomla\ORM\Definition\Parser\XmlParser;
-use Joomla\ORM\Definition\Parser\YamlParser;
-use Joomla\ORM\Exception\FileNotFoundException;
-use Joomla\ORM\Finder\Operator;
-use Joomla\ORM\Repository\Repository;
-use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Event\AfterCreateDefinitionEvent;
+use Joomla\ORM\Exception\EntityNotDefinedException;
+use Joomla\ORM\Exception\EntityNotFoundException;
+use Joomla\ORM\Exception\FileNotFoundException;
+use Joomla\ORM\Operator;
+use Joomla\ORM\Repository\MappingRepository;
+use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\ORM\Service\RepositoryFactory;
 
 /**
  * Class EntityBuilder
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class EntityBuilder
 {
@@ -42,108 +44,82 @@ class EntityBuilder
 	/** @var  string  Prefix for language file keys */
 	private $prefix;
 
-	/** @var  EntityInterface  Entity under construction */
-	private $entity;
+	/** @var  EntityInterface[]  Entities */
+	private $entities;
+
+	/** @var  RepositoryFactory */
+	private $repositoryFactory;
 
 	/** @var  EntityReflector  Reflector to manipulate the entity */
 	private $reflector;
 
+	/** @var  array */
+	private $config = [];
+
+	/** @var array */
+	private $alias = [];
+
 	/**
 	 * Constructor
 	 *
-	 * @param   LocatorInterface $locator The XML description file locator
+	 * @param   LocatorInterface  $locator           The XML description file locator
+	 * @param   array             $config            The entity configurations
+	 * @param   RepositoryFactory $repositoryFactory The repository factory
 	 */
-	public function __construct(LocatorInterface $locator)
+	public function __construct(LocatorInterface $locator, array $config, RepositoryFactory $repositoryFactory)
 	{
-		$this->locator = $locator;
-	}
-
-	/**
-	 * Get a new instance of the entity.
-	 *
-	 * @param   string $entityName The name of the entity
-	 *
-	 * @return  EntityInterface  An empty entity
-	 */
-	public function create($entityName)
-	{
-		$entity          = new Entity;
-		$this->reflector = new EntityReflector($entity);
-
-		$this->reflector->setDefinition($this->parseDescription($this->locateDescription($entityName), $entityName));
-
-		return $entity;
+		$this->locator           = $locator;
+		$this->config            = $config;
+		$this->repositoryFactory = $repositoryFactory;
 	}
 
 	/**
 	 * Locate the description file
 	 *
-	 * @param   string $entityName The name of the entity
+	 * @param   string $entityClass The class of the entity
 	 *
 	 * @return  string  The definition file path
 	 */
-	private function locateDescription($entityName)
+	private function locateDescription($entityClass)
 	{
-		foreach (['.xml', '.json', '.yml', '.yaml'] as $extension)
+		if (!isset($this->config[$entityClass]))
 		{
-			$filename = $this->locator->findFile($entityName . $extension);
-
-			if (!is_null($filename))
-			{
-				return $filename;
-			}
+			throw new EntityNotDefinedException($entityClass);
 		}
 
-		throw new FileNotFoundException("Unable to locate definition file for entity '{$entityName}'");
+		$definitionFile = $this->config[$entityClass]['definition'];
+		$filename       = $this->locator->findFile($definitionFile);
+
+		if (!is_null($filename))
+		{
+			return $filename;
+		}
+
+		throw new FileNotFoundException("Unable to locate definition file '{$definitionFile}' for entity '{$entityClass}'");
 	}
 
 	/**
 	 * Parse the description file
 	 *
-	 * @param   string $filename   The definition file path
-	 * @param   string $entityName The name of the entity
+	 * @param   string $filename    The definition file path
+	 * @param   string $entityClass The class of the entity
 	 *
 	 * @return  EntityStructure  The parsed description
 	 */
-	private function parseDescription($filename, $entityName)
+	private function parseDescription($filename, $entityClass)
 	{
-		$extension = preg_replace('~^.*?\.([^.]+)$~', '\1', $filename);
-
-		switch ($extension)
-		{
-			case 'xml':
-				$parser = new XmlParser();
-				break;
-
-			case 'json':
-				$parser = new JsonParser();
-				break;
-
-			case 'yml':
-			case 'yaml':
-				$parser = new YamlParser();
-				break;
-
-			default:
-				throw new \RuntimeException("Unable to handle '.$extension' definition files.");
-				break;
-		}
+		$parser = new XmlParser();
 
 		$parser->open($filename);
 
 		$definition = $parser->parse([
-			'onBeforeEntity'        => [$this, 'prepareEntity'],
-			'onAfterField'          => [$this, 'handleField'],
-			'onAfterBelongsTo'      => [$this, 'handleBelongsTo'],
-			'onAfterHasOne'         => [$this, 'handleHasOne'],
-			'onAfterHasMany'        => [$this, 'handleHasMany'],
-			'onAfterHasManyThrough' => [$this, 'handleHasManyThrough'],
-			'onAfterStorage'        => [$this, 'handleStorage'],
+			'onBeforeEntity' => [$this, 'prepareEntity'],
+			'onAfterField'   => [$this, 'handleField'],
 		], $this->locator);
 
 		try
 		{
-			$this->getDispatcher()->dispatch(new AfterCreateDefinitionEvent($entityName, $definition, $this));
+			$this->getDispatcher()->dispatch(new AfterCreateDefinitionEvent($entityClass, $definition, $this));
 		}
 		catch (\UnexpectedValueException $e)
 		{
@@ -156,17 +132,21 @@ class EntityBuilder
 	/**
 	 * Parser callback for onBeforeEntity event
 	 *
+	 * @internal
+	 *
 	 * @param   array $attributes The element attributes
 	 *
 	 * @return  void
 	 */
 	public function prepareEntity($attributes)
 	{
-		$this->prefix = 'COM_' . $attributes['name'] . '_FIELD_';
+		$this->prefix = 'COM_' . strtoupper($attributes['name']) . '_FIELD_';
 	}
 
 	/**
 	 * Parser callback for onAfterField event
+	 *
+	 * @internal
 	 *
 	 * @param   Field $field The data structure
 	 *
@@ -210,214 +190,388 @@ class EntityBuilder
 	}
 
 	/**
-	 * Determine the basename of an id field
+	 * Cast array to entity
 	 *
-	 * @param   string $name The field name
+	 * @param   array  $matches     The records
+	 * @param   string $entityClass The entity name
 	 *
-	 * @return  string  The name without 'id' suffix
+	 * @return array
 	 */
-	private function getBasename($name)
+	public function castToEntity($matches, $entityClass)
 	{
-		return preg_replace('~^(.*?)_?id$~i', '\1', $name);
+		$entityRegistry = $this->repositoryFactory->getEntityRegistry();
+
+		$result = [];
+
+		$meta = $this->getMeta($entityClass);
+
+		$reflection = new \ReflectionClass($entityClass);
+
+		foreach ($matches as $match)
+		{
+			$entity = new $entityClass;
+
+			foreach (array_merge($meta->fields, $meta->relations['belongsTo']) as $key => $definition)
+			{
+				/** @var Element $definition */
+				$varName = $definition->propertyName($key);
+				$colName = $definition->columnName($key);
+
+				$value = isset($definition->default) ? $definition->default : null;
+
+				if (array_key_exists($colName, $match))
+				{
+					// @todo Apply validation according to definition
+					$value = $match[$colName];
+				}
+
+				if ($reflection->hasProperty($varName))
+				{
+					$property = $reflection->getProperty($varName);
+					$property->setAccessible(true);
+					$property->setValue($entity, $value);
+				}
+				else
+				{
+					/** @noinspection PhpVariableVariableInspection */
+					$entity->$varName = $value;
+				}
+			}
+
+			$entityRegistry->stashEntity($entity);
+			$this->resolveRelations($entity, $meta);
+			$entityRegistry->registerEntity($entity);
+
+			$result[] = $entity;
+
+			unset($entity);
+		}
+
+		return $result;
 	}
 
 	/**
-	 * Parser callback for onAfterBelongsTo event
+	 * Get the meta data for the entity type
 	 *
-	 * @param   BelongsTo        $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
+	 * @param   string $entityClass The entity name
 	 *
-	 * @return  void
+	 * @return \Joomla\ORM\Definition\Parser\Entity
 	 */
-	public function handleBelongsTo(BelongsTo $relation, LocatorInterface $locator)
+	public function getMeta($entityClass)
 	{
-		$basename = $this->getBasename($relation->name);
-
-		$field       = new Field(get_object_vars($relation));
-		$field->name = $basename . '_id';
-		$field->type = 'relationKey';
-
-		$this->reflector->addField($field);
-		$this->reflector->addHandler($basename, function () use ($relation, $locator)
-		{
-			$reference = $this->reflector->get($relation->name);
-
-			if (empty($reference))
-			{
-				return null;
-			}
-
-			$basename = $this->getBasename($relation->name);
-
-			// The record from {$relation->entity} with id={$field->value}
-			$repository = new Repository($relation->entity, new EntityBuilder($locator));
-			$entity     = $repository->findById($reference);
-
-			$this->reflector->addField(new Field([
-				'name'  => $basename,
-				'type'  => 'relationData',
-				'value' => $entity
-			]));
-
-			return $entity;
-		});
+		return $this->entities[$this->resolveAlias($entityClass)]->getDefinition();
 	}
 
 	/**
-	 * Parser callback for onAfterHasMany event
+	 * Gets a repository for an entity class
 	 *
-	 * @param   HasMany          $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
+	 * @param   string $entityClass The entity class
 	 *
-	 * @return  void
+	 * @return  RepositoryInterface
 	 */
-	public function handleHasMany(HasMany $relation, LocatorInterface $locator)
+	public function getRepository($entityClass)
 	{
-		$basename = $this->getBasename($relation->name);
-
-		$this->reflector->addHandler($basename, function () use ($relation, $locator)
-		{
-			$id = $this->reflector->getId();
-
-			if (empty($id))
-			{
-				return null;
-			}
-
-			$basename = $this->getBasename($relation->name);
-
-			// Records from {$relation->entity} with {$relation->reference}={$id}
-			$repository = new Repository($relation->entity, new EntityBuilder($locator));
-			$entities   = $repository->findAll()->with($relation->reference, Operator::EQUAL, $id)->getItems();
-			$this->reflector->addField(new Field([
-				'name'  => $basename,
-				'type'  => 'relationData',
-				'value' => $entities
-			]));
-
-			return $entities;
-		});
+		return $this->repositoryFactory->forEntity($this->resolveAlias($entityClass));
 	}
 
 	/**
-	 * Parser callback for onAfterHasOne event
+	 * Reduce relations
 	 *
-	 * @param   HasOne           $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
+	 * @param object $entity
 	 *
-	 * @return  void
+	 * @return array
+	 * @throws \Exception
 	 */
-	public function handleHasOne(HasOne $relation, LocatorInterface $locator)
+	public function reduce($entity)
 	{
-		$basename = $this->getBasename($relation->name);
+		$entityClass = get_class($entity);
+		$meta        = $this->getMeta($entityClass);
 
-		$this->reflector->addHandler($basename, function () use ($relation, $locator)
+		$reflection = new \ReflectionClass($entity);
+		$properties = [];
+
+		foreach ($meta->fields as $name => $field)
 		{
-			$id = $relation->id ? $relation->id : $this->reflector->getId();
+			$varName = $field->propertyName($field->name);
+			$colName = $field->columnName($field->name);
 
-			if (empty($id))
+			$value = null;
+
+			if ($reflection->hasProperty($varName))
 			{
-				return null;
+				$property = $reflection->getProperty($varName);
+				$property->setAccessible(true);
+				$value = $property->getValue($entity);
 			}
 
-			$basename = $this->getBasename($relation->name);
+			$properties[$colName] = $value;
+		}
 
-			// The record from {$relation->entity} with {$relation->reference}={$id}
-			$repository = new Repository($relation->entity, new EntityBuilder($locator));
-			$entity     = $repository->findOne()->with($relation->reference, Operator::EQUAL, $id)->getItem();
+		// Only belongsTo relations can have data in this entity
+		foreach ($meta->relations['belongsTo'] as $field => $relation)
+		{
+			/** @var BelongsTo $relation */
+			$colIdName  = $relation->colIdName();
+			$varIdName = $relation->varIdName();
 
-			$this->reflector->addField(new Field([
-				'name'  => $basename,
-				'type'  => 'relationData',
-				'value' => $entity
-			]));
+			$value  = null;
 
-			return $entity;
-		});
+			if (isset($entity->{$varIdName}))
+			{
+				$value = $entity->{$varIdName};
+			}
+			elseif ($reflection->hasProperty($varIdName))
+			{
+				$property = $reflection->getProperty($varIdName);
+				$property->setAccessible(true);
+				$value = $property->getValue($entity);
+			}
+
+			$properties[$colIdName] = $value;
+		}
+
+		return $properties;
 	}
 
 	/**
-	 * Parser callback for onAfterHasManyThrough event
+	 * Resolve relations
 	 *
-	 * @param   HasManyThrough   $relation The data structure
-	 * @param   LocatorInterface $locator  The XML description file locator
+	 * @param object $entity
 	 *
-	 * @return  void
+	 * @return void
 	 */
-	public function handleHasManyThrough(HasManyThrough $relation, LocatorInterface $locator)
+	public function resolve($entity)
 	{
-		$basename = $this->getBasename($relation->name);
-
-		$this->reflector->addHandler($basename, function () use ($relation, $locator)
-		{
-			$id = $this->reflector->getId();
-
-			if (empty($id))
-			{
-				return null;
-			}
-
-			$basename = $this->getBasename($relation->name);
-
-			// Records from {$relation->entity} with {$relation->reference} IN ids from {$relation->joinTable} with {$relation->joinRef}={$id}
-			$map     = new Repository($relation->joinTable, new EntityBuilder($locator));
-			$entries = $map->findAll()->with($relation->joinRef, Operator::EQUAL, $id)->getItems();
-
-			$repository = new Repository($relation->entity, $locator);
-			$entities   = $repository->findAll()->with($relation->reference, Operator::IN, $entries->getIds());
-
-			$this->reflector->addField(new Field([
-				'name'  => $basename,
-				'type'  => 'relationData',
-				'value' => $entities
-			]));
-
-			return $entities;
-		});
+		$entityClass = get_class($entity);
+		$meta        = $this->getMeta($entityClass);
+		$this->resolveRelations($entity, $meta);
 	}
 
-	public function handleStorage(Element $storage)
+	/**
+	 * @param $entity
+	 * @param $meta
+	 *
+	 * @throws \Exception
+	 */
+	private function resolveRelations($entity, $meta)
 	{
-		foreach ($storage->toArray() as $type => $info)
+		$reflection = new \ReflectionClass($entity);
+		$entityId   = $this->repositoryFactory->getIdAccessorRegistry()->getEntityId($entity);
+
+		$this->resolveBelongsTo($meta->relations['belongsTo'], $entity, $reflection);
+		$this->resolveHasOne($meta->relations['hasOne'], $entity, $entityId);
+		$this->resolveHasMany($meta->relations['hasMany'], $entity, $entityId);
+		$this->resolveHasManyThrough($meta->relations['hasManyThrough'], $entity, $entityId);
+	}
+
+	/**
+	 * @param $entityClass
+	 *
+	 * @return string
+	 */
+	private function readDefinition($entityClass)
+	{
+		if (!class_exists($entityClass))
 		{
-			$handler  = null;
-			$param1   = null;
-			$param2   = null;
+			$alias = $entityClass;
 
-			switch ($type)
+			foreach ($this->config as $class => $config)
 			{
-				case 'default':
-					$handler = '\Joomla\ORM\Storage\DefaultProvider';
-					$param1 = $info[0]->table;
-					break;
+				if (!is_array($config))
+				{
+					continue;
+				}
 
-				case 'api':
-					$handler = $info[0]->handler;
-					$param1 = $info[0]->{'base-url'};
+				if ($alias == basename($config['definition'], '.xml'))
+				{
+					$entityClass         = $class;
+					$this->alias[$alias] = $entityClass;
 					break;
+				}
+			}
+		}
 
-				case 'special':
-					$parts = explode('://', $info[0]->dsn);
-					switch ($parts[0])
-					{
-						case 'csv':
-							$handler = '\Joomla\ORM\Storage\CsvProvider';
-							$param1   = $parts[1];
-							break;
-						default:
-							$handler = '\Joomla\ORM\Storage\Doctrine\DoctrineProvider';
-							$param1   = $info[0]->dsn;
-							$param2   = $info[0]->table;
-							break;
-					}
-					break;
+		$entity          = new Entity;
+		$this->reflector = new EntityReflector($entity);
+		$filename        = $this->locateDescription($entityClass);
+		$definition      = $this->parseDescription($filename, $entityClass);
+		$this->reflector->setDefinition($definition);
+		$this->entities[$entityClass] = $entity;
 
-				default:
-					throw new \Exception("Unknown storage type ''");
-					break;
+		$this->alias[$definition->name] = $entityClass;
+
+		$this->setIdAccessors($entityClass, $entity->key());
+
+		return $entityClass;
+	}
+
+	/**
+	 * @param HasManyThrough[] $relations
+	 * @param object           $entity
+	 * @param int|string       $entityId
+	 */
+	private function resolveHasManyThrough($relations, $entity, $entityId)
+	{
+		foreach ($relations as $field => $relation)
+		{
+			/** @var HasManyThrough $relation */
+			$varObjName  = $relation->varObjectName();
+			$colRefName  = $relation->colReferenceName();
+
+			// @todo Use entity name instead of uppercase table
+			$mapClass = $this->resolveAlias(ucfirst($relation->joinTable));
+			$mapRepo  = $this->getRepository($mapClass);
+			$mapRepo->restrictTo($colRefName, Operator::EQUAL, $entityId);
+
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
+
+			$entity->{$varObjName} = new MappingRepository($repository, $mapRepo, $relation, $this->repositoryFactory->getUnitOfWork());
+		}
+	}
+
+	/**
+	 * @param HasMany[]  $relations
+	 * @param object     $entity
+	 * @param int|string $entityId
+	 */
+	private function resolveHasMany($relations, $entity, $entityId)
+	{
+		foreach ($relations as $field => $relation)
+		{
+			/** @var HasMany $relation */
+			$varObjName = $relation->varObjectName();
+			$colRefName = $relation->colReferenceName();
+
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
+			$repository->restrictTo($colRefName, Operator::EQUAL, $entityId);
+
+			$entity->{$varObjName} = $repository;
+		}
+	}
+
+	/**
+	 * @param HasOne[]   $relations
+	 * @param object     $entity
+	 * @param int|string $entityId
+	 */
+	private function resolveHasOne($relations, $entity, $entityId)
+	{
+		$entityRegistry = $this->repositoryFactory->getEntityRegistry();
+
+		foreach ($relations as $field => $relation)
+		{
+			/** @var HasOne $relation */
+			$varObjName = $relation->varObjectName();
+			$colRefName = $relation->colReferenceName();
+
+			$entityClass = $this->resolveAlias($relation->entity);
+
+			$object = $entityRegistry->getEntity($entityClass, $entityId);
+
+			if (empty($object))
+			{
+				$repository = $this->getRepository($entityClass);
+
+				try
+				{
+					$object = $repository
+						->findOne()
+						->with($colRefName, Operator::EQUAL, $entityId)
+						->getItem();
+				}
+				catch (EntityNotFoundException $e)
+				{
+					$object = null;
+				}
 			}
 
-			$this->reflector->setStorageProvider(new $handler($param1, $this, $param2));
+			$entity->{$varObjName} = $object;
+		}
+	}
+
+	/**
+	 * @param BelongsTo[]      $relations
+	 * @param object           $entity
+	 * @param \ReflectionClass $reflection
+	 */
+	private function resolveBelongsTo($relations, $entity, $reflection)
+	{
+		foreach ($relations as $field => $relation)
+		{
+			/** @var BelongsTo $relation */
+			$varIdName  = $relation->varIdName();
+			$varObjName = $relation->varObjectName();
+
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
+
+			$property = $reflection->getProperty($varIdName);
+			$property->setAccessible(true);
+			$objectId = $property->getValue($entity);
+
+			try
+			{
+				$object = $repository->getById($objectId);
+			}
+			catch (EntityNotFoundException $e)
+			{
+				$object = null;
+			}
+
+			$entity->{$varObjName} = $object;
+		}
+	}
+
+	public function resolveAlias($alias)
+	{
+		while (isset($this->alias[$alias]))
+		{
+			$alias = $this->alias[$alias];
+		}
+
+		if (!isset($this->entities[$alias]))
+		{
+			$alias = $this->readDefinition($alias);
+		}
+
+		return $alias;
+	}
+
+	/**
+	 * @param $entityClass
+	 * @param $key
+	 */
+	private function setIdAccessors($entityClass, $key)
+	{
+		$idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
+
+		if (is_array($key))
+		{
+			$getter = function ($entity) use ($key) {
+				$id = [];
+				foreach ($key as $property)
+				{
+					$id[$property] = $entity->{$property};
+				}
+
+				return $id;
+			};
+			$setter = function ($entity, $id) use ($key) {
+				foreach ($key as $property)
+				{
+					$entity->{$property} = $id[$property];
+				}
+			};
+			$idAccessorRegistry->registerIdAccessors($entityClass, $getter, $setter);
+
+			return;
+		}
+
+		if (!empty($key))
+		{
+			$idAccessorRegistry->registerReflectionIdAccessors($entityClass, $key);
 		}
 	}
 }

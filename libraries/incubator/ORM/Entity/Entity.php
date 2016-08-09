@@ -11,21 +11,17 @@ namespace Joomla\ORM\Entity;
 use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Exception\PropertyNotFoundException;
 use Joomla\ORM\Exception\WriteOnImmutableException;
-use Joomla\ORM\Storage\StorageProviderInterface;
-use Joomla\ORM\Status;
+use Joomla\String\Normalise;
 
 /**
  * Class Entity
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Entity implements EntityInterface
 {
-	/** @var  int  The status, one of the \Joomla\ORM\Status constants */
-	private $status = Status::CREATED;
-
 	/** @var  bool  Flag whether this entity is immutable */
 	private $immutable = false;
 
@@ -38,11 +34,8 @@ class Entity implements EntityInterface
 	/** @var  Callable[]  Relation resolvers */
 	private $relationHandlers;
 
-	/** @var  string  The name of the id field */
+	/** @var  string|array  The name(s) of the id field */
 	private $key;
-
-	/** @var  StorageProviderInterface  The storage provider */
-	private $storage;
 
 	/**
 	 * Get the type of the entity.
@@ -55,27 +48,32 @@ class Entity implements EntityInterface
 	}
 
 	/**
-	 * Get the status of the entity.
-	 *
-	 * @return  int  The status, one of the \Joomla\ORM\Status constants
-	 *
-	 * @see     \Joomla\ORM\Status
-	 */
-	public function status()
-	{
-		return $this->status;
-	}
-
-	/**
 	 * Get the field for the primary key.
 	 *
 	 * @return  string  The name of the field
 	 */
 	public function key()
 	{
-		if (!$this->key && $this->has('id'))
+		if (empty($this->key) && !empty($this->definition->primary))
 		{
-			return 'id';
+			$keys = array_values(
+				array_filter(
+					preg_split('~[\s,]+~', $this->definition->primary)
+				)
+			);
+			$keys = array_map(
+				function ($key) {
+					return Normalise::toVariable($key);
+				},
+				$keys
+			);
+
+			$this->key = count($keys) > 1 ? $keys : array_shift($keys);
+		}
+
+		if (empty($this->key) && $this->has('id'))
+		{
+			$this->key = 'id';
 		}
 
 		return $this->key;
@@ -175,13 +173,7 @@ class Entity implements EntityInterface
 			throw new PropertyNotFoundException("Unknown property {$property}");
 		}
 
-		$oldValue                       = $this->$property;
 		$this->fields[$property]->value = $value;
-
-		if ($oldValue !== $value)
-		{
-			$this->status = Status::CHANGED;
-		}
 	}
 
 	/**
@@ -212,16 +204,5 @@ class Entity implements EntityInterface
 	public function getDefinition()
 	{
 		return $this->definition;
-	}
-
-	/**
-	 * Get the storage provider
-	 *
-	 * @return  StorageProviderInterface  The storage provider
-	 *
-	 */
-	public function getStorage()
-	{
-		return $this->storage;
 	}
 }

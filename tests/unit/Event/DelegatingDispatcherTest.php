@@ -25,7 +25,7 @@ class DelegatingDispatcherTest extends \PHPUnit_Framework_TestCase
 		$event = 'onTest';
 
 		/** @var Dispatcher|\PHPUnit_Framework_MockObject_MockObject $mockedDispatcher */
-		$mockedDispatcher = $this->getMock(Dispatcher::class);
+		$mockedDispatcher = $this->createMock(Dispatcher::class);
 		$mockedDispatcher->expects($this->once())
 		                 ->method('dispatch')
 		                 ->with(new Event($event));

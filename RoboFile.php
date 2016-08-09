@@ -6,6 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\Table;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -133,7 +135,7 @@ class RoboFile extends \Robo\Tasks
 	private function taskStyle($bin)
 	{
 		return $this->taskExec($bin)
-			        ->arg('--standard=' . $this->vendorDir . '/greencape/coding-standards/src/Joomla')
+		            ->arg('--standard=' . $this->vendorDir . '/greencape/coding-standards/src/Joomla')
 		            ->arg('--ignore=' . implode(',', $this->ignoredDirs))
 		            ->arg(__DIR__);
 	}
@@ -229,7 +231,7 @@ class RoboFile extends \Robo\Tasks
 		$this->initReports();
 		$this->taskExec($this->binDir . '/phpmetrics')
 		     ->arg('--config="' . $this->config['toolcfg'] . '/phpmetrics.yml"')
-			 ->arg('.')
+		     ->arg('.')
 		     ->run();
 	}
 
@@ -263,6 +265,7 @@ class RoboFile extends \Robo\Tasks
 	])
 	{
 		$this->initReports();
+		$this->createTestdata();
 
 		$tempConfigFile = $this->buildConfig($this->config['toolcfg'], $option['coverage']);
 
@@ -376,5 +379,124 @@ class RoboFile extends \Robo\Tasks
 		{
 			$this->_mkdir($this->config['reports']);
 		}
+	}
+
+	/**
+	 * Creates the sqlite unit test database
+	 */
+	public function createSqlData()
+	{
+		$dataDir = __DIR__ . '/tests/unit/ORM/data';
+		$database   = $dataDir . '/original/sqlite.test.db';
+
+		$this->say('Creating test database in ' . $database);
+
+		if (file_exists($database))
+		{
+			$this->say('Removing old test database');
+			$this->_remove($database);
+		}
+
+		$connection = DriverManager::getConnection(['url' => 'sqlite:///' . $database]);
+
+		$files = glob($dataDir . '/original/*.csv');
+
+		foreach ($files as $file)
+		{
+			$tableName = basename($file, '.csv');
+			$table     = new Table($tableName);
+			$records   = $this->loadData($file);
+			$columns   = array_keys(reset($records));
+
+			foreach ($columns as $column)
+			{
+				$type = preg_match('~\bid$~i', $column) ? 'integer' : 'string';
+				$table->addColumn(
+					$column,
+					$type,
+					[
+						'Notnull' => false,
+					]
+				);
+			}
+
+			if ($table->hasColumn('id'))
+			{
+				$table->setPrimaryKey(['id']);
+			}
+
+			$this->say('Creating table ' . $tableName);
+			$connection->getSchemaManager()->createTable($table);
+
+			$this->say('Adding ' . count($records) . ' records');
+			foreach ($records as $record)
+			{
+				$connection->insert($tableName, $record);
+			}
+		}
+	}
+
+	/**
+	 * Creates the unit test database
+	 */
+	public function createTestdata()
+	{
+		$dataDir  = __DIR__ . '/tests/unit/ORM/data';
+		$database = 'sqlite.test.db';
+
+		$originalDatabase = $dataDir . '/original/' . $database;
+		$workingDatabase = $dataDir . '/' . $database;
+
+		if (!file_exists($originalDatabase))
+		{
+			$this->createSqlData();
+		}
+
+		$this->say('Creating test database in ' . $database);
+
+		if (file_exists($workingDatabase))
+		{
+			#$this->_remove($workingDatabase);
+		}
+
+		$this->_copy($originalDatabase, $workingDatabase);
+
+		$files = glob($dataDir . '/original/*.csv');
+
+		foreach ($files as $file)
+		{
+			$csvFilename = $dataDir . '/' . basename($file);
+			$this->_remove($csvFilename);
+			$this->_copy($file, $csvFilename);
+		}
+	}
+
+	/**
+	 * Load the data from the file
+	 *
+	 * @return  array
+	 */
+	private function loadData($dataFile)
+	{
+		$fh   = fopen($dataFile, 'r');
+		$keys = fgetcsv($fh);
+
+		$rows = [];
+
+		while (!feof($fh))
+		{
+			$row = fgetcsv($fh);
+
+			if ($row === false)
+			{
+				break;
+			}
+
+			$rows[] = array_combine($keys, $row);
+		}
+
+		fclose($fh);
+
+		return $rows;
 	}
 }

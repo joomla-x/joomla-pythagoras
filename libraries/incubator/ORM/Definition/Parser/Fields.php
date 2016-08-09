@@ -13,7 +13,7 @@ namespace Joomla\ORM\Definition\Parser;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Fields extends Element
 {

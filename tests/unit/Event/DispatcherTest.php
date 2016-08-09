@@ -164,11 +164,11 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		               ->addEvent($event2)
 		               ->addEvent($event3);
 
-		$expected = array(
+		$expected = [
 			'onBeforeTest' => $event1,
 			'onTest'       => $event2,
 			'onAfterTest'  => $event3
-		);
+		];
 
 		$this->assertSame($expected, $this->instance->getEvents());
 	}
@@ -237,66 +237,66 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		$listener2 = new SomethingListener;
 		$listener3 = new SomethingListener;
 
-		$this->instance->addListener('onBeforeSomething', array($listener1, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener1, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener1, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener2, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener2, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener2, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener3, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener3, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener3, 'onAfterSomething'));
+		$this->instance->addListener('onBeforeSomething', [$listener1, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener1, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener1, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener2, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener2, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener2, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener3, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener3, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener3, 'onAfterSomething']);
 
-		$this->assertTrue($this->instance->hasListener(array($listener1, 'onBeforeSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener1, 'onSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener1, 'onAfterSomething')));
+		$this->assertTrue($this->instance->hasListener([$listener1, 'onBeforeSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener1, 'onSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener1, 'onAfterSomething']));
 
-		$this->assertTrue($this->instance->hasListener(array($listener2, 'onBeforeSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener2, 'onSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener2, 'onAfterSomething')));
+		$this->assertTrue($this->instance->hasListener([$listener2, 'onBeforeSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener2, 'onSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener2, 'onAfterSomething']));
 
-		$this->assertTrue($this->instance->hasListener(array($listener3, 'onBeforeSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener3, 'onSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener3, 'onAfterSomething')));
+		$this->assertTrue($this->instance->hasListener([$listener3, 'onBeforeSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener3, 'onSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener3, 'onAfterSomething']));
 
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onBeforeSomething', array(
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onBeforeSomething', [
 			$listener1,
 			'onBeforeSomething'
-		)));
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onSomething', array(
+		]));
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onSomething', [
 			$listener1,
 			'onSomething'
-		)));
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onAfterSomething', array(
+		]));
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onAfterSomething', [
 			$listener1,
 			'onAfterSomething'
-		)));
+		]));
 
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onBeforeSomething', array(
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onBeforeSomething', [
 			$listener2,
 			'onBeforeSomething'
-		)));
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onSomething', array(
+		]));
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onSomething', [
 			$listener2,
 			'onSomething'
-		)));
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onAfterSomething', array(
+		]));
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onAfterSomething', [
 			$listener2,
 			'onAfterSomething'
-		)));
+		]));
 
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onBeforeSomething', array(
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onBeforeSomething', [
 			$listener3,
 			'onBeforeSomething'
-		)));
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onSomething', array(
+		]));
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onSomething', [
 			$listener3,
 			'onSomething'
-		)));
-		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onAfterSomething', array(
+		]));
+		$this->assertEquals(Priority::NORMAL, $this->instance->getListenerPriority('onAfterSomething', [
 			$listener3,
 			'onAfterSomething'
-		)));
+		]));
 	}
 
 	/**
@@ -311,26 +311,26 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	{
 		$listener = new SomethingListener;
 
-		$this->instance->addListener('onBeforeSomething', array($listener, 'onBeforeSomething'), Priority::MIN)
-		               ->addListener('onSomething', array($listener, 'onSomething'), Priority::ABOVE_NORMAL)
-		               ->addListener('onAfterSomething', array($listener, 'onAfterSomething'), Priority::MAX);
+		$this->instance->addListener('onBeforeSomething', [$listener, 'onBeforeSomething'], Priority::MIN)
+		               ->addListener('onSomething', [$listener, 'onSomething'], Priority::ABOVE_NORMAL)
+		               ->addListener('onAfterSomething', [$listener, 'onAfterSomething'], Priority::MAX);
 
-		$this->assertTrue($this->instance->hasListener(array($listener, 'onBeforeSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener, 'onSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener, 'onAfterSomething')));
+		$this->assertTrue($this->instance->hasListener([$listener, 'onBeforeSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener, 'onSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener, 'onAfterSomething']));
 
-		$this->assertEquals(Priority::MIN, $this->instance->getListenerPriority('onBeforeSomething', array(
+		$this->assertEquals(Priority::MIN, $this->instance->getListenerPriority('onBeforeSomething', [
 			$listener,
 			'onBeforeSomething'
-		)));
-		$this->assertEquals(Priority::ABOVE_NORMAL, $this->instance->getListenerPriority('onSomething', array(
+		]));
+		$this->assertEquals(Priority::ABOVE_NORMAL, $this->instance->getListenerPriority('onSomething', [
 			$listener,
 			'onSomething'
-		)));
-		$this->assertEquals(Priority::MAX, $this->instance->getListenerPriority('onAfterSomething', array(
+		]));
+		$this->assertEquals(Priority::MAX, $this->instance->getListenerPriority('onAfterSomething', [
 			$listener,
 			'onAfterSomething'
-		)));
+		]));
 	}
 
 	/**
@@ -368,13 +368,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	public function testGetListenerPriority()
 	{
 		$listener = new SomethingListener;
-		$this->instance->addListener('onSomething', array($listener, 'onSomething'));
+		$this->instance->addListener('onSomething', [$listener, 'onSomething']);
 
 		$this->assertEquals(
 			Priority::NORMAL,
 			$this->instance->getListenerPriority(
 				'onSomething',
-				array($listener, 'onSomething')
+				[$listener, 'onSomething']
 			)
 		);
 	}
@@ -396,33 +396,33 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		$listener2 = new SomethingListener;
 		$listener3 = new SomethingListener;
 
-		$this->instance->addListener('onBeforeSomething', array($listener1, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener1, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener1, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener2, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener2, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener2, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener3, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener3, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener3, 'onAfterSomething'));
+		$this->instance->addListener('onBeforeSomething', [$listener1, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener1, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener1, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener2, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener2, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener2, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener3, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener3, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener3, 'onAfterSomething']);
 
 		$onBeforeSomethingListeners = $this->instance->getListeners('onBeforeSomething');
 
-		$this->assertSame(array($listener1, 'onBeforeSomething'), $onBeforeSomethingListeners[0]);
-		$this->assertSame(array($listener2, 'onBeforeSomething'), $onBeforeSomethingListeners[1]);
-		$this->assertSame(array($listener3, 'onBeforeSomething'), $onBeforeSomethingListeners[2]);
+		$this->assertSame([$listener1, 'onBeforeSomething'], $onBeforeSomethingListeners[0]);
+		$this->assertSame([$listener2, 'onBeforeSomething'], $onBeforeSomethingListeners[1]);
+		$this->assertSame([$listener3, 'onBeforeSomething'], $onBeforeSomethingListeners[2]);
 
 		$onSomethingListeners = $this->instance->getListeners('onSomething');
 
-		$this->assertSame(array($listener1, 'onSomething'), $onSomethingListeners[0]);
-		$this->assertSame(array($listener2, 'onSomething'), $onSomethingListeners[1]);
-		$this->assertSame(array($listener3, 'onSomething'), $onSomethingListeners[2]);
+		$this->assertSame([$listener1, 'onSomething'], $onSomethingListeners[0]);
+		$this->assertSame([$listener2, 'onSomething'], $onSomethingListeners[1]);
+		$this->assertSame([$listener3, 'onSomething'], $onSomethingListeners[2]);
 
 		$onAfterSomethingListeners = $this->instance->getListeners('onAfterSomething');
 
-		$this->assertSame(array($listener1, 'onAfterSomething'), $onAfterSomethingListeners[0]);
-		$this->assertSame(array($listener2, 'onAfterSomething'), $onAfterSomethingListeners[1]);
-		$this->assertSame(array($listener3, 'onAfterSomething'), $onAfterSomethingListeners[2]);
+		$this->assertSame([$listener1, 'onAfterSomething'], $onAfterSomethingListeners[0]);
+		$this->assertSame([$listener2, 'onAfterSomething'], $onAfterSomethingListeners[1]);
+		$this->assertSame([$listener3, 'onAfterSomething'], $onAfterSomethingListeners[2]);
 	}
 
 	/**
@@ -436,8 +436,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	public function testHasListener()
 	{
 		$listener = new SomethingListener;
-		$this->instance->addListener('onSomething', array($listener, 'onSomething'));
-		$this->assertTrue($this->instance->hasListener(array($listener, 'onSomething'), 'onSomething'));
+		$this->instance->addListener('onSomething', [$listener, 'onSomething']);
+		$this->assertTrue($this->instance->hasListener([$listener, 'onSomething'], 'onSomething'));
 	}
 
 	/**
@@ -455,16 +455,16 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		$listener2 = new SomethingListener;
 		$listener3 = new SomethingListener;
 
-		$this->instance->addListener('onBeforeSomething', array($listener1, 'onBeforeSomething'))
-		               ->addListener('onBeforeSomething', array($listener2, 'onBeforeSomething'))
-		               ->addListener('onBeforeSomething', array($listener3, 'onBeforeSomething'));
+		$this->instance->addListener('onBeforeSomething', [$listener1, 'onBeforeSomething'])
+		               ->addListener('onBeforeSomething', [$listener2, 'onBeforeSomething'])
+		               ->addListener('onBeforeSomething', [$listener3, 'onBeforeSomething']);
 
 		// Remove the listener from a specific event.
-		$this->instance->removeListener('onBeforeSomething', array($listener1, 'onBeforeSomething'));
+		$this->instance->removeListener('onBeforeSomething', [$listener1, 'onBeforeSomething']);
 
-		$this->assertFalse($this->instance->hasListener(array($listener1, 'onBeforeSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener2, 'onBeforeSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener3, 'onBeforeSomething')));
+		$this->assertFalse($this->instance->hasListener([$listener1, 'onBeforeSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener2, 'onBeforeSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener3, 'onBeforeSomething']));
 	}
 
 	/**
@@ -482,43 +482,43 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		$listener2 = new SomethingListener;
 		$listener3 = new SomethingListener;
 
-		$this->instance->addListener('onBeforeSomething', array($listener1, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener1, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener1, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener2, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener2, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener2, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener3, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener3, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener3, 'onAfterSomething'));
+		$this->instance->addListener('onBeforeSomething', [$listener1, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener1, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener1, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener2, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener2, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener2, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener3, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener3, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener3, 'onAfterSomething']);
 
 		// Test without specified event.
 		$this->instance->clearListeners();
 
-		$this->assertFalse($this->instance->hasListener(array($listener1, 'onBeforeSomething')));
-		$this->assertFalse($this->instance->hasListener(array($listener2, 'onSomething')));
-		$this->assertFalse($this->instance->hasListener(array($listener3, 'onAfterSomething')));
+		$this->assertFalse($this->instance->hasListener([$listener1, 'onBeforeSomething']));
+		$this->assertFalse($this->instance->hasListener([$listener2, 'onSomething']));
+		$this->assertFalse($this->instance->hasListener([$listener3, 'onAfterSomething']));
 
 		// Test with an event specified.
 
-		$this->instance->addListener('onBeforeSomething', array($listener1, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener1, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener1, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener2, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener2, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener2, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener3, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener3, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener3, 'onAfterSomething'));
+		$this->instance->addListener('onBeforeSomething', [$listener1, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener1, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener1, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener2, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener2, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener2, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener3, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener3, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener3, 'onAfterSomething']);
 
 		$this->instance->clearListeners('onSomething');
 
-		$this->assertTrue($this->instance->hasListener(array($listener1, 'onBeforeSomething')));
-		$this->assertFalse($this->instance->hasListener(array($listener2, 'onSomething')));
-		$this->assertTrue($this->instance->hasListener(array($listener3, 'onAfterSomething')));
+		$this->assertTrue($this->instance->hasListener([$listener1, 'onBeforeSomething']));
+		$this->assertFalse($this->instance->hasListener([$listener2, 'onSomething']));
+		$this->assertTrue($this->instance->hasListener([$listener3, 'onAfterSomething']));
 
-		$this->assertFalse($this->instance->hasListener(array($listener1, 'onSomething')));
-		$this->assertFalse($this->instance->hasListener(array($listener3, 'onSomething')));
+		$this->assertFalse($this->instance->hasListener([$listener1, 'onSomething']));
+		$this->assertFalse($this->instance->hasListener([$listener3, 'onSomething']));
 	}
 
 	/**
@@ -538,15 +538,15 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		$listener2 = new SomethingListener;
 		$listener3 = new SomethingListener;
 
-		$this->instance->addListener('onBeforeSomething', array($listener1, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener1, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener1, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener2, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener2, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener2, 'onAfterSomething'))
-		               ->addListener('onBeforeSomething', array($listener3, 'onBeforeSomething'))
-		               ->addListener('onSomething', array($listener3, 'onSomething'))
-		               ->addListener('onAfterSomething', array($listener3, 'onAfterSomething'));
+		$this->instance->addListener('onBeforeSomething', [$listener1, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener1, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener1, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener2, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener2, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener2, 'onAfterSomething'])
+		               ->addListener('onBeforeSomething', [$listener3, 'onBeforeSomething'])
+		               ->addListener('onSomething', [$listener3, 'onSomething'])
+		               ->addListener('onAfterSomething', [$listener3, 'onAfterSomething']);
 
 		$this->assertEquals(3, $this->instance->countListeners('onSomething'));
 	}
@@ -596,9 +596,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 			$event->setArgument('listeners', $listeners);
 		};
 
-		$this->instance->addListener('onSomething', array($first, 'onSomething'))
-		               ->addListener('onSomething', array($second, 'onSomething'))
-		               ->addListener('onSomething', array($third, 'onSomething'))
+		$this->instance->addListener('onSomething', [$first, 'onSomething'])
+		               ->addListener('onSomething', [$second, 'onSomething'])
+		               ->addListener('onSomething', [$third, 'onSomething'])
 		               ->addListener('onSomething', $fourth, Priority::NORMAL)
 		               ->addListener('onSomething', $fifth, Priority::NORMAL);
 
@@ -610,7 +610,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(
 			$listeners,
-			array('first', 'second', 'third', 'fourth', 'fifth')
+			['first', 'second', 'third', 'fourth', 'fifth']
 		);
 	}
 
@@ -644,9 +644,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
 		$this->instance->addListener('onSomething', $fourth, Priority::BELOW_NORMAL)
 		               ->addListener('onSomething', $fifth, Priority::BELOW_NORMAL)
-		               ->addListener('onSomething', array($first, 'onSomething'), Priority::HIGH)
-		               ->addListener('onSomething', array($second, 'onSomething'), Priority::HIGH)
-		               ->addListener('onSomething', array($third, 'onSomething'), Priority::ABOVE_NORMAL);
+		               ->addListener('onSomething', [$first, 'onSomething'], Priority::HIGH)
+		               ->addListener('onSomething', [$second, 'onSomething'], Priority::HIGH)
+		               ->addListener('onSomething', [$third, 'onSomething'], Priority::ABOVE_NORMAL);
 
 		// Inspect the event arguments to know the order of the listeners.
 		/** @var $event Event */
@@ -656,7 +656,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(
 			$listeners,
-			array('first', 'second', 'third', 'fourth', 'fifth')
+			['first', 'second', 'third', 'fourth', 'fifth']
 		);
 	}
 
@@ -679,10 +679,10 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 			$event->stop();
 		};
 
-		$this->instance->addListener('onSomething', array($first, 'onSomething'))
-		               ->addListener('onSomething', array($second, 'onSomething'))
+		$this->instance->addListener('onSomething', [$first, 'onSomething'])
+		               ->addListener('onSomething', [$second, 'onSomething'])
 		               ->addListener('onSomething', $stopper, Priority::NORMAL)
-		               ->addListener('onSomething', array($third, 'onSomething'));
+		               ->addListener('onSomething', [$third, 'onSomething']);
 
 		/** @var $event Event */
 		$event = $this->instance->triggerEvent('onSomething');
@@ -692,7 +692,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		// The third listener was not called because the stopper stopped the event.
 		$this->assertEquals(
 			$listeners,
-			array('first', 'second')
+			['first', 'second']
 		);
 	}
 
@@ -708,13 +708,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	{
 		$event = new Event('onSomething');
 
-		$mockedListener = $this->getMock('Joomla\Event\Test\Stubs\SomethingListener', array('onSomething'));
+		$mockedListener = $this->createMock(SomethingListener::class);
 		$mockedListener->expects($this->once())
 		               ->method('onSomething')
 		               ->with($event);
 
 		$this->instance->addEvent($event);
-		$this->instance->addListener('onSomething', array($mockedListener, 'onSomething'));
+		$this->instance->addListener('onSomething', [$mockedListener, 'onSomething']);
 
 		$this->instance->triggerEvent('onSomething');
 	}

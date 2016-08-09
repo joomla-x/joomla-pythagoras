@@ -34,7 +34,7 @@ class DocbookRenderer extends Renderer
 	 */
 	public function visitHeadline(Headline $headline)
 	{
-		// TODO: Implement visitHeadline() method.
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 
 		return 0;
 	}
@@ -48,7 +48,7 @@ class DocbookRenderer extends Renderer
 	 */
 	public function visitCompound(Compound $compound)
 	{
-		// TODO: Implement visitCompound() method.
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 
 		return 0;
 	}
@@ -62,7 +62,7 @@ class DocbookRenderer extends Renderer
 	 */
 	public function visitAttribution(Attribution $attribution)
 	{
-		// TODO: Implement visitAttribution() method.
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 
 		return 0;
 	}
@@ -76,7 +76,7 @@ class DocbookRenderer extends Renderer
 	 */
 	public function visitParagraph(Paragraph $paragraph)
 	{
-		// TODO: Implement visitParagraph() method.
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 
 		return 0;
 	}

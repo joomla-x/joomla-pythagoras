@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="Tag">
+
+    <fields>
+        <field name="id" type="id"/>
+        <field name="tag" type="text" default=""/>
+        <field name="description" type="text" default=""/>
+    </fields>
+
+    <relations>
+        <hasManyThrough
+            name="masters"
+            entity="Master"
+            reference="tag_id"
+            joinTable="map"
+            joinRef="master_id"
+        />
+    </relations>
+
+</entity>

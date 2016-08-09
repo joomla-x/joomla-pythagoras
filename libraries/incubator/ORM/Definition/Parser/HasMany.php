@@ -13,8 +13,27 @@ namespace Joomla\ORM\Definition\Parser;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class HasMany extends Relation
 {
+	/**
+	 * Gets the property name for the entity
+	 *
+	 * @return  string
+	 */
+	public function varObjectName()
+	{
+		return $this->propertyName($this->name);
+	}
+
+	/**
+	 * Gets the column name for the reference
+	 *
+	 * @return  string
+	 */
+	public function colReferenceName()
+	{
+		return $this->columnName($this->reference);
+	}
 }

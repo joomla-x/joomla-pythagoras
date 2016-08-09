@@ -13,8 +13,8 @@ namespace Joomla\ORM\Exception;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
-class PropertyNotFoundException extends \InvalidArgumentException
+class PropertyNotFoundException extends OrmException
 {
 }

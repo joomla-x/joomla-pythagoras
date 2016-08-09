@@ -13,7 +13,7 @@ namespace Joomla\ORM\Definition\Parser;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Field extends Element
 {
@@ -31,6 +31,18 @@ class Field extends Element
 
 	/** @var  mixed  The value of the field */
 	public $value;
+
+	/** @var  string  The label */
+	public $label;
+
+	/** @var  string  The description */
+	public $description;
+
+	/** @var  string  The hint */
+	public $hint;
+
+	/** @var  mixed  The default value */
+	public $default;
 
 	/**
 	 * Set the validation rules

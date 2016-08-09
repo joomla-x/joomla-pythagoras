@@ -4,7 +4,6 @@ sudo: false
 language: php
 
 php:
-  - 5.5
   - 5.6
   - 7.0
   - hhvm
@@ -19,25 +18,10 @@ services:
   - redis-server
 
 before_script:
-  # Make sure all dev dependencies are installed
   - composer install
-  # Set up databases for testing
-  # - mysql -e 'create database joomla_ut;'
-  # - mysql joomla_ut < tests/unit/schema/mysql.sql
-  # - psql -c 'create database joomla_ut;' -U postgres
-  # - psql -d joomla_ut -a -f tests/unit/schema/postgresql.sql
-  # Set up Apache
-  # - ./build/travis/php-apache.sh
-  # Enable additional PHP extensions
-  - if [ $TRAVIS_PHP_VERSION == "5.5" ] || [ $TRAVIS_PHP_VERSION == "5.6" ]; then phpenv config-add build/config/travis/phpenv/memcached.ini; fi
-  # PHP 5.5+ use APCu
-  # - if [ $TRAVIS_PHP_VERSION == "5.5" ] || [ $TRAVIS_PHP_VERSION == "5.6" ]; then printf "\n" | pecl install apcu-beta; fi
-  - if [ $TRAVIS_PHP_VERSION == "5.5" ] || [ $TRAVIS_PHP_VERSION == "5.6" ]; then phpenv config-add build/config/travis/phpenv/redis.ini; fi
+  - if [ $TRAVIS_PHP_VERSION == "5.6" ]; then phpenv config-add build/config/travis/phpenv/memcached.ini; fi
+  - if [ $TRAVIS_PHP_VERSION == "5.6" ]; then phpenv config-add build/config/travis/phpenv/redis.ini; fi
 
 script:
   - libraries/vendor/bin/robo test
   - libraries/vendor/bin/robo check:style
-
-branches:
-  except:
-    - 2.5.x

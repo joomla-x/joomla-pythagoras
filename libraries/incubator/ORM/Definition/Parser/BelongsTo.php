@@ -13,8 +13,37 @@ namespace Joomla\ORM\Definition\Parser;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class BelongsTo extends Relation
 {
+	/**
+	 * Gets the property name for the foreign key
+	 *
+	 * @return  string
+	 */
+	public function varIdName()
+	{
+		return $this->propertyName($this->name);
+	}
+
+	/**
+	 * Gets the property name for the entity
+	 *
+	 * @return  string
+	 */
+	public function varObjectName()
+	{
+		return $this->propertyName($this->getBasename($this->name));
+	}
+
+	/**
+	 * Gets the column name for the foreign key
+	 *
+	 * @return  string
+	 */
+	public function colIdName()
+	{
+		return $this->columnName($this->name);
+	}
 }
