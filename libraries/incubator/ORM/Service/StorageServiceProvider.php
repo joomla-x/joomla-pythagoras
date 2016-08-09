@@ -8,9 +8,10 @@
 
 namespace Joomla\ORM\Service;
 
+use Doctrine\DBAL\DriverManager;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Mockery\Generator\Method;
+use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
 
 /**
  * Storage Service Provider.
@@ -31,12 +32,12 @@ class StorageServiceProvider implements ServiceProviderInterface
 	 */
 	public function register(Container $container, $alias = null)
 	{
+		$container->set('Repository', [$this, 'createRepositoryFactory'], true, true);
+
 		if (!empty($alias))
 		{
-			throw new \RuntimeException('The StorageService does not support aliases.');
+			$container->alias($alias, 'Repository');
 		}
-
-		$container->set('Repository', [$this, 'createRepositoryFactory'], true, true);
 	}
 
 	/**
@@ -44,10 +45,15 @@ class StorageServiceProvider implements ServiceProviderInterface
 	 *
 	 * @param   Container  $container  The container
 	 *
-	 * @return  void
+	 * @return  RepositoryFactory
 	 */
 	public function createRepositoryFactory(Container $container)
 	{
-		throw new \RuntimeException(__METHOD__ . ' is not yet implemented');
+		$config = parse_ini_file(JPATH_ROOT . '/config/database.ini', true);
+
+		$connection = DriverManager::getConnection($config);
+		$transactor = new DoctrineTransactor($connection);
+
+		return new RepositoryFactory($config, $connection, $transactor);
 	}
 }
