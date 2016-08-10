@@ -65,7 +65,7 @@ class RepositoryFactory
 	{
 		$this->config     = $config;
 		$this->connection = $connection;
-		$this->builder    = $this->createEntityBuilder($this->config['definitionPath']);
+		$this->builder    = $this->createEntityBuilder(JPATH_ROOT . '/' . $this->config['definitionPath']);
 
 		$this->entityRegistry = new EntityRegistry($this->builder);
 		$this->unitOfWork     = new UnitOfWork(
@@ -185,7 +185,9 @@ class RepositoryFactory
 	 */
 	private function createDataMapper($entityClass)
 	{
-		switch ($this->config[$entityClass]['dataMapper'])
+		$dataMapperClass = $this->config[$entityClass]['dataMapper'];
+
+		switch ($dataMapperClass)
 		{
 			case CsvDataMapper::class:
 				if (!isset($this->connections[CsvDataGateway::class]))
@@ -216,10 +218,34 @@ class RepositoryFactory
 				break;
 
 			default:
-				throw new OrmException("No data mapper '$entityClass'");
+				throw new OrmException("No data mapper for '$entityClass' entities ($dataMapperClass)");
 				break;
 		}
 
 		return $dataMapper;
+	}
+
+	public function getSchemaManager()
+	{
+		if (method_exists($this->connection, 'getSchemaManager'))
+		{
+			return $this->connection->getSchemaManager();
+		}
+
+		return null;
+	}
+
+	public function getConnection($type = null)
+	{
+		if (!isset($this->connections[CsvDataGateway::class]))
+		{
+			$this->connections[CsvDataGateway::class] = new CsvDataGateway($this->config['dataPath']);
+		}
+		if (!isset($this->connections[Connection::class]))
+		{
+			$this->connections[Connection::class] = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+		}
+
+		return $this->connections[$type];
 	}
 }

@@ -364,6 +364,11 @@ class EntityBuilder
 		$this->resolveHasManyThrough($meta->relations['hasManyThrough'], $entity, $entityId);
 	}
 
+	public function add($entityClass, $config)
+	{
+		$this->config[$entityClass] = $config;
+	}
+
 	/**
 	 * @param $entityClass
 	 *

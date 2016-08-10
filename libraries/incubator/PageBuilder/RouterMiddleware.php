@@ -13,6 +13,7 @@ use Joomla\Http\MiddlewareInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\Repository;
+use Joomla\PageBuilder\Entity\Page;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -58,7 +59,7 @@ class RouterMiddleware implements MiddlewareInterface
 			try
 			{
 				/** @var Repository $repository */
-				$repository = $this->container->get('Repository')->forEntity('Page');
+				$repository = $this->container->get('Repository')->forEntity(Page::class);
 
 				$page = $repository
 					->findOne()
