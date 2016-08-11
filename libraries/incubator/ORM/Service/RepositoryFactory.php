@@ -237,13 +237,22 @@ class RepositoryFactory
 
 	public function getConnection($type = null)
 	{
-		if (!isset($this->connections[CsvDataGateway::class]))
+		if (!isset($this->connections[CsvDataGateway::class]) && isset($this->config['dataPath']))
 		{
-			$this->connections[CsvDataGateway::class] = new CsvDataGateway($this->config['dataPath']);
+			$this->connections[CsvDataGateway::class] = new CsvDataGateway(JPATH_ROOT . '/' . $this->config['dataPath']);
 		}
-		if (!isset($this->connections[Connection::class]))
+
+		if (!isset($this->connections[Connection::class]) && isset($this->config['databaseUrl']))
 		{
-			$this->connections[Connection::class] = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+			$databaseUrl = $this->config['databaseUrl'];
+			$url = parse_url($databaseUrl);
+
+			if ($url['schema'] == 'sqlite')
+			{
+				$databaseUrl = str_replace('sqlite://', 'sqlite://' . JPATH_ROOT, $databaseUrl);
+			}
+
+			$this->connections[Connection::class] = DriverManager::getConnection(['url' => $databaseUrl]);
 		}
 
 		return $this->connections[$type];
