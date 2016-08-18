@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="MasterLayout">
+<entity name="Joomla\PageBuilder\Entity\Page">
 
     <fields>
         <field name="id"
@@ -21,16 +21,19 @@
             <validation rule="maxlen" value="64"/>
         </field>
 
+        <field name="url" type="url"/>
+
     </fields>
 
     <relations>
-        <belongsTo name="template_id"
-                   entity="Template"
+        <belongsTo name="parent_id"
+                   entity="page"
+                   label="JFIELD_PARENT_LABEL"
+                   description="JFIELD_PARENT_DESC"
         />
-        <hasMany name="pages"
-                 entity="Page"
-                 reference="master_id"
-        />
+        <belongsTo name="master_id" entity="MasterLayout"/>
+        <hasMany name="children" entity="Page" reference="parent_id"/>
+        <hasMany name="content" entity="PageContent" reference="page_id"/>
     </relations>
 
 </entity>

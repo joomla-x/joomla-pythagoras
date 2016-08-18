@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="Template">
+<entity name="Joomla\PageBuilder\Entity\MasterLayout">
 
     <fields>
         <field name="id"
@@ -14,16 +14,22 @@
             <validation rule="integer"/>
         </field>
 
-        <field name="path" type="path"/>
-
-        <field name="scripting" type="string"/>
+        <field name="title"
+               type="title"
+               label="JGLOBAL_TITLE"
+        >
+            <validation rule="maxlen" value="64"/>
+        </field>
 
     </fields>
 
     <relations>
-        <hasMany name="masters"
-                 entity="MasterLayout"
-                 reference="template_id"
+        <belongsTo name="template_id"
+                   entity="Template"
+        />
+        <hasMany name="pages"
+                 entity="Page"
+                 reference="master_id"
         />
     </relations>
 

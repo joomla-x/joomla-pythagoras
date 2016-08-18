@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="PageContent">
+<entity name="Joomla\PageBuilder\Entity\MasterContent">
 
     <fields>
         <field name="id"
@@ -24,7 +24,7 @@
     </fields>
 
     <relations>
-        <belongsTo name="page_id" entity="Page"/>
+        <belongsTo name="master_id" entity="MasterLayout"/>
     </relations>
 
 </entity>

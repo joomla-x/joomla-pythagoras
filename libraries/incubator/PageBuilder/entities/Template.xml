@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="Joomla\PageBuilder\Entity\Template">
+
+    <fields>
+        <field name="id"
+               type="id"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               default="null"
+        >
+            <validation rule="positive"/>
+            <validation rule="integer"/>
+        </field>
+
+        <field name="path" type="path"/>
+
+        <field name="scripting" type="string"/>
+
+    </fields>
+
+    <relations>
+        <hasMany name="masters"
+                 entity="MasterLayout"
+                 reference="template_id"
+        />
+    </relations>
+
+</entity>
