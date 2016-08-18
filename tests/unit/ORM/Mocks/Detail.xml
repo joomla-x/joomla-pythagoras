@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="Detail">
+<entity name="Joomla\Tests\Unit\ORM\Mocks\Detail">
+
+    <storage>
+        <default table="details"/>
+    </storage>
 
     <fields>
         <field name="id" type="id"/>

@@ -82,12 +82,8 @@ class EntityBuilder
 	 */
 	private function locateDescription($entityClass)
 	{
-		if (!isset($this->config[$entityClass]))
-		{
-			throw new EntityNotDefinedException($entityClass);
-		}
-
-		$definitionFile = $this->config[$entityClass]['definition'];
+		$entityName     = preg_replace('~^.*?(\w+)$~', '\1', $entityClass);
+		$definitionFile = $entityName . '.xml';
 		$filename       = $this->locator->findFile($definitionFile);
 
 		if (!is_null($filename))
@@ -95,7 +91,7 @@ class EntityBuilder
 			return $filename;
 		}
 
-		throw new FileNotFoundException("Unable to locate definition file '{$definitionFile}' for entity '{$entityClass}'");
+		throw new EntityNotDefinedException("Unable to locate definition file '{$definitionFile}' for entity '{$entityClass}'");
 	}
 
 	/**
@@ -114,6 +110,7 @@ class EntityBuilder
 
 		$definition = $parser->parse([
 			'onBeforeEntity' => [$this, 'prepareEntity'],
+			'onAfterEntity'  => [$this, 'handleEntity'],
 			'onAfterField'   => [$this, 'handleField'],
 		], $this->locator);
 
@@ -136,11 +133,28 @@ class EntityBuilder
 	 *
 	 * @param   array $attributes The element attributes
 	 *
-	 * @return  void
+	 * @return  array
 	 */
 	public function prepareEntity($attributes)
 	{
-		$this->prefix = 'COM_' . strtoupper($attributes['name']) . '_FIELD_';
+		$attributes['class'] = $attributes['name'];
+		$attributes['name']  = preg_replace('~^.*?(\w+)$~', '\1', $attributes['class']);
+		$this->prefix        = 'COM_' . strtoupper($attributes['name']) . '_FIELD_';
+
+		return $attributes;
+	}
+
+	/**
+	 * Parser callback for onAfterEntity event
+	 *
+	 * @internal
+	 *
+	 * @param   EntityStructure $element The data structure
+	 *
+	 * @return  void
+	 */
+	public function handleEntity($element)
+	{
 	}
 
 	/**
@@ -255,7 +269,7 @@ class EntityBuilder
 	 *
 	 * @param   string $entityClass The entity name
 	 *
-	 * @return \Joomla\ORM\Definition\Parser\Entity
+	 * @return  EntityStructure
 	 */
 	public function getMeta($entityClass)
 	{
@@ -311,10 +325,10 @@ class EntityBuilder
 		foreach ($meta->relations['belongsTo'] as $field => $relation)
 		{
 			/** @var BelongsTo $relation */
-			$colIdName  = $relation->colIdName();
+			$colIdName = $relation->colIdName();
 			$varIdName = $relation->varIdName();
 
-			$value  = null;
+			$value = null;
 
 			if (isset($entity->{$varIdName}))
 			{
@@ -365,44 +379,24 @@ class EntityBuilder
 	}
 
 	/**
-	 * @param $entityClass
+	 * @param $entityName
 	 *
 	 * @return string
 	 */
-	private function readDefinition($entityClass)
+	private function readDefinition($entityName)
 	{
-		if (!class_exists($entityClass))
-		{
-			$alias = $entityClass;
-
-			foreach ($this->config as $class => $config)
-			{
-				if (!is_array($config))
-				{
-					continue;
-				}
-
-				if ($alias == basename($config['definition'], '.xml'))
-				{
-					$entityClass         = $class;
-					$this->alias[$alias] = $entityClass;
-					break;
-				}
-			}
-		}
-
 		$entity          = new Entity;
 		$this->reflector = new EntityReflector($entity);
-		$filename        = $this->locateDescription($entityClass);
-		$definition      = $this->parseDescription($filename, $entityClass);
+		$filename        = $this->locateDescription($entityName);
+		$definition      = $this->parseDescription($filename, $entityName);
 		$this->reflector->setDefinition($definition);
-		$this->entities[$entityClass] = $entity;
+		$this->entities[$definition->class] = $entity;
 
-		$this->alias[$definition->name] = $entityClass;
+		$this->alias[$definition->name] = $definition->class;
 
-		$this->setIdAccessors($entityClass, $entity->key());
+		$this->setIdAccessors($definition->class, $entity->key());
 
-		return $entityClass;
+		return $definition->class;
 	}
 
 	/**
@@ -415,8 +409,8 @@ class EntityBuilder
 		foreach ($relations as $field => $relation)
 		{
 			/** @var HasManyThrough $relation */
-			$varObjName  = $relation->varObjectName();
-			$colRefName  = $relation->colReferenceName();
+			$varObjName = $relation->varObjectName();
+			$colRefName = $relation->colReferenceName();
 
 			// @todo Use entity name instead of uppercase table
 			$mapClass = $this->resolveAlias(ucfirst($relation->joinTable));
@@ -549,7 +543,8 @@ class EntityBuilder
 
 		if (is_array($key))
 		{
-			$getter = function ($entity) use ($key) {
+			$getter = function ($entity) use ($key)
+			{
 				$id = [];
 				foreach ($key as $property)
 				{
@@ -558,7 +553,8 @@ class EntityBuilder
 
 				return $id;
 			};
-			$setter = function ($entity, $id) use ($key) {
+			$setter = function ($entity, $id) use ($key)
+			{
 				foreach ($key as $property)
 				{
 					$entity->{$property} = $id[$property];

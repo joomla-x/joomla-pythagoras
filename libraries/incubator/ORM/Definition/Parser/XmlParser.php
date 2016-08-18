@@ -65,7 +65,7 @@ class XmlParser extends \XMLReader implements ParserInterface
 
 		if (isset($callbacks[$callback]))
 		{
-			call_user_func($callbacks[$callback], $attributes);
+			$attributes = call_user_func($callbacks[$callback], $attributes);
 		}
 
 		if ($hasChildren)

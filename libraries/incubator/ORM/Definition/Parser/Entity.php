@@ -17,7 +17,10 @@ namespace Joomla\ORM\Definition\Parser;
  */
 class Entity extends Element
 {
-	/** @var  string  Type of the entity */
+	/** @var  string  Fully qualified class name of the entity */
+	public $class;
+
+	/** @var  string  Type of the entity (class name without namespace) */
 	public $name;
 
 	/** @var  string  Parent type */
@@ -100,6 +103,12 @@ class Entity extends Element
 		{
 			$this->storage         = get_object_vars($attributes[0]);
 			$this->storage['type'] = $type;
+
+			if (isset($this->storage['primary']))
+			{
+				$this->primary = $this->storage['primary'];
+			}
+
 			break;
 		}
 	}

@@ -185,7 +185,16 @@ class RepositoryFactory
 	 */
 	private function createDataMapper($entityClass)
 	{
-		switch ($this->config[$entityClass]['dataMapper'])
+		$dataMapperClass = isset($this->config['dataMapper']) ? $this->config['dataMapper'] : DoctrineDataMapper::class;
+
+		$meta = $this->builder->getMeta($entityClass);
+
+		if ($meta->storage['type'] == 'api')
+		{
+			$dataMapperClass = $meta->storage['handler'];
+		}
+
+		switch ($dataMapperClass)
 		{
 			case CsvDataMapper::class:
 				if (!isset($this->connections[CsvDataGateway::class]))
@@ -196,7 +205,7 @@ class RepositoryFactory
 				$dataMapper = new CsvDataMapper(
 					$this->connections[CsvDataGateway::class],
 					$entityClass,
-					basename($this->config[$entityClass]['data'], '.csv'),
+					$meta->storage['table'],
 					$this->entityRegistry
 				);
 				break;
@@ -210,13 +219,13 @@ class RepositoryFactory
 				$dataMapper = new DoctrineDataMapper(
 					$this->connections[Connection::class],
 					$entityClass,
-					$this->config[$entityClass]['table'],
+					$meta->storage['table'],
 					$this->entityRegistry
 				);
 				break;
 
 			default:
-				throw new OrmException("No data mapper '$entityClass'");
+				throw new OrmException("No data mapper '$dataMapperClass' for '$entityClass'");
 				break;
 		}
 
