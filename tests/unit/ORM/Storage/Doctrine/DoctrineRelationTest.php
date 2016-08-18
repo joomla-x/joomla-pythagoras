@@ -36,10 +36,11 @@ class DoctrineRelationTest extends RelationTestCases
 
 		foreach ($entities as $className)
 		{
+			$meta                   = $this->builder->getMeta($className);
 			$dataMapper             = new DoctrineDataMapper(
 				$this->connection,
 				$className,
-				$this->config[$className]['table'],
+				$meta->storage['table'],
 				$this->entityRegistry
 			);
 			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);

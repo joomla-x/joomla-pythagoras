@@ -20,6 +20,7 @@ use Joomla\ORM\Storage\Csv\CsvDataGateway;
 use Joomla\ORM\UnitOfWork\TransactionInterface;
 use Joomla\Tests\Unit\ORM\Mocks\Article;
 use Joomla\Tests\Unit\ORM\Mocks\Detail;
+use Joomla\Tests\Unit\ORM\Mocks\Foo;
 use Joomla\Tests\Unit\ORM\Mocks\Master;
 use PHPUnit\Framework\TestCase;
 
@@ -42,21 +43,7 @@ class EntityBuilderTest extends TestCase
 		'dataPath'                            => "tests/unit/ORM/data",
 		'definitionPath'                      => "tests/unit/ORM/Mocks",
 		'databaseUrl'                         => null,
-		'Joomla\Tests\Unit\ORM\Mocks\Article' => [
-			'dataMapper' => "Joomla\\ORM\\Storage\\Csv\\CsvDataMapper",
-			'definition' => "Article.xml",
-			'data'       => "articles.csv"
-		],
-		'Joomla\Tests\Unit\ORM\Mocks\Master'  => [
-			'dataMapper' => "Joomla\\ORM\\Storage\\Csv\\CsvDataMapper",
-			'definition' => "Master.xml",
-			'data'       => "masters.csv"
-		],
-		'Joomla\Tests\Unit\ORM\Mocks\Extra'   => [
-			'dataMapper' => "Joomla\\ORM\\Storage\\Csv\\CsvDataMapper",
-			'definition' => "Extra.xml",
-			'data'       => "extras.csv"
-		]
+		'dataMapper' => "Joomla\\ORM\\Storage\\Csv\\CsvDataMapper",
 	];
 
 	/** @var array */
@@ -250,7 +237,7 @@ class EntityBuilderTest extends TestCase
 	 */
 	public function testGetRepositoryFail()
 	{
-		$this->builder->getRepository(Detail::class);
+		$this->builder->getRepository(Foo::class);
 	}
 
 	/**

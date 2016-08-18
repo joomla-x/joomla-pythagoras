@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="Extra" primary="detail_id">
+<entity name="Joomla\Tests\Unit\ORM\Mocks\Extra">
+
+    <storage>
+        <default table="extras" primary="detail_id"/>
+    </storage>
 
     <fields>
         <field name="info" type="text" default=""/>

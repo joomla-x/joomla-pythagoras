@@ -36,10 +36,11 @@ class CsvRelationTest extends RelationTestCases
 
 		foreach ($entities as $className)
 		{
+			$meta                   = $this->builder->getMeta($className);
 			$dataMapper             = new CsvDataMapper(
 				$this->connection,
 				$className,
-				basename($this->config[$className]['data'], '.csv'),
+				$meta->storage['table'],
 				$this->entityRegistry
 			);
 			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
