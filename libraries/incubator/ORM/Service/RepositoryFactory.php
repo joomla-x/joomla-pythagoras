@@ -171,7 +171,7 @@ class RepositoryFactory
 	{
 		$strategy = new RecursiveDirectoryStrategy($dataDirectory);
 		$locator  = new Locator([$strategy]);
-		$builder  = new EntityBuilder($locator, $this->config, $this);
+		$builder  = new EntityBuilder($locator, $this);
 
 		return $builder;
 	}

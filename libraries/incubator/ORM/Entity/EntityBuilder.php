@@ -10,6 +10,7 @@ namespace Joomla\ORM\Entity;
 
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
+use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
 use Joomla\ORM\Definition\Parser\Element;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
@@ -21,7 +22,6 @@ use Joomla\ORM\Definition\Parser\XmlParser;
 use Joomla\ORM\Event\AfterCreateDefinitionEvent;
 use Joomla\ORM\Exception\EntityNotDefinedException;
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Exception\FileNotFoundException;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\MappingRepository;
 use Joomla\ORM\Repository\RepositoryInterface;
@@ -63,14 +63,17 @@ class EntityBuilder
 	 * Constructor
 	 *
 	 * @param   LocatorInterface  $locator           The XML description file locator
-	 * @param   array             $config            The entity configurations
 	 * @param   RepositoryFactory $repositoryFactory The repository factory
 	 */
-	public function __construct(LocatorInterface $locator, array $config, RepositoryFactory $repositoryFactory)
+	public function __construct(LocatorInterface $locator, RepositoryFactory $repositoryFactory)
 	{
 		$this->locator           = $locator;
-		$this->config            = $config;
 		$this->repositoryFactory = $repositoryFactory;
+	}
+
+	public function addLocatorStrategy(StrategyInterface $strategy)
+	{
+		$this->locator->add($strategy);
 	}
 
 	/**
@@ -378,11 +381,6 @@ class EntityBuilder
 		$this->resolveHasManyThrough($meta->relations['hasManyThrough'], $entity, $entityId);
 	}
 
-	public function add($entityClass, $config)
-	{
-		$this->config[$entityClass] = $config;
-	}
-
 	/**
 	 * @param $entityName
 	 *
@@ -525,7 +523,7 @@ class EntityBuilder
 
 	public function resolveAlias($alias)
 	{
-		while (isset($this->alias[$alias]))
+		while (isset($this->alias[$alias]) && $this->alias[$alias] != $alias)
 		{
 			$alias = $this->alias[$alias];
 		}

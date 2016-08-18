@@ -8,6 +8,8 @@
 
 namespace Joomla\ORM\Definition\Locator;
 
+use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
+
 /**
  * Interface LocatorInterface
  *
@@ -25,4 +27,6 @@ interface LocatorInterface
 	 * @return  string  Path to the XML file
 	 */
 	public function findFile($entityName);
+
+	public function add(StrategyInterface $strategy);
 }

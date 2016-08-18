@@ -71,7 +71,7 @@ class EntityBuilderTest extends TestCase
 		$repositoryFactory = new RepositoryFactory($this->config, $connection, $this->transactor);
 		$strategy          = new RecursiveDirectoryStrategy($this->config['definitionPath']);
 		$locator           = new Locator([$strategy]);
-		$this->builder     = new EntityBuilder($locator, $this->config, $repositoryFactory);
+		$this->builder     = new EntityBuilder($locator, $repositoryFactory);
 	}
 
 	/**
