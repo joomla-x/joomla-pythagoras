@@ -190,4 +190,18 @@ class Repository implements RepositoryInterface
 	{
 		return $this->className;
 	}
+
+	/**
+	 * Create a new entity
+	 *
+	 * @param   array $row A hash with the properties for the new entity
+	 *
+	 * @return  object
+	 */
+	public function createFromArray(array $row)
+	{
+		$entities = $this->unitOfWork->getEntityRegistry()->getEntityBuilder()->castToEntity([$row], $this->className);
+
+		return array_shift($entities);
+	}
 }

@@ -31,7 +31,7 @@
 
     <relations>
         <belongsTo name="parent_id"
-                   entity="page"
+                   entity="Page"
                    label="JFIELD_PARENT_LABEL"
                    description="JFIELD_PARENT_DESC"
         />

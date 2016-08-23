@@ -101,4 +101,13 @@ interface RepositoryInterface
 	 * @return string The entity class managed with this repository
 	 */
 	public function getEntityClass();
+
+	/**
+	 * Create a new entity
+	 *
+	 * @param   array  $row  A hash with the properties for the new entity
+	 *
+	 * @return  object
+	 */
+	public function createFromArray(array $row);
 }

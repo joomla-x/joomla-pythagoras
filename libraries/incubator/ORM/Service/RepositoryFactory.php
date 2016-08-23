@@ -91,7 +91,7 @@ class RepositoryFactory
 	 * @param   string               $entityClass  The Entity's class
 	 * @param   DataMapperInterface  $dataMapper   An optional DataMapper
 	 *
-	 * @return  Repository
+	 * @return  RepositoryInterface
 	 */
 	public function forEntity($entityClass, DataMapperInterface $dataMapper = null)
 	{

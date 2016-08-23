@@ -220,9 +220,9 @@ class EntityBuilder
 
 		$result = [];
 
-		$meta = $this->getMeta($entityClass);
-
-		$reflection = new \ReflectionClass($entityClass);
+		$meta        = $this->getMeta($entityClass);
+		$entityClass = $meta->class;
+		$reflection  = new \ReflectionClass($entityClass);
 
 		foreach ($matches as $match)
 		{
@@ -504,9 +504,17 @@ class EntityBuilder
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
 
-			$property = $reflection->getProperty($varIdName);
-			$property->setAccessible(true);
-			$objectId = $property->getValue($entity);
+			if ($reflection->hasProperty($varIdName))
+			{
+				$property = $reflection->getProperty($varIdName);
+				$property->setAccessible(true);
+				$objectId = $property->getValue($entity);
+			}
+			else
+			{
+				/** @noinspection PhpVariableVariableInspection */
+				$objectId = $entity->$varIdName;
+			}
 
 			try
 			{

@@ -8,6 +8,10 @@
 
 namespace Joomla\ORM\Definition\Parser;
 
+use DOMDocument;
+use DOMElement;
+use DOMImplementation;
+
 /**
  * Class Entity
  *
@@ -91,7 +95,7 @@ class Entity extends Element
 	/**
 	 * Sets the storage
 	 *
-	 * @param   array  $values  The values
+	 * @param   array $values The values
 	 *
 	 * @return  void
 	 */
@@ -111,5 +115,124 @@ class Entity extends Element
 
 			break;
 		}
+	}
+
+	public function writeXml($filename)
+	{
+		$dom = new DOMImplementation;
+		$dtd = $dom->createDocumentType('entity', '', 'https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd');
+		$xml = $dom->createDocument('', '', $dtd);
+		$xml->encoding = 'UTF-8';
+
+		$root = $this->createRootElement($xml);
+		$root->appendChild($this->createStorageElement($xml));
+		$root->appendChild($this->createFieldsElement($xml));
+		$root->appendChild($this->createRelationsElement($xml));
+
+		$xml->formatOutput = true;
+		$xml->save($filename);
+	}
+
+	/**
+	 * @param   DOMElement  $element
+	 * @param   array       $attributes
+	 * @param   array       $skip
+	 */
+	private function addAttributes($element, $attributes, $skip = [])
+	{
+		foreach ($attributes as $key => $value)
+		{
+			if (in_array($key, $skip) || empty($value))
+			{
+				continue;
+			}
+
+			$element->setAttribute($key, $value);
+		}
+	}
+
+	/**
+	 * @param   DOMDocument  $xml
+	 *
+	 * @return  DOMElement
+	 */
+	private function createRootElement($xml)
+	{
+		$root = $xml->createElement('entity');
+		$root->setAttribute('name', $this->class);
+		$xml->appendChild($root);
+
+		return $root;
+	}
+
+	/**
+	 * @param   DOMDocument $xml
+	 *
+	 * @return  DOMElement
+	 */
+	private function createStorageElement($xml)
+	{
+		$storage = $xml->createElement('storage');
+		$type    = $xml->createElement($this->storage['type']);
+		$this->addAttributes($type, $this->storage, ['type']);
+		$storage->appendChild($type);
+
+		return $storage;
+	}
+
+	/**
+	 * @param   DOMDocument $xml
+	 *
+	 * @return  DOMElement
+	 */
+	private function createFieldsElement($xml)
+	{
+		$fields = $xml->createElement('fields');
+
+		foreach ($this->fields as $f)
+		{
+			$field = $xml->createElement('field');
+			$this->addAttributes($field, get_object_vars($f), ['value', 'validation', 'options']);
+
+			foreach ($f->validation as $rule => $value)
+			{
+				$validation = $xml->createElement('validation');
+				$this->addAttributes($validation, ['rule' => $rule, 'value' => $value]);
+				$field->appendChild($validation);
+			}
+
+			foreach ($f->options as $key => $value)
+			{
+				$option = $xml->createElement('option');
+				// @todo Implement handling of options
+				$field->appendChild($option);
+			}
+
+			$fields->appendChild($field);
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * @param   DOMDocument $xml
+	 *
+	 * @return  DOMElement
+	 */
+	private function createRelationsElement($xml)
+	{
+		$relations = $xml->createElement('relations');
+
+		foreach ($this->relations as $type => $rr)
+		{
+			foreach ($rr as $r)
+			{
+				$relation = $xml->createElement($type);
+				$this->addAttributes($relation, get_object_vars($r));
+				$relations->appendChild($relation);
+			}
+		}
+
+		return $relations;
 	}
 }

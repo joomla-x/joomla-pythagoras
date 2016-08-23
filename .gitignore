@@ -1,6 +1,7 @@
 /cache/*
-/installation/demo.sqlite
 /libraries/vendor
 /logs/*
 /tmp/*
 /data/entities/
+!/data/entities/.gitkeep
+/data/sqlite.db
