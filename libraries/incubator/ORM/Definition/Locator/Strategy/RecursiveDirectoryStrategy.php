@@ -8,12 +8,14 @@
 
 namespace Joomla\ORM\Definition\Locator\Strategy;
 
+use Joomla\ORM\Exception\FileNotFoundException;
+
 /**
  * Class RecursiveDirectoryStrategy
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class RecursiveDirectoryStrategy implements StrategyInterface
 {
@@ -27,6 +29,11 @@ class RecursiveDirectoryStrategy implements StrategyInterface
 	 */
 	public function __construct($root)
 	{
+		if (!file_exists($root))
+		{
+			throw new FileNotFoundException("Directory '{$root}' not found");
+		}
+
 		$this->root = $root;
 	}
 

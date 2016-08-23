@@ -1,21 +1,25 @@
-<!ELEMENT entity ((storage)?, fields, (relations)?)>
+<!ELEMENT entity ((storage)?, (fields)?, (relations)?)>
     <!ATTLIST entity
-        name NMTOKEN #REQUIRED>
+        name CDATA #REQUIRED
+        extends CDATA #IMPLIED>
 
     <!ELEMENT storage (default|api|special)>
 
     <!ELEMENT default EMPTY>
     <!ATTLIST default
-        table NMTOKEN #REQUIRED>
+        table NMTOKEN #REQUIRED
+        primary CDATA #IMPLIED>
 
     <!ELEMENT api EMPTY>
     <!ATTLIST api
         base-url CDATA #IMPLIED
-        handler CDATA #REQUIRED>
+        handler CDATA #REQUIRED
+        primary CDATA #IMPLIED>
 
     <!ELEMENT special EMPTY>
     <!ATTLIST special
-        dsn CDATA #REQUIRED>
+        dsn CDATA #REQUIRED
+        primary CDATA #IMPLIED>
 
     <!ELEMENT fields (field|fieldset)+>
 

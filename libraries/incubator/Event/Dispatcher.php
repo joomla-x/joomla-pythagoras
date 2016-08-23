@@ -324,7 +324,7 @@ class Dispatcher implements DispatcherInterface
 	 * @param   callable $callback  A callable function
 	 * @param   integer  $priority  The priority at which the $callback executed
 	 *
-	 * @return  boolean
+	 * @return  $this
 	 *
 	 * @since   1.0
 	 */

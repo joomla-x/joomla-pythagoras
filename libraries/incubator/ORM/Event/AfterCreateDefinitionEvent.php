@@ -17,7 +17,7 @@ use Joomla\ORM\Entity\EntityBuilder;
  *
  * @package Joomla\ORM
  *
- * @since  1.0
+ * @since  __DEPLOY_VERSION__
  */
 class AfterCreateDefinitionEvent extends Event
 {
@@ -33,7 +33,7 @@ class AfterCreateDefinitionEvent extends Event
 		parent::__construct(
 			'onAfterCreateDefinition',
 			[
-				'entityName' => $entityName,
+				'className' => $entityName,
 				'definition' => $definition,
 				'builder'    => $builder
 			]

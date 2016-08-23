@@ -8,46 +8,41 @@
 
 namespace Joomla\ORM\Repository;
 
-use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Finder\CollectionFinderInterface;
-use Joomla\ORM\Finder\EntityFinderInterface;
-use Joomla\ORM\Persistor\PersistorInterface;
+use Joomla\ORM\Exception\OrmException;
+use Joomla\ORM\Storage\CollectionFinderInterface;
+use Joomla\ORM\Storage\EntityFinderInterface;
 
 /**
  * Interface RepositoryInterface
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface RepositoryInterface
 {
 	/**
-	 * Create a new entity.
-	 *
-	 * @return  EntityInterface  A new instance of the entity
-	 */
-	public function create();
-
-	/**
 	 * Find an entity using its id.
 	 *
-	 * findById() is a convenience method, It is equivalent to
-	 * ->findOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
+	 * getById() is a convenience method, It is equivalent to
+	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
 	 *
 	 * @param   mixed $id The id value
 	 *
-	 * @return  EntityInterface  The requested entity
+	 * @return  object  The requested entity
 	 *
 	 * @throws  EntityNotFoundException  if the entity does not exist
+	 * @throws  OrmException  if there was an error getting the entity
 	 */
-	public function findById($id);
+	public function getById($id);
 
 	/**
 	 * Find a single entity.
 	 *
 	 * @return  EntityFinderInterface  The responsible Finder object
+	 *
+	 * @throws  OrmException  if there was an error getting the entity
 	 */
 	public function findOne();
 
@@ -55,13 +50,55 @@ interface RepositoryInterface
 	 * Find multiple entities.
 	 *
 	 * @return  CollectionFinderInterface  The responsible Finder object
+	 *
+	 * @throws  OrmException  if there was an error getting the entities
 	 */
 	public function findAll();
 
 	/**
-	 * Get the persistor
+	 * Adds an entity to the repo
 	 *
-	 * @return  PersistorInterface
+	 * @param   object $entity The entity to add
+	 *
+	 * @return  void
+	 *
+	 * @throws  OrmException  if the entity could not be added
 	 */
-	public function persistor();
+	public function add($entity);
+
+	/**
+	 * Deletes an entity from the repo
+	 *
+	 * @param   object $entity The entity to delete
+	 *
+	 * @return  void
+	 *
+	 * @throws  OrmException  if the entity could not be deleted
+	 */
+	public function remove($entity);
+
+	/**
+	 * Persists all changes
+	 *
+	 * @return void
+	 */
+	public function commit();
+
+	/**
+	 * Define a condition.
+	 *
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants EQUAL or IN
+	 * @param   mixed  $rValue The right value for the comparision
+	 *
+	 * @return  EntityFinderInterface  $this for chaining
+	 */
+	public function restrictTo($lValue, $op, $rValue);
+
+	/**
+	 * Gets the entity class managed with this repository
+	 *
+	 * @return string The entity class managed with this repository
+	 */
+	public function getEntityClass();
 }

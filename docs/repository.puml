@@ -1,0 +1,154 @@
+@startuml
+activate Client
+Client -> Repo: add($article)
+activate Repo
+Repo -> UnitOfWork: scheduleForInsertion($article)
+activate UnitOfWork
+participant Transactor
+UnitOfWork -> EntityRegistry: getObjectHashId()
+activate EntityRegistry
+UnitOfWork <<-- EntityRegistry: $objectHashId
+deactivate EntityRegistry
+UnitOfWork -> EntityRegistry: setState(QUEUED)
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+Repo //-- UnitOfWork
+deactivate UnitOfWork
+Client //-- Repo
+deactivate Repo
+participant EntityFinder
+Client -> Repo: commit($article)
+activate Repo
+Repo -> UnitOfWork: commit()
+activate UnitOfWork
+UnitOfWork -> UnitOfWork: checkForUpdates()
+activate UnitOfWork
+UnitOfWork -> EntityRegistry: getEntities()
+activate EntityRegistry
+UnitOfWork <<-- EntityRegistry: $managedEntities
+deactivate EntityRegistry
+UnitOfWork -> ChangeTracker: hasChanged()
+activate ChangeTracker
+UnitOfWork <<-- ChangeTracker
+deactivate ChangeTracker
+UnitOfWork -> UnitOfWork: [true] scheduleForUpdate()
+activate UnitOfWork
+UnitOfWork -> EntityRegistry: getObjectHashId()
+activate EntityRegistry
+UnitOfWork <<-- EntityRegistry: $objectHashId
+deactivate EntityRegistry
+UnitOfWork //-- UnitOfWork
+deactivate UnitOfWork
+UnitOfWork //-- UnitOfWork
+deactivate UnitOfWork
+UnitOfWork -> Transactor: beginTransaction()
+activate Transactor
+UnitOfWork //-- Transactor
+deactivate Transactor
+UnitOfWork -> UnitOfWork: insert()
+activate UnitOfWork
+UnitOfWork -> EntityRegistry: runAggregateRootCallbacks()
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+UnitOfWork -> DataMapper: insert()
+activate DataMapper
+UnitOfWork //-- DataMapper
+deactivate DataMapper
+UnitOfWork -> EntityRegistry: registerEntity()
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+UnitOfWork //-- UnitOfWork
+deactivate UnitOfWork
+UnitOfWork -> UnitOfWork: update()
+activate UnitOfWork
+UnitOfWork -> EntityRegistry: runAggregateRootCallbacks()
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+UnitOfWork -> DataMapper: update()
+activate DataMapper
+UnitOfWork //-- DataMapper
+deactivate DataMapper
+UnitOfWork -> EntityRegistry: registerEntity()
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+UnitOfWork //-- UnitOfWork
+deactivate UnitOfWork
+UnitOfWork -> UnitOfWork: delete()
+activate UnitOfWork
+UnitOfWork -> DataMapper: delete()
+activate DataMapper
+UnitOfWork //-- DataMapper
+deactivate DataMapper
+UnitOfWork -> UnitOfWork: detach()
+activate UnitOfWork
+UnitOfWork -> EntityRegistry: deregisterEntity()
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+UnitOfWork //-- UnitOfWork
+deactivate UnitOfWork
+UnitOfWork -> EntityRegistry: setState(DEQUEUED)
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+UnitOfWork //-- UnitOfWork
+deactivate UnitOfWork
+UnitOfWork -> Transactor: commit()
+activate Transactor
+UnitOfWork //-- Transactor
+deactivate Transactor
+UnitOfWork -> EntityRegistry: clearAggregateRoots()
+activate EntityRegistry
+UnitOfWork //-- EntityRegistry
+deactivate EntityRegistry
+Repo //-- UnitOfWork
+deactivate UnitOfWork
+Client //-- Repo
+deactivate Repo
+Client -> Repo: getById($article->id)
+activate Repo
+Repo -> DataMapper: findOne()
+activate DataMapper
+DataMapper -> EntityFinder: «create»
+activate EntityFinder
+DataMapper //-- EntityFinder
+deactivate EntityFinder
+Repo <<-- DataMapper: EntityFinder
+deactivate DataMapper
+Repo -> EntityFinder: getItem()
+activate EntityFinder
+participant EntityBuilder
+participant "Connection\nGateway" as Gateway
+EntityFinder -> Gateway: fetch()
+activate Gateway
+EntityFinder <<-- Gateway: row
+deactivate Gateway
+EntityFinder -> EntityFinder: castToEntity()
+activate EntityFinder
+EntityFinder -> EntityBuilder: castToEntity()
+activate EntityBuilder
+EntityBuilder -> EntityBuilder: resolveRelations()
+activate EntityBuilder
+EntityBuilder //-- EntityBuilder
+deactivate EntityBuilder
+EntityFinder <<-- EntityBuilder: object
+deactivate EntityBuilder
+
+EntityFinder -> EntityRegistry: registerEntity()
+activate EntityRegistry
+EntityFinder //-- EntityRegistry
+deactivate EntityRegistry
+
+EntityFinder <<-- EntityFinder: object
+deactivate EntityFinder
+Repo <<-- EntityFinder:
+deactivate EntityFinder
+Client <<-- Repo: $loaded
+deactivate Repo
+deactivate Client
+@enduml

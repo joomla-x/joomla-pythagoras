@@ -8,122 +8,186 @@
 
 namespace Joomla\ORM\Repository;
 
-use Joomla\ORM\Entity\Entity;
-use Joomla\ORM\Entity\EntityBuilder;
-use Joomla\ORM\Entity\EntityInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Finder\CollectionFinderInterface;
-use Joomla\ORM\Finder\EntityFinderInterface;
-use Joomla\ORM\Finder\Operator;
-use Joomla\ORM\Persistor\PersistorInterface;
+use Joomla\ORM\Exception\OrmException;
+use Joomla\ORM\Operator;
+use Joomla\ORM\Storage\CollectionFinderInterface;
+use Joomla\ORM\Storage\DataMapperInterface;
+use Joomla\ORM\Storage\EntityFinderInterface;
+use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
+use Joomla\String\Normalise;
 
 /**
  * Class Repository
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Repository implements RepositoryInterface
 {
-	/** @var  string  The name (type) of the entity */
-	private $entityName;
+	/** @var  string  The class of the entity */
+	private $className;
 
-	/** @var  Entity  Prebuilt (empty) entity */
-	private $prototype = null;
+	/** @var DataMapperInterface */
+	private $dataMapper;
 
-	/** @var EntityBuilder */
-	private $builder;
+	/** @var  UnitOfWorkInterface */
+	private $unitOfWork;
+
+	/** @var  array */
+	private $restrictions = [];
 
 	/**
 	 * Constructor
 	 *
-	 * @param   string        $entityName The name (type) of the entity
-	 * @param   EntityBuilder $builder    The builder
+	 * @param   string               $className   The class of the entity
+	 * @param   DataMapperInterface  $dataMapper  The builder
+	 * @param   UnitOfWorkInterface  $unitOfWork  The UnitOfWork
 	 */
-	public function __construct($entityName, EntityBuilder $builder)
+	public function __construct($className, DataMapperInterface $dataMapper, UnitOfWorkInterface $unitOfWork)
 	{
-		$this->entityName = $entityName;
-		$this->builder    = $builder;
-	}
-
-	/**
-	 * Create a new entity.
-	 *
-	 * @return  EntityInterface  A new instance of the entity
-	 */
-	public function create()
-	{
-		$this->buildPrototype();
-
-		return clone $this->prototype;
-	}
-
-	/**
-	 * Build a prototype (once) for the entity.
-	 *
-	 * @return  void
-	 */
-	private function buildPrototype()
-	{
-		if (empty($this->prototype))
-		{
-			$this->prototype = $this->builder->create($this->entityName);
-		}
+		$this->className  = $className;
+		$this->dataMapper = $dataMapper;
+		$this->unitOfWork = $unitOfWork;
+		$this->unitOfWork->registerDataMapper($this->className, $this->dataMapper);
 	}
 
 	/**
 	 * Find an entity using its id.
 	 *
-	 * findById() is a convenience method, It is equivalent to
-	 * ->findOne()->with('id', \Joomla\ORM\Finder\Operator::EQUAL, '$id)->get()
+	 * getById() is a convenience method, It is equivalent to
+	 * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, $id)->getItem()
 	 *
 	 * @param   mixed $id The id value
 	 *
-	 * @return  EntityInterface  The requested entity
+	 * @return  object  The requested entity
 	 *
 	 * @throws  EntityNotFoundException  if the entity does not exist
+	 * @throws  OrmException  if there was an error getting the entity
 	 */
-	public function findById($id)
+	public function getById($id)
 	{
-		$this->buildPrototype();
+		$entity = $this->unitOfWork->getEntityRegistry()->getEntity($this->className, $id);
 
-		return $this->findOne()->with($this->prototype->key(), Operator::EQUAL, $id)->getItem();
+		if (empty($entity))
+		{
+			$entity = $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
+		}
+
+		return $entity;
 	}
 
 	/**
 	 * Find a single entity.
 	 *
 	 * @return  EntityFinderInterface  The responsible Finder object
+	 *
+	 * @throws  OrmException  if there was an error getting the entity
 	 */
 	public function findOne()
 	{
-		$this->buildPrototype();
+		$finder = $this->dataMapper->findOne();
 
-		return $this->prototype->getStorage()->getEntityFinder($this->entityName);
+		foreach ($this->restrictions as $filter)
+		{
+			$finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
+		}
+
+		return $finder;
 	}
 
 	/**
 	 * Find multiple entities.
 	 *
 	 * @return  CollectionFinderInterface  The responsible Finder object
+	 *
+	 * @throws  OrmException  if there was an error getting the entities
 	 */
 	public function findAll()
 	{
-		$this->buildPrototype();
+		$finder = $this->dataMapper->findAll();
 
-		return $this->prototype->getStorage()->getCollectionFinder($this->entityName);
+		foreach ($this->restrictions as $filter)
+		{
+			$finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
+		}
+
+		return $finder;
 	}
 
 	/**
-	 * Get the persistor
+	 * Adds an entity to the repo
 	 *
-	 * @return  PersistorInterface
+	 * @param   object $entity The entity to add
+	 *
+	 * @return  void
+	 *
+	 * @throws  OrmException  if the entity could not be added
 	 */
-	public function persistor()
+	public function add($entity)
 	{
-		$this->buildPrototype();
+		foreach ($this->restrictions as $preset)
+		{
+			if ($preset['op'] == Operator::EQUAL)
+			{
+				$property = Normalise::toVariable($preset['field']);
+				$entity->$property = $preset['value'];
+			}
+		}
 
-		return $this->prototype->getStorage()->getPersistor($this->entityName);
+		$this->unitOfWork->scheduleForInsertion($entity);
+	}
+
+	/**
+	 * Deletes an entity from the repo
+	 *
+	 * @param   object $entity The entity to delete
+	 *
+	 * @return  void
+	 *
+	 * @throws  OrmException  if the entity could not be deleted
+	 */
+	public function remove($entity)
+	{
+		$this->unitOfWork->scheduleForDeletion($entity);
+	}
+
+	/**
+	 * Persists all changes
+	 *
+	 * @return void
+	 */
+	public function commit()
+	{
+		$this->unitOfWork->commit();
+	}
+
+	/**
+	 * Define a condition.
+	 *
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants EQUAL or IN
+	 * @param   mixed  $rValue The right value for the comparision
+	 *
+	 * @return  void
+	 */
+	public function restrictTo($lValue, $op, $rValue)
+	{
+		$this->restrictions[] = [
+			'field' => $lValue,
+			'op'    => $op,
+			'value' => $rValue
+		];
+	}
+
+	/**
+	 * Gets the entity class managed with this repository
+	 *
+	 * @return string The entity class managed with this repository
+	 */
+	public function getEntityClass()
+	{
+		return $this->className;
 	}
 }

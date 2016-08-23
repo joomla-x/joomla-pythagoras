@@ -15,7 +15,7 @@ use Joomla\ORM\Entity\EntityInterface;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface ValidatorInterface
 {

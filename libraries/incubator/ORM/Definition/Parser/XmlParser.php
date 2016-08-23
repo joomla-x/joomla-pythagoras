@@ -9,15 +9,15 @@
 namespace Joomla\ORM\Definition\Parser;
 
 use Joomla\ORM\Definition\Locator\LocatorInterface;
-use Joomla\ORM\Exception\InvalidElementException;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
+use Joomla\ORM\Exception\InvalidElementException;
 
 /**
  * Class XmlParser
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class XmlParser extends \XMLReader implements ParserInterface
 {
@@ -65,7 +65,7 @@ class XmlParser extends \XMLReader implements ParserInterface
 
 		if (isset($callbacks[$callback]))
 		{
-			call_user_func($callbacks[$callback], $attributes);
+			$attributes = call_user_func($callbacks[$callback], $attributes);
 		}
 
 		if ($hasChildren)
