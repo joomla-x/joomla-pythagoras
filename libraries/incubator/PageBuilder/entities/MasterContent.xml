@@ -3,6 +3,10 @@
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
 <entity name="Joomla\PageBuilder\Entity\MasterContent">
 
+    <storage>
+        <default table="master_contents"/>
+    </storage>
+
     <fields>
         <field name="id"
                type="id"

@@ -1,4 +1,4 @@
-<!ELEMENT entity ((storage)?, (fields)?, (relations)?)>
+<!ELEMENT entity (storage, (fields)?, (relations)?)>
     <!ATTLIST entity
         name CDATA #REQUIRED
         extends CDATA #IMPLIED>

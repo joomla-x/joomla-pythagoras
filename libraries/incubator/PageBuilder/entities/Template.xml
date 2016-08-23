@@ -3,6 +3,10 @@
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
 <entity name="Joomla\PageBuilder\Entity\Template">
 
+    <storage>
+        <default table="templates"/>
+    </storage>
+
     <fields>
         <field name="id"
                type="id"
