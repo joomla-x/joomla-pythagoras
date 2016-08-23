@@ -27,22 +27,28 @@ if (file_exists($path))
 $connection = DriverManager::getConnection(['url' => 'sqlite:///' . $path]);
 
 $data = [
-	'Article'  => [
-		[
-			'title'     => 'Demo title',
-			'teaser'    => 'Demo teaser',
-			'body'      => 'Demo body',
-			'author'    => 'Joomla',
-			'license'   => 'MIT',
-			'parent_id' => 0
-		]
+	'Article' => [
+			[
+					'title' => 'Demo title',
+					'teaser' => 'Demo teaser',
+					'body' => 'Demo body',
+					'author' => 'Joomla',
+					'license' => 'MIT',
+					'parent_id' => 0
+			]
 	],
 	'Category' => [
-		[
-			'title'     => 'Demo category',
-			'body'      => 'Demo category body',
-			'parent_id' => 0
-		]
+			[
+					'title' => 'Demo category',
+					'body' => 'Demo category body',
+					'parent_id' => 0
+			]
+	],
+	'User' => [
+			[
+					'username' => 'demo',
+					'name' => 'Demo User'
+			]
 	]
 ];
 

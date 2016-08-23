@@ -27,6 +27,11 @@ class AddCategoryContentTypesHandler extends QueryHandler
 	 */
 	public function handle(ContentTypeQuery $query)
 	{
+		if (!isset($query->entity->category))
+		{
+			return $query->elements;
+		}
+
 		$category = $query->entity->category;
 
 		$elements                   = $query->elements;

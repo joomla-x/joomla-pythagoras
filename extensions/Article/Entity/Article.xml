@@ -37,13 +37,6 @@
                description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
         />
 
-        <field name="author"
-               type="text"
-               label="COM_CONTENT_FIELD_CREATED_BY_ALIAS_LABEL"
-               description="COM_CONTENT_FIELD_CREATED_BY_ALIAS_DESC"
-               default=""
-        />
-
         <field name="license"
                type="text"
                label="JFIELD_META_RIGHTS_LABEL"

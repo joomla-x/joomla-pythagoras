@@ -24,8 +24,8 @@ class Attribution extends AbstractContentType
 	/**
 	 * Attribution constructor.
 	 *
-	 * @param   string $label The text before the author's name
-	 * @param   string $name  The author's name
+	 * @param   string $label The label
+	 * @param   string $name  The name
 	 */
 	public function __construct($label, $name)
 	{

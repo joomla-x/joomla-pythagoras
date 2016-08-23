@@ -9,7 +9,6 @@
 namespace Joomla\Extension\Article\Command;
 
 use Joomla\Cms\Service\BasicDisplayCommandHandler;
-use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Paragraph;
@@ -42,7 +41,6 @@ class DisplayCommandHandler extends BasicDisplayCommandHandler
 				'section',
 				[
 					new Headline($child->title, 2),
-					new Attribution('Contribution from', $child->author),
 					new Paragraph($child->body),
 				]
 			);
