@@ -12,7 +12,7 @@ use Joomla\DI\Container;
 use Joomla\Http\MiddlewareInterface;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Operator;
-use Joomla\ORM\Repository\Repository;
+use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\PageBuilder\Entity\Page;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,7 +32,7 @@ class RouterMiddleware implements MiddlewareInterface
 	/**
 	 * RouterMiddleware constructor.
 	 *
-	 * @param   Container  $container The container
+	 * @param   Container $container The container
 	 */
 	public function __construct(Container $container)
 	{
@@ -56,21 +56,22 @@ class RouterMiddleware implements MiddlewareInterface
 
 		if (!isset($attributes['command']))
 		{
-			try
+			#try
 			{
-				/** @var Repository $repository */
+				/** @var RepositoryInterface $repository */
 				$repository = $this->container->get('Repository')->forEntity(Page::class);
 
+				$path = preg_replace('~^/?index.php/?~', '', $request->getUri()->getPath());
 				$page = $repository
 					->findOne()
-					->with('url', Operator::EQUAL, $request->getUri()->getPath())
+					->with('url', Operator::EQUAL, $path)
 					->getItem();
 
-				$command = new DisplayPageCommand($page->id, $response->getBody());
+				$command = new DisplayPageCommand($page->id, $response->getBody(), $this->container);
 				$request = $request->withAttribute('command', $command);
 				// @todo Emit afterRouting event
 			}
-			catch (EntityNotFoundException $e)
+			#catch (EntityNotFoundException $e)
 			{
 				// Do nothing
 			}

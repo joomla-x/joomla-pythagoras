@@ -5,3 +5,4 @@
 /data/entities/
 !/data/entities/.gitkeep
 /data/sqlite.db
+/.htaccess
