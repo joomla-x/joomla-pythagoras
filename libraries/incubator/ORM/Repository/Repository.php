@@ -204,4 +204,19 @@ class Repository implements RepositoryInterface
 
 		return array_shift($entities);
 	}
+
+	/**
+	 * Find all entities.
+	 *
+	 * getAll() is a convenience method, It is equivalent to
+	 * ->findAll()->getItems()
+	 *
+	 * @return  object[]  The requested entities
+	 *
+	 * @throws  OrmException  if there was an error getting the entities
+	 */
+	public function getAll()
+	{
+		return $this->findAll()->getItems();
+	}
 }

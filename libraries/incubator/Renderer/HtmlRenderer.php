@@ -9,10 +9,19 @@
 namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
+use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Attribution;
+use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
+use Joomla\Content\Type\Dump;
 use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\Image;
 use Joomla\Content\Type\Paragraph;
+use Joomla\Content\Type\Rows;
+use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Tabs;
+use Joomla\Content\Type\Tree;
+use Joomla\Tests\Unit\DumpTrait;
 
 /**
  * Class HtmlRenderer
@@ -26,11 +35,18 @@ class HtmlRenderer extends Renderer
 	/** @var string The MIME type */
 	protected $mediatype = 'text/html';
 
+	/** @var string  Template directory */
+	protected $template;
+
 	/** @var string  Layout directory */
 	protected $layoutDirectory = 'html';
 
 	/** @var  ScriptStrategyInterface */
 	private $clientScript;
+
+	private $javascript = [];
+
+	use DumpTrait;
 
 	/**
 	 * @param   ScriptStrategyInterface $strategy The scripting startegy (library) to use
@@ -42,6 +58,23 @@ class HtmlRenderer extends Renderer
 		$this->clientScript = $strategy;
 	}
 
+	public function setTemplate($template)
+	{
+		$this->template = $template;
+	}
+
+	protected function addJavascript($label, $code)
+	{
+		$this->javascript[$label] = $code;
+	}
+
+	public function writeJavascript()
+	{
+		$this->write('<script type="text/javascript">');
+		$this->write(implode("\n", $this->javascript));
+		$this->write('</script>');
+	}
+
 	/**
 	 * @return  array
 	 */
@@ -51,6 +84,30 @@ class HtmlRenderer extends Renderer
 		$metaData['wrapper_data']['client_script'] = empty($this->clientScript) ? null : get_class($this->clientScript);
 
 		return $metaData;
+	}
+
+	/**
+	 * Apply a layout
+	 *
+	 * @param   string               $filename The filename of the layout file
+	 * @param   ContentTypeInterface $content  The content
+	 *
+	 * @return  integer
+	 */
+	private function applyLayout($filename, $content)
+	{
+		$layout = JPATH_ROOT . $this->template . '/' . $filename;
+
+		if (!file_exists($layout))
+		{
+			$layout = JPATH_ROOT . '/layouts/' . $this->layoutDirectory . '/' . $filename;
+		}
+
+		ob_start();
+		include $layout;
+		$html = ob_get_clean();
+
+		return $this->write($html);
 	}
 
 	/**
@@ -98,12 +155,17 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitCompound(Compound $compound)
 	{
-		$len = 0;
-		$len += $this->write("<{$compound->type}>\n");
-
-		foreach ($compound->items as $item)
+		$class = $compound->params->class ?? '';
+		if (!empty($class))
 		{
-			$len += $item->accept($this);
+			$class = " class=\"$class\"";
+		}
+		$len = 0;
+		$len += $this->write("<{$compound->type}{$class}>\n");
+
+		foreach ($compound->elements as $item)
+		{
+			$len += $item->content->accept($this);
 		}
 
 		$len += $this->write("</{$compound->type}>\n");
@@ -112,18 +174,149 @@ class HtmlRenderer extends Renderer
 	}
 
 	/**
-	 * Apply a layout
+	 * Render an image
 	 *
-	 * @param   string               $filename The filename of the layout file
-	 * @param   ContentTypeInterface $content  The content
+	 * @param   Image $image The image
 	 *
-	 * @return  integer
+	 * @return  integer Number of bytes written to the output
 	 */
-	private function applyLayout($filename, $content)
+	public function visitImage(Image $image)
 	{
-		ob_start();
-		include JPATH_ROOT . '/layouts/' . $this->layoutDirectory . '/' . $filename;
+		return $this->applyLayout('image.php', $image);
+	}
 
-		return $this->write(ob_get_clean());
+	/**
+	 * Render an slider
+	 *
+	 * @param   Slider $slider The slider
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitSlider(Slider $slider)
+	{
+		$slider->id = 'slider-' . spl_object_hash($slider);
+
+		$this->preRenderChildElements($slider);
+
+		return $this->applyLayout('slider.php', $slider);
+	}
+
+	/**
+	 * Render an accordion
+	 *
+	 * @param   Accordion $accordion The accordion
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitAccordion(Accordion $accordion)
+	{
+		$accordion->id = 'accordion-' . spl_object_hash($accordion);
+
+		$this->preRenderChildElements($accordion);
+
+		return $this->applyLayout('accordion.php', $accordion);
+	}
+
+	/**
+	 * Render a tree
+	 *
+	 * @param   Tree $tree The tree
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTree(Tree $tree)
+	{
+		$tree->id = 'tree-' . spl_object_hash($tree);
+
+		$this->preRenderChildElements($tree);
+
+		return $this->applyLayout('tree.php', $tree);
+	}
+
+	/**
+	 * Render tabs
+	 *
+	 * @param   Tabs $tabs The tabs
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTabs(Tabs $tabs)
+	{
+		$tabs->id = 'tabs-' . spl_object_hash($tabs);
+
+		$this->preRenderChildElements($tabs);
+
+		return $this->applyLayout('tabs.php', $tabs);
+	}
+
+	/**
+	 * Dump an item
+	 *
+	 * @param   Dump $dump The dump
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitDump(Dump $dump)
+	{
+		return $this->write('<pre>' . $this->dumpEntity($dump->item) . '</pre>');
+	}
+
+	/**
+	 * Render rows
+	 *
+	 * @param   Rows $rows The rows
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitRows(Rows $rows)
+	{
+		$this->preRenderChildElements($rows);
+
+		return $this->applyLayout('rows.php', $rows);
+	}
+
+	/**
+	 * Render columns
+	 *
+	 * @param   Columns $columns The columns
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitColumns(Columns $columns)
+	{
+		$len = 0;
+		$len += $this->write("<{$columns->type}>\n");
+
+		foreach ($columns->elements as $item)
+		{
+			$len += $item->content->accept($this);
+		}
+
+		$len += $this->write("</{$columns->type}>\n");
+
+		return $len;
+	}
+
+	/**
+	 * @param ContentTypeInterface $content
+	 */
+	private function preRenderChildElements(ContentTypeInterface $content)
+	{
+		if (!isset($content->elements))
+		{
+			return;
+		}
+
+		$stash = $this->output;
+
+		foreach ($content->elements as $key => $item)
+		{
+			/** @var ContentTypeInterface $item */
+			$this->output = '';
+			$item->content->accept($this);
+			$content->elements[$key]->html = $this->output;
+		}
+
+		$this->output = $stash;
 	}
 }

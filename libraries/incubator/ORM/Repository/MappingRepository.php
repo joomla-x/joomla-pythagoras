@@ -240,4 +240,31 @@ class MappingRepository implements RepositoryInterface
 			->columns($this->relation->colJoinName())
 			->getItems();
 	}
+
+	/**
+	 * Find all entities.
+	 *
+	 * getAll() is a convenience method, It is equivalent to
+	 * ->findAll()->getItems()
+	 *
+	 * @return  object[]  The requested entities
+	 *
+	 * @throws  OrmException  if there was an error getting the entities
+	 */
+	public function getAll()
+	{
+		return $this->findAll()->getItems();
+	}
+
+	/**
+	 * Create a new entity
+	 *
+	 * @param   array $row A hash with the properties for the new entity
+	 *
+	 * @return  object
+	 */
+	public function createFromArray(array $row)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
 }

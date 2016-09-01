@@ -26,7 +26,7 @@ interface RepositoryInterface
 	 * Find an entity using its id.
 	 *
 	 * getById() is a convenience method, It is equivalent to
-	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
+	 * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->getItem()
 	 *
 	 * @param   mixed $id The id value
 	 *
@@ -36,6 +36,18 @@ interface RepositoryInterface
 	 * @throws  OrmException  if there was an error getting the entity
 	 */
 	public function getById($id);
+
+	/**
+	 * Find all entities.
+	 *
+	 * getAll() is a convenience method, It is equivalent to
+	 * ->findAll()->getItems()
+	 *
+	 * @return  object[]  The requested entities
+	 *
+	 * @throws  OrmException  if there was an error getting the entities
+	 */
+	public function getAll();
 
 	/**
 	 * Find a single entity.

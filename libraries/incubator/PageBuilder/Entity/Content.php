@@ -9,19 +9,20 @@
 namespace Joomla\PageBuilder\Entity;
 
 /**
- * Class PageContent
+ * Class Content
  *
  * @package  Joomla\PageBuilder\Entity
  *
  * @since    __DEPLOY_VERSION__
  */
-class PageContent
+class Content
 {
 	public $id;
-	public $position;
+	public $name;
+	public $contentType;
+	public $contentArgs;
 	public $ordering;
 	public $component;
-	public $layout;
 	public $reference;
 	public $selection;
 	public $params;

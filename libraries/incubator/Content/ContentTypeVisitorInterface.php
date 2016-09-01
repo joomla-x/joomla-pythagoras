@@ -8,17 +8,25 @@
 
 namespace Joomla\Content;
 
+use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Attribution;
+use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
+use Joomla\Content\Type\Dump;
 use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\Image;
 use Joomla\Content\Type\Paragraph;
+use Joomla\Content\Type\Rows;
+use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Tabs;
+use Joomla\Content\Type\Tree;
 
 /**
  * Renderer Interface
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface ContentTypeVisitorInterface
 {
@@ -57,4 +65,77 @@ interface ContentTypeVisitorInterface
 	 * @return  integer Number of bytes written to the output
 	 */
 	public function visitParagraph(Paragraph $paragraph);
+
+	/**
+	 * Render an image
+	 *
+	 * @param   Image $image The image
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitImage(Image $image);
+
+	/**
+	 * Render an slider
+	 *
+	 * @param   Slider $slider The slider
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitSlider(Slider $slider);
+
+	/**
+	 * Render an accordion
+	 *
+	 * @param   Accordion $accordion The accordion
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitAccordion(Accordion $accordion);
+
+	/**
+	 * Render a tree
+	 *
+	 * @param   Tree $tree The tree
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTree(Tree $tree);
+
+	/**
+	 * Render tabs
+	 *
+	 * @param   Tabs $tabs The tabs
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTabs(Tabs $tabs);
+
+	/**
+	 * Dump an item
+	 *
+	 * @param   Dump $dump The dump
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitDump(Dump $dump);
+
+	/**
+	 * Render rows
+	 *
+	 * @param   Rows $rows The rows
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitRows(Rows $rows);
+
+	/**
+	 * Render columns
+	 *
+	 * @param   Columns $columns The columns
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitColumns(Columns $columns);
+
 }

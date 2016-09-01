@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="Joomla\PageBuilder\Entity\MasterContent">
+<entity name="Joomla\PageBuilder\Entity\Content">
 
     <storage>
-        <default table="master_contents"/>
+        <default table="contents"/>
     </storage>
 
     <fields>
@@ -17,18 +17,22 @@
             <validation rule="positive"/>
             <validation rule="integer"/>
         </field>
-        <field name="position" type="string"/>
+        <field name="name" type="string"/>
+        <field name="content_type" type="string"/>
+        <field name="content_args" type="json"/>
         <field name="ordering" type="integer"/>
         <field name="component" type="string"/>
-        <field name="layout" type="string"/>
         <field name="reference" type="string"/>
-        <field name="selection" type="string"/>
+        <field name="selection" type="json"/>
         <field name="params" type="json"/>
+
 
     </fields>
 
     <relations>
-        <belongsTo name="master_id" entity="MasterLayout"/>
+        <belongsTo name="parent_id" entity="Content"/>
+        <belongsTo name="layout_id" entity="Layout"/>
+        <belongsTo name="page_id" entity="Page"/>
     </relations>
 
 </entity>

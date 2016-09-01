@@ -98,7 +98,8 @@ class Installer
 			return;
 		}
 
-		$repo = $this->repositoryFactory->forEntity($entityName);
+		$entityClass = $this->entityDefinitions[$entityName]->class;
+		$repo        = $this->repositoryFactory->forEntity($entityClass);
 
 		// echo "Importing data for $entityName\n";
 

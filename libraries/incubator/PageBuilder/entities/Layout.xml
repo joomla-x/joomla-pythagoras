@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="Joomla\PageBuilder\Entity\MasterLayout">
+<entity name="Joomla\PageBuilder\Entity\Layout">
 
     <storage>
-        <default table="master_layouts"/>
+        <default table="layouts"/>
     </storage>
 
     <fields>
@@ -28,13 +28,17 @@
     </fields>
 
     <relations>
+        <belongsTo name="parent_id"
+                   entity="Layout"
+                   label="JFIELD_PARENT_LABEL"
+                   description="JFIELD_PARENT_DESC"
+        />
         <belongsTo name="template_id"
                    entity="Template"
         />
-        <hasMany name="pages"
-                 entity="Page"
-                 reference="master_id"
-        />
+        <hasMany name="children" entity="Layout" reference="parent_id"/>
+        <hasMany name="pages" entity="Page" reference="layout_id"/>
+        <hasMany name="content" entity="Content" reference="layout_id"/>
     </relations>
 
 </entity>

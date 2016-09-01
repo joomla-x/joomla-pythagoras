@@ -35,9 +35,9 @@
                    label="JFIELD_PARENT_LABEL"
                    description="JFIELD_PARENT_DESC"
         />
-        <belongsTo name="master_id" entity="MasterLayout"/>
+        <belongsTo name="layout_id" entity="Layout"/>
         <hasMany name="children" entity="Page" reference="parent_id"/>
-        <hasMany name="content" entity="PageContent" reference="page_id"/>
+        <hasMany name="content" entity="Content" reference="page_id"/>
     </relations>
 
 </entity>

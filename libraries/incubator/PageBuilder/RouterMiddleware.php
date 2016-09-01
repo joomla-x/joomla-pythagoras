@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @package  Joomla/PageBuilder
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class RouterMiddleware implements MiddlewareInterface
 {

@@ -14,7 +14,7 @@ use Joomla\Content\ContentTypeVisitorInterface;
  * Headline ContentType
  *
  * @package  Joomla/Content
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  *
  * @property string  $text
  * @property integer $level

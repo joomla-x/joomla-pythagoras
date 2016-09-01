@@ -240,6 +240,25 @@ class EntityBuilder
 				{
 					// @todo Apply validation according to definition
 					$value = $match[$colName];
+
+					if ($definition instanceof Field)
+					{
+						switch ($definition->type)
+						{
+							case 'int':
+							case 'integer':
+								$value = (integer) $value;
+								break;
+
+							case 'json':
+								$value = json_decode($value);
+								break;
+
+							default:
+								// Leave the value alone
+								break;
+						}
+					}
 				}
 
 				if ($reflection->hasProperty($varName))
@@ -319,6 +338,22 @@ class EntityBuilder
 				$property = $reflection->getProperty($varName);
 				$property->setAccessible(true);
 				$value = $property->getValue($entity);
+
+				switch ($field->type)
+				{
+					case 'int':
+					case 'integer':
+						$value = (integer) $value;
+						break;
+
+					case 'json':
+						$value = json_encode($value);
+						break;
+
+					default:
+						// Leave the value alone
+						break;
+				}
 			}
 
 			$properties[$colName] = $value;

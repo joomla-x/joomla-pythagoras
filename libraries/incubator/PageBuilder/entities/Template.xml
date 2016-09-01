@@ -26,7 +26,7 @@
 
     <relations>
         <hasMany name="masters"
-                 entity="MasterLayout"
+                 entity="Layout"
                  reference="template_id"
         />
     </relations>

@@ -8,15 +8,20 @@
 
 namespace Joomla\PageBuilder\Entity;
 
+use Joomla\ORM\Repository\RepositoryInterface;
+
 /**
- * Class MasterLayout
+ * Class Layout
  *
  * @package  Joomla\PageBuilder\Entity
  *
  * @since    __DEPLOY_VERSION__
  */
-class MasterLayout
+class Layout
 {
 	public $id;
 	public $title;
+
+	/** @var  RepositoryInterface */
+	public $content;
 }

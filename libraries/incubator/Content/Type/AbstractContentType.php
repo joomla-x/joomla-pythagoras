@@ -14,10 +14,13 @@ use Joomla\Content\ContentTypeInterface;
  * Abstract ContentType
  *
  * @package  Joomla/Content
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 abstract class AbstractContentType implements ContentTypeInterface
 {
+	/** @var  \stdClass */
+	public $params;
+
 	/**
 	 * Magic getter.
 	 *

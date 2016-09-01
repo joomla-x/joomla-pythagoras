@@ -8,10 +8,18 @@
 
 namespace Joomla\Renderer;
 
+use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Attribution;
+use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
+use Joomla\Content\Type\Dump;
 use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\Image;
 use Joomla\Content\Type\Paragraph;
+use Joomla\Content\Type\Rows;
+use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Tabs;
+use Joomla\Content\Type\Tree;
 
 /**
  * Class JsonRenderer
@@ -30,6 +38,21 @@ class JsonRenderer extends Renderer
 
 	/** @var int The current output buffer length */
 	protected $len = 0;
+
+	/**
+	 * Update the content
+	 *
+	 * @return integer
+	 */
+	private function updateContent()
+	{
+		$this->output = json_encode($this->data, JSON_PRETTY_PRINT);
+		$total        = strlen($this->output);
+		$len          = $total - $this->len;
+		$this->len    = $total;
+
+		return $len;
+	}
 
 	/**
 	 * Render a headline.
@@ -57,9 +80,9 @@ class JsonRenderer extends Renderer
 		$stash      = $this->data;
 		$this->data = [];
 
-		foreach ($compound->items as $item)
+		foreach ($compound->elements as $item)
 		{
-			$item->accept($this);
+			$item->content->accept($this);
 		}
 
 		$stash[]    = [$compound->type => $this->data];
@@ -97,17 +120,98 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * Update the content
+	 * Render an image
 	 *
-	 * @return integer
+	 * @param   Image $image The image
+	 *
+	 * @return  integer Number of bytes written to the output
 	 */
-	private function updateContent()
+	public function visitImage(Image $image)
 	{
-		$this->output = json_encode($this->data, JSON_PRETTY_PRINT);
-		$total        = strlen($this->output);
-		$len          = $total - $this->len;
-		$this->len    = $total;
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
 
-		return $len;
+	/**
+	 * Render an slider
+	 *
+	 * @param   Slider $slider The slider
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitSlider(Slider $slider)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render an accordion
+	 *
+	 * @param   Accordion $accordion The accordion
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitAccordion(Accordion $accordion)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a tree
+	 *
+	 * @param   Tree $tree The tree
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTree(Tree $tree)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render tabs
+	 *
+	 * @param   Tabs $tabs The tabs
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTabs(Tabs $tabs)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Dump an item
+	 *
+	 * @param   Dump $dump The dump
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitDump(Dump $dump)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render rows
+	 *
+	 * @param   Rows $rows The rows
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitRows(Rows $rows)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render columns
+	 *
+	 * @param   Columns $columns The columns
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitColumns(Columns $columns)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 }

@@ -11,6 +11,7 @@ require_once JPATH_ROOT . '/libraries/vendor/autoload.php';
 try
 {
 	$installer = new Installer(JPATH_ROOT . "/data");
+	$installer->install(JPATH_ROOT . '/libraries/incubator/Media');
 	$installer->install(JPATH_ROOT . '/libraries/incubator/PageBuilder');
 	$installer->finish();
 
