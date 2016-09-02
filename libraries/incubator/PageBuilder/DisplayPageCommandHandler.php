@@ -48,6 +48,7 @@ class DisplayPageCommandHandler extends CommandHandler
 	public function handle(DisplayPageCommand $command)
 	{
 		$id              = $command->getId();
+		$vars            = $command->getVars();
 		$this->output    = $command->getStream();
 		$this->container = $command->getContainer();
 

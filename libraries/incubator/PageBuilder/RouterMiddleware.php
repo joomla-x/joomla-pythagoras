@@ -8,12 +8,12 @@
 
 namespace Joomla\PageBuilder;
 
+use InvalidArgumentException;
 use Joomla\DI\Container;
 use Joomla\Http\MiddlewareInterface;
-use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\PageBuilder\Entity\Page;
+use Joomla\Router\Router;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -56,27 +56,65 @@ class RouterMiddleware implements MiddlewareInterface
 
 		if (!isset($attributes['command']))
 		{
-			#try
+			try
 			{
 				/** @var RepositoryInterface $repository */
 				$repository = $this->container->get('Repository')->forEntity(Page::class);
 
-				$path = preg_replace('~^/?index.php/?~', '', $request->getUri()->getPath());
-				$page = $repository
-					->findOne()
-					->with('url', Operator::EQUAL, $path)
-					->getItem();
+				/** @var Page[] $pages */
+				$pages = $repository->getAll();
 
-				$command = new DisplayPageCommand($page->id, $response->getBody(), $this->container);
+				$router = new Router;
+
+				foreach ($pages as $page)
+				{
+					$router->get($this->expandUrl($page->url, $page), function () use ($page) {
+						return $page;
+					});
+				}
+
+				$path  = preg_replace('~^/?index.php/?~', '', $request->getUri()->getPath());
+				$route = $router->parseRoute($path);
+				$page  = $route['controller']();
+				$vars  = $route['vars'];
+
+				$command = new DisplayPageCommand($page->id, $vars, $response->getBody(), $this->container);
 				$request = $request->withAttribute('command', $command);
 				// @todo Emit afterRouting event
 			}
-			#catch (EntityNotFoundException $e)
+			catch (InvalidArgumentException $e)
 			{
 				// Do nothing
 			}
 		}
 
 		return $next($request, $response);
+	}
+
+	/**
+	 * @param $url
+	 * @param $page
+	 *
+	 * @return string
+	 */
+	private function expandUrl($url, $page)
+	{
+		if (empty($url))
+		{
+			return '/';
+		}
+
+		while ($url[0] != '/' && !empty($page->parent))
+		{
+			$page = $page->parent;
+			$url  = $page->url . '/' . $url;
+		}
+
+		if ($url[0] != '/')
+		{
+			$url = '/' . $url;
+		}
+
+		return $url;
 	}
 }

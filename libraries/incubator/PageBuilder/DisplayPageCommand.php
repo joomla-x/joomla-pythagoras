@@ -20,6 +20,7 @@ use Psr\Http\Message\StreamInterface;
 class DisplayPageCommand extends Command
 {
 	private $id;
+	private $vars;
 	private $stream;
 	private $container;
 
@@ -30,9 +31,10 @@ class DisplayPageCommand extends Command
 	 * @param   StreamInterface    $stream The output stream
 	 * @param   ContainerInterface $container
 	 */
-	public function __construct($id, $stream, $container)
+	public function __construct($id, $vars, $stream, $container)
 	{
 		$this->id        = $id;
+		$this->vars      = $vars;
 		$this->stream    = $stream;
 		$this->container = $container;
 
@@ -45,6 +47,14 @@ class DisplayPageCommand extends Command
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVars()
+	{
+		return $this->vars;
 	}
 
 	/**

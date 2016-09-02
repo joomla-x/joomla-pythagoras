@@ -5,3 +5,4 @@ id,title,url,parent_id,layout_id
 4,"About","about",3,3
 5,"FAQ","faq",3,3
 6,"Blog","blog",3,3
+7,":title",":alias",6,3
