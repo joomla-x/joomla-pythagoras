@@ -9,7 +9,7 @@
  * @codingStandardsIgnoreStart
  */
 
-$subTree = function($node, $callback) {
+$subTree = function($node, $callback, $level = 0) {
 	if (empty($node))
 	{
 		return;
@@ -26,12 +26,17 @@ $subTree = function($node, $callback) {
 	else
 	{
 		?>
-		<li><label class="tree-toggler nav-header"><a href="#"><?= $node->title; ?></a></label>
-			<ul class="nav nav-list tree" style="display: none;">
+		<li>
+			<?php if ($level == 0) : ?>
+			<label class="tree-toggler nav-header"><a href="#"><?= $node->title; ?></a></label>
+			<?php else : ?>
+			<a href="#" class="tree-toggler"><?= $node->title; ?></a>
+			<?php endif; ?>
+				<ul class="nav nav-list tree" style="display: none;">
 				<?php
 				foreach ($children as $item)
 				{
-					call_user_func($callback, $item, $callback);
+					call_user_func($callback, $item, $callback, $level + 1);
 				}
 				?>
 			</ul>
@@ -52,10 +57,10 @@ unset($subTree);
 
 $js = <<<JS
 $(document).ready(function () {
-	$('label.tree-toggler').click(function () {
+	$('.tree-toggler').click(function () {
 		$(this).parent().children('ul.tree').toggle(300);
 	});
 });
 JS;
 
-$this->addJavascript('tree', $js);
+$this->addJavascript('.tree-toggler', $js);

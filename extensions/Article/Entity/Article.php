@@ -1,30 +1,27 @@
 <?php
 /**
- * Part of the Joomla Media Package
+ * Part of the Joomla Article Package
  *
  * @copyright  Copyright (C) 2015 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Media\Entity;
+namespace Joomla\Extension\Article\Entity;
 
 /**
- * Class Image
+ * Class Article
  *
- * @package  Joomla\Media
+ * @package  Joomla\Extension\Article
  *
  * @since    __DEPLOY_VERSION__
  */
-class Image
+class Article
 {
 	public $id;
-	public $caption;
-	public $description;
-	public $url;
-	public $creator;
+	public $title;
+	public $alias;
+	public $teaser;
+	public $body;
+	public $author;
 	public $license;
-	public $mimeType;
-	public $width;
-	public $height;
-	public $exif;
 }

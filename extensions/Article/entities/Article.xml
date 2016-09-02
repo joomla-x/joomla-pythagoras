@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
     "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
-<entity name="article">
+<entity name="Joomla\Extension\Article\Entity\Article">
 
     <storage>
-        <default table="article"/>
+        <default table="articles"/>
     </storage>
 
     <fields>
@@ -24,6 +24,12 @@
         >
             <validation rule="maxlen" value="64"/>
         </field>
+
+        <field name="alias"
+               type="text"
+               label="JGLOBAL_FIELD_ALIAS_LABEL"
+               description="JGLOBAL_FIELD_ALIAS_DESC"
+        />
 
         <field name="teaser"
                type="richtext"
@@ -56,12 +62,12 @@
 
     <relations>
         <belongsTo name="parent_id"
-                   entity="article"
+                   entity="Article"
                    label="JFIELD_PARENT_LABEL"
                    description="JFIELD_PARENT_DESC"
         />
         <hasMany name="children"
-                 entity="article"
+                 entity="Article"
                  reference="parent_id"
         />
     </relations>
