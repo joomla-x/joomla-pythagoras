@@ -3,3 +3,41 @@ id,title,alias,teaser,body,author,license,parent_id
 2,"Second Article","second-article","Look at another example","This provides child elements","Doctor","CC",0
 3,"Part One","second-article-1","No. 1 of 2. article's children","This is the first child element","Rose Tyler","CC",2
 4,"Part Two","second-article-2", "No. 2 of 2. article's children","This is the second child element","Doctor","CC",2
+5,"About Joomla! X","about","Learn more about Joomla! X and the ideas behind it!","
+<p>This project defines the development target for Joomla! That means: The ongoing development of the Joomla CMS will one day
+end up to be identical to this code. It follows a clean-base approach.</p>
+
+<h2>Why Clean Base?</h2>
+
+<p>We honestly tried an incremental approach, i.e., to transform J!3 into J!X using small steps.
+The tight coupling and non-sufficient test coverage, however, makes it extremely hard to apply a state-of-the-art architecture.</p>
+
+<p>It was suggested to start from a fresh ground, the clean base, to create the basic architecture,
+and to port existing functionality in a second step.
+The J!X Architecture Team decided to try this approach.</p>
+
+<h2>The ""Chris Davenport Happy Milestone"" (CDHM)</h2>
+
+<p>The team defined a milestone, named after the team member, Chris Davenport, who brought up the requirements.
+You can see the original document here: <a href=""https://github.com/joomla-projects/joomla-pythagoras/blob/master/docs/j4cdhms.md"">docs/j4cdhms.md</a></p>
+
+<p>The final decision is made, when the milestone is reached, or it shows out, that it can not be reached with the clean base approach.</p>
+
+<h2>Contribute</h2>
+
+<p>Joomla! X is a big endeavour, and it surely needs some more hands on it.</p>
+
+<ul>
+  <li>Add issues to the tracker to discuss things.</li>
+  <li>Fork <a href=""https://github.com/joomla-projects/joomla-pythagoras"">this repo</a>, write code, and send a PR against the master branch.
+    Before sending your PR, please check your contribution first using
+
+<pre>$ ./libraries/vendor/bin/robo test
+$ ./libraries/vendor/bin/robo check:style</pre>
+  </li>
+</ul>
+
+<p>Thank you!</p>
+
+<p>The Joomla! 4 Architecture Team</p>
+","Niels Braczek","JDL",0

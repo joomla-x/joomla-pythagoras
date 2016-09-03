@@ -76,11 +76,17 @@ class DisplayPageCommandHandler extends CommandHandler
 			$page->parent = $page->layout;
 		}
 
+		$contentTree = $this->buildTree($contentItems);
+
+		if ($page->title[0] == ':')
+		{
+			#echo '<pre>' . $this->dumpEntity($contentTree[0]) . '</pre>';
+			$page->title = $contentTree[0]->article->title;
+		}
+
 		$template = $this->loadTemplate(JPATH_ROOT . '/' . $page->layout->template->path . '/index.php', get_object_vars($page));
 		$parts    = preg_split('~</body>~', $template, 2);
 		$parts[1] = '</body>' . $parts[1];
-
-		$contentTree = $this->buildTree($contentItems);
 
 		$this->output->write($parts[0]);
 		foreach ($contentTree as $root)
