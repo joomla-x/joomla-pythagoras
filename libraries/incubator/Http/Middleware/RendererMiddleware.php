@@ -8,6 +8,7 @@
 
 namespace Joomla\Http\Middleware;
 
+use Interop\Container\ContainerInterface;
 use Joomla\Event\Dispatcher;
 use Joomla\Http\MiddlewareInterface;
 use Joomla\Renderer\Factory as RendererFactory;
@@ -29,14 +30,18 @@ class RendererMiddleware implements MiddlewareInterface
 	/** @var Dispatcher  */
 	private $dispatcher;
 
+	/** @var  ContainerInterface */
+	private $container;
+
 	/**
 	 * RendererMiddleware constructor.
 	 *
 	 * @param   Dispatcher $dispatcher  The event dispatcher
 	 */
-	public function __construct(Dispatcher $dispatcher)
+	public function __construct(Dispatcher $dispatcher, ContainerInterface $container)
 	{
 		$this->dispatcher = $dispatcher;
+		$this->container  = $container;
 	}
 
 	/**
@@ -61,7 +66,7 @@ class RendererMiddleware implements MiddlewareInterface
 
 		$mapping = parse_ini_file(JPATH_ROOT . '/config/renderer.ini');
 
-		$renderer = (new RendererFactory($mapping))->create($acceptHeader);
+		$renderer = (new RendererFactory($mapping))->create($acceptHeader, $this->container);
 		$renderer = new \Joomla\Renderer\EventDecorator($renderer, $this->dispatcher);
 
 		$response = $next($request, $response->withBody($renderer));

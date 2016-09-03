@@ -42,13 +42,16 @@ class DisplayPageCommandHandler extends CommandHandler
 	/** @var  StreamInterface|HtmlRenderer */
 	private $output;
 
+	/** @var  string[] */
+	private $vars;
+
 	/**
 	 * @param DisplayPageCommand $command
 	 */
 	public function handle(DisplayPageCommand $command)
 	{
 		$id              = $command->getId();
-		$vars            = $command->getVars();
+		$this->vars      = $command->getVars();
 		$this->output    = $command->getStream();
 		$this->container = $command->getContainer();
 
@@ -279,6 +282,10 @@ class DisplayPageCommandHandler extends CommandHandler
 
 		foreach ((array) $selection as $key => $value)
 		{
+			if (!empty($value) && $value[0] == ':')
+			{
+				$value = $this->vars[substr($value, 1)];
+			}
 			$finder = $finder->with($key, Operator::EQUAL, $value);
 		}
 

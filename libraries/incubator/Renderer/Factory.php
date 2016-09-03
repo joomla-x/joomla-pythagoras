@@ -8,6 +8,7 @@
 
 namespace Joomla\Renderer;
 
+use Interop\Container\ContainerInterface;
 use Joomla\Http\Header\AcceptHeader;
 use Joomla\Renderer\Exception\NotFoundException;
 
@@ -34,11 +35,12 @@ class Factory
 	}
 
 	/**
-	 * @param   string $acceptHeader The 'Accept' header
+	 * @param   string             $acceptHeader The 'Accept' header
+	 * @param   ContainerInterface $container
 	 *
-	 * @return  mixed
+	 * @return mixed
 	 */
-	public function create($acceptHeader = '*/*')
+	public function create($acceptHeader = '*/*', ContainerInterface $container)
 	{
 		$header = new AcceptHeader($acceptHeader);
 
@@ -51,6 +53,6 @@ class Factory
 
 		$classname = $this->mediaTypeMap[$match['token']];
 
-		return new $classname($match);
+		return new $classname($match, $container);
 	}
 }

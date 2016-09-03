@@ -10,6 +10,7 @@ namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\Accordion;
+use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
@@ -20,6 +21,7 @@ use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
 use Joomla\Content\Type\Tabs;
+use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
 
 /**
@@ -206,5 +208,29 @@ class PlainRenderer extends Renderer
 	public function visitColumns(Columns $columns)
 	{
 		return $this->visitCompound($columns);
+	}
+
+	/**
+	 * Render an article
+	 *
+	 * @param   Article $article The article
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitArticle(Article $article)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a teaser
+	 *
+	 * @param   Teaser $teaser The teaser
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTeaser(Teaser $teaser)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 }

@@ -10,6 +10,7 @@ namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\Accordion;
+use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
@@ -20,7 +21,11 @@ use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
 use Joomla\Content\Type\Tabs;
+use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
+use Joomla\ORM\Operator;
+use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\Renderer\Exception\NotFoundException;
 use Joomla\Tests\Unit\DumpTrait;
 
 /**
@@ -298,6 +303,32 @@ class HtmlRenderer extends Renderer
 	}
 
 	/**
+	 * Render an article
+	 *
+	 * @param   Article $article The article
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitArticle(Article $article)
+	{
+		return $this->applyLayout('article.php', $article);
+	}
+
+	/**
+	 * Render a teaser
+	 *
+	 * @param   Teaser $teaser The teaser
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitTeaser(Teaser $teaser)
+	{
+		$teaser->url = $this->getFullUrl($teaser->article);
+
+		return $this->applyLayout('teaser.php', $teaser);
+	}
+
+	/**
 	 * @param ContentTypeInterface $content
 	 */
 	private function preRenderChildElements(ContentTypeInterface $content)
@@ -318,5 +349,68 @@ class HtmlRenderer extends Renderer
 		}
 
 		$this->output = $stash;
+	}
+
+	/**
+	 * @param $url
+	 * @param $page
+	 *
+	 * @return string
+	 */
+	private function expandUrl($url, $page)
+	{
+		if (empty($url))
+		{
+			return '/';
+		}
+
+		while ($url[0] != '/' && !empty($page->parent))
+		{
+			$page = $page->parent;
+			$url  = $page->url . '/' . $url;
+		}
+
+		if ($url[0] != '/')
+		{
+			$url = '/' . $url;
+		}
+
+		return $url;
+	}
+
+	/**
+	 * @param   object $object
+	 *
+	 * @return  string
+	 */
+	private function getFullUrl($object)
+	{
+		/** @var RepositoryInterface $repository */
+		$repository   = $this->container->get('Repository')->forEntity('Content');
+		$entityType   = explode('\\', get_class($object));
+		$entityType   = array_pop($entityType);
+		$contentItems = $repository->findAll()->with('component', Operator::EQUAL, $entityType)->getItems();
+
+		$candidates = [];
+
+		foreach ($contentItems as $item)
+		{
+			if (!empty($item->selection) && !empty($item->selection->alias))
+			{
+				$candidates[] = $this->expandUrl($object->alias, $item->page);
+			}
+		}
+
+		if (empty($candidates))
+		{
+			throw new NotFoundException('Unable to find a URL');
+		}
+
+		if (count($candidates) > 1)
+		{
+			// @todo Warn about ambiguosity
+		}
+
+		return substr($candidates[0], 1);
 	}
 }

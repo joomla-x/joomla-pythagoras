@@ -24,7 +24,7 @@ $container = initContainer();
 $app = new Application(
 	[
 		new ResponseSenderMiddleware,
-		new RendererMiddleware($container->get('dispatcher')),
+		new RendererMiddleware($container->get('dispatcher'), $container),
 		new PageBuilderRouterMiddleware($container),
 		new DefaultRouterMiddleware,
 		new LegacyRouterMiddleware,

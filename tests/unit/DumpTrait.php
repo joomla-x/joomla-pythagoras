@@ -81,7 +81,7 @@ trait DumpTrait
 	{
 		if (is_null($object) || is_scalar($object))
 		{
-			return var_export($object, true);
+			return var_export($object, true) . "\n";
 		}
 
 		$res = get_class($object) . " Object\n{\n";

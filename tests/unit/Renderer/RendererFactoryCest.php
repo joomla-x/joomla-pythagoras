@@ -57,6 +57,7 @@ class RendererFactoryCest
 	 */
 	public function RendererFactoryCreatesTheCorrectRenderer(UnitTester $I)
 	{
+		$container = new \ArbitraryInteropContainer();
 
 		foreach ($this->dataAcceptHeaders() as $foo)
 		{
@@ -64,7 +65,7 @@ class RendererFactoryCest
 
 			try
 			{
-				$renderer = $this->factory->create($acceptHeader);
+				$renderer = $this->factory->create($acceptHeader, $container);
 				$I->assertTrue(
 					$renderer instanceof $expected,
 					"Expected $expected, but got " . get_class($renderer)

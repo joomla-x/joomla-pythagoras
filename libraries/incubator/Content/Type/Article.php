@@ -8,30 +8,28 @@
 
 namespace Joomla\Content\Type;
 
+use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\ContentTypeVisitorInterface;
-use Joomla\Media\Entity\Image as ImageEntity;
 
 /**
- * Image ContentType
+ * Article ContentType
  *
  * @package  Joomla/Content
  * @since    __DEPLOY_VERSION__
  *
- * @property string $image
- * @property string $alt
+ * @property string                 $type
+ * @property ContentTypeInterface[] $elements
  */
-class Image extends AbstractContentType
+class Article extends AbstractContentType
 {
 	/**
-	 * Image constructor.
+	 * Article constructor.
 	 *
-	 * @param   ImageEntity $item The location of the image file
-	 * @param   string      $alt  The alternative description
+	 * @param   object  $item  The article
 	 */
-	public function __construct(ImageEntity $item, $alt = '')
+	public function __construct($item)
 	{
-		$this->image = $item;
-		$this->alt   = $alt;
+		$this->article = $item;
 	}
 
 	/**
@@ -43,6 +41,6 @@ class Image extends AbstractContentType
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		return $visitor->visitImage($this);
+		return $visitor->visitArticle($this);
 	}
 }
