@@ -81,6 +81,7 @@ class DisplayPageCommandHandler extends CommandHandler
 		if ($page->title[0] == ':')
 		{
 			#echo '<pre>' . $this->dumpEntity($contentTree[0]) . '</pre>';
+			// @todo Maybe ->article should be more abstract, e.g., ->object, or ->entity, because we cannot be sure to have an article here
 			$page->title = $contentTree[0]->article->title;
 		}
 

@@ -19,5 +19,5 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 19,layouts-1,Joomla\Content\Type\Dump,,1,Layout,,,,11,0,1
 20,logo-image,Joomla\Content\Type\Image,,1,Image,,"{""id"":1}",,3,2,0
 21,article-detail,Joomla\Content\Type\Article,,1,Article,,"{""alias"":"":alias""}",,0,0,7
-22,article-blog,Joomla\Content\Type\Teaser,,1,Article,,,,0,0,6
+22,article-blog,Joomla\Content\Type\Teaser,,1,Article,,"{""category"":""blog""}",,0,0,6
 23,about,Joomla\Content\Type\Article,,1,Article,,"{""id"":5}",,0,0,4

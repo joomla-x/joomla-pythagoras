@@ -25,6 +25,10 @@
             <validation rule="maxlen" value="64"/>
         </field>
 
+        <field name="category"
+               type="text"
+        />
+
         <field name="alias"
                type="text"
                label="JGLOBAL_FIELD_ALIAS_LABEL"

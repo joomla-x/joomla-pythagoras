@@ -19,6 +19,7 @@ class Article
 {
 	public $id;
 	public $title;
+	public $category;
 	public $alias;
 	public $teaser;
 	public $body;
