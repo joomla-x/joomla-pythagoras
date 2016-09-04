@@ -78,14 +78,14 @@ class DisplayPageCommandHandler extends CommandHandler
 
 		$contentTree = $this->buildTree($contentItems);
 
-		if ($page->title[0] == ':')
+		$data = get_object_vars($page);
+
+		if ($data['title'][0] == ':')
 		{
-			#echo '<pre>' . $this->dumpEntity($contentTree[0]) . '</pre>';
-			// @todo Maybe ->article should be more abstract, e.g., ->object, or ->entity, because we cannot be sure to have an article here
-			$page->title = $contentTree[0]->article->title;
+			// @todo Retrieve the title
 		}
 
-		$template = $this->loadTemplate(JPATH_ROOT . '/' . $page->layout->template->path . '/index.php', get_object_vars($page));
+		$template = $this->loadTemplate(JPATH_ROOT . '/' . $page->layout->template->path . '/index.php', $data);
 		$parts    = preg_split('~</body>~', $template, 2);
 		$parts[1] = '</body>' . $parts[1];
 
