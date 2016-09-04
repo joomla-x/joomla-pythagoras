@@ -8,11 +8,13 @@
 
 namespace Joomla\Renderer;
 
+use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
+use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Dump;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Image;
@@ -146,11 +148,11 @@ class DocbookRenderer extends Renderer
 	/**
 	 * Dump an item
 	 *
-	 * @param   Dump $dump The dump
+	 * @param   ContentTypeInterface $dump The dump
 	 *
 	 * @return  integer Number of bytes written to the output
 	 */
-	public function visitDump(Dump $dump)
+	public function visitDump(ContentTypeInterface $dump)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
@@ -199,6 +201,18 @@ class DocbookRenderer extends Renderer
 	 * @return  integer Number of bytes written to the output
 	 */
 	public function visitTeaser(Teaser $teaser)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a defaultMenu
+	 *
+	 * @param   DefaultMenu $defaultMenu The defaultMenu
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitDefaultMenu(DefaultMenu $defaultMenu)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}

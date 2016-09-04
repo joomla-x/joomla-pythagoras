@@ -14,18 +14,20 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 13,properties,Joomla\Content\Type\Accordion,,4,,,,"{""title"":""Properties""}",9,0,1
 14,menu_tree,Joomla\Content\Type\Tree,,1,Page,,"{""parent_id"":0}",,7,0,1
 15,"teaser-1",Joomla\Content\Type\Headline,{"text":"Welcome to the Backend!"},1,,,,,4,2,0
-18,about,Joomla\Content\Type\Article,,1,Article,,"{""id"":5}",,27,0,4
+18,about,Joomla\Content\Type\Article,,1,Article,,"{""id"":5}",,34,0,4
 19,layouts-1,Joomla\Content\Type\Dump,,1,Layout,,,,11,0,1
 20,logo-image,Joomla\Content\Type\Image,,1,Image,,"{""id"":1}",,3,2,0
-21,article-detail,Joomla\Content\Type\Article,,1,Article,,"{""alias"":"":alias""}",,27,0,7
-22,article-blog,Joomla\Content\Type\Teaser,,1,Article,,"{""category"":""blog""}",,27,0,6
+21,article-detail,Joomla\Content\Type\Article,,1,Article,,"{""alias"":"":alias""}",,34,0,7
+22,article-blog,Joomla\Content\Type\Teaser,,1,Article,,"{""category"":""blog""}",,34,0,6
 23,body,Joomla\Content\Type\Rows,"{""type"":""div""}",1,,,,,0,3,0
 24,header,Joomla\Content\Type\Columns,"{""type"":""header""}",1,,,,,23,3,0
 25,logo,Joomla\Content\Type\Compound,"{""type"":""div""}",1,,,,"{""class"":""col-md-4""}",24,3,0
 26,teaser,Joomla\Content\Type\Slider,,2,,,,"{""class"":""col-md-8""}",24,3,0
-27,main,Joomla\Content\Type\Columns,"{""type"":""main""}",2,,,,,23,3,0
+27,main,Joomla\Content\Type\Columns,"{""type"":""div""}",2,,,,,23,3,0
 28,footer,Joomla\Content\Type\Columns,"{""type"":""footer""}",3,,,,,23,3,0
 29,"teaser-1",Joomla\Content\Type\Image,,1,Image,,"{""id"":4}",,26,3,0
 30,"teaser-2",Joomla\Content\Type\Image,,2,Image,,"{""id"":2}",,26,3,0
 31,"teaser-3",Joomla\Content\Type\Image,,3,Image,,"{""id"":3}",,26,3,0
 32,logo-image,Joomla\Content\Type\Image,,1,Image,,"{""id"":1}",,25,3,0
+33,menu,Joomla\Content\Type\DefaultMenu,,1,Page,,"{""id"":3}","{""levels"":2,""class"":""container col-md-2""}",27,3,0
+34,content,Joomla\Content\Type\Compound,"{""type"":""main""}",2,,,,"{""class"":""col-md-10""}",27,3,0

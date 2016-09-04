@@ -8,13 +8,14 @@
 
 namespace Joomla\Renderer;
 
+use Joomla\Cms\Entity\Menu;
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
-use Joomla\Content\Type\Dump;
+use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Image;
 use Joomla\Content\Type\Paragraph;
@@ -94,8 +95,8 @@ class HtmlRenderer extends Renderer
 	/**
 	 * Apply a layout
 	 *
-	 * @param   string               $filename The filename of the layout file
-	 * @param   ContentTypeInterface $content  The content
+	 * @param   string                      $filename The filename of the layout file
+	 * @param   object|ContentTypeInterface $content  The content
 	 *
 	 * @return  integer
 	 */
@@ -257,11 +258,11 @@ class HtmlRenderer extends Renderer
 	/**
 	 * Dump an item
 	 *
-	 * @param   Dump $dump The dump
+	 * @param   ContentTypeInterface $dump The dump
 	 *
 	 * @return  integer Number of bytes written to the output
 	 */
-	public function visitDump(Dump $dump)
+	public function visitDump(ContentTypeInterface $dump)
 	{
 		return $this->write('<pre>' . $this->dumpEntity($dump->item) . '</pre>');
 	}
@@ -329,6 +330,36 @@ class HtmlRenderer extends Renderer
 	}
 
 	/**
+	 * Render a defaultMenu
+	 *
+	 * @param   DefaultMenu $defaultMenu The defaultMenu
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitDefaultMenu(DefaultMenu $defaultMenu)
+	{
+		$menu = $this->convertPageTreeToMenu($defaultMenu->item);
+		$defaultMenu->item = $menu;
+
+		return $this->applyLayout('defaultMenu.php', $defaultMenu);
+	}
+
+	private function convertPageTreeToMenu($page)
+	{
+		$menu = new Menu(
+			$page->title,
+			$this->expandUrl($page->url, $page)
+		);
+
+		foreach ($page->children->getAll() as $child)
+		{
+			$menu->add($this->convertPageTreeToMenu($child));
+		}
+
+		return $menu;
+	}
+
+	/**
 	 * @param ContentTypeInterface $content
 	 */
 	private function preRenderChildElements(ContentTypeInterface $content)
@@ -361,7 +392,7 @@ class HtmlRenderer extends Renderer
 	{
 		if (empty($url))
 		{
-			return '/';
+			return '/index.php';
 		}
 
 		while ($url[0] != '/' && !empty($page->parent))
@@ -375,7 +406,7 @@ class HtmlRenderer extends Renderer
 			$url = '/' . $url;
 		}
 
-		return $url;
+		return '/index.php' . $url;
 	}
 
 	/**
@@ -411,6 +442,6 @@ class HtmlRenderer extends Renderer
 			// @todo Warn about ambiguosity
 		}
 
-		return substr($candidates[0], 1);
+		return $candidates[0];
 	}
 }
