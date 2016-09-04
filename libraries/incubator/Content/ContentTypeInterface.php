@@ -25,4 +25,11 @@ interface ContentTypeInterface
 	 * @return  mixed
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor);
+
+	/**
+	 * Gets the title for the content
+	 *
+	 * @return  string
+	 */
+	public function getTitle();
 }

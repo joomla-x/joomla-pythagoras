@@ -14,6 +14,8 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 13,properties,Joomla\Content\Type\Accordion,,4,,,,"{""title"":""Properties""}",9,0,1
 14,menu_tree,Joomla\Content\Type\Tree,,1,Page,,"{""parent_id"":0}",,7,0,1
 15,"teaser-1",Joomla\Content\Type\Headline,{"text":"Welcome to the Backend!"},1,,,,,4,2,0
+16,faq,Joomla\Content\Type\Accordion,,1,,,,,34,0,5
+17,faq-item,Joomla\Content\Type\Article,,1,Article,,{"category":"faq"},,16,0,5
 18,about,Joomla\Content\Type\Article,,1,Article,,"{""id"":5}",,34,0,4
 19,layouts-1,Joomla\Content\Type\Dump,,1,Layout,,,,11,0,1
 20,logo-image,Joomla\Content\Type\Image,,1,Image,,"{""id"":1}",,3,2,0

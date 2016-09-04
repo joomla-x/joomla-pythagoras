@@ -22,6 +22,22 @@ abstract class AbstractCompoundType extends AbstractContentType implements Compo
 	public $elements = [];
 
 	/**
+	 * Constructor.
+	 *
+	 * @param   string                 $title
+	 * @param   ContentTypeInterface[] $elements
+	 */
+	public function __construct($title, $elements = [])
+	{
+		$this->title = $title;
+
+		foreach ($elements as $element)
+		{
+			$this->add($element);
+		}
+	}
+
+	/**
 	 * Add a content element as a child
 	 *
 	 * @param   ContentTypeInterface $content
@@ -34,7 +50,7 @@ abstract class AbstractCompoundType extends AbstractContentType implements Compo
 	{
 		$this->elements[] = (object) [
 			'content' => $content,
-		    'title'   => $title,
+		    'title'   => $title ?: $content->getTitle(),
 		    'link'    => $link
 		];
 	}

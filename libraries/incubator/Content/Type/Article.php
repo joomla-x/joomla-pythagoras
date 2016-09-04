@@ -43,4 +43,12 @@ class Article extends AbstractContentType
 	{
 		return $visitor->visitArticle($this);
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->article->title;
+	}
 }

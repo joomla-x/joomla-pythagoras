@@ -17,7 +17,7 @@ use Joomla\Media\Entity\Image as ImageEntity;
  * @package  Joomla/Content
  * @since    __DEPLOY_VERSION__
  *
- * @property string $image
+ * @property ImageEntity $image
  * @property string $alt
  */
 class Image extends AbstractContentType
@@ -44,5 +44,13 @@ class Image extends AbstractContentType
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{
 		return $visitor->visitImage($this);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->image->caption;
 	}
 }

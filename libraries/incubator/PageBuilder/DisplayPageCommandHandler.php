@@ -261,7 +261,7 @@ class DisplayPageCommandHandler extends CommandHandler
 					foreach ($this->toContentType($node) as $child)
 					{
 						#echo "Result: " . get_class($child) . "\n";
-						$content->add($child);
+						$content->add($child, $child->getTitle());
 					}
 				}
 				#echo "</pre>";
