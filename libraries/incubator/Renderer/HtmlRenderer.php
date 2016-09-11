@@ -179,7 +179,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitCompound(Compound $compound)
 	{
-		$class = $compound->params->class ?? '';
+		$class = isset($compound->params->class) ? $compound->params->class : '';
 
 		if (!empty($class))
 		{
