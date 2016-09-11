@@ -45,7 +45,7 @@ class HtmlRenderer extends Renderer
 	protected $template;
 
 	/** @var string  Layout directory */
-	protected $layoutDirectory = 'html';
+	protected $layoutDirectory = 'bootstrap-3';
 
 	/** @var  ScriptStrategyInterface */
 	private $clientScript;

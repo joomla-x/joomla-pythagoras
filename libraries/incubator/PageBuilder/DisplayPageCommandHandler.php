@@ -314,7 +314,7 @@ class DisplayPageCommandHandler extends CommandHandler
 			$groups    = [
 				'Available Templates' => $templates,
 			];
-			$accordion = new Accordion();
+			$accordion = new Accordion('Accodion Title');
 
 			foreach ($groups as $title => $group)
 			{

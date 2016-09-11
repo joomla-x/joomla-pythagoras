@@ -10,7 +10,7 @@
  */
 
 ?>
-<section>
+<article>
 	<header>
 		<h1><?= $content->article->title; ?></h1>
 		<p>
@@ -23,4 +23,4 @@
 	<footer>
 		<p><small>License: <?= $content->article->license; ?></small></p>
 	</footer>
-</section>
+</article>
