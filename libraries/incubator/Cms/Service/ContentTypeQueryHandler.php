@@ -15,7 +15,7 @@ use Joomla\Service\QueryHandler;
  *
  * @package  Joomla/Cms/Service
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class ContentTypeQueryHandler extends QueryHandler
 {

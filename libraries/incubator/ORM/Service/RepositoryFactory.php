@@ -232,6 +232,11 @@ class RepositoryFactory
 		return $dataMapper;
 	}
 
+	/**
+	 * Gets the schema manager
+	 *
+	 * @return \Doctrine\DBAL\Schema\AbstractSchemaManager|null
+	 */
 	public function getSchemaManager()
 	{
 		if (method_exists($this->connection, 'getSchemaManager'))
@@ -242,6 +247,13 @@ class RepositoryFactory
 		return null;
 	}
 
+	/**
+	 * Gets the connection
+	 *
+	 * @param   string  $type Class name of the connection
+	 *
+	 * @return  \Doctrine\DBAL\Driver\Connection|CsvDataGateway
+	 */
 	public function getConnection($type = null)
 	{
 		if (!isset($this->connections[CsvDataGateway::class]) && isset($this->config['dataPath']))

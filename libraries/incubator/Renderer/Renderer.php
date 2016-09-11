@@ -17,7 +17,7 @@ use Joomla\Renderer\Exception\NotFoundException;
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 abstract class Renderer implements RendererInterface
 {
@@ -42,11 +42,12 @@ abstract class Renderer implements RendererInterface
 	/**
 	 * Renderer constructor.
 	 *
-	 * @param   array $options Accepted range, ie., MIME type ('token') and quality ('q')
+	 * @param   array               $options    Accepted range, ie., MIME type ('token') and quality ('q')
+	 * @param   ContainerInterface  $container  The container
 	 */
-	public function __construct(array $options = [], ContainerInterface $container)
+	public function __construct(array $options, ContainerInterface $container)
 	{
-		$this->options  = $options;
+		$this->options   = $options;
 		$this->container = $container;
 	}
 

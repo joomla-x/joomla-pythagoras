@@ -17,7 +17,7 @@ use Joomla\Renderer\Exception\NotFoundException;
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class Factory
 {
@@ -36,11 +36,11 @@ class Factory
 
 	/**
 	 * @param   string             $acceptHeader The 'Accept' header
-	 * @param   ContainerInterface $container
+	 * @param   ContainerInterface $container    The container
 	 *
 	 * @return mixed
 	 */
-	public function create($acceptHeader = '*/*', ContainerInterface $container)
+	public function create($acceptHeader, ContainerInterface $container)
 	{
 		$header = new AcceptHeader($acceptHeader);
 

@@ -15,6 +15,7 @@ use Joomla\ORM\Operator;
 use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\ORM\Storage\EntityFinderInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
+use Joomla\ORM\Repository\RepositoryInterface as RepoInterface;
 
 /**
  * Class Repository
@@ -54,7 +55,7 @@ class MappingRepository implements RepositoryInterface
 	 * @param   HasManyThrough      $relation         The relation
 	 * @param   UnitOfWorkInterface $unitOfWork       The unit of work
 	 */
-	public function __construct(RepositoryInterface $entityRepository, RepositoryInterface $mapRepository, HasManyThrough $relation, UnitOfWorkInterface $unitOfWork)
+	public function __construct(RepoInterface $entityRepository, RepoInterface $mapRepository, HasManyThrough $relation, UnitOfWorkInterface $unitOfWork)
 	{
 		$this->entityRepository = $entityRepository;
 		$this->mapRepository    = $mapRepository;
@@ -265,6 +266,6 @@ class MappingRepository implements RepositoryInterface
 	 */
 	public function createFromArray(array $row)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
+		return $this->entityRepository->createFromArray($row);
 	}
 }

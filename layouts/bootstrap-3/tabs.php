@@ -10,18 +10,18 @@
  */
 $class = $content->params->class ?? '';
 ?>
-<div<?= $class ? " class=\"$class\"" : ''; ?>>
+<div<?php echo $class ? " class=\"$class\"" : ''; ?>>
 	<ul class="nav nav-tabs">
 		<?php foreach ($content->elements as $i => $element) : ?>
 			<?php $title = $element->content->params->title ?? 'Tab ' . $i; ?>
-			<li<?= $i == 0 ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?= $content->id . '-' . $i; ?>"><?= $title; ?></a></li>
+			<li<?php echo $i == 0 ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $content->id . '-' . $i; ?>"><?php echo $title; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 
 	<div class="tab-content">
 		<?php foreach ($content->elements as $i => $element) : ?>
-			<div id="<?= $content->id . '-' . $i; ?>" class="tab-pane fade<?= $i == 0 ? ' in active' : ''; ?>">
-				<?= $element->html; ?>
+			<div id="<?php echo $content->id . '-' . $i; ?>" class="tab-pane fade<?php echo $i == 0 ? ' in active' : ''; ?>">
+				<?php echo $element->html; ?>
 			</div>
 		<?php endforeach; ?>
 	</div>

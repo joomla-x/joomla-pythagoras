@@ -56,6 +56,13 @@ final class Locator implements LocatorInterface
 		return null;
 	}
 
+	/**
+	 * Adds a strategy
+	 *
+	 * @param   StrategyInterface $strategy The strategy
+	 *
+	 * @return  void
+	 */
 	public function add(StrategyInterface $strategy)
 	{
 		array_unshift($this->strategies, $strategy);

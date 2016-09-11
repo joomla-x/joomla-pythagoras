@@ -23,7 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @package  Joomla/HTTP
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class RendererMiddleware implements MiddlewareInterface
 {
@@ -36,7 +36,8 @@ class RendererMiddleware implements MiddlewareInterface
 	/**
 	 * RendererMiddleware constructor.
 	 *
-	 * @param   Dispatcher $dispatcher  The event dispatcher
+	 * @param   Dispatcher         $dispatcher The event dispatcher
+	 * @param   ContainerInterface $container  The container
 	 */
 	public function __construct(Dispatcher $dispatcher, ContainerInterface $container)
 	{

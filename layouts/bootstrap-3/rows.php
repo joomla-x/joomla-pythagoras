@@ -13,8 +13,8 @@
 <div class="container">
 	<?php foreach ($content->elements as $i => $element) : ?>
 		<?php $class = $element->params->class ?? ''; ?>
-		<div class="clearfix <?= $class; ?>">
-			<?= $element->html; ?>
+		<div class="clearfix <?php echo $class; ?>">
+			<?php echo $element->html; ?>
 		</div>
 	<?php endforeach; ?>
 </div>

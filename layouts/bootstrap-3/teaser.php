@@ -12,17 +12,17 @@
 ?>
 <section>
 	<header>
-		<h1><?= $content->article->title; ?></h1>
+		<h1><?php echo $content->article->title; ?></h1>
 		<p>
-			<small>Written by <?= $content->article->author; ?></small>
+			<small>Written by <?php echo $content->article->author; ?></small>
 		</p>
 	</header>
 	<main>
-		<?= $content->article->teaser; ?>
+		<?php echo $content->article->teaser; ?>
 	</main>
 	<footer>
 		<p>
-			<a href="<?= $content->url; ?>">Read more ...</a>
+			<a href="<?php echo $content->url; ?>">Read more ...</a>
 		</p>
 	</footer>
 </section>

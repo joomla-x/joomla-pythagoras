@@ -11,18 +11,18 @@
 
 $class = $content->params->class ?? '';
 ?>
-<div class="panel-group <?= $class; ?>" id="<?= $content->id; ?>">
+<div class="panel-group <?php echo $class; ?>" id="<?php echo $content->id; ?>">
 	<?php foreach ($content->elements as $i => $element) : ?>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#<?= $content->id; ?>" href="#<?= $content->id . '-' . $i; ?>">
-					<?= $element->title; ?></a>
+				<a data-toggle="collapse" data-parent="#<?php echo $content->id; ?>" href="#<?php echo $content->id . '-' . $i; ?>">
+					<?php echo $element->title; ?></a>
 			</h4>
 		</div>
-		<div id="<?= $content->id . '-' . $i; ?>" class="panel-collapse collapse<?= $i == 0 ? ' in' : ''; ?>">
+		<div id="<?php echo $content->id . '-' . $i; ?>" class="panel-collapse collapse<?php echo $i == 0 ? ' in' : ''; ?>">
 			<div class="panel-body">
-				<?= $element->html; ?>
+				<?php echo $element->html; ?>
 			</div>
 		</div>
 	</div>

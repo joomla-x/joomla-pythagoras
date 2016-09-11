@@ -12,15 +12,15 @@
 ?>
 <article>
 	<header>
-		<h1><?= $content->article->title; ?></h1>
+		<h1><?php echo $content->article->title; ?></h1>
 		<p>
-			<small>Written by <?= $content->article->author; ?></small>
+			<small>Written by <?php echo $content->article->author; ?></small>
 		</p>
 	</header>
 	<main>
-		<?= $content->article->body; ?>
+		<?php echo $content->article->body; ?>
 	</main>
 	<footer>
-		<p><small>License: <?= $content->article->license; ?></small></p>
+		<p><small>License: <?php echo $content->article->license; ?></small></p>
 	</footer>
 </article>

@@ -18,7 +18,7 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 	$children = $menu->children;
 
 	?>
-	<li><a href="<?= $menu->link; ?>"><?= $menu->label; ?></a>
+	<li><a href="<?php echo $menu->link; ?>"><?php echo $menu->label; ?></a>
 	<?php
 
 	if (!empty($children))
@@ -43,9 +43,9 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 $class = $content->params->class ?? '';
 $level = $content->params->levels ?? 10;
 ?>
-<nav<?= $class ? " class=\"$class\"" : ''; ?>>
+<nav<?php echo $class ? " class=\"$class\"" : ''; ?>>
 	<ul class="nav nav-pills nav-stacked">
-		<?= call_user_func($subTree, $content->item, $subTree, 0, $level); ?>
+		<?php echo call_user_func($subTree, $content->item, $subTree, 0, $level); ?>
 	</ul>
 </nav>
 <?php

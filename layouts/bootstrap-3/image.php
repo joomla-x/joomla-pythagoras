@@ -17,4 +17,4 @@ if (!preg_match('~^(https?://|/)~', $url))
 $alt = $content->alt ?? $content->image->caption;
 $class = $content->params->class ?? '';
 ?>
-<img class="img-responsive <?= $class; ?>" src="<?= $url; ?>" alt="<?= $alt; ?>"/>
+<img class="img-responsive <?php echo $class; ?>" src="<?php echo $url; ?>" alt="<?php echo $alt; ?>"/>

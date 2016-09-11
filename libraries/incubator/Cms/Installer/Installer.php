@@ -24,28 +24,41 @@ use Joomla\ORM\Service\StorageServiceProvider;
 use Joomla\String\Inflector;
 use Joomla\String\Normalise;
 
+/**
+ * Class Installer
+ *
+ * @package  Joomla\Cms\Installer
+ *
+ * @since    __DEPLOY_VERSION__
+ */
 class Installer
 {
-	/** @var EntityBuilder */
+	/** @var EntityBuilder The entity builder */
 	private $builder;
 
-	/** @var Container */
+	/** @var Container The container */
 	private $container;
 
-	/** @var  string */
+	/** @var  string The data directory */
 	private $dataDirectory;
 
-	/** @var  RepositoryFactory */
+	/** @var  RepositoryFactory The repository factory */
 	private $repositoryFactory;
 
-	/** @var EntityStructure[] */
+	/** @var EntityStructure[] The entity structures */
 	private $entityDefinitions = [];
 
+	/** @var Inflector The inflector */
 	private $inflector;
 
+	/**
+	 * Installer constructor.
+	 *
+	 * @param   string  $dataDirectory  The data directory
+	 */
 	public function __construct($dataDirectory)
 	{
-		$this->container     = new Container();
+		$this->container     = new Container;
 		$this->dataDirectory = $dataDirectory;
 
 		$storage = new StorageServiceProvider;
@@ -58,14 +71,19 @@ class Installer
 		$this->loadExistingEntities();
 	}
 
+	/**
+	 * Installs an extension
+	 *
+	 * @param   string  $source  The path to the extension
+	 *
+	 * @return  void
+	 */
 	public function install($source)
 	{
 		$xmlDirectory = $source . '/entities';
 		$strategy     = new RecursiveDirectoryStrategy($xmlDirectory);
 		$this->builder->addLocatorStrategy($strategy);
 		$entityNames = $this->importDefinition($xmlDirectory . '/*.xml');
-
-		// echo "\nNew entities:\n" . print_r($entityNames, true);
 
 		$csvDirectory = $source . '/data';
 
@@ -85,8 +103,10 @@ class Installer
 	/**
 	 * Import data, if present
 	 *
-	 * @param $entityName
-	 * @param $csvDirectory
+	 * @param   string $entityName   The name of the entity
+	 * @param   string $csvDirectory The directory containing the sample data
+	 *
+	 * @return  void
 	 */
 	private function importInitialData($entityName, $csvDirectory)
 	{
@@ -101,11 +121,8 @@ class Installer
 		$entityClass = $this->entityDefinitions[$entityName]->class;
 		$repo        = $this->repositoryFactory->forEntity($entityClass);
 
-		// echo "Importing data for $entityName\n";
-
 		foreach ($this->loadData($dataFile) as $row)
 		{
-			// echo json_encode($row) . "\n";
 			$entity = $repo->createFromArray($row);
 			$repo->add($entity);
 		}
@@ -113,6 +130,10 @@ class Installer
 
 	/**
 	 * Load the data from the file
+	 *
+	 * @param   string  $dataFile  A filename
+	 *
+	 * @return  array   The data
 	 */
 	private function loadData($dataFile)
 	{
@@ -138,12 +159,16 @@ class Installer
 		return $rows;
 	}
 
+	/**
+	 * Finishes the installation
+	 *
+	 * @return  void
+	 */
 	public function finish()
 	{
 		// Resolve all counter-relations
 		foreach ($this->entityDefinitions as $definition)
 		{
-			// echo "\n{$definition->name}\n";
 			$this->resolveBelongsTo($definition);
 			$this->resolveHasOnOrMany($definition);
 			$this->resolveHasManyThrough($definition);
@@ -156,22 +181,28 @@ class Installer
 		}
 	}
 
+	/**
+	 * @return  void
+	 */
 	private function loadExistingEntities()
 	{
-		$entityNames = $this->importDefinition($this->dataDirectory . '/entities/*.xml');
-
-		// echo "\nKnown entities:\n" . print_r($entityNames, true);
+		$this->importDefinition($this->dataDirectory . '/entities/*.xml');
 	}
 
+	/**
+	 * @param   string $pattern A filename pattern
+	 *
+	 * @return  string[]  A list of file names
+	 */
 	private function findFiles($pattern)
 	{
 		return glob($pattern);
 	}
 
 	/**
-	 * @param $pattern
+	 * @param   string  $pattern  A filename pattern
 	 *
-	 * @return array
+	 * @return  string[]  A list of entity names
 	 */
 	private function importDefinition($pattern)
 	{
@@ -201,9 +232,9 @@ class Installer
 	}
 
 	/**
-	 * @param $entityName
+	 * @param   string  $entityName  The name of the entity
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function createTable($entityName)
 	{
@@ -226,7 +257,6 @@ class Installer
 					$type = 'integer';
 				}
 
-				/** @var Relation|Field $field */
 				$table->addColumn($field->columnName($field->name), $type);
 			}
 
@@ -238,9 +268,9 @@ class Installer
 	}
 
 	/**
-	 * @param $word
+	 * @param   string  $word  A word
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	private function normalise($word)
 	{
@@ -248,36 +278,30 @@ class Installer
 	}
 
 	/**
-	 * @param $definition
+	 * @param   EntityStructure $definition The entity structure
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function resolveBelongsTo($definition)
 	{
 		foreach ($definition->relations['belongsTo'] as $relation)
 		{
-			/** @var BelongsTo $relation */
-			// echo $definition->name . '::$' . $relation->name . ': ' . print_r($relation, true);
 			$counterEntity    = $relation->entity;
 			$counterMeta      = $this->entityDefinitions[$counterEntity];
 			$counterRelations = $counterMeta->relations;
 
 			foreach ($counterRelations['hasOne'] as $counterRelation)
 			{
-				/** @var HasOne $counterRelation */
 				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->name)
 				{
-					// echo "Found relation: {$counterEntity} hasOne {$counterRelation->entity} in \${$counterRelation->name}\n";
 					break 2;
 				}
 			}
 
 			foreach ($counterRelations['hasMany'] as $counterRelation)
 			{
-				/** @var HasMany $counterRelation */
 				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->name)
 				{
-					// echo "Found relation: {$counterEntity} hasMany {$counterRelation->entity} in \${$counterRelation->name}\n";
 					break 2;
 				}
 			}
@@ -291,29 +315,26 @@ class Installer
 				]
 			);
 			$counterRelations['hasMany'][$counterRelation->name] = $counterRelation;
-			// echo "Created relation: {$counterEntity} hasMany {$counterRelation->entity} in \${$counterRelation->name}\n";
 		}
 	}
 
 	/**
-	 * @param $definition
+	 * @param   EntityStructure $definition The entity structure
+	 *
+	 * @return  void
 	 */
 	private function resolveHasOnOrMany($definition)
 	{
 		foreach (array_merge($definition->relations['hasMany'], $definition->relations['hasOne']) as $relation)
 		{
-			/** @var HasMany $relation */
-			// echo $definition->name . '::$' . $relation->name . ': ' . print_r($relation, true);
 			$counterEntity    = $relation->entity;
 			$counterMeta      = $this->entityDefinitions[$counterEntity];
 			$counterRelations = $counterMeta->relations;
 
 			foreach ($counterRelations['belongsTo'] as $counterRelation)
 			{
-				/** @var BelongsTo $counterRelation */
 				if ($counterRelation->entity == $definition->name && $counterRelation->name == $relation->reference)
 				{
-					// echo "Found relation: {$counterEntity}::\${$counterRelation->name} belongsTo (points to) {$counterRelation->entity}\n";
 					break 2;
 				}
 			}
@@ -326,18 +347,18 @@ class Installer
 				]
 			);
 			$counterRelations['belongsTo'][$counterRelation->name] = $counterRelation;
-			// echo "Created relation: {$counterEntity}::\${$counterRelation->name} belongsTo (points to) {$counterRelation->entity}\n";
 		}
 	}
 
 	/**
-	 * @param $definition
+	 * @param   EntityStructure $definition The entity structure
+	 *
+	 * @return  void
 	 */
 	private function resolveHasManyThrough($definition)
 	{
 		foreach ($definition->relations['hasManyThrough'] as $relation)
 		{
-			/** @var HasManyThrough $relation */
 			// @todo Implement HasManyThrough handling
 		}
 	}

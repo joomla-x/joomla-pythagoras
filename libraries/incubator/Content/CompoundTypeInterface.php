@@ -12,7 +12,6 @@ namespace Joomla\Content;
  * ContentType Interface
  *
  * @package  Joomla/Content
- *
  * @since    __DEPLOY_VERSION__
  */
 interface CompoundTypeInterface extends ContentTypeInterface
@@ -20,9 +19,9 @@ interface CompoundTypeInterface extends ContentTypeInterface
 	/**
 	 * Add a content element as a child
 	 *
-	 * @param   ContentTypeInterface $content
-	 * @param   string               $title
-	 * @param   string               $link
+	 * @param   ContentTypeInterface $content The content element
+	 * @param   string               $title   The title
+	 * @param   string               $link    The link
 	 *
 	 * @return  void
 	 */

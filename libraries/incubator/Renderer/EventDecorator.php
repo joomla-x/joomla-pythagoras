@@ -37,7 +37,7 @@ use Joomla\Renderer\Event\RenderContentTypeSuccessEvent;
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class EventDecorator implements RendererInterface
 {

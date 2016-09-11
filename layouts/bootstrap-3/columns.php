@@ -12,8 +12,8 @@
 ?>
 <div class="row container-fluid">
 	<?php foreach ($content->elements as $i => $element) : ?>
-		<div<?= isset($element->params->class) ? " class=\"{$element->params->class}\"" : ''; ?>>
-			<?= $element->html; ?>
+		<div<?php echo isset($element->params->class) ? " class=\"{$element->params->class}\"" : ''; ?>>
+			<?php echo $element->html; ?>
 		</div>
 	<?php endforeach; ?>
 </div>

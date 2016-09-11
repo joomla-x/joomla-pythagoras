@@ -117,6 +117,13 @@ class Entity extends Element
 		}
 	}
 
+	/**
+	 * Writes the XML file
+	 *
+	 * @param   string  $filename The filename
+	 *
+	 * @return  void
+	 */
 	public function writeXml($filename)
 	{
 		$dom = new DOMImplementation;
@@ -134,9 +141,11 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   DOMElement  $element
-	 * @param   array       $attributes
-	 * @param   array       $skip
+	 * @param   DOMElement  $element    The element to add the attributes to
+	 * @param   array       $attributes The attributes to add
+	 * @param   array       $skip       List of attributes to skip
+	 *
+	 * @return  void
 	 */
 	private function addAttributes($element, $attributes, $skip = [])
 	{
@@ -152,7 +161,7 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   DOMDocument  $xml
+	 * @param   DOMDocument  $xml The XML document
 	 *
 	 * @return  DOMElement
 	 */
@@ -166,7 +175,7 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   DOMDocument $xml
+	 * @param   DOMDocument $xml The XML document
 	 *
 	 * @return  DOMElement
 	 */
@@ -181,7 +190,7 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   DOMDocument $xml
+	 * @param   DOMDocument $xml The XML document
 	 *
 	 * @return  DOMElement
 	 */
@@ -204,6 +213,7 @@ class Entity extends Element
 			foreach ($f->options as $key => $value)
 			{
 				$option = $xml->createElement('option');
+
 				// @todo Implement handling of options
 				$field->appendChild($option);
 			}
@@ -215,7 +225,7 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   DOMDocument $xml
+	 * @param   DOMDocument $xml The XML document
 	 *
 	 * @return  DOMElement
 	 */

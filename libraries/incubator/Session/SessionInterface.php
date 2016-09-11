@@ -13,7 +13,7 @@ namespace Joomla\Session;
  *
  * @package  Joomla/Session
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface SessionInterface
 {

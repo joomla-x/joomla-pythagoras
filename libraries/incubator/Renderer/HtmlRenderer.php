@@ -26,6 +26,7 @@ use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\PageBuilder\Entity\Page;
 use Joomla\Renderer\Exception\NotFoundException;
 use Joomla\Tests\Unit\DumpTrait;
 
@@ -34,7 +35,7 @@ use Joomla\Tests\Unit\DumpTrait;
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class HtmlRenderer extends Renderer
 {
@@ -50,12 +51,13 @@ class HtmlRenderer extends Renderer
 	/** @var  ScriptStrategyInterface */
 	private $clientScript;
 
+	/** @var  string[]  Javascript code to add to output */
 	private $javascript = [];
 
 	use DumpTrait;
 
 	/**
-	 * @param   ScriptStrategyInterface $strategy The scripting startegy (library) to use
+	 * @param   ScriptStrategyInterface $strategy The scripting strategy (library) to use
 	 *
 	 * @return  void
 	 */
@@ -64,16 +66,32 @@ class HtmlRenderer extends Renderer
 		$this->clientScript = $strategy;
 	}
 
+	/**
+	 * Sets the template
+	 *
+	 * @param   string  $template  The template
+	 *
+	 * @return  void
+	 */
 	public function setTemplate($template)
 	{
 		$this->template = $template;
 	}
 
+	/**
+	 * @param   string  $label  An identifier
+	 * @param   string  $code   The code associated with that identifier
+	 *
+	 * @return  void
+	 */
 	protected function addJavascript($label, $code)
 	{
 		$this->javascript[$label] = $code;
 	}
 
+	/**
+	 * @return  void
+	 */
 	public function writeJavascript()
 	{
 		$this->write('<script type="text/javascript">');
@@ -162,10 +180,12 @@ class HtmlRenderer extends Renderer
 	public function visitCompound(Compound $compound)
 	{
 		$class = $compound->params->class ?? '';
+
 		if (!empty($class))
 		{
 			$class = " class=\"$class\"";
 		}
+
 		$len = 0;
 		$len += $this->write("<{$compound->type}{$class}>\n");
 
@@ -344,6 +364,11 @@ class HtmlRenderer extends Renderer
 		return $this->applyLayout('defaultMenu.php', $defaultMenu);
 	}
 
+	/**
+	 * @param   Page  $page  The page
+	 *
+	 * @return  Menu
+	 */
 	private function convertPageTreeToMenu($page)
 	{
 		$menu = new Menu(
@@ -360,7 +385,9 @@ class HtmlRenderer extends Renderer
 	}
 
 	/**
-	 * @param ContentTypeInterface $content
+	 * @param   ContentTypeInterface $content The content element
+	 *
+	 * @return  void
 	 */
 	private function preRenderChildElements(ContentTypeInterface $content)
 	{
@@ -373,7 +400,6 @@ class HtmlRenderer extends Renderer
 
 		foreach ($content->elements as $key => $item)
 		{
-			/** @var ContentTypeInterface $item */
 			$this->output = '';
 			$item->content->accept($this);
 			$content->elements[$key]->html = $this->output;
@@ -383,8 +409,8 @@ class HtmlRenderer extends Renderer
 	}
 
 	/**
-	 * @param $url
-	 * @param $page
+	 * @param   string  $url   The URL
+	 * @param   Page    $page  The page
 	 *
 	 * @return string
 	 */
@@ -410,13 +436,12 @@ class HtmlRenderer extends Renderer
 	}
 
 	/**
-	 * @param   object $object
+	 * @param   object $object  The content object
 	 *
 	 * @return  string
 	 */
 	private function getFullUrl($object)
 	{
-		/** @var RepositoryInterface $repository */
 		$repository   = $this->container->get('Repository')->forEntity('Content');
 		$entityType   = explode('\\', get_class($object));
 		$entityType   = array_pop($entityType);

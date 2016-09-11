@@ -20,7 +20,7 @@ $subTree = function($node, $callback, $level = 0) {
 	if (empty($children))
 	{
 		?>
-		<li><a href="#"><?= $node->title; ?></a></li>
+		<li><a href="#"><?php echo $node->title; ?></a></li>
 		<?php
 	}
 	else
@@ -28,9 +28,9 @@ $subTree = function($node, $callback, $level = 0) {
 		?>
 		<li>
 			<?php if ($level == 0) : ?>
-			<label class="tree-toggler nav-header"><a href="#"><?= $node->title; ?></a></label>
+			<label class="tree-toggler nav-header"><a href="#"><?php echo $node->title; ?></a></label>
 			<?php else : ?>
-			<a href="#" class="tree-toggler"><?= $node->title; ?></a>
+			<a href="#" class="tree-toggler"><?php echo $node->title; ?></a>
 			<?php endif; ?>
 				<ul class="nav nav-list tree" style="display: none;">
 				<?php
@@ -47,9 +47,9 @@ $subTree = function($node, $callback, $level = 0) {
 
 $class = $content->params->class ?? '';
 ?>
-<div<?= $class ? " class=\"$class\"" : ''; ?>>
+<div<?php echo $class ? " class=\"$class\"" : ''; ?>>
 	<ul class="nav nav-list tree">
-		<?= call_user_func($subTree, $content->item, $subTree); ?>
+		<?php echo call_user_func($subTree, $content->item, $subTree); ?>
 	</ul>
 </div>
 <?php
