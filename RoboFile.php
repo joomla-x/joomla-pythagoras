@@ -286,7 +286,7 @@ class RoboFile extends \Robo\Tasks
 					->coverageHtml('coverage');
 			}
 
-			$codecept->run();
+			$codecept->option('verbose')->run();
 		} finally
 		{
 			$this->_remove($tempConfigFile);
