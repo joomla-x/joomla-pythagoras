@@ -119,6 +119,7 @@ class RoboFile extends \Robo\Tasks
 	public function checkStyle()
 	{
 		$this->initReports();
+		$this->stopOnFail();
 		$this->taskStyle($this->binDir . '/phpcs')
 		     ->arg('--report=full')
 		     ->arg('--report-checkstyle=' . $this->config['reports'] . '/checkstyle.xml')
@@ -264,6 +265,7 @@ class RoboFile extends \Robo\Tasks
 		'coverage' => false
 	])
 	{
+		$this->stopOnFail();
 		$this->initReports();
 		$this->createTestdata();
 
@@ -271,8 +273,9 @@ class RoboFile extends \Robo\Tasks
 
 		try
 		{
-			$codecept = $this->taskCodecept($this->binDir . '/codecept')
-			                 ->configFile($tempConfigFile);
+			$codecept = $this
+				->taskCodecept($this->binDir . '/codecept')
+				->configFile($tempConfigFile);
 
 			if ($suite != 'all')
 			{
@@ -287,10 +290,19 @@ class RoboFile extends \Robo\Tasks
 			}
 
 			$codecept->option('verbose')->run();
-		} finally
+
+			$return = 0;
+		}
+		catch(\Exception $e)
+		{
+			$return = 1;
+		}
+		finally
 		{
 			$this->_remove($tempConfigFile);
 		}
+
+		return $return;
 	}
 
 	/**
