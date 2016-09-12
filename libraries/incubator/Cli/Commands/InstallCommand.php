@@ -38,7 +38,8 @@ class InstallCommand extends Command
 			'extension',
 				InputArgument::REQUIRED | InputArgument::IS_ARRAY,
 				'The path to the extension.'
-			);
+			)
+		;
 	}
 
 	/**

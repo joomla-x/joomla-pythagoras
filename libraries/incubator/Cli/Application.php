@@ -8,6 +8,7 @@
 
 namespace Joomla\Cli;
 
+use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -21,13 +22,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Application extends BaseApplication
 {
+	/** @var ContainerInterface  */
+	protected $container;
+
 	/**
 	 * Constructor
 	 */
-	public function __construct()
+	public function __construct(ContainerInterface $container)
 	{
 		parent::__construct('Joomla CLI', '__DEPLOY_VERSION__');
 		$this->setCatchExceptions(false);
+		$this->container = $container;
 
 		$this->addPlugins(__DIR__ . '/Commands');
 	}
@@ -46,7 +51,7 @@ class Application extends BaseApplication
 	{
 		try
 		{
-			parent::run($input, $output);
+			return parent::run($input, $output);
 		}
 		catch (\Exception $e)
 		{
@@ -60,6 +65,11 @@ class Application extends BaseApplication
 				''
 			];
 			$output->writeln($message);
+
+			$exitCode = $e->getCode();
+			$exitCode = is_numeric($exitCode) ? (int) $exitCode : 1;
+
+			return min(max($exitCode, 1), 255);
 		}
 	}
 
@@ -76,6 +86,7 @@ class Application extends BaseApplication
 		{
 			$commandClass = __NAMESPACE__ . '\\Commands\\' . basename($filename, '.php');
 			$command = new $commandClass;
+			$command->setContainer($this->container);
 			$this->add($command);
 		}
 	}

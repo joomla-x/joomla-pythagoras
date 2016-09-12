@@ -62,7 +62,7 @@ class VersionCommand extends Command
 	 * @param   InputInterface   $input   An InputInterface instance
 	 * @param   OutputInterface  $output  An OutputInterface instance
 	 *
-	 * @return  void
+	 * @return  integer  0 if everything went fine, 1 on error
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
@@ -81,5 +81,7 @@ class VersionCommand extends Command
 			$result = 'Joomla! X.0.0 Dev [ Pythagoras ].';
 		}
 		$output->writeln($result);
+
+		return 0;
 	}
 }

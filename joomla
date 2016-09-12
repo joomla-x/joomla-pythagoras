@@ -32,5 +32,7 @@ if (!$loaded)
 	);
 }
 
-$console = new \Joomla\Cli\Application();
+require_once __DIR__ . '/init.php';
+
+$console = new \Joomla\Cli\Application(initContainer());
 $console->run();

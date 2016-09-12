@@ -8,6 +8,7 @@
 
 namespace Joomla\Cli;
 
+use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,6 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class Command extends BaseCommand
 {
+	/** @var  ContainerInterface */
+	protected $container;
+
 	/**
 	 * Constructor.
 	 *
@@ -29,7 +33,13 @@ abstract class Command extends BaseCommand
 	public function __construct($name = null)
 	{
 		parent::__construct($name);
+
 		$this->addGlobalOptions();
+	}
+
+	public function setContainer(ContainerInterface $container)
+	{
+		$this->container = $container;
 	}
 
 	/**
