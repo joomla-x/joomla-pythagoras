@@ -59,12 +59,26 @@ class InstallCommand extends Command
 
 			$installer = new Installer(JPATH_ROOT . "/data");
 
+			$count = 0;
+
 			foreach ($arguments['extension'] as $extension)
 			{
-				$installer->install(realpath($extension));
+				$source = realpath($extension);
+
+				if (!file_exists($source))
+				{
+					$this->writeln($output, "Unable to locate $extension");
+
+					continue;
+				}
+
+				$installer->install($source);
+				$count++;
 			}
 
 			$installer->finish();
+
+			$this->writeln($output, "Installed $count extension(s)");
 
 			return 0;
 		}
