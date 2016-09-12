@@ -35,11 +35,10 @@ class InstallCommand extends Command
 			->setDescription('Install a Joomla! extension')
 
 			->addArgument(
-			'extension',
+				'extension',
 				InputArgument::REQUIRED | InputArgument::IS_ARRAY,
 				'The path to the extension.'
-			)
-		;
+			);
 	}
 
 	/**

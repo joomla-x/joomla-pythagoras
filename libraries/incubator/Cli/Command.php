@@ -37,6 +37,13 @@ abstract class Command extends BaseCommand
 		$this->addGlobalOptions();
 	}
 
+	/**
+	 * Sets a Dependancy Injection Container
+	 *
+	 * @param   ContainerInterface $container The container
+	 *
+	 * @return  void
+	 */
 	public function setContainer(ContainerInterface $container)
 	{
 		$this->container = $container;
@@ -56,8 +63,7 @@ abstract class Command extends BaseCommand
 				InputOption::VALUE_REQUIRED,
 				'The root of the Joomla! installation. Defaults to the current working directory.',
 				getcwd()
-			)
-		;
+			);
 	}
 
 	/**
@@ -98,8 +104,8 @@ abstract class Command extends BaseCommand
 	/**
 	 * Proxy for OutputInterface::writeln()
 	 *
-	 * @param   OutputInterface  $output  An OutputInterface instance
-	 * @param   string|array     $message
+	 * @param   OutputInterface  $output   An OutputInterface instance
+	 * @param   string|array     $message  The message
 	 * @param   int              $level    One of OutputInterface::VERBOSITY_*
 	 * @param   int              $mode     One of OutputInterface::OUTPUT_*
 	 *

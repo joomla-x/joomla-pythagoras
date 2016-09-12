@@ -52,8 +52,7 @@ class VersionCommand extends Command
 				'r',
 				InputOption::VALUE_NONE,
 				'The release info, eg. x.y'
-			)
-		;
+			);
 	}
 
 	/**
@@ -80,6 +79,7 @@ class VersionCommand extends Command
 		{
 			$result = 'Joomla! X.0.0 Dev [ Pythagoras ].';
 		}
+
 		$output->writeln($result);
 
 		return 0;

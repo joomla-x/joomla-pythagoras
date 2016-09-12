@@ -27,6 +27,8 @@ class Application extends BaseApplication
 
 	/**
 	 * Constructor
+	 *
+	 * @param   ContainerInterface $container The container
 	 */
 	public function __construct(ContainerInterface $container)
 	{
@@ -55,9 +57,11 @@ class Application extends BaseApplication
 		}
 		catch (\Exception $e)
 		{
-			if (null === $output) {
-				$output = new ConsoleOutput();
+			if (null === $output)
+			{
+				$output = new ConsoleOutput;
 			}
+
 			$message = [
 				$this->getLongVersion(),
 				'',

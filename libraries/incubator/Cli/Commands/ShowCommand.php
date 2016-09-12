@@ -74,7 +74,6 @@ class ShowCommand extends Command
 
 		$entity = ucfirst(Inflector::getInstance()->toSingular($input->getArgument('entity')));
 
-		/** @var RepositoryFactory $repositoryFactory */
 		$repositoryFactory = $this->container->get('Repository');
 		$repository        = $repositoryFactory->forEntity($entity);
 		$finder            = $repository->findAll();
@@ -87,6 +86,7 @@ class ShowCommand extends Command
 
 				return 1;
 			}
+
 			$finder = $finder->with($match[1], trim($match[2]), $match[3]);
 		}
 
