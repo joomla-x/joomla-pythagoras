@@ -1,5 +1,5 @@
 web:
-  image: php:5-apache
+  build: build/docker/apache
   volumes:
     - .:/var/www/html
   ports:

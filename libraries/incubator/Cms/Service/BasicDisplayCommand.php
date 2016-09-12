@@ -16,7 +16,7 @@ use Joomla\Service\Command;
  *
  * @package  Joomla/Cms/Service
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class BasicDisplayCommand extends Command
 {

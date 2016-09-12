@@ -14,10 +14,16 @@ use Joomla\Content\ContentTypeInterface;
  * Abstract ContentType
  *
  * @package  Joomla/Content
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 abstract class AbstractContentType implements ContentTypeInterface
 {
+	/** @var  \stdClass */
+	public $params;
+
+	/** @var  string */
+	protected $title;
+
 	/**
 	 * Magic getter.
 	 *
@@ -33,5 +39,13 @@ abstract class AbstractContentType implements ContentTypeInterface
 		}
 
 		throw new \UnexpectedValueException("Unknown property $var");
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
 	}
 }

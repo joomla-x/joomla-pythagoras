@@ -54,7 +54,7 @@ class Installer
 	/**
 	 * Installer constructor.
 	 *
-	 * @param   string $dataDirectory The data directory
+	 * @param   string  $dataDirectory  The data directory
 	 */
 	public function __construct($dataDirectory)
 	{
@@ -74,7 +74,7 @@ class Installer
 	/**
 	 * Installs an extension
 	 *
-	 * @param   string $source The path to the extension
+	 * @param   string  $source  The path to the extension
 	 *
 	 * @return  void
 	 */
@@ -131,7 +131,7 @@ class Installer
 	/**
 	 * Load the data from the file
 	 *
-	 * @param   string $dataFile A filename
+	 * @param   string  $dataFile  A filename
 	 *
 	 * @return  array   The data
 	 */
@@ -200,7 +200,7 @@ class Installer
 	}
 
 	/**
-	 * @param   string $pattern A filename pattern
+	 * @param   string  $pattern  A filename pattern
 	 *
 	 * @return  string[]  A list of entity names
 	 */
@@ -232,7 +232,7 @@ class Installer
 	}
 
 	/**
-	 * @param   string $entityName The name of the entity
+	 * @param   string  $entityName  The name of the entity
 	 *
 	 * @return  void
 	 */
@@ -268,7 +268,7 @@ class Installer
 	}
 
 	/**
-	 * @param   string $word A word
+	 * @param   string  $word  A word
 	 *
 	 * @return  string
 	 */

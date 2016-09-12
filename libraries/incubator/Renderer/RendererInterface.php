@@ -16,7 +16,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface RendererInterface extends ContentTypeVisitorInterface, StreamInterface
 {

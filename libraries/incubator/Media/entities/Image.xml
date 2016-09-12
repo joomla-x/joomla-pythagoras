@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="Joomla\Media\Entity\Image">
+
+    <storage>
+        <default table="images"/>
+    </storage>
+
+    <fields>
+        <field name="id"
+               type="id"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               default="null"
+        >
+            <validation rule="positive"/>
+            <validation rule="integer"/>
+        </field>
+        <field name="caption" type="string"/>
+        <field name="description" type="string"/>
+        <field name="url" type="string"/>
+        <field name="creator" type="string"/>
+        <field name="license" type="string"/>
+        <field name="mime_type" type="string"/>
+        <field name="width" type="integer"/>
+        <field name="height" type="integer"/>
+        <field name="exif" type="string"/>
+    </fields>
+
+</entity>

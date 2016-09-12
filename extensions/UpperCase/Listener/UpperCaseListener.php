@@ -47,7 +47,7 @@ class UpperCaseListener
 	{
 		if ($content instanceof Compound)
 		{
-			foreach ($content->items as $item)
+			foreach ($content->elements as $item)
 			{
 				$this->toUpper($item);
 			}

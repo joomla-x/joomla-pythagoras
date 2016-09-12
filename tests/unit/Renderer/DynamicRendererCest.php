@@ -9,6 +9,7 @@
 namespace Joomla\Tests\Unit\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
+use Joomla\DI\Container;
 use Joomla\Renderer\Exception\NotFoundException;
 use Joomla\Tests\Unit\Renderer\Mock\Content;
 use Joomla\Tests\Unit\Renderer\Mock\ContentType;
@@ -35,7 +36,7 @@ class DynamicRendererCest
 	{
 		require_once __DIR__ . '/Mock/Content.php';
 
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 
 		// Static method
 		$renderer->registerContentType('NewContent', [NewContentType::class, 'asHtml']);
@@ -78,7 +79,7 @@ class DynamicRendererCest
 	{
 		require_once __DIR__ . '/Mock/Content.php';
 
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 
 		$content = new UnregisteredContentType('UnregisteredContentType');
 

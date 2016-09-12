@@ -13,7 +13,7 @@ namespace Joomla\Renderer;
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface ScriptStrategyInterface
 {

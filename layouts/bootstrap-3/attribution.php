@@ -10,5 +10,5 @@
  */
 ?>
 <p>
-	<small><?= $content->label; ?> <?= $content->name; ?></small>
+	<small><?php echo $content->label; ?> <?php echo $content->name; ?></small>
 </p>

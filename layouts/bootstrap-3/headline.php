@@ -9,4 +9,4 @@
  * @codingStandardsIgnoreStart
  */
 ?>
-<h<?= $content->level; ?>><?= $content->text; ?></h<?= $content->level; ?>>
+<h<?php echo $content->level; ?>><?php echo $content->text; ?></h<?php echo $content->level; ?>>
