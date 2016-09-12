@@ -8,17 +8,18 @@
 
 use Joomla\Cms\Installer\Installer;
 
+define('JPATH_ROOT', realpath(dirname(__DIR__)));
+
 ini_set('date.timezone', 'UTC');
 
-require_once $root . '/libraries/vendor/autoload.php';
+require_once JPATH_ROOT . '/libraries/vendor/autoload.php';
 
 try
 {
-	$root      = realpath(dirname(__DIR__));
-	$installer = new Installer($root . "/data");
-	$installer->install($root . '/extensions/Article');
-	$installer->install($root . '/libraries/incubator/Media');
-	$installer->install($root . '/libraries/incubator/PageBuilder');
+	$installer = new Installer(JPATH_ROOT . "/data");
+	$installer->install(JPATH_ROOT . '/extensions/Article');
+	$installer->install(JPATH_ROOT . '/libraries/incubator/Media');
+	$installer->install(JPATH_ROOT . '/libraries/incubator/PageBuilder');
 	$installer->finish();
 
 	return 0;
