@@ -66,21 +66,19 @@ class VersionCommand extends Command
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->setupEnvironment('site', $input, $output);
-
-		$version = new \JVersion;
+		$this->setupEnvironment($input, $output);
 
 		if ($input->getOption('short'))
 		{
-			$result = $version->getShortVersion();
+			$result = 'X.0.0';
 		}
 		elseif ($input->getOption('release'))
 		{
-			$result = $version->RELEASE;
+			$result = 'X.0';
 		}
 		else
 		{
-			$result = $version->getLongVersion();
+			$result = 'Joomla! X.0.0 Dev [ Pythagoras ].';
 		}
 		$output->writeln($result);
 	}
