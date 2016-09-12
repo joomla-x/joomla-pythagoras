@@ -10,6 +10,7 @@ namespace Joomla\ORM\Entity;
 
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
+use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
 use Joomla\ORM\Definition\Parser\Element;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
@@ -21,7 +22,6 @@ use Joomla\ORM\Definition\Parser\XmlParser;
 use Joomla\ORM\Event\AfterCreateDefinitionEvent;
 use Joomla\ORM\Exception\EntityNotDefinedException;
 use Joomla\ORM\Exception\EntityNotFoundException;
-use Joomla\ORM\Exception\FileNotFoundException;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\MappingRepository;
 use Joomla\ORM\Repository\RepositoryInterface;
@@ -63,14 +63,17 @@ class EntityBuilder
 	 * Constructor
 	 *
 	 * @param   LocatorInterface  $locator           The XML description file locator
-	 * @param   array             $config            The entity configurations
 	 * @param   RepositoryFactory $repositoryFactory The repository factory
 	 */
-	public function __construct(LocatorInterface $locator, array $config, RepositoryFactory $repositoryFactory)
+	public function __construct(LocatorInterface $locator, RepositoryFactory $repositoryFactory)
 	{
 		$this->locator           = $locator;
-		$this->config            = $config;
 		$this->repositoryFactory = $repositoryFactory;
+	}
+
+	public function addLocatorStrategy(StrategyInterface $strategy)
+	{
+		$this->locator->add($strategy);
 	}
 
 	/**
@@ -217,9 +220,9 @@ class EntityBuilder
 
 		$result = [];
 
-		$meta = $this->getMeta($entityClass);
-
-		$reflection = new \ReflectionClass($entityClass);
+		$meta        = $this->getMeta($entityClass);
+		$entityClass = $meta->class;
+		$reflection  = new \ReflectionClass($entityClass);
 
 		foreach ($matches as $match)
 		{
@@ -237,6 +240,25 @@ class EntityBuilder
 				{
 					// @todo Apply validation according to definition
 					$value = $match[$colName];
+
+					if ($definition instanceof Field)
+					{
+						switch ($definition->type)
+						{
+							case 'int':
+							case 'integer':
+								$value = (integer) $value;
+								break;
+
+							case 'json':
+								$value = json_decode($value);
+								break;
+
+							default:
+								// Leave the value alone
+								break;
+						}
+					}
 				}
 
 				if ($reflection->hasProperty($varName))
@@ -316,6 +338,22 @@ class EntityBuilder
 				$property = $reflection->getProperty($varName);
 				$property->setAccessible(true);
 				$value = $property->getValue($entity);
+
+				switch ($field->type)
+				{
+					case 'int':
+					case 'integer':
+						$value = (integer) $value;
+						break;
+
+					case 'json':
+						$value = json_encode($value);
+						break;
+
+					default:
+						// Leave the value alone
+						break;
+				}
 			}
 
 			$properties[$colName] = $value;
@@ -501,9 +539,17 @@ class EntityBuilder
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
 
-			$property = $reflection->getProperty($varIdName);
-			$property->setAccessible(true);
-			$objectId = $property->getValue($entity);
+			if ($reflection->hasProperty($varIdName))
+			{
+				$property = $reflection->getProperty($varIdName);
+				$property->setAccessible(true);
+				$objectId = $property->getValue($entity);
+			}
+			else
+			{
+				/** @noinspection PhpVariableVariableInspection */
+				$objectId = $entity->$varIdName;
+			}
 
 			try
 			{
@@ -520,7 +566,7 @@ class EntityBuilder
 
 	public function resolveAlias($alias)
 	{
-		while (isset($this->alias[$alias]))
+		while (isset($this->alias[$alias]) && $this->alias[$alias] != $alias)
 		{
 			$alias = $this->alias[$alias];
 		}
