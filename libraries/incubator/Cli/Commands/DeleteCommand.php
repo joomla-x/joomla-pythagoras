@@ -9,6 +9,7 @@
 namespace Joomla\Cli\Commands;
 
 use Joomla\Cli\Command;
+use Joomla\ORM\Repository\RepositoryInterface;
 use Joomla\String\Inflector;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,12 +18,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * The show command shows a list of entities.
+ * The Delete command deletes entities.
  *
  * @package     Joomla\Cli
  * @since       __DEPLOY_VERSION__
  */
-class ShowCommand extends Command
+class DeleteCommand extends Command
 {
 	/**
 	 * Configure the options for the version command
@@ -32,30 +33,18 @@ class ShowCommand extends Command
 	protected function configure()
 	{
 		$this
-			->setName('show')
-			->setDescription('Show a list of entities')
+			->setName('delete')
+			->setDescription('Delete entities')
 			->addArgument(
 				'entity',
 				InputArgument::REQUIRED,
-				'The name of the entity to retrieve.'
-			)
-			->addOption(
-				'label',
-				'l',
-				InputOption::VALUE_NONE,
-				'Use labels as column headers instead of column names.'
+				'The name of the entity to delete.'
 			)
 			->addOption(
 				'filter',
 				'f',
 				InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Filter the list using the FILTER condition.'
-			)
-			->addOption(
-				'compact',
-				null,
-				InputOption::VALUE_NONE,
-				'Output a compact table.'
+				'Select items using the FILTER condition.'
 			);
 	}
 
@@ -98,36 +87,16 @@ class ShowCommand extends Command
 			return 0;
 		}
 
-		$table = new Table($output);
-
-		if ($input->getOption('compact'))
-		{
-			$table->setStyle('compact');
-		}
-		else
-		{
-			$table->setStyle('default');
-		}
-
-		$entityBuilder = $repositoryFactory->getEntityBuilder();
-		$meta          = $entityBuilder->getMeta($entity);
-		$fields        = array_merge($meta->fields, $meta->relations['belongsTo']);
-		$headers       = [];
-		$useLabel      = $input->getOption('label');
-
-		foreach ($fields as $field)
-		{
-			$headers[] = $useLabel ? $field->label : $field->name;
-		}
-
-		$table->setHeaders($headers);
+		$count = 0;
 
 		foreach ($records as $record)
 		{
-			$table->addRow($entityBuilder->reduce($record));
+			$repository->remove($record);
+			$count++;
 		}
 
-		$table->render();
+		$repository->commit();
+		$this->writeln($output, "Deleted $count $entity item(s).");
 
 		return 0;
 	}
