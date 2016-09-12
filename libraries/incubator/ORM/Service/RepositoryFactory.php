@@ -57,9 +57,9 @@ class RepositoryFactory
 	 *
 	 * @api
 	 *
-	 * @param   array                     $config     The configuration
-	 * @param   CsvDataGateway|Connection $connection The connection / gateway
-	 * @param   TransactionInterface      $transactor A Transactor
+	 * @param   array                      $config     The configuration
+	 * @param   CsvDataGateway|Connection  $connection The connection / gateway
+	 * @param   TransactionInterface       $transactor A Transactor
 	 */
 	public function __construct(array $config, $connection, $transactor)
 	{
@@ -88,8 +88,8 @@ class RepositoryFactory
 	 *
 	 * @api
 	 *
-	 * @param   string              $entityClass The Entity's class
-	 * @param   DataMapperInterface $dataMapper  An optional DataMapper
+	 * @param   string               $entityClass  The Entity's class
+	 * @param   DataMapperInterface  $dataMapper   An optional DataMapper
 	 *
 	 * @return  RepositoryInterface
 	 */
@@ -163,7 +163,7 @@ class RepositoryFactory
 	/**
 	 * Creates an EntityBuilder
 	 *
-	 * @param   string $dataDirectory The data directory
+	 * @param   string  $dataDirectory  The data directory
 	 *
 	 * @return  EntityBuilder
 	 */
@@ -179,7 +179,7 @@ class RepositoryFactory
 	/**
 	 * Creates a DataMapper
 	 *
-	 * @param   string $entityClass The Entity's class
+	 * @param   string  $entityClass      The Entity's class
 	 *
 	 * @return  DataMapperInterface
 	 */
@@ -250,7 +250,7 @@ class RepositoryFactory
 	/**
 	 * Gets the connection
 	 *
-	 * @param   string $type Class name of the connection
+	 * @param   string  $type Class name of the connection
 	 *
 	 * @return  \Doctrine\DBAL\Driver\Connection|CsvDataGateway
 	 */
@@ -264,7 +264,7 @@ class RepositoryFactory
 		if (!isset($this->connections[Connection::class]) && isset($this->config['databaseUrl']))
 		{
 			$databaseUrl = $this->config['databaseUrl'];
-			$url         = parse_url($databaseUrl);
+			$url = parse_url($databaseUrl);
 
 			if ($url['schema'] == 'sqlite')
 			{

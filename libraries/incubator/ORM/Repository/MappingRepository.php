@@ -15,6 +15,7 @@ use Joomla\ORM\Operator;
 use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\ORM\Storage\EntityFinderInterface;
 use Joomla\ORM\UnitOfWork\UnitOfWorkInterface;
+use Joomla\ORM\Repository\RepositoryInterface as RepoInterface;
 
 /**
  * Class Repository
@@ -54,7 +55,7 @@ class MappingRepository implements RepositoryInterface
 	 * @param   HasManyThrough      $relation         The relation
 	 * @param   UnitOfWorkInterface $unitOfWork       The unit of work
 	 */
-	public function __construct(RepositoryInterface $entityRepository, RepositoryInterface $mapRepository, HasManyThrough $relation, UnitOfWorkInterface $unitOfWork)
+	public function __construct(RepoInterface $entityRepository, RepoInterface $mapRepository, HasManyThrough $relation, UnitOfWorkInterface $unitOfWork)
 	{
 		$this->entityRepository = $entityRepository;
 		$this->mapRepository    = $mapRepository;
@@ -239,5 +240,32 @@ class MappingRepository implements RepositoryInterface
 			->findAll()
 			->columns($this->relation->colJoinName())
 			->getItems();
+	}
+
+	/**
+	 * Find all entities.
+	 *
+	 * getAll() is a convenience method, It is equivalent to
+	 * ->findAll()->getItems()
+	 *
+	 * @return  object[]  The requested entities
+	 *
+	 * @throws  OrmException  if there was an error getting the entities
+	 */
+	public function getAll()
+	{
+		return $this->findAll()->getItems();
+	}
+
+	/**
+	 * Create a new entity
+	 *
+	 * @param   array $row A hash with the properties for the new entity
+	 *
+	 * @return  object
+	 */
+	public function createFromArray(array $row)
+	{
+		return $this->entityRepository->createFromArray($row);
 	}
 }

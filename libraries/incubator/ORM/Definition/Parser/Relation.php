@@ -23,7 +23,7 @@ abstract class Relation extends Element
 	/** @var  string  The relation type */
 	public $type;
 
-	/** @var  Entity  The related Entity */
+	/** @var  string  The name of the related Entity */
 	public $entity;
 
 	/** @var  string  Key name in related entity */
