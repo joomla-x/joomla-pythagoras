@@ -10,9 +10,11 @@ namespace Joomla\Cli;
 
 use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * The abstract command provides common methods for most JoomlaCLI commands.
@@ -69,8 +71,8 @@ abstract class Command extends BaseCommand
 	/**
 	 * Setup the environment
 	 *
-	 * @param   InputInterface   $input        An InputInterface instance
-	 * @param   OutputInterface  $output       An OutputInterface instance
+	 * @param   InputInterface   $input  An InputInterface instance
+	 * @param   OutputInterface  $output An OutputInterface instance
 	 *
 	 * @return  void
 	 */
@@ -117,5 +119,21 @@ abstract class Command extends BaseCommand
 		{
 			$output->writeln($message, $mode);
 		}
+	}
+
+	/**
+	 * Proxy for QuestionHelper::ask()
+	 *
+	 * @param   InputInterface  $input    An InputInterface instance
+	 * @param   OutputInterface $output   An OutputInterface instance
+	 * @param   Question        $question The question
+	 *
+	 * @return  string
+	 */
+	protected function ask(InputInterface $input, OutputInterface $output, Question $question)
+	{
+		$helper = new QuestionHelper;
+
+		return $helper->ask($input, $output, $question);
 	}
 }

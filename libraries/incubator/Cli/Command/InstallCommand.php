@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Cli\Commands;
+namespace Joomla\Cli\Command;
 
 use Joomla\Cli\Command;
 use Symfony\Component\Console\Input\InputArgument;

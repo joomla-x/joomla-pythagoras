@@ -36,7 +36,7 @@ class Application extends BaseApplication
 		$this->setCatchExceptions(false);
 		$this->container = $container;
 
-		$this->addPlugins(__DIR__ . '/Commands');
+		$this->addPlugins(__DIR__ . '/Command');
 	}
 
 	/**
@@ -88,7 +88,7 @@ class Application extends BaseApplication
 	{
 		foreach (glob($path . '/*.php') as $filename)
 		{
-			$commandClass = __NAMESPACE__ . '\\Commands\\' . basename($filename, '.php');
+			$commandClass = __NAMESPACE__ . '\\Command\\' . basename($filename, '.php');
 			$command = new $commandClass;
 			$command->setContainer($this->container);
 			$this->add($command);
