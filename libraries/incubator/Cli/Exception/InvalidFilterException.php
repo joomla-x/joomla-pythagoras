@@ -8,6 +8,12 @@
 
 namespace Joomla\Cli\Exception;
 
+/**
+ * Class InvalidFilterException
+ *
+ * @package  Joomla\Cli\Exception
+ * @since    __DEPLOY_VERSION__
+ */
 class InvalidFilterException extends \RuntimeException
 {
 }

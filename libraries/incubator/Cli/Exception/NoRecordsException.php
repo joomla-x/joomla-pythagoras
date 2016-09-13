@@ -8,6 +8,12 @@
 
 namespace Joomla\Cli\Exception;
 
+/**
+ * Class NoRecordsException
+ *
+ * @package  Joomla\Cli\Exception
+ * @since    __DEPLOY_VERSION__
+ */
 class NoRecordsException extends \RuntimeException
 {
 }

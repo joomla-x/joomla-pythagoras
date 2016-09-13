@@ -125,8 +125,8 @@ abstract class EntityAwareCommand extends Command
 	/**
 	 * Applies the filter conditions
 	 *
-	 * @param   string[]                  $conditions
-	 * @param   CollectionFinderInterface $finder
+	 * @param   string[]                  $conditions The filter options
+	 * @param   CollectionFinderInterface $finder     The finder
 	 *
 	 * @return  CollectionFinderInterface
 	 */
