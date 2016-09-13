@@ -8,12 +8,9 @@
 
 namespace Joomla\Cli\Command;
 
-use Joomla\Cli\Command;
-use Joomla\ORM\Service\RepositoryFactory;
-use Joomla\String\Inflector;
-use Symfony\Component\Console\Input\InputArgument;
+use Joomla\Cli\EntityAwareCommand;
+use Joomla\ORM\Storage\CollectionFinderInterface;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
@@ -23,7 +20,7 @@ use Symfony\Component\Console\Question\Question;
  * @package     Joomla\Cli
  * @since       __DEPLOY_VERSION__
  */
-class DeleteCommand extends Command
+class DeleteCommand extends EntityAwareCommand
 {
 	/**
 	 * Configure the options for the version command
@@ -34,64 +31,25 @@ class DeleteCommand extends Command
 	{
 		$this
 			->setName('delete')
-			->setDescription('Delete entities')
-			->addArgument(
-				'entity',
-				InputArgument::REQUIRED,
-				'The name of the entity to delete.'
-			)
-			->addOption(
-				'filter',
-				'f',
-				InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Select items using the FILTER condition.'
-			);
+			->setDescription('Delete entities');
 	}
 
 	/**
-	 * Execute the version command
+	 * @param   InputInterface            $input  An InputInterface instance
+	 * @param   OutputInterface           $output An OutputInterface instance
+	 * @param   CollectionFinderInterface $finder The finder
+	 * @param   string                    $entity The entity name
 	 *
-	 * @param   InputInterface  $input  An InputInterface instance
-	 * @param   OutputInterface $output An OutputInterface instance
-	 *
-	 * @return  integer  0 if everything went fine, 1 on error
+	 * @return  void
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
+	protected function doIt(InputInterface $input, OutputInterface $output, $finder, $entity)
 	{
-		$this->setupEnvironment($input, $output);
+		$count              = 0;
+		$force              = $input->getOption('no-interaction');
+		$repository         = $this->repositoryFactory->forEntity($entity);
+		$idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
 
-		$entity = $this->normaliseEntityName($input->getArgument('entity'));
-
-		$repositoryFactory  = $this->container->get('Repository');
-		$repository         = $repositoryFactory->forEntity($entity);
-		$finder             = $repository->findAll();
-		$idAccessorRegistry = $repositoryFactory->getIdAccessorRegistry();
-
-		foreach ($input->getOption('filter') as $filter)
-		{
-			if (!preg_match('~^(\w+)(\s*\W+\s*|\s+\w+\s+)(\w+)$~', trim($filter), $match))
-			{
-				$this->writeln($output, "Cannot interpret filter $filter");
-
-				return 1;
-			}
-
-			$finder = $finder->with($match[1], trim($match[2]), $match[3]);
-		}
-
-		$records = $finder->getItems();
-
-		if (empty($records))
-		{
-			$this->writeln($output, "No matching records found");
-
-			return 0;
-		}
-
-		$count = 0;
-		$force = $input->getOption('no-interaction');
-
-		foreach ($records as $record)
+		foreach ($this->getRecords($finder) as $record)
 		{
 			$id     = $idAccessorRegistry->getEntityId($record);
 			$choice = 'no';
@@ -121,7 +79,5 @@ class DeleteCommand extends Command
 
 		$repository->commit();
 		$this->writeln($output, "Deleted $count $entity item(s).");
-
-		return 0;
 	}
 }

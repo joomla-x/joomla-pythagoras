@@ -89,6 +89,8 @@ class Application extends BaseApplication
 		foreach (glob($path . '/*.php') as $filename)
 		{
 			$commandClass = __NAMESPACE__ . '\\Command\\' . basename($filename, '.php');
+
+			/** @var Command $command */
 			$command = new $commandClass;
 			$command->setContainer($this->container);
 			$this->add($command);

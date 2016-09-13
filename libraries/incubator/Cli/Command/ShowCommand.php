@@ -8,9 +8,9 @@
 
 namespace Joomla\Cli\Command;
 
-use Joomla\Cli\Command;
+use Joomla\Cli\EntityAwareCommand;
+use Joomla\ORM\Storage\CollectionFinderInterface;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package     Joomla\Cli
  * @since       __DEPLOY_VERSION__
  */
-class ShowCommand extends Command
+class ShowCommand extends EntityAwareCommand
 {
 	/**
 	 * Configure the options for the version command
@@ -33,22 +33,11 @@ class ShowCommand extends Command
 		$this
 			->setName('show')
 			->setDescription('Show a list of entities')
-			->addArgument(
-				'entity',
-				InputArgument::REQUIRED,
-				'The name of the entity to retrieve.'
-			)
 			->addOption(
 				'label',
 				'l',
 				InputOption::VALUE_NONE,
 				'Use labels as column headers instead of column names.'
-			)
-			->addOption(
-				'filter',
-				'f',
-				InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Filter the list using the FILTER condition.'
 			)
 			->addOption(
 				'compact',
@@ -59,44 +48,15 @@ class ShowCommand extends Command
 	}
 
 	/**
-	 * Execute the version command
+	 * @param   InputInterface            $input  An InputInterface instance
+	 * @param   OutputInterface           $output An OutputInterface instance
+	 * @param   CollectionFinderInterface $finder The finder
+	 * @param   string                    $entity The entity name
 	 *
-	 * @param   InputInterface  $input  An InputInterface instance
-	 * @param   OutputInterface $output An OutputInterface instance
-	 *
-	 * @return  integer  0 if everything went fine, 1 on error
+	 * @return  void
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
+	protected function doIt(InputInterface $input, OutputInterface $output, $finder, $entity)
 	{
-		$this->setupEnvironment($input, $output);
-
-		$entity = $this->normaliseEntityName($input->getArgument('entity'));
-
-		$repositoryFactory = $this->container->get('Repository');
-		$repository        = $repositoryFactory->forEntity($entity);
-		$finder            = $repository->findAll();
-
-		foreach ($input->getOption('filter') as $filter)
-		{
-			if (!preg_match('~^(\w+)(\s*\W+\s*|\s+\w+\s+)(\w+)$~', trim($filter), $match))
-			{
-				$this->writeln($output, "Cannot interpret filter $filter");
-
-				return 1;
-			}
-
-			$finder = $finder->with($match[1], trim($match[2]), $match[3]);
-		}
-
-		$records = $finder->getItems();
-
-		if (empty($records))
-		{
-			$this->writeln($output, "No matching records found");
-
-			return 0;
-		}
-
 		$table = new Table($output);
 
 		if ($input->getOption('compact'))
@@ -108,7 +68,7 @@ class ShowCommand extends Command
 			$table->setStyle('default');
 		}
 
-		$entityBuilder = $repositoryFactory->getEntityBuilder();
+		$entityBuilder = $this->repositoryFactory->getEntityBuilder();
 		$meta          = $entityBuilder->getMeta($entity);
 		$fields        = array_merge($meta->fields, $meta->relations['belongsTo']);
 		$headers       = [];
@@ -121,13 +81,11 @@ class ShowCommand extends Command
 
 		$table->setHeaders($headers);
 
-		foreach ($records as $record)
+		foreach ($this->getRecords($finder) as $record)
 		{
 			$table->addRow($entityBuilder->reduce($record));
 		}
 
 		$table->render();
-
-		return 0;
 	}
 }
