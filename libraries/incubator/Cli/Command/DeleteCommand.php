@@ -60,7 +60,7 @@ class DeleteCommand extends Command
 	{
 		$this->setupEnvironment($input, $output);
 
-		$entity = ucfirst(Inflector::getInstance()->toSingular($input->getArgument('entity')));
+		$entity = $this->normaliseEntityName($input->getArgument('entity'));
 
 		$repositoryFactory  = $this->container->get('Repository');
 		$repository         = $repositoryFactory->forEntity($entity);

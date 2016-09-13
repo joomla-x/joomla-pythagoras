@@ -9,6 +9,7 @@
 namespace Joomla\Cli;
 
 use Interop\Container\ContainerInterface;
+use Joomla\String\Inflector;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +27,9 @@ abstract class Command extends BaseCommand
 {
 	/** @var  ContainerInterface */
 	protected $container;
+
+	/** @var  string */
+	protected $basePath;
 
 	/**
 	 * Constructor.
@@ -78,7 +82,7 @@ abstract class Command extends BaseCommand
 	 */
 	protected function setupEnvironment(InputInterface $input, OutputInterface $output)
 	{
-		$basePath = $this->handleBasePath($input, $output);
+		$this->basePath = $this->handleBasePath($input, $output);
 	}
 
 	/**
@@ -89,7 +93,7 @@ abstract class Command extends BaseCommand
 	 *
 	 * @return  string  The base path
 	 */
-	protected function handleBasePath(InputInterface $input, OutputInterface $output)
+	private function handleBasePath(InputInterface $input, OutputInterface $output)
 	{
 		$path = realpath($input->getOption('basepath'));
 
@@ -135,5 +139,24 @@ abstract class Command extends BaseCommand
 		$helper = new QuestionHelper;
 
 		return $helper->ask($input, $output, $question);
+	}
+
+	/**
+	 * Normalises the entity name.
+	 *
+	 * @param   string $entity The entity name (singular or plural)
+	 *
+	 * @return  string The singular entity name
+	 */
+	protected function normaliseEntityName($entity)
+	{
+		$inflector = Inflector::getInstance();
+
+		if (!$inflector->isSingular($entity))
+		{
+			$entity = $inflector->toSingular($entity);
+		}
+
+		return ucfirst($entity);
 	}
 }

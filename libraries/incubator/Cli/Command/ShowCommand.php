@@ -9,7 +9,6 @@
 namespace Joomla\Cli\Command;
 
 use Joomla\Cli\Command;
-use Joomla\String\Inflector;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -71,7 +70,7 @@ class ShowCommand extends Command
 	{
 		$this->setupEnvironment($input, $output);
 
-		$entity = ucfirst(Inflector::getInstance()->toSingular($input->getArgument('entity')));
+		$entity = $this->normaliseEntityName($input->getArgument('entity'));
 
 		$repositoryFactory = $this->container->get('Repository');
 		$repository        = $repositoryFactory->forEntity($entity);
