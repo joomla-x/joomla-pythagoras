@@ -9,6 +9,26 @@
  * @codingStandardsIgnoreStart
  */
 
+if (!function_exists('marshalMeasure'))
+{
+	/**
+	 * @param $measure
+	 *
+	 * @return string
+	 */
+	function marshalMeasure($measure):string
+	{
+		if (preg_match('~^\d+$~', $measure))
+		{
+			$measure .= 'px';
+
+			return $measure;
+		}
+
+		return $measure;
+	}
+}
+
 if (!isset($content->params))
 {
 	$content->params = new stdClass;
@@ -44,12 +64,14 @@ $style = [];
 
 if (!empty($content->params->width))
 {
-	$style[] = "width: {$content->params->width};";
+	$measure = marshalMeasure($content->params->width);
+	$style[] = "width: {$measure};";
 }
 
 if (!empty($content->params->height))
 {
-	$style[] = "height: {$content->params->height};";
+	$measure = marshalMeasure($content->params->height);
+	$style[] = "height: {$measure};";
 }
 
 $inlineCSS = implode(' ', $style);
