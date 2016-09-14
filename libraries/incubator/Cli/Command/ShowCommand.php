@@ -9,6 +9,7 @@
 namespace Joomla\Cli\Command;
 
 use Joomla\Cli\EntityAwareCommand;
+use Joomla\ORM\Definition\Parser\Relation;
 use Joomla\ORM\Storage\CollectionFinderInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -76,7 +77,14 @@ class ShowCommand extends EntityAwareCommand
 
 		foreach ($fields as $field)
 		{
-			$headers[] = $useLabel ? $field->label : $field->name;
+			if (!$useLabel)
+			{
+				$headers[] = $field->name;
+
+				continue;
+			}
+
+			$headers[] = isset($field->label) ? $field->label : $field->entity;
 		}
 
 		$table->setHeaders($headers);

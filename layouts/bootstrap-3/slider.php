@@ -12,7 +12,7 @@
 
 $class = $content->params->class ?: '';
 ?>
-<div id="<?php echo $content->id; ?>" class="carousel slide <?php echo $class; ?>" data-ride="carousel">
+<div id="<?php echo $content->id; ?>" class="carousel <?php echo $class; ?>" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
 		<?php for ($i=0, $n = count($content->elements); $i < $n; ++$i) : ?>
