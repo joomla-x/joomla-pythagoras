@@ -94,7 +94,7 @@ class EntityBuilder
 			return $filename;
 		}
 
-		throw new EntityNotDefinedException("Unable to locate definition file '{$definitionFile}' for entity '{$entityClass}'");
+		throw new EntityNotDefinedException($entityClass);
 	}
 
 	/**

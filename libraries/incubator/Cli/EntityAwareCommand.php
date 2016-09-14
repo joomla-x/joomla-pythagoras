@@ -114,7 +114,7 @@ abstract class EntityAwareCommand extends Command
 	{
 		$inflector = Inflector::getInstance();
 
-		if (!$inflector->isSingular($entity))
+		if ($inflector->isPlural($entity))
 		{
 			$entity = $inflector->toSingular($entity);
 		}
