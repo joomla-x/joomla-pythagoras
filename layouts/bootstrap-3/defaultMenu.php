@@ -9,6 +9,21 @@
  * @codingStandardsIgnoreStart
  */
 
+if (!isset($content->params))
+{
+	$content->params = new stdClass;
+}
+
+if (!isset($content->params->class))
+{
+	$content->params->class = 'navbar navbar-inverse';
+}
+
+if (!isset($content->params->levels))
+{
+	$content->params->levels = 10;
+}
+
 $subTree = function($menu, $callback, $level, $maxlevel ) {
 	if (empty($menu) || $level >= $maxlevel)
 	{
@@ -39,14 +54,21 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 	</li>
 	<?php
 };
-
-$class = $content->params->class ?? '';
-$level = $content->params->levels ?? 10;
 ?>
-<nav<?php echo $class ? " class=\"$class\"" : ''; ?>>
-	<ul class="nav nav-pills nav-stacked">
-		<?php echo call_user_func($subTree, $content->item, $subTree, 0, $level); ?>
-	</ul>
+<nav class="<?php echo $content->params->class; ?>">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="<?php echo $content->item->link; ?>"><?php echo $content->item->label; ?></a>
+		</div>
+		<ul class="nav navbar-nav">
+			<?php
+			foreach ($content->item->children as $item)
+			{
+				call_user_func($subTree, $item, $subTree, 0, $content->params->levels - 1);
+			}
+			?>
+		</ul>
+	</div>
 </nav>
 <?php
 unset($subTree);

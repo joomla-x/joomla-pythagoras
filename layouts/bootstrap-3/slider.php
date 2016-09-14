@@ -10,9 +10,17 @@
  * @codingStandardsIgnoreStart
  */
 
-$class = $content->params->class ?: '';
+if (!isset($content->params))
+{
+	$content->params = new stdClass;
+}
+
+if (!isset($content->params->class))
+{
+	$content->params->class = 'slide';
+}
 ?>
-<div id="<?php echo $content->id; ?>" class="carousel <?php echo $class; ?>" data-ride="carousel">
+<div id="<?php echo $content->id; ?>" class="carousel <?php echo $content->params->class; ?>" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
 		<?php for ($i=0, $n = count($content->elements); $i < $n; ++$i) : ?>
