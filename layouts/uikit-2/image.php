@@ -81,4 +81,4 @@ if (!empty($inlineCSS))
 	$inlineCSS = " style=\"{$inlineCSS}\"";
 }
 ?>
-<img class="img-responsive <?php echo $content->params->class; ?>" src="<?php echo $url; ?>" alt="<?php echo $content->alt; ?>"<?php echo $inlineCSS; ?>/>
+<img class="<?php echo $content->params->class; ?>" src="<?php echo $url; ?>" alt="<?php echo $content->alt; ?>"<?php echo $inlineCSS; ?>/>
