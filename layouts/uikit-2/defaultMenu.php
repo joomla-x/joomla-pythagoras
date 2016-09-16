@@ -55,20 +55,18 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 	<?php
 };
 ?>
-<nav class="<?php echo $content->params->class; ?>">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="<?php echo $content->item->link; ?>"><?php echo $content->item->label; ?></a>
-		</div>
-		<ul class="nav navbar-nav">
-			<?php
-			foreach ($content->item->children as $item)
-			{
-				call_user_func($subTree, $item, $subTree, 0, $content->params->levels - 1);
-			}
-			?>
-		</ul>
-	</div>
+<nav class="uk-navbar">
+
+	<a class="uk-navbar-brand" href="<?php echo $content->item->link; ?>"><?php echo $content->item->label; ?></a>
+	<ul class="uk-navbar-nav">
+		<?php
+		foreach ($content->item->children as $item)
+		{
+			call_user_func($subTree, $item, $subTree, 0, $content->params->levels - 1);	
+		}
+		?>
+	</ul>
+	<a href="" class="uk-navbar-toggle"></a>
 </nav>
 <?php
 unset($subTree);
