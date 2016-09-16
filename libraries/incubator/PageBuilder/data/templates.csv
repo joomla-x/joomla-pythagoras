@@ -1,3 +1,5 @@
 id,path,scripting
-1,"templates/admin",
-2,"templates/frontend",
+1,"templates/admin","bootstrap-3"
+2,"templates/bootstrap3","bootstrap-3"
+3,"templates/uikit2","uikit-2"
+4,"templates/bootstrap4","bootstrap-4"
