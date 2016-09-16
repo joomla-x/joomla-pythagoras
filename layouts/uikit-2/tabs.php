@@ -11,18 +11,18 @@
 $class = $content->params->class ?? '';
 ?>
 <div<?php echo $class ? " class=\"$class\"" : ''; ?>>
-	<ul class="nav nav-tabs">
+	<ul class="uk-tab" data-uk-tab data-uk-switcher="{connect:'#my-id'}">
 		<?php foreach ($content->elements as $i => $element) : ?>
 			<?php $title = $element->content->params->title ?? 'Tab ' . $i; ?>
 			<li<?php echo $i == 0 ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $content->id . '-' . $i; ?>"><?php echo $title; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 
-	<div class="tab-content">
+	<ul id="my-id" class="uk-switcher">
 		<?php foreach ($content->elements as $i => $element) : ?>
-			<div id="<?php echo $content->id . '-' . $i; ?>" class="tab-pane fade<?php echo $i == 0 ? ' in active' : ''; ?>">
+			<li id="<?php echo $content->id . '-' . $i; ?>">
 				<?php echo $element->html; ?>
-			</div>
+			</li>
 		<?php endforeach; ?>
-	</div>
+	</ul>
 </div>
