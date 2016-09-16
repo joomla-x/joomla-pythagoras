@@ -10,7 +10,7 @@
  */
 
 ?>
-<div class="row container-fluid">
+<div class="uk-grid">
 	<?php foreach ($content->elements as $i => $element) : ?>
 		<div<?php echo isset($element->params->class) ? " class=\"{$element->params->class}\"" : ''; ?>>
 			<?php echo $element->html; ?>
