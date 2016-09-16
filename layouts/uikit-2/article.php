@@ -10,17 +10,8 @@
  */
 
 ?>
-<article>
-	<header>
-		<h1><?php echo $content->article->title; ?></h1>
-		<p>
-			<small>Written by <?php echo $content->article->author; ?></small>
-		</p>
-	</header>
-	<main>
-		<?php echo $content->article->body; ?>
-	</main>
-	<footer>
-		<p><small>License: <?php echo $content->article->license; ?></small></p>
-	</footer>
+<article class="uk-article">
+    <h1 class="uk-article-title"><?php echo $content->article->title; ?></h1>
+    <p class="uk-article-meta">Written by <?php echo $content->article->author; ?></p>
+    <p class="uk-article-lead"><?php echo $content->article->body; ?></p>
 </article>
