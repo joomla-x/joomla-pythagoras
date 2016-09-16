@@ -20,30 +20,25 @@ if (!isset($content->params->class))
 	$content->params->class = 'slide';
 }
 ?>
-<div id="<?php echo $content->id; ?>" class="carousel <?php echo $content->params->class; ?>" data-ride="carousel">
-	<!-- Indicators -->
-	<ol class="carousel-indicators">
-		<?php for ($i=0, $n = count($content->elements); $i < $n; ++$i) : ?>
-		<li data-target="#<?php echo $content->id; ?>" data-slide-to="<?php echo $i; ?>"<?php echo $i == 0 ? ' class="active"' : '';?>></li>
-		<?php endfor; ?>
-	</ol>
 
+<div id="<?php echo $content->id; ?>" class="uk-slidenav-position <?php echo $content->params->class; ?>" data-uk-slideshow>
+	
 	<!-- Wrapper for slides -->
-	<div class="carousel-inner" role="listbox">
+	<ul class="uk-slideshow">
 		<?php foreach ($content->elements as $i => $element) : ?>
-		<div class="item<?php echo $i == 0 ? ' active' : ''; ?>">
+		<li class="item<?php echo $i == 0 ? ' active' : ''; ?>">
 			<?php echo $element->html; ?>
-		</div>
+		</li>
 		<?php endforeach; ?>
-	</div>
+	</ul>
 
 	<!-- Left and right controls -->
-	<a class="left carousel-control" href="#<?php echo $content->id; ?>" role="button" data-slide="prev">
-		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="right carousel-control" href="#<?php echo $content->id; ?>" role="button" data-slide="next">
-		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
+	<a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-previous" data-uk-slideshow-item="previous"></a>
+    	<a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-next" data-uk-slideshow-item="next"></a>
+    
+	<ul class="uk-dotnav uk-dotnav-contrast uk-position-bottom uk-flex-center">
+    	<?php for ($i=0, $n = count($content->elements); $i < $n; ++$i) : ?>
+        	<li data-uk-slideshow-item="<?php echo $i; ?>"><a href=""></a></li>
+        <?php endfor; ?>
+	</ul>
 </div>
