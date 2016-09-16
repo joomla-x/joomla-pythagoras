@@ -1,8 +1,8 @@
 id,name,content_type,content_args,ordering,component,reference,selection,params,parent_id,layout_id,page_id
 1,body,Joomla\Content\Type\Rows,"{""type"":""div""}",1,,,,,0,2,0
 2,header,Joomla\Content\Type\Columns,"{""type"":""header""}",1,,,,,1,2,0
-3,logo,Joomla\Content\Type\Compound,"{""type"":""div""}",1,,,,"{""class"":""col-md-6""}",2,2,0
-4,teaser,Joomla\Content\Type\Compound,{"type":"div"},2,,,,"{""class"":""col-md-6""}",2,2,0
+3,logo,Joomla\Content\Type\Compound,"{""type"":""div""}",1,,,,{"class":"pull-left"},2,2,0
+4,teaser,Joomla\Content\Type\Compound,{"type":"div"},2,,,,{"class":"pull-right"},2,2,0
 5,main,Joomla\Content\Type\Columns,"{""type"":""main""}",2,,,,,1,2,0
 6,footer,Joomla\Content\Type\Columns,"{""type"":""footer""}",3,,,,,1,2,0
 7,menu,Joomla\Content\Type\Compound,"{""type"":""div""}",1,,,,"{""class"":""col-md-2""}",5,0,1
