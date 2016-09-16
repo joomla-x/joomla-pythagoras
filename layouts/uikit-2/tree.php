@@ -26,13 +26,12 @@ $subTree = function($node, $callback, $level = 0) {
 	else
 	{
 		?>
-		<li>
+		<li class="uk-parent">
 			<?php if ($level == 0) : ?>
-			<label class="tree-toggler nav-header"><a href="#"><?php echo $node->title; ?></a></label>
+			<a href="#"><?php echo $node->title; ?></a>
 			<?php else : ?>
-			<a href="#" class="tree-toggler"><?php echo $node->title; ?></a>
 			<?php endif; ?>
-				<ul class="nav nav-list tree" style="display: none;">
+				<ul class="uk-nav-sub">
 				<?php
 				foreach ($children as $item)
 				{
@@ -48,19 +47,11 @@ $subTree = function($node, $callback, $level = 0) {
 $class = $content->params->class ?? '';
 ?>
 <div<?php echo $class ? " class=\"$class\"" : ''; ?>>
-	<ul class="nav nav-list tree">
+	<ul class="uk-nav uk-nav-parent-icon">
 		<?php echo call_user_func($subTree, $content->item, $subTree); ?>
 	</ul>
 </div>
 <?php
 unset($subTree);
 
-$js = <<<JS
-$(document).ready(function () {
-	$('.tree-toggler').click(function () {
-		$(this).parent().children('ul.tree').toggle(300);
-	});
-});
-JS;
 
-$this->addJavascript('.tree-toggler', $js);
