@@ -10,7 +10,7 @@
  */
 
 ?>
-<div class="container">
+<div class="uk-container">
 	<?php foreach ($content->elements as $i => $element) : ?>
 		<?php $class = $element->params->class ?? ''; ?>
 		<div class="clearfix <?php echo $class; ?>">
