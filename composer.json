@@ -25,7 +25,8 @@
     "joomla/registry": "^1.5",
     "aura/session": "^2.0",
     "php": ">=5.5.9",
-    "joomla/string": "^1.4"
+    "joomla/string": "^1.4",
+    "jeremeamia/superclosure": "~1.0"
   },
   "require-dev": {
     "codeception/codeception": "~2",

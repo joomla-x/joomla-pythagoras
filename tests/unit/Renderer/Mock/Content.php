@@ -7,7 +7,8 @@ use Joomla\Content\ContentTypeVisitorInterface;
 
 abstract class Content implements ContentTypeInterface
 {
-	protected $content = 'undefined';
+	protected $content = 'undefined content';
+	protected $title   = 'undefined title';
 
 	public function __construct($content)
 	{
@@ -17,6 +18,16 @@ abstract class Content implements ContentTypeInterface
 	public function getContents()
 	{
 		return $this->content;
+	}
+
+	/**
+	 * Gets the title for the content
+	 *
+	 * @return  string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
 	}
 }
 

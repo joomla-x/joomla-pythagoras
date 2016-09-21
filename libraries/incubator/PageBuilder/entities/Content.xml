@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+<entity name="Joomla\PageBuilder\Entity\Content">
+
+    <storage>
+        <default table="contents"/>
+    </storage>
+
+    <fields>
+        <field name="id"
+               type="id"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               default="null"
+        >
+            <validation rule="positive"/>
+            <validation rule="integer"/>
+        </field>
+        <field name="name" type="string"/>
+        <field name="content_type" type="string"/>
+        <field name="content_args" type="json"/>
+        <field name="ordering" type="integer"/>
+        <field name="component" type="string"/>
+        <field name="reference" type="string"/>
+        <field name="selection" type="json"/>
+        <field name="params" type="json"/>
+
+
+    </fields>
+
+    <relations>
+        <belongsTo name="parent_id" entity="Content"/>
+        <belongsTo name="layout_id" entity="Layout"/>
+        <belongsTo name="page_id" entity="Page"/>
+    </relations>
+
+</entity>

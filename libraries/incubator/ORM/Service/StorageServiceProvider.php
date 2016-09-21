@@ -51,7 +51,7 @@ class StorageServiceProvider implements ServiceProviderInterface
 	{
 		$config = parse_ini_file(JPATH_ROOT . '/config/database.ini', true);
 
-		$connection = DriverManager::getConnection($config);
+		$connection = DriverManager::getConnection(['url' => $config['databaseUrl']]);
 		$transactor = new DoctrineTransactor($connection);
 
 		return new RepositoryFactory($config, $connection, $transactor);

@@ -8,9 +8,11 @@
 
 namespace Joomla\Tests\Unit\Http;
 
+use Joomla\DI\Container;
 use Joomla\Event\Dispatcher;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\RendererMiddleware;
+use Joomla\Renderer\EventDecorator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use UnitTester;
@@ -26,15 +28,15 @@ class RendererCest
 	{
 	}
 
-	public function RendererDefaultsToPlainText(UnitTester $I)
+	public function RendererAddsTheEventDecorator(UnitTester $I)
 	{
 		$app = new Application([
-			new RendererMiddleware(new Dispatcher()),
+			new RendererMiddleware(new Dispatcher(), new Container()),
 			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
 			{
 				$body = $response->getBody();
 
-				#$I->assertTrue($body instanceof PlainRenderer);
+				$I->assertEquals(EventDecorator::class, get_class($body));
 
 				return $next($request, $response);
 			}

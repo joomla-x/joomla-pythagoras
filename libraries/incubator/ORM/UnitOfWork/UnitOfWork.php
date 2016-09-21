@@ -410,8 +410,8 @@ class UnitOfWork implements UnitOfWorkInterface
 	protected function isScheduled($objectHashId)
 	{
 		return isset($this->scheduledForInsertion[$objectHashId])
-		       || isset($this->scheduledForUpdate[$objectHashId])
-		       || isset($this->scheduledForDeletion[$objectHashId]);
+			|| isset($this->scheduledForUpdate[$objectHashId])
+			|| isset($this->scheduledForDeletion[$objectHashId]);
 	}
 
 	/**
@@ -439,8 +439,7 @@ class UnitOfWork implements UnitOfWorkInterface
 		$this->entityRegistry->registerAggregateRootCallback(
 			$root,
 			$child,
-			function ($root, $child) use ($foreignKey, $isAccessorRegistry)
-			{
+			function ($root, $child) use ($foreignKey, $isAccessorRegistry) {
 				$reflection = new \ReflectionProperty(get_class($child), $foreignKey);
 				$reflection->setAccessible(true);
 				$reflection->setValue($child, $isAccessorRegistry->getEntityId($root));

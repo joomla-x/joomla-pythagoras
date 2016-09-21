@@ -19,7 +19,7 @@ use Joomla\Event\EventInterface;
  *
  * @package  Joomla\Extension
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class ExtensionDispatcher extends Dispatcher
 {

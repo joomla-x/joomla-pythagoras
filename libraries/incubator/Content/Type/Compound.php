@@ -12,38 +12,24 @@ use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\ContentTypeVisitorInterface;
 
 /**
- * Headline ContentType
+ * Compound ContentType
  *
  * @package  Joomla/Content
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  *
  * @property string                 $type
- * @property ContentTypeInterface[] $items
+ * @property ContentTypeInterface[] $elements
  */
-class Compound extends AbstractContentType
+class Compound extends AbstractCompoundType
 {
 	/**
 	 * Compound constructor.
 	 *
-	 * @param   string                 $type  The type represented by this class. In HTML, it is rendered as enclosing tag.
-	 * @param   ContentTypeInterface[] $items The items enclosed by this tag
+	 * @param   string $type The type represented by this class. In HTML, it is rendered as enclosing tag.
 	 */
-	public function __construct($type, $items)
+	public function __construct($type)
 	{
-		$this->type  = $type;
-		$this->items = array_filter($items);
-	}
-
-	/**
-	 * Add content items to the compound.
-	 *
-	 * @param   ContentTypeInterface $content The content to add
-	 *
-	 * @return  void
-	 */
-	public function add(ContentTypeInterface $content)
-	{
-		$this->items[] = $content;
+		$this->type = $type;
 	}
 
 	/**

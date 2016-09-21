@@ -65,7 +65,7 @@ class RepositoryFactory
 	{
 		$this->config     = $config;
 		$this->connection = $connection;
-		$this->builder    = $this->createEntityBuilder($this->config['definitionPath']);
+		$this->builder    = $this->createEntityBuilder(JPATH_ROOT . '/' . $this->config['definitionPath']);
 
 		$this->entityRegistry = new EntityRegistry($this->builder);
 		$this->unitOfWork     = new UnitOfWork(
@@ -91,7 +91,7 @@ class RepositoryFactory
 	 * @param   string               $entityClass  The Entity's class
 	 * @param   DataMapperInterface  $dataMapper   An optional DataMapper
 	 *
-	 * @return  Repository
+	 * @return  RepositoryInterface
 	 */
 	public function forEntity($entityClass, DataMapperInterface $dataMapper = null)
 	{
@@ -171,7 +171,7 @@ class RepositoryFactory
 	{
 		$strategy = new RecursiveDirectoryStrategy($dataDirectory);
 		$locator  = new Locator([$strategy]);
-		$builder  = new EntityBuilder($locator, $this->config, $this);
+		$builder  = new EntityBuilder($locator, $this);
 
 		return $builder;
 	}
@@ -230,5 +230,50 @@ class RepositoryFactory
 		}
 
 		return $dataMapper;
+	}
+
+	/**
+	 * Gets the schema manager
+	 *
+	 * @return \Doctrine\DBAL\Schema\AbstractSchemaManager|null
+	 */
+	public function getSchemaManager()
+	{
+		if (method_exists($this->connection, 'getSchemaManager'))
+		{
+			return $this->connection->getSchemaManager();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Gets the connection
+	 *
+	 * @param   string  $type Class name of the connection
+	 *
+	 * @return  \Doctrine\DBAL\Driver\Connection|CsvDataGateway
+	 */
+	public function getConnection($type = null)
+	{
+		if (!isset($this->connections[CsvDataGateway::class]) && isset($this->config['dataPath']))
+		{
+			$this->connections[CsvDataGateway::class] = new CsvDataGateway(JPATH_ROOT . '/' . $this->config['dataPath']);
+		}
+
+		if (!isset($this->connections[Connection::class]) && isset($this->config['databaseUrl']))
+		{
+			$databaseUrl = $this->config['databaseUrl'];
+			$url = parse_url($databaseUrl);
+
+			if ($url['schema'] == 'sqlite')
+			{
+				$databaseUrl = str_replace('sqlite://', 'sqlite://' . JPATH_ROOT, $databaseUrl);
+			}
+
+			$this->connections[Connection::class] = DriverManager::getConnection(['url' => $databaseUrl]);
+		}
+
+		return $this->connections[$type];
 	}
 }

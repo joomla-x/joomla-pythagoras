@@ -8,6 +8,7 @@
 
 namespace Joomla\Tests\Unit\Renderer;
 
+use Joomla\DI\Container;
 use Joomla\Tests\Unit\Renderer\Mock\ContentType;
 use Joomla\Tests\Unit\Renderer\Mock\Renderer;
 use UnitTester;
@@ -28,7 +29,7 @@ class RendererStreamCest
 	 */
 	public function ToString(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -41,7 +42,7 @@ class RendererStreamCest
 	 */
 	public function Close(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -56,7 +57,7 @@ class RendererStreamCest
 	 */
 	public function Detach(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 
 		$I->assertEquals(null, $renderer->detach());
 	}
@@ -66,7 +67,7 @@ class RendererStreamCest
 	 */
 	public function getSize(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -79,7 +80,7 @@ class RendererStreamCest
 	 */
 	public function IsSeekable(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 
 		$I->assertTrue($renderer->isSeekable(), 'Expected isSeekable() to be true');
 	}
@@ -89,7 +90,7 @@ class RendererStreamCest
 	 */
 	public function IsReadable(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 
 		$I->assertTrue($renderer->isReadable(), 'Expected isReadable() to be true');
 	}
@@ -99,7 +100,7 @@ class RendererStreamCest
 	 */
 	public function IsWritable(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 
 		$I->assertTrue($renderer->isWritable(), 'Expected isWritable() to be true');
 	}
@@ -109,7 +110,7 @@ class RendererStreamCest
 	 */
 	public function StreamPointerIsReset(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -123,7 +124,7 @@ class RendererStreamCest
 	 */
 	public function StreamPointerForwarding(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -138,7 +139,7 @@ class RendererStreamCest
 	 */
 	public function StreamPointerCanBeSetRelatively(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -154,7 +155,7 @@ class RendererStreamCest
 	 */
 	public function StreamPointerCanBeSetAbsolutely(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -169,7 +170,7 @@ class RendererStreamCest
 	 */
 	public function StreamPointerCanBeSetRelativeToTheStreamsEnd(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -184,7 +185,7 @@ class RendererStreamCest
 	 */
 	public function EofIsSetWhenTheEndOfTheStreamIsReached(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -199,7 +200,7 @@ class RendererStreamCest
 	 */
 	public function ExceptionIsThrownOnIllegalWhenceValue(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -220,7 +221,7 @@ class RendererStreamCest
 	 */
 	public function WriteAppendsToTheOutput(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 
 		$content->accept($renderer);
@@ -235,7 +236,7 @@ class RendererStreamCest
 	 */
 	public function WriteAcceptsContentTypeElements(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$content  = new ContentType('This is the content.');
 		$more     = new ContentType('More of this.');
 
@@ -251,7 +252,7 @@ class RendererStreamCest
 	 */
 	public function Metadata(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$meta     = $renderer->getMetadata();
 
 		$I->assertEquals([
@@ -274,7 +275,7 @@ class RendererStreamCest
 	 */
 	public function MetadataStreamType(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$meta     = $renderer->getMetadata('stream_type');
 
 		$I->assertEquals('RFC2397', $meta);
@@ -285,7 +286,7 @@ class RendererStreamCest
 	 */
 	public function MetadataUnknown(UnitTester $I)
 	{
-		$renderer = new Renderer(['token' => '*/*']);
+		$renderer = new Renderer(['token' => '*/*'], new Container());
 		$meta     = $renderer->getMetadata('foo');
 
 		$I->assertEquals(null, $meta);

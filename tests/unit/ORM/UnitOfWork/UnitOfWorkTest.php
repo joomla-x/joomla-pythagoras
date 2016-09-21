@@ -92,7 +92,7 @@ class UnitOfWorkTest extends TestCase
 
 		$strategy      = new RecursiveDirectoryStrategy($this->config['definitionPath']);
 		$locator       = new Locator([$strategy]);
-		$this->builder = new EntityBuilder($locator, $this->config, $repositoryFactory);
+		$this->builder = new EntityBuilder($locator,$repositoryFactory);
 
 		$this->repo           = $repositoryFactory->forEntity(User::class);
 		$this->entityRegistry = $repositoryFactory->getEntityRegistry();

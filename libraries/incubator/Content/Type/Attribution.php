@@ -14,7 +14,7 @@ use Joomla\Content\ContentTypeVisitorInterface;
  * Attribution ContentType
  *
  * @package  Joomla/Content
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  *
  * @property string $label
  * @property string $name

@@ -13,7 +13,7 @@ namespace Joomla\Http\Exception;
  *
  * @package  Joomla/HTTP
  * @see      Joomla\Http\Application for supported types of middleware.
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class UnsupportedMiddlewareException extends \LogicException
 {

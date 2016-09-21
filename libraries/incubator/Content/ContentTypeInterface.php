@@ -13,7 +13,7 @@ namespace Joomla\Content;
  *
  * @package  Joomla/Content
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 interface ContentTypeInterface
 {
@@ -25,4 +25,11 @@ interface ContentTypeInterface
 	 * @return  mixed
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor);
+
+	/**
+	 * Gets the title for the content
+	 *
+	 * @return  string
+	 */
+	public function getTitle();
 }

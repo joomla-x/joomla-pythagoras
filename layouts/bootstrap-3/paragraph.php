@@ -10,7 +10,7 @@
  */
 ?>
 <?php if ($content->variant == Joomla\Content\Type\Paragraph::EMPHASISED) : ?>
-	<p><em><?= $content->text; ?></em></p>
+	<p><em><?php echo $content->text; ?></em></p>
 <?php else : ?>
-	<p><?= $content->text; ?></p>
+	<p><?php echo $content->text; ?></p>
 <?php endif; ?>

@@ -8,6 +8,7 @@
 
 namespace Joomla\Renderer;
 
+use Interop\Container\ContainerInterface;
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Renderer\Exception\NotFoundException;
 
@@ -16,7 +17,7 @@ use Joomla\Renderer\Exception\NotFoundException;
  *
  * @package  Joomla/Renderer
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 abstract class Renderer implements RendererInterface
 {
@@ -29,6 +30,9 @@ abstract class Renderer implements RendererInterface
 	/** @var string The output buffer */
 	protected $output = '';
 
+	/** @var  ContainerInterface */
+	protected $container;
+
 	/** @var callable[] Content type handlers */
 	private $handlers = [];
 
@@ -38,11 +42,13 @@ abstract class Renderer implements RendererInterface
 	/**
 	 * Renderer constructor.
 	 *
-	 * @param   array $options Accepted range, ie., MIME type ('token') and quality ('q')
+	 * @param   array               $options    Accepted range, ie., MIME type ('token') and quality ('q')
+	 * @param   ContainerInterface  $container  The container
 	 */
-	public function __construct(array $options = [])
+	public function __construct(array $options, ContainerInterface $container)
 	{
-		$this->options = $options;
+		$this->options   = $options;
+		$this->container = $container;
 	}
 
 	/**
