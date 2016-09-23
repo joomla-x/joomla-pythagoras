@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/joomla-projects/joomla-pythagoras.png?label=ready&title=Ready)](https://waffle.io/joomla-projects/joomla-pythagoras)
 # Joomla! X Clean Base Branch
 
 [![Build Status](https://travis-ci.org/joomla-projects/joomla-pythagoras.svg?branch=clean-base)](https://travis-ci.org/joomla-projects/joomla-pythagoras)
