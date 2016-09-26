@@ -170,7 +170,7 @@ class Installer
 		foreach ($this->entityDefinitions as $definition)
 		{
 			$this->resolveBelongsTo($definition);
-			$this->resolveHasOnOrMany($definition);
+			$this->resolveHasOneOrMany($definition);
 			$this->resolveHasManyThrough($definition);
 		}
 
@@ -323,7 +323,7 @@ class Installer
 	 *
 	 * @return  void
 	 */
-	private function resolveHasOnOrMany($definition)
+	private function resolveHasOneOrMany($definition)
 	{
 		foreach (array_merge($definition->relations['hasMany'], $definition->relations['hasOne']) as $relation)
 		{
