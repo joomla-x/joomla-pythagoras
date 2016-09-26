@@ -286,15 +286,7 @@ class Installer
 			$counterMeta      = $this->entityDefinitions[$counterEntity];
 			$counterRelations = $counterMeta->relations;
 
-			foreach ($counterRelations['hasOne'] as $counterRelation)
-			{
-				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->name)
-				{
-					break 2;
-				}
-			}
-
-			foreach ($counterRelations['hasMany'] as $counterRelation)
+			foreach (array_merge($counterRelations['hasOne'], $counterRelations['hasMany']) as $counterRelation)
 			{
 				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->name)
 				{
@@ -310,7 +302,8 @@ class Installer
 					'reference' => $relation->name,
 				]
 			);
-			$counterRelations['hasMany'][$counterRelation->name] = $counterRelation;
+
+			$this->entityDefinitions[$counterEntity]->relations['hasMany'][$counterRelation->name] = $counterRelation;
 		}
 	}
 
@@ -342,7 +335,8 @@ class Installer
 					'entity' => $definition->name,
 				]
 			);
-			$counterRelations['belongsTo'][$counterRelation->name] = $counterRelation;
+
+			$this->entityDefinitions[$counterEntity]->relations['belongsTo'][$counterRelation->name] = $counterRelation;
 		}
 	}
 
