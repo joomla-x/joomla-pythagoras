@@ -17,7 +17,7 @@ use Joomla\PageBuilder\RouterMiddleware as PageBuilderRouterMiddleware;
 ini_set('date.timezone', 'UTC');
 
 require_once 'libraries/vendor/autoload.php';
-require_once __DIR__ . '/init.php';
+require_once 'init.php';
 
 $container = initContainer();
 
