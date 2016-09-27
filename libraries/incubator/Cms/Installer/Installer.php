@@ -67,6 +67,8 @@ class Installer
 		$this->loadExistingEntities();
 	}
 
+	private $dataDirectories = [];
+
 	/**
 	 * Installs an extension
 	 *
@@ -81,19 +83,10 @@ class Installer
 		$this->builder->addLocatorStrategy($strategy);
 		$entityNames = $this->importDefinition($xmlDirectory . '/*.xml');
 
-		$csvDirectory = $source . '/data';
-
 		foreach ($entityNames as $entityName)
 		{
-			$this->createTable($entityName);
+			$this->dataDirectories[$entityName] = $source . '/data';
 		}
-
-		foreach ($entityNames as $entityName)
-		{
-			$this->importInitialData($entityName, $csvDirectory);
-		}
-
-		$this->repositoryFactory->getUnitOfWork()->commit();
 	}
 
 	/**
@@ -175,6 +168,14 @@ class Installer
 		{
 			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
 		}
+
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->createTable($entityName);
+			$this->importInitialData($entityName, $csvDirectory);
+		}
+
+		$this->repositoryFactory->getUnitOfWork()->commit();
 	}
 
 	/**
@@ -331,7 +332,7 @@ class Installer
 			// No existing counter-relation found; create it.
 			$counterRelation                                       = new BelongsTo(
 				[
-					'name'   => $this->normalise($definition->name),
+					'name'   => $relation->reference,
 					'entity' => $definition->name,
 				]
 			);

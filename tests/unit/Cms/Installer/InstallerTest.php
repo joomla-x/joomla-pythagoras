@@ -8,7 +8,6 @@
 
 namespace Joomla\Tests\Unit\Cms\Installer;
 
-use DOMDocument;
 use Joomla\Cms\Installer\Installer;
 
 class InstallerTest extends \PHPUnit_Framework_TestCase
@@ -22,21 +21,15 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->dataDirectory = __DIR__ . '/tmp';
-		mkdir($this->dataDirectory);
-		mkdir($this->dataDirectory . '/entities');
+
+		$this->mkdir($this->dataDirectory . '/entities');
 
 		$this->installer = new Installer($this->dataDirectory);
 	}
 
 	public function tearDown()
 	{
-
-		foreach (glob($this->dataDirectory . '/entities/*') as $file)
-		{
-			unlink($file);
-		}
-		rmdir($this->dataDirectory . '/entities');
-		rmdir($this->dataDirectory);
+		$this->rmdir($this->dataDirectory);
 	}
 
 	/**
@@ -49,12 +42,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertFileExists($this->dataDirectory . '/entities/Article.xml');
 
-		$expected = new DOMDocument;
-		$expected->load(__DIR__ . '/data/ext_article/entities/Article.xml');
-		$actual   = new DOMDocument;
-		$actual->load($this->dataDirectory . '/entities/Article.xml');
+		$originalStructure = $this->getStructureFromFile(__DIR__ . '/data/ext_article/entities/Article.xml');
+		$cachedStructure   = $this->getStructureFromFile($this->dataDirectory . '/entities/Article.xml');
 
-		$this->assertEquals($this->getStructure($expected->documentElement), $this->getStructure($actual->documentElement));
+		$this->assertEquals($originalStructure, $cachedStructure);
 	}
 
 	/**
@@ -66,51 +57,123 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
 		$this->installer->install(__DIR__ . '/data/ext_extra');
 		$this->installer->finish();
 
-		$expected = new DOMDocument;
-		$expected->load(__DIR__ . '/data/ext_article/entities/Article.xml');
-		$expectedStructure = $this->getStructure($expected->documentElement);
+		$originalStructure = $this->getStructureFromFile(__DIR__ . '/data/ext_article/entities/Article.xml');
+		$this->assertFalse(in_array('extras', $originalStructure['relations']['hasMany']));
 
-		$this->assertFalse(in_array('extras', $expectedStructure['relations']['hasMany']));
-
-		$actual = new DOMDocument;
-		$actual->load($this->dataDirectory . '/entities/Article.xml');
-		$actualStructure = $this->getStructure($actual->documentElement);
-
-		$this->assertTrue(in_array('extras', $actualStructure['relations']['hasMany']));
+		$cachedStructure = $this->getStructureFromFile($this->dataDirectory . '/entities/Article.xml');
+		$this->assertTrue(in_array('extras', $cachedStructure['relations']['hasMany']));
 	}
 
-	protected function getStructure(\DOMElement $node)
+	/**
+	 * @testdox hasOne and HasMany relations from one entity create a belongsTo relationship on the other.
+	 */
+	public function testResolveHasOneOrHasMany()
+	{
+		$this->installer->install(__DIR__ . '/data/ext_article');
+		$this->installer->install(__DIR__ . '/data/ext_category');
+		$this->installer->finish();
+
+		$originalStructure = $this->getStructureFromFile(__DIR__ . '/data/ext_article/entities/Article.xml');
+		$this->assertFalse(in_array('category_id', $originalStructure['relations']['belongsTo']));
+
+		$cachedStructure = $this->getStructureFromFile($this->dataDirectory . '/entities/Article.xml');
+		$this->assertTrue(in_array('category_id', $cachedStructure['relations']['belongsTo']));
+	}
+
+	/**
+	 * @param $xmlFile
+	 *
+	 * @return array
+	 */
+	private function getStructureFromFile($xmlFile)
+	{
+		$document = new \DOMDocument;
+		$document->load($xmlFile);
+
+		return $this->getStructure($document->documentElement);
+	}
+
+	private function getStructure(\DOMElement $node)
 	{
 		$structure = [];
 
-		if ($node->hasChildNodes())
+		if (!$node->hasChildNodes())
 		{
-			foreach ($node->childNodes as $child)
+			return $structure;
+		}
+
+		foreach ($node->childNodes as $child)
+		{
+			if ($child->nodeType != XML_ELEMENT_NODE)
 			{
-				if ($child->nodeType != XML_ELEMENT_NODE)
-				{
-					continue;
-				}
-
-				/** @var \DOMElement $child */
-				$name = null;
-
-				if ($child->hasAttributes())
-				{
-					$attribute = $child->attributes->getNamedItem('name');
-					$name      = !empty($attribute) ? $attribute->nodeValue : null;
-				}
-
-				if (!empty($name))
-				{
-					$structure[$child->nodeName][] = $name;
-					continue;
-				}
-
-				$structure[$child->nodeName] = $this->getStructure($child);
+				continue;
 			}
+
+			/** @var \DOMElement $child */
+			$name = null;
+
+			if ($child->hasAttributes())
+			{
+				$attribute = $child->attributes->getNamedItem('name');
+				$name      = !empty($attribute) ? $attribute->nodeValue : null;
+			}
+
+			if (!empty($name))
+			{
+				$structure[$child->nodeName][] = $name;
+				continue;
+			}
+
+			$structure[$child->nodeName] = $this->getStructure($child);
 		}
 
 		return $structure;
+	}
+
+	private function mkdir($dir, $clean = true)
+	{
+		if (empty($dir))
+		{
+			return;
+		}
+
+		$basedir = dirname($dir);
+
+		if (!file_exists($basedir))
+		{
+			$this->mkdir($basedir, false);
+		}
+
+		if (!file_exists($dir))
+		{
+			mkdir($dir);
+		}
+
+		if ($clean)
+		{
+			$this->clearDir($dir);
+		}
+	}
+
+	private function rmdir($dir)
+	{
+		$this->clearDir($dir);
+		rmdir($dir);
+	}
+
+	private function clearDir($dir)
+	{
+		foreach (glob($dir . '/*') as $file)
+		{
+			if (is_dir($file))
+			{
+				$this->clearDir($file);
+				rmdir($file);
+			}
+			else
+			{
+				unlink($file);
+			}
+		}
 	}
 }
