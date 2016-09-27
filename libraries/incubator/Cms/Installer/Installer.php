@@ -13,11 +13,7 @@ use Joomla\DI\Container;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\BelongsTo;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
-use Joomla\ORM\Definition\Parser\Field;
 use Joomla\ORM\Definition\Parser\HasMany;
-use Joomla\ORM\Definition\Parser\HasManyThrough;
-use Joomla\ORM\Definition\Parser\HasOne;
-use Joomla\ORM\Definition\Parser\Relation;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\ORM\Service\StorageServiceProvider;
@@ -54,7 +50,7 @@ class Installer
 	/**
 	 * Installer constructor.
 	 *
-	 * @param   string  $dataDirectory  The data directory
+	 * @param   string $dataDirectory The data directory
 	 */
 	public function __construct($dataDirectory)
 	{
@@ -71,10 +67,12 @@ class Installer
 		$this->loadExistingEntities();
 	}
 
+	private $dataDirectories = [];
+
 	/**
 	 * Installs an extension
 	 *
-	 * @param   string  $source  The path to the extension
+	 * @param   string $source The path to the extension
 	 *
 	 * @return  void
 	 */
@@ -85,19 +83,10 @@ class Installer
 		$this->builder->addLocatorStrategy($strategy);
 		$entityNames = $this->importDefinition($xmlDirectory . '/*.xml');
 
-		$csvDirectory = $source . '/data';
-
 		foreach ($entityNames as $entityName)
 		{
-			$this->createTable($entityName);
+			$this->dataDirectories[$entityName] = $source . '/data';
 		}
-
-		foreach ($entityNames as $entityName)
-		{
-			$this->importInitialData($entityName, $csvDirectory);
-		}
-
-		$this->repositoryFactory->getUnitOfWork()->commit();
 	}
 
 	/**
@@ -131,7 +120,7 @@ class Installer
 	/**
 	 * Load the data from the file
 	 *
-	 * @param   string  $dataFile  A filename
+	 * @param   string $dataFile A filename
 	 *
 	 * @return  array   The data
 	 */
@@ -170,7 +159,7 @@ class Installer
 		foreach ($this->entityDefinitions as $definition)
 		{
 			$this->resolveBelongsTo($definition);
-			$this->resolveHasOnOrMany($definition);
+			$this->resolveHasOneOrMany($definition);
 			$this->resolveHasManyThrough($definition);
 		}
 
@@ -179,6 +168,14 @@ class Installer
 		{
 			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
 		}
+
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->createTable($entityName);
+			$this->importInitialData($entityName, $csvDirectory);
+		}
+
+		$this->repositoryFactory->getUnitOfWork()->commit();
 	}
 
 	/**
@@ -200,7 +197,7 @@ class Installer
 	}
 
 	/**
-	 * @param   string  $pattern  A filename pattern
+	 * @param   string $pattern A filename pattern
 	 *
 	 * @return  string[]  A list of entity names
 	 */
@@ -232,7 +229,7 @@ class Installer
 	}
 
 	/**
-	 * @param   string  $entityName  The name of the entity
+	 * @param   string $entityName The name of the entity
 	 *
 	 * @return  void
 	 */
@@ -263,12 +260,12 @@ class Installer
 			$primary = explode(',', $meta->primary);
 			$table->setPrimaryKey($primary);
 
-			$schemaManager->createTable($table);
+			$schemaManager->dropAndCreateTable($table);
 		}
 	}
 
 	/**
-	 * @param   string  $word  A word
+	 * @param   string $word A word
 	 *
 	 * @return  string
 	 */
@@ -290,15 +287,7 @@ class Installer
 			$counterMeta      = $this->entityDefinitions[$counterEntity];
 			$counterRelations = $counterMeta->relations;
 
-			foreach ($counterRelations['hasOne'] as $counterRelation)
-			{
-				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->name)
-				{
-					break 2;
-				}
-			}
-
-			foreach ($counterRelations['hasMany'] as $counterRelation)
+			foreach (array_merge($counterRelations['hasOne'], $counterRelations['hasMany']) as $counterRelation)
 			{
 				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->name)
 				{
@@ -314,7 +303,8 @@ class Installer
 					'reference' => $relation->name,
 				]
 			);
-			$counterRelations['hasMany'][$counterRelation->name] = $counterRelation;
+
+			$this->entityDefinitions[$counterEntity]->relations['hasMany'][$counterRelation->name] = $counterRelation;
 		}
 	}
 
@@ -323,7 +313,7 @@ class Installer
 	 *
 	 * @return  void
 	 */
-	private function resolveHasOnOrMany($definition)
+	private function resolveHasOneOrMany($definition)
 	{
 		foreach (array_merge($definition->relations['hasMany'], $definition->relations['hasOne']) as $relation)
 		{
@@ -342,11 +332,12 @@ class Installer
 			// No existing counter-relation found; create it.
 			$counterRelation                                       = new BelongsTo(
 				[
-					'name'   => $this->normalise($definition->name),
+					'name'   => $relation->reference,
 					'entity' => $definition->name,
 				]
 			);
-			$counterRelations['belongsTo'][$counterRelation->name] = $counterRelation;
+
+			$this->entityDefinitions[$counterEntity]->relations['belongsTo'][$counterRelation->name] = $counterRelation;
 		}
 	}
 
