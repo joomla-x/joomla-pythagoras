@@ -15,11 +15,14 @@ namespace Joomla\Extension\Workflow\Entity;
  *
  * @since    __DEPLOY_VERSION__
  */
-class State
+class StateEntity
 {
 	/** @var  integer  The ID */
 	public $id;
 
-	/** @var  string  The title */
-	public $title;
+	/** @var  integer  The reference to the entity */
+	public $entity_id;
+
+	/** @var  integer  The reference to the state */
+	public $state_id;
 }
