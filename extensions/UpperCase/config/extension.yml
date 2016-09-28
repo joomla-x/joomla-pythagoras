@@ -1,5 +1,0 @@
-listeners:
-    UpperCaseListener:
-        class: \Joomla\Extension\UpperCase\Listener\UpperCaseListener
-        events:
-            onBeforeRenderCompound: toUpperCase

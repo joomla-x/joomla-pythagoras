@@ -73,7 +73,7 @@ class RouterMiddleware implements MiddlewareInterface
 					});
 				}
 
-				$path  = preg_replace('~^/?index.php/?~', '', $request->getUri()->getPath());
+				$path  = preg_replace('~^/.+?index.php/?~', '', $request->getUri()->getPath());
 				$route = $router->parseRoute($path);
 				$page  = $route['controller']();
 				$vars  = $route['vars'];
