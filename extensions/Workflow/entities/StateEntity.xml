@@ -22,13 +22,9 @@
     <relations>
     	<belongsTo name="entity_id"
                    entity="Article"
-                   label="JFIELD_PARENT_LABEL"
-                   description="JFIELD_PARENT_DESC"
         />
     	<belongsTo name="state_id"
                    entity="State"
-                   label="JFIELD_PARENT_LABEL"
-                   description="JFIELD_PARENT_DESC"
         />
     </relations>
 
