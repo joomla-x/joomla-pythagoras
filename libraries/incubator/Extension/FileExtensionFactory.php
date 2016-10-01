@@ -26,7 +26,7 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 	/** @var string|AdapterInterface  The root folder the factory reads the extensions from. */
 	private $rootFolder;
 
-	/** @var ExtensionInterface[] Extensions cache. */
+	/** @var ExtensionInterface[][] Extensions cache. */
 	private $extensions = [];
 
 	/** @var array the loaded files */

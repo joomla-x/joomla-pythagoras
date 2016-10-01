@@ -19,10 +19,10 @@ use Joomla\Service\Query;
  */
 class Extension implements ExtensionInterface
 {
-	/** @var callable[] */
+	/** @var callable[][] */
 	private $listeners = [];
 
-	/** @var callable[] */
+	/** @var callable[][] */
 	private $queryHandlers = [];
 
 	/**
