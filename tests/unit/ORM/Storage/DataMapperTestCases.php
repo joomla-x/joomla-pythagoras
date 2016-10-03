@@ -63,6 +63,33 @@ class DataMapperTestCases extends TestCase
 					return get_object_vars($entity);
 				}
 			);
+
+		$meta            = $this->createMock(Entity::class);
+		$meta->primary   = 'id';
+		$meta->fields    = [
+			'id'        => true,
+			'title'     => true,
+			'teaser'    => true,
+			'body'      => true,
+			'author'    => true,
+			'license'   => true,
+			'parent_id' => true,
+		];
+		$meta->relations = [
+			'belongsTo' => [
+				'parent_id' => true,
+			],
+			'hasMany'   => [
+				'children' => true,
+			],
+		];
+
+		$this->builder
+			->expects($this->any())
+			->method('getMeta')
+			->with(Article::class)
+			->willReturn($meta);
+
 		$this->entityRegistry = new EntityRegistry($this->builder);
 	}
 
@@ -99,7 +126,7 @@ class DataMapperTestCases extends TestCase
 	}
 
 	/**
-	 * insert() delegates insertion to connection
+	 * insert() delegates call to connection
 	 */
 	public function testInsert()
 	{
@@ -112,7 +139,7 @@ class DataMapperTestCases extends TestCase
 	}
 
 	/**
-	 * update() delegates insertion to connection
+	 * update() delegates call to connection
 	 */
 	public function testUpdate()
 	{
@@ -120,20 +147,11 @@ class DataMapperTestCases extends TestCase
 			->expects($this->once())
 			->method('update');
 
-		$meta          = $this->createMock(Entity::class);
-		$meta->primary = 'id';
-
-		$this->builder
-			->expects($this->any())
-			->method('getMeta')
-			->with(Article::class)
-			->willReturn($meta);
-
 		$this->dataMapper->update(new Article());
 	}
 
 	/**
-	 * delete() delegates insertion to connection
+	 * delete() delegates call to connection
 	 */
 	public function testDelete()
 	{
@@ -141,15 +159,6 @@ class DataMapperTestCases extends TestCase
 			->expects($this->once())
 			->method('delete')
 			->willReturn(1);
-
-		$meta          = $this->createMock(Entity::class);
-		$meta->primary = 'id';
-
-		$this->builder
-			->expects($this->any())
-			->method('getMeta')
-			->with(Article::class)
-			->willReturn($meta);
 
 		$this->dataMapper->delete(new Article());
 	}

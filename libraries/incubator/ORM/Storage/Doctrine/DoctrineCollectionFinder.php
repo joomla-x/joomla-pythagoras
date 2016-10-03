@@ -11,8 +11,10 @@ namespace Joomla\ORM\Storage\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\SyntaxErrorException;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Joomla\ORM\Entity\EntityBuilder;
+use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Entity\EntityRegistry;
+use Joomla\ORM\Event\QueryDatabaseEvent;
 use Joomla\ORM\Exception\InvalidOperatorException;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Storage\CollectionFinderInterface;
@@ -42,13 +44,21 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	private $tableName = null;
 
 	/** @var string */
+	private $tableAlias = 'a';
+
+	/** @var string */
 	private $entityClass = null;
+
+	/** @var \Joomla\ORM\Definition\Parser\Entity */
+	private $meta;
 
 	/** @var  EntityRegistry */
 	private $entityRegistry;
 
 	/** @var array */
 	private $patterns = [];
+
+	use DispatcherAwareTrait;
 
 	/**
 	 * DoctrineCollectionFinder constructor.
@@ -64,6 +74,9 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		$this->tableName      = $tableName;
 		$this->entityClass    = $entityClass;
 		$this->entityRegistry = $entityRegistry;
+		$this->meta           = $entityRegistry->getEntityBuilder()->getMeta($entityClass);
+
+		$this->setDispatcher(new NullDispatcher);
 	}
 
 	/**
@@ -96,6 +109,9 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	public function with($lValue, $op, $rValue)
 	{
+		$lValue = $this->applyTableAlias($lValue);
+		$rValue = $this->applyTableAlias($rValue);
+
 		switch ($op)
 		{
 			case Operator::CONTAINS:
@@ -142,7 +158,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	public function orderBy($column, $direction = 'ASC')
 	{
-		$this->ordering[$column] = $direction;
+		$this->ordering[$this->applyTableAlias($column)] = $direction;
 
 		return $this;
 	}
@@ -157,10 +173,17 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	public function getItems($count = null, $start = 0)
 	{
+		$columns = [];
+
+		foreach ($this->columns as $key => $value)
+		{
+			$columns[] = $this->applyTableAlias($value);
+		}
+
 		$builder = $this->connection->createQueryBuilder();
 		$builder
-			->select(empty($this->columns) ? '*' : $this->columns)
-			->from($this->tableName);
+			->select(empty($columns) ? $this->applyTableAlias('*') : $columns)
+			->from($this->tableName, $this->tableAlias);
 
 		$builder = $this->applyConditions($builder);
 		$builder = $this->applyOrdering($builder);
@@ -168,6 +191,8 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		$builder
 			->setMaxResults($count)
 			->setFirstResult($start);
+
+		$this->dispatcher->dispatch(new QueryDatabaseEvent($this->entityClass, $builder));
 
 		try
 		{
@@ -182,9 +207,11 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 
 		foreach ($this->patterns as $column => $pattern)
 		{
-			$rows = array_filter(
+			$column = $this->stripTableAlias($column);
+			$rows   = array_filter(
 				$rows,
-				function ($row) use ($column, $pattern) {
+				function ($row) use ($column, $pattern)
+				{
 					return preg_match("~{$pattern}~", $row[$column]);
 				}
 			);
@@ -265,5 +292,42 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		$entities = $this->entityRegistry->getEntityBuilder()->castToEntity($matches, $this->entityClass);
 
 		return $entities;
+	}
+
+	/**
+	 * @param   string $column
+	 *
+	 * @return  string
+	 */
+	private function applyTableAlias($column)
+	{
+		if ($this->meta->isTableColumn($column) && !$this->hasTableAlias($column))
+		{
+			$column = $this->tableAlias . '.' . $column;
+		}
+
+		return $column;
+	}
+
+	/**
+	 * @param   string $column
+	 *
+	 * @return  bool
+	 */
+	private function hasTableAlias($column)
+	{
+		return strpos($column, '.') !== false;
+	}
+
+	/**
+	 * @param   string $column
+	 *
+	 * @return  string
+	 */
+	private function stripTableAlias($column)
+	{
+		$tmp = explode('.', $column);
+
+		return array_pop($tmp);
 	}
 }

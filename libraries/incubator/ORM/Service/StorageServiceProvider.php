@@ -8,7 +8,9 @@
 
 namespace Joomla\ORM\Service;
 
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Logging\DebugStack;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
@@ -51,7 +53,13 @@ class StorageServiceProvider implements ServiceProviderInterface
 	{
 		$config = parse_ini_file(JPATH_ROOT . '/config/database.ini', true);
 
-		$connection = DriverManager::getConnection(['url' => $config['databaseUrl']]);
+		$configuration = new Configuration;
+
+		// Add logger
+		$logger = new DebugStack;
+		$configuration->setSQLLogger($logger);
+
+		$connection = DriverManager::getConnection(['url' => $config['databaseUrl']], $configuration);
 		$transactor = new DoctrineTransactor($connection);
 
 		return new RepositoryFactory($config, $connection, $transactor);

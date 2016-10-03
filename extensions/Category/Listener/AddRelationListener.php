@@ -8,10 +8,11 @@
 
 namespace Joomla\Extension\Category\Listener;
 
-use Joomla\ORM\Definition\Locator\Locator;
-use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
-use Joomla\ORM\Definition\Parser\HasOne;
-use Joomla\ORM\Event\AfterCreateDefinitionEvent;
+use Joomla\Extension\Article\Entity\Article;
+use Joomla\Extension\Category\Entity\Category;
+use Joomla\ORM\Definition\Parser\BelongsTo;
+use Joomla\ORM\Definition\Parser\HasMany;
+use Joomla\ORM\Event\DefinitionCreatedEvent;
 
 /**
  * Class AddRelationListener
@@ -25,28 +26,46 @@ class AddRelationListener
 	/**
 	 * Event handler
 	 *
-	 * @param   AfterCreateDefinitionEvent $event The event
+	 * @param   DefinitionCreatedEvent $event The event
 	 *
 	 * @return  void
 	 */
-	public function addCategoryRelation(AfterCreateDefinitionEvent $event)
+	public function addCategoryRelation(DefinitionCreatedEvent $event)
 	{
-		// @var EntityBuilder $builder The entity builder
-		$builder = $event->getArgument('builder');
+		$entityClass = $event->getEntityClass();
+		$definition  = $event->getDefinition();
+		$builder     = $event->getEntityBuilder();
 
-		// @todo the relation needs to be looked up here trough a relation table */
-		$id = 1;
+		if (!$this->hasCategories($entityClass))
+		{
+			return;
+		}
 
-		$relation = new HasOne(
-			[
-				'id'        => 1,
-				'name'      => 'category_id',
-				'type'      => 'hasOne',
-				'entity'    => 'Category',
-				'reference' => 'id'
-			]
+		$definition->addRelation(
+			new BelongsTo(
+				[
+					'name'      => 'category_id',
+					'entity'    => 'Category',
+					'reference' => 'id'
+				]
+			)
 		);
 
-		$builder->handleHasOne($relation, new Locator([new RecursiveDirectoryStrategy(__DIR__ . '/../Entity')]));
+		$meta = $builder->getMeta(Category::class);
+
+		$meta->addRelation(
+			new HasMany(
+				[
+					'name'      => $definition->columnName($definition->name),
+					'entity'    => $definition->name,
+					'reference' => 'category_id'
+				]
+			)
+		);
+	}
+
+	private function hasCategories($entityClass)
+	{
+		return $entityClass == Article::class;
 	}
 }

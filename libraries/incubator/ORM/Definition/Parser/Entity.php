@@ -68,6 +68,7 @@ class Entity extends Element
 	 * @param   Relation $relation The relation
 	 *
 	 * @return  void
+	 * @throws  \Exception
 	 */
 	public function addRelation(Relation $relation)
 	{
@@ -92,6 +93,21 @@ class Entity extends Element
 			default:
 				throw new \Exception("Unknown relation type ". get_class($relation));
 		}
+	}
+
+	/**
+	 * @param   string $column
+	 *
+	 * @return  bool
+	 */
+	public function isTableColumn($column)
+	{
+		if (!is_string($column))
+		{
+			return false;
+		}
+
+		return array_key_exists($column, $this->fields) || array_key_exists($column, $this->relations['belongsTo']);
 	}
 
 	/**
