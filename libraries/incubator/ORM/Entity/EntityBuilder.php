@@ -549,7 +549,7 @@ class EntityBuilder
 
 			try
 			{
-				$object = $repository->getById($objectId);
+				$object = !empty($objectId) ? $repository->getById($objectId) : null;
 			}
 			catch (EntityNotFoundException $e)
 			{
