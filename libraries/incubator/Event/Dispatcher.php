@@ -383,45 +383,6 @@ class Dispatcher implements DispatcherInterface
 	}
 
 	/**
-	 * Trigger an event.
-	 *
-	 * @param   EventInterface|string $event The event object or name.
-	 *
-	 * @return  EventInterface  The event after being passed through all listeners.
-	 *
-	 * @since       1.0
-	 * @deprecated  3.0  Use dispatch() instead.
-	 */
-	public function triggerEvent($event)
-	{
-		if (!($event instanceof EventInterface))
-		{
-			$event = $this->getDefaultEvent($event);
-		}
-
-		return $this->dispatch($event);
-	}
-
-	/**
-	 * Get an event object for the specified event name
-	 *
-	 * @param   string $name The event name to get an EventInterface object for
-	 *
-	 * @return  EventInterface
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	private function getDefaultEvent($name)
-	{
-		if (isset($this->events[$name]))
-		{
-			return $this->events[$name];
-		}
-
-		return new Event($name);
-	}
-
-	/**
 	 * Dispatches an event to all registered listeners.
 	 *
 	 * @param   EventInterface $event The event to pass to the event handlers/listeners.

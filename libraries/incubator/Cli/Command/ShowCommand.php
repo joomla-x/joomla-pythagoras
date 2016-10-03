@@ -58,17 +58,6 @@ class ShowCommand extends EntityAwareCommand
 	 */
 	protected function doIt(InputInterface $input, OutputInterface $output, $finder, $entity)
 	{
-		$table = new Table($output);
-
-		if ($input->getOption('compact'))
-		{
-			$table->setStyle('compact');
-		}
-		else
-		{
-			$table->setStyle('default');
-		}
-
 		$entityBuilder = $this->repositoryFactory->getEntityBuilder();
 		$meta          = $entityBuilder->getMeta($entity);
 		$fields        = array_merge($meta->fields, $meta->relations['belongsTo']);
@@ -87,7 +76,7 @@ class ShowCommand extends EntityAwareCommand
 			$headers[] = isset($field->label) ? $field->label : $field->entity;
 		}
 
-		$table->setHeaders($headers);
+		$table = $this->createTable($input, $output, $headers);
 
 		foreach ($this->getRecords($finder) as $record)
 		{

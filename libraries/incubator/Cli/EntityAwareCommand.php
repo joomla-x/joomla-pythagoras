@@ -10,7 +10,6 @@ namespace Joomla\Cli;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Logging\DebugStack;
-use Doctrine\DBAL\Types\Type;
 use Joomla\Cli\Exception\InvalidFilterException;
 use Joomla\Cli\Exception\NoRecordsException;
 use Joomla\ORM\Service\RepositoryFactory;
@@ -199,18 +198,7 @@ abstract class EntityAwareCommand extends Command
 
 		$queries = $logger->queries;
 
-		$table = new Table($output);
-
-		if ($input->getOption('compact'))
-		{
-			$table->setStyle('compact');
-		}
-		else
-		{
-			$table->setStyle('default');
-		}
-
-		$table->setHeaders(['#', 'SQL', 'Time']);
+		$table = $this->createTable($input, $output, ['#', 'SQL', 'Time']);
 
 		foreach ($queries as $index => $query)
 		{
@@ -232,95 +220,10 @@ abstract class EntityAwareCommand extends Command
 				},
 				$sql
 			);
-			$sql = preg_replace('~(WHERE|LIMIT)~', "\n  \\1", $sql);
-			$table->addRow([$index, "$sql\n", 1000 * $query['executionMS']]);
+			$sql     = preg_replace('~(WHERE|LIMIT)~', "\n  \\1", $sql);
+			$table->addRow([$index, "$sql\n", sprintf('%.3f ms', 1000 * $query['executionMS'])]);
 		}
 
 		$table->render();
-	}
-
-	/**
-	 * Binds a set of parameters, some or all of which are typed with a PDO binding type
-	 * or DBAL mapping type, to a given statement.
-	 *
-	 * @param Connection                      $connection
-	 * @param \Doctrine\DBAL\Driver\Statement $stmt   The statement to bind the values to.
-	 * @param array                           $params The map/list of named/positional parameters.
-	 * @param array                           $types  The parameter types (PDO binding types or DBAL mapping types).
-	 *
-	 * @return void
-	 *
-	 * @internal Duck-typing used on the $stmt parameter to support driver statements as well as
-	 *           raw PDOStatement instances.
-	 */
-	private function bindTypedValues($connection, $stmt, array $params, array $types)
-	{
-		// Check whether parameters are positional or named. Mixing is not allowed, just like in PDO.
-		if (is_int(key($params)))
-		{
-			// Positional parameters
-			$typeOffset = array_key_exists(0, $types) ? -1 : 0;
-			$bindIndex  = 1;
-			foreach ($params as $value)
-			{
-				$typeIndex = $bindIndex + $typeOffset;
-				if (isset($types[$typeIndex]))
-				{
-					$type = $types[$typeIndex];
-					list($value, $bindingType) = $this->getBindingInfo($connection, $value, $type);
-					$stmt->bindValue($bindIndex, $value, $bindingType);
-				}
-				else
-				{
-					$stmt->bindValue($bindIndex, $value);
-				}
-				++$bindIndex;
-			}
-		}
-		else
-		{
-			// Named parameters
-			foreach ($params as $name => $value)
-			{
-				if (isset($types[$name]))
-				{
-					$type = $types[$name];
-					list($value, $bindingType) = $this->getBindingInfo($connection, $value, $type);
-					$stmt->bindValue($name, $value, $bindingType);
-				}
-				else
-				{
-					$stmt->bindValue($name, $value);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Gets the binding type of a given type. The given type can be a PDO or DBAL mapping type.
-	 *
-	 * @param Connection $connection
-	 * @param mixed      $value The value to bind.
-	 * @param mixed      $type  The type to bind (PDO or DBAL).
-	 *
-	 * @return array [0] => the (escaped) value, [1] => the binding type.
-	 */
-	private function getBindingInfo($connection, $value, $type)
-	{
-		if (is_string($type))
-		{
-			$type = Type::getType($type);
-		}
-		if ($type instanceof Type)
-		{
-			$value       = $type->convertToDatabaseValue($value, $connection->getDatabasePlatform());
-			$bindingType = $type->getBindingType();
-		}
-		else
-		{
-			$bindingType = $type; // PDO::PARAM_* constants
-		}
-
-		return [$value, $bindingType];
 	}
 }
