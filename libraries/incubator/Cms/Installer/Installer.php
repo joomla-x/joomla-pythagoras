@@ -9,6 +9,7 @@
 namespace Joomla\Cms\Installer;
 
 use Doctrine\DBAL\Schema\Table;
+use Interop\Container\ContainerInterface;
 use Joomla\DI\Container;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\BelongsTo;
@@ -16,7 +17,6 @@ use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Definition\Parser\HasMany;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Service\RepositoryFactory;
-use Joomla\ORM\Service\StorageServiceProvider;
 use Joomla\String\Inflector;
 use Joomla\String\Normalise;
 
@@ -52,14 +52,10 @@ class Installer
 	 *
 	 * @param   string $dataDirectory The data directory
 	 */
-	public function __construct($dataDirectory)
+	public function __construct($dataDirectory, ContainerInterface $container)
 	{
-		$this->container     = new Container;
-		$this->dataDirectory = $dataDirectory;
-
-		$storage = new StorageServiceProvider;
-		$storage->register($this->container);
-
+		$this->container         = $container;
+		$this->dataDirectory     = $dataDirectory;
 		$this->repositoryFactory = $this->container->get('Repository');
 		$this->builder           = $this->repositoryFactory->getEntityBuilder();
 		$this->inflector         = Inflector::getInstance();
@@ -296,7 +292,7 @@ class Installer
 			}
 
 			// No existing counter-relation found; create it.
-			$counterRelation                                     = new HasMany(
+			$counterRelation = new HasMany(
 				[
 					'name'      => $this->normalise($this->inflector->toPlural($definition->name)),
 					'entity'    => $definition->name,
@@ -330,7 +326,7 @@ class Installer
 			}
 
 			// No existing counter-relation found; create it.
-			$counterRelation                                       = new BelongsTo(
+			$counterRelation = new BelongsTo(
 				[
 					'name'   => $relation->reference,
 					'entity' => $definition->name,

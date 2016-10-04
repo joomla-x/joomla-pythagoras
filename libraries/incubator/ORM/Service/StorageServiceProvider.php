@@ -62,6 +62,9 @@ class StorageServiceProvider implements ServiceProviderInterface
 		$connection = DriverManager::getConnection(['url' => $config['databaseUrl']], $configuration);
 		$transactor = new DoctrineTransactor($connection);
 
-		return new RepositoryFactory($config, $connection, $transactor);
+		$repositoryFactory = new RepositoryFactory($config, $connection, $transactor);
+		$repositoryFactory->setDispatcher($container->get('dispatcher'));
+
+		return $repositoryFactory;
 	}
 }

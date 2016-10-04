@@ -57,7 +57,7 @@ class InstallCommand extends Command
 		{
 			$arguments = $input->getArguments();
 
-			$installer = new Installer(JPATH_ROOT . "/data");
+			$installer = new Installer(JPATH_ROOT . "/data", $this->container);
 
 			$count = 0;
 

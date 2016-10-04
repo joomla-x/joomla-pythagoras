@@ -2,4 +2,4 @@ listeners:
     QueryDatabaseListener:
         class: \Joomla\Extension\Workflow\Listener\QueryDatabaseListener
         events:
-            QueryDatabaseEvent: addStateConstraint
+            onQueryDatabase: addStateConstraint

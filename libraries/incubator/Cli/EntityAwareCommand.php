@@ -15,7 +15,7 @@ use Joomla\Cli\Exception\NoRecordsException;
 use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\ORM\Storage\CollectionFinderInterface;
 use Joomla\String\Inflector;
-use Symfony\Component\Console\Helper\Table;
+use PDO;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -202,25 +202,21 @@ abstract class EntityAwareCommand extends Command
 
 		foreach ($queries as $index => $query)
 		{
-			$sql     = $query['sql'];
-			$params  = $query['params'];
-			$types   = $query['types'];
-			$pointer = 0;
+			$sql    = $query['sql'];
+			$params = $query['params'];
+
+			ksort($params);
+
 			$sql     = preg_replace_callback(
 				'~\?~',
-				function () use ($params, $types, $pointer)
+				function () use (&$params)
 				{
-					$value = $params[$pointer];
-					if (isset($types[$pointer]))
-					{
-						throw new \Exception(__METHOD__ . ": Encountered uncovered type {$types[$pointer]}");
-					}
-
-					return $value;
+					return array_shift($params);
 				},
 				$sql
 			);
-			$sql     = preg_replace('~(WHERE|LIMIT)~', "\n  \\1", $sql);
+			$sql     = preg_replace('~(WHERE|LIMIT|INNER\s+JOIN|LEFT\s+JOIN)~', "\n  \\1", $sql);
+			$sql     = preg_replace('~(AND|OR)~', "\n    \\1", $sql);
 			$table->addRow([$index, "$sql\n", sprintf('%.3f ms', 1000 * $query['executionMS'])]);
 		}
 

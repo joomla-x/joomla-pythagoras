@@ -72,9 +72,9 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	{
 		$this->connection     = $connection;
 		$this->tableName      = $tableName;
-		$this->entityClass    = $entityClass;
 		$this->entityRegistry = $entityRegistry;
 		$this->meta           = $entityRegistry->getEntityBuilder()->getMeta($entityClass);
+		$this->entityClass    = $this->meta->class;
 
 		$this->setDispatcher(new NullDispatcher);
 	}

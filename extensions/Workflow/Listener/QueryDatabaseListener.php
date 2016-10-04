@@ -22,7 +22,7 @@ use Joomla\ORM\Event\QueryDatabaseEvent;
 class QueryDatabaseListener
 {
 	/** @var integer[] List of allowed states. */
-	private $allowedStates = [];
+	private $allowedStates = [1];
 
 	/**
 	 * Event handler
@@ -87,12 +87,12 @@ class QueryDatabaseListener
 	{
 		if (!preg_match_all('~\b(\w+)\.~', $query->getSQL(), $matches))
 		{
-			return 'a';
+			return 'b';
 		}
 
 		$aliases = array_unique($matches[1]);
 
-		for ($alias = 'a'; in_array($alias, $aliases); $alias++)
+		for ($alias = 'b'; in_array($alias, $aliases); $alias++)
 		{
 			continue;
 		}

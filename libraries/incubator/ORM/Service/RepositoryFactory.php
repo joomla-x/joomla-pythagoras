@@ -10,6 +10,7 @@ namespace Joomla\ORM\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Joomla\Event\DispatcherAwareTrait;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
@@ -51,6 +52,8 @@ class RepositoryFactory
 
 	/** @var EntityRegistry The entity registry to use in tests */
 	private $entityRegistry = null;
+
+	use DispatcherAwareTrait;
 
 	/**
 	 * RepositoryFactory constructor.
@@ -222,6 +225,8 @@ class RepositoryFactory
 					$meta->storage['table'],
 					$this->entityRegistry
 				);
+
+				$dataMapper->setDispatcher($this->getDispatcher());
 				break;
 
 			default:

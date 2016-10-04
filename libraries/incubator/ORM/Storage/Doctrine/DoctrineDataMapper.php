@@ -9,6 +9,8 @@
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
+use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
@@ -33,14 +35,13 @@ class DoctrineDataMapper implements DataMapperInterface
 	/** @var string  Class of the entity */
 	private $entityClass;
 
-	/** @var EntityBuilder The entity builder */
-	private $builder;
-
 	/** @var  string  Name of the data table */
 	private $table;
 
 	/** @var  EntityRegistry */
 	private $entityRegistry;
+
+	use DispatcherAwareTrait;
 
 	/**
 	 * DoctrineDataMapper constructor.
@@ -56,6 +57,8 @@ class DoctrineDataMapper implements DataMapperInterface
 		$this->entityClass    = $entityClass;
 		$this->table          = $table;
 		$this->entityRegistry = $entityRegistry;
+
+		$this->setDispatcher(new NullDispatcher);
 	}
 
 	/**
@@ -85,7 +88,10 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function findOne()
 	{
-		return new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
+		$finder = new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
+		$finder->setDispatcher($this->getDispatcher());
+
+		return $finder;
 	}
 
 	/**
@@ -97,7 +103,10 @@ class DoctrineDataMapper implements DataMapperInterface
 	 */
 	public function findAll()
 	{
-		return new DoctrineCollectionFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
+		$finder = new DoctrineCollectionFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
+		$finder->setDispatcher($this->getDispatcher());
+
+		return $finder;
 	}
 
 	/**
