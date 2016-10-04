@@ -33,11 +33,25 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	private $instance;
 
 	/**
+	 * Sets up the fixture.
+	 *
+	 * This method is called before a test is executed.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function setUp()
+	{
+		$this->instance = new Dispatcher;
+	}
+
+	/**
 	 * Test the setEvent method.
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::setEvent
+	 * @covers  \Joomla\Event\Dispatcher::setEvent
 	 * @since   1.0
 	 */
 	public function testSetEvent()
@@ -64,7 +78,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::addEvent
+	 * @covers  \Joomla\Event\Dispatcher::addEvent
 	 * @since   1.0
 	 */
 	public function testAddEvent()
@@ -91,7 +105,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::hasEvent
+	 * @covers  \Joomla\Event\Dispatcher::hasEvent
 	 * @since   1.0
 	 */
 	public function testHasEvent()
@@ -108,7 +122,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::getEvent
+	 * @covers  \Joomla\Event\Dispatcher::getEvent
 	 * @since   1.0
 	 */
 	public function testGetEventNonExisting()
@@ -122,7 +136,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::removeEvent
+	 * @covers  \Joomla\Event\Dispatcher::removeEvent
 	 * @since   1.0
 	 */
 	public function testRemoveEvent()
@@ -149,7 +163,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::getEvents
+	 * @covers  \Joomla\Event\Dispatcher::getEvents
 	 * @since   1.0
 	 */
 	public function testGetEvents()
@@ -178,7 +192,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::clearEvents
+	 * @covers  \Joomla\Event\Dispatcher::clearEvents
 	 * @since   1.0
 	 */
 	public function testClearEvents()
@@ -204,7 +218,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::countEvents
+	 * @covers  \Joomla\Event\Dispatcher::countEvents
 	 * @since   1.0
 	 */
 	public function testCountEvents()
@@ -227,7 +241,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::addListener
+	 * @covers  \Joomla\Event\Dispatcher::addListener
 	 * @since   1.0
 	 */
 	public function testAddListener()
@@ -304,7 +318,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::addListener
+	 * @covers  \Joomla\Event\Dispatcher::addListener
 	 * @since   1.0
 	 */
 	public function testAddListenerSpecifiedPriorities()
@@ -338,7 +352,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::addListener
+	 * @covers  \Joomla\Event\Dispatcher::addListener
 	 * @since   1.0
 	 */
 	public function testAddClosureListener()
@@ -362,7 +376,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::getListenerPriority
+	 * @covers  \Joomla\Event\Dispatcher::getListenerPriority
 	 * @since   1.0
 	 */
 	public function testGetListenerPriority()
@@ -384,7 +398,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::getListeners
+	 * @covers  \Joomla\Event\Dispatcher::getListeners
 	 * @since   1.0
 	 */
 	public function testGetListeners()
@@ -430,7 +444,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::hasListener
+	 * @covers  \Joomla\Event\Dispatcher::hasListener
 	 * @since   1.0
 	 */
 	public function testHasListener()
@@ -445,7 +459,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::removeListener
+	 * @covers  \Joomla\Event\Dispatcher::removeListener
 	 * @since   1.0
 	 */
 	public function testRemoveListeners()
@@ -472,7 +486,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::clearListeners
+	 * @covers  \Joomla\Event\Dispatcher::clearListeners
 	 * @since   1.0
 	 */
 	public function testClearListeners()
@@ -526,7 +540,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::clearListeners
+	 * @covers  \Joomla\Event\Dispatcher::clearListeners
 	 * @since   1.0
 	 */
 	public function testCountListeners()
@@ -552,179 +566,11 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test the triggerEvent method with no listeners listening to the event.
-	 *
-	 * @return  void
-	 *
-	 * @covers  Joomla\Event\Dispatcher::triggerEvent
-	 * @since   1.0
-	 */
-	public function testTriggerEventNoListeners()
-	{
-		$this->assertInstanceOf('Joomla\Event\Event', $this->instance->triggerEvent('onTest'));
-
-		$event = new Event('onTest');
-		$this->assertSame($event, $this->instance->triggerEvent($event));
-	}
-
-	/**
-	 * Test the trigger event method with listeners having the same priority.
-	 * We expect the listener to be called in the order they were added.
-	 *
-	 * @return  void
-	 *
-	 * @covers  Joomla\Event\Dispatcher::triggerEvent
-	 * @since   1.0
-	 */
-	public function testTriggerEventSamePriority()
-	{
-		$first  = new FirstListener;
-		$second = new SecondListener;
-		$third  = new ThirdListener;
-
-		$fourth = function (Event $event)
-		{
-			$listeners   = $event->getArgument('listeners');
-			$listeners[] = 'fourth';
-			$event->setArgument('listeners', $listeners);
-		};
-
-		$fifth = function (Event $event)
-		{
-			$listeners   = $event->getArgument('listeners');
-			$listeners[] = 'fifth';
-			$event->setArgument('listeners', $listeners);
-		};
-
-		$this->instance->addListener('onSomething', [$first, 'onSomething'])
-		               ->addListener('onSomething', [$second, 'onSomething'])
-		               ->addListener('onSomething', [$third, 'onSomething'])
-		               ->addListener('onSomething', $fourth, Priority::NORMAL)
-		               ->addListener('onSomething', $fifth, Priority::NORMAL);
-
-		// Inspect the event arguments to know the order of the listeners.
-		/** @var $event Event */
-		$event = $this->instance->triggerEvent('onSomething');
-
-		$listeners = $event->getArgument('listeners');
-
-		$this->assertEquals(
-			$listeners,
-			['first', 'second', 'third', 'fourth', 'fifth']
-		);
-	}
-
-	/**
-	 * Test the trigger event method with listeners having different priorities.
-	 *
-	 * @return  void
-	 *
-	 * @covers  Joomla\Event\Dispatcher::triggerEvent
-	 * @since   1.0
-	 */
-	public function testTriggerEventDifferentPriorities()
-	{
-		$first  = new FirstListener;
-		$second = new SecondListener;
-		$third  = new ThirdListener;
-
-		$fourth = function (Event $event)
-		{
-			$listeners   = $event->getArgument('listeners');
-			$listeners[] = 'fourth';
-			$event->setArgument('listeners', $listeners);
-		};
-
-		$fifth = function (Event $event)
-		{
-			$listeners   = $event->getArgument('listeners');
-			$listeners[] = 'fifth';
-			$event->setArgument('listeners', $listeners);
-		};
-
-		$this->instance->addListener('onSomething', $fourth, Priority::BELOW_NORMAL)
-		               ->addListener('onSomething', $fifth, Priority::BELOW_NORMAL)
-		               ->addListener('onSomething', [$first, 'onSomething'], Priority::HIGH)
-		               ->addListener('onSomething', [$second, 'onSomething'], Priority::HIGH)
-		               ->addListener('onSomething', [$third, 'onSomething'], Priority::ABOVE_NORMAL);
-
-		// Inspect the event arguments to know the order of the listeners.
-		/** @var $event Event */
-		$event = $this->instance->triggerEvent('onSomething');
-
-		$listeners = $event->getArgument('listeners');
-
-		$this->assertEquals(
-			$listeners,
-			['first', 'second', 'third', 'fourth', 'fifth']
-		);
-	}
-
-	/**
-	 * Test the trigger event method with a listener stopping the event propagation.
-	 *
-	 * @return  void
-	 *
-	 * @covers  Joomla\Event\Dispatcher::triggerEvent
-	 * @since   1.0
-	 */
-	public function testTriggerEventStopped()
-	{
-		$first  = new FirstListener;
-		$second = new SecondListener;
-		$third  = new ThirdListener;
-
-		$stopper = function (Event $event)
-		{
-			$event->stop();
-		};
-
-		$this->instance->addListener('onSomething', [$first, 'onSomething'])
-		               ->addListener('onSomething', [$second, 'onSomething'])
-		               ->addListener('onSomething', $stopper, Priority::NORMAL)
-		               ->addListener('onSomething', [$third, 'onSomething']);
-
-		/** @var $event Event */
-		$event = $this->instance->triggerEvent('onSomething');
-
-		$listeners = $event->getArgument('listeners');
-
-		// The third listener was not called because the stopper stopped the event.
-		$this->assertEquals(
-			$listeners,
-			['first', 'second']
-		);
-	}
-
-	/**
-	 * Test the triggerEvent method with a previously registered event.
-	 *
-	 * @return  void
-	 *
-	 * @covers  Joomla\Event\Dispatcher::triggerEvent
-	 * @since   1.0
-	 */
-	public function testTriggerEventRegistered()
-	{
-		$event = new Event('onSomething');
-
-		$mockedListener = $this->createMock(SomethingListener::class);
-		$mockedListener->expects($this->once())
-		               ->method('onSomething')
-		               ->with($event);
-
-		$this->instance->addEvent($event);
-		$this->instance->addListener('onSomething', [$mockedListener, 'onSomething']);
-
-		$this->instance->triggerEvent('onSomething');
-	}
-
-	/**
 	 * Test the addSubscriber method.
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::addSubscriber
+	 * @covers  \Joomla\Event\Dispatcher::addSubscriber
 	 */
 	public function testAddSubscriber()
 	{
@@ -756,7 +602,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  Joomla\Event\Dispatcher::removeSubscriber
+	 * @covers  \Joomla\Event\Dispatcher::removeSubscriber
 	 */
 	public function testRemoveSubscriber()
 	{
@@ -771,19 +617,5 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($this->instance->hasListener([$listener, 'onBeforeSomething']));
 		$this->assertFalse($this->instance->hasListener([$listener, 'onSomething']));
 		$this->assertFalse($this->instance->hasListener([$listener, 'onAfterSomething']));
-	}
-
-	/**
-	 * Sets up the fixture.
-	 *
-	 * This method is called before a test is executed.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	protected function setUp()
-	{
-		$this->instance = new Dispatcher;
 	}
 }
