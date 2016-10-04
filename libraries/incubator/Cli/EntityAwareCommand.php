@@ -178,7 +178,7 @@ abstract class EntityAwareCommand extends Command
 
 	protected function dumpSql(InputInterface $input, OutputInterface $output)
 	{
-		$connection = $this->repositoryFactory->getConnection(Connection::class);
+		$connection = $this->repositoryFactory->getConnection();
 
 		if (!$connection instanceof Connection)
 		{

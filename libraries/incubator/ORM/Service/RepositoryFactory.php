@@ -261,6 +261,11 @@ class RepositoryFactory
 	 */
 	public function getConnection($type = null)
 	{
+		if (is_null($type))
+		{
+			return $this->connection;
+		}
+
 		if (!isset($this->connections[CsvDataGateway::class]) && isset($this->config['dataPath']))
 		{
 			$this->connections[CsvDataGateway::class] = new CsvDataGateway(JPATH_ROOT . '/' . $this->config['dataPath']);
