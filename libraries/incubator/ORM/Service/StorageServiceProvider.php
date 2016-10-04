@@ -45,7 +45,7 @@ class StorageServiceProvider implements ServiceProviderInterface
 	/**
 	 * Creates a RepositoryFactory
 	 *
-	 * @param   Container  $container  The container
+	 * @param   Container $container The container
 	 *
 	 * @return  RepositoryFactory
 	 */
@@ -63,7 +63,11 @@ class StorageServiceProvider implements ServiceProviderInterface
 		$transactor = new DoctrineTransactor($connection);
 
 		$repositoryFactory = new RepositoryFactory($config, $connection, $transactor);
-		$repositoryFactory->setDispatcher($container->get('dispatcher'));
+
+		if ($container->has('dispatcher'))
+		{
+			$repositoryFactory->setDispatcher($container->get('dispatcher'));
+		}
 
 		return $repositoryFactory;
 	}

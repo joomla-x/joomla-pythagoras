@@ -11,6 +11,7 @@ namespace Joomla\ORM\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
@@ -77,6 +78,8 @@ class RepositoryFactory
 		);
 
 		$this->connections[get_class($connection)] = $connection;
+
+		$this->setDispatcher(new NullDispatcher);
 	}
 
 	/**

@@ -9,6 +9,10 @@
 namespace Joomla\Tests\Unit\Cms\Installer;
 
 use Joomla\Cms\Installer\Installer;
+use Joomla\Cms\ServiceProvider\EventDispatcherServiceProvider;
+use Joomla\Cms\ServiceProvider\ExtensionFactoryServiceProvider;
+use Joomla\DI\Container;
+use Joomla\ORM\Service\StorageServiceProvider;
 
 class InstallerTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +28,13 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
 
 		$this->mkdir($this->dataDirectory . '/entities');
 
-		$this->installer = new Installer($this->dataDirectory);
+		$container       = new Container;
+		$container->set('ConfigDirectory', JPATH_ROOT);
+		$container->registerServiceProvider(new StorageServiceProvider, 'repository');
+		$container->registerServiceProvider(new EventDispatcherServiceProvider, 'dispatcher');
+		$container->registerServiceProvider(new ExtensionFactoryServiceProvider, 'extension_factory');
+
+		$this->installer = new Installer($this->dataDirectory, $container);
 	}
 
 	public function tearDown()
