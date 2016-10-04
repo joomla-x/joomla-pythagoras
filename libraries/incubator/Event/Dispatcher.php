@@ -414,8 +414,6 @@ class Dispatcher implements DispatcherInterface
 					return $event;
 				}
 
-				$this->logger->debug(__METHOD__ . ": - Calling " . print_r($listener, true));
-
 				call_user_func($listener, $event);
 			}
 		}
