@@ -8,6 +8,9 @@
 
 namespace Joomla\Event;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
 /**
  * Implementation of a DispatcherInterface supporting prioritized listeners.
  *
@@ -30,6 +33,13 @@ class Dispatcher implements DispatcherInterface
 	 * @since  1.0
 	 */
 	protected $listeners = [];
+
+	use LoggerAwareTrait;
+
+	public function __construct()
+	{
+		$this->setLogger(new NullLogger);
+	}
 
 	/**
 	 * Set an event to the dispatcher. It will replace any event with the same name.
@@ -393,6 +403,8 @@ class Dispatcher implements DispatcherInterface
 	 */
 	public function dispatch(EventInterface $event)
 	{
+		$this->logger->debug(__METHOD__ . ": Dispatching " . $event->getName());
+
 		if (isset($this->listeners[$event->getName()]))
 		{
 			foreach ($this->listeners[$event->getName()] as $listener)
@@ -402,9 +414,13 @@ class Dispatcher implements DispatcherInterface
 					return $event;
 				}
 
+				$this->logger->debug(__METHOD__ . ": - Calling " . print_r($listener, true));
+
 				call_user_func($listener, $event);
 			}
 		}
+
+		$this->logger->debug(__METHOD__ . ": Done.");
 
 		return $event;
 	}
