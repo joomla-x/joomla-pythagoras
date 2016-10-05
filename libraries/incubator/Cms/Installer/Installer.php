@@ -356,7 +356,7 @@ class Installer
 	/**
 	 * @return string
 	 */
-	private function getExtensionIniFilename():string
+	private function getExtensionIniFilename()
 	{
 		return $this->container->get('ConfigDirectory') . '/config/extensions.ini';
 	}
