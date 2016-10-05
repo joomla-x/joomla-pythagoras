@@ -29,6 +29,7 @@ use Joomla\String\Normalise;
  */
 class Installer
 {
+	private $extensions;
 	/** @var EntityBuilder The entity builder */
 	private $builder;
 
@@ -63,6 +64,7 @@ class Installer
 		$this->builder           = $this->repositoryFactory->getEntityBuilder();
 		$this->inflector         = Inflector::getInstance();
 
+		$this->loadInstalledExtensions();
 		$this->loadExistingEntities();
 	}
 
@@ -75,6 +77,8 @@ class Installer
 	 */
 	public function install($source)
 	{
+		$this->extensions[basename($source)] = $source;
+
 		$xmlDirectory = $source . '/entities';
 		$strategy     = new RecursiveDirectoryStrategy($xmlDirectory);
 		$this->builder->addLocatorStrategy($strategy);
@@ -154,31 +158,11 @@ class Installer
 	 */
 	public function finish()
 	{
-		// Resolve all counter-relations
-		foreach ($this->entityDefinitions as $definition)
-		{
-			$this->resolveBelongsTo($definition);
-			$this->resolveHasOneOrMany($definition);
-			$this->resolveHasManyThrough($definition);
-		}
-
-		// Store XML files in a central place
-		foreach ($this->entityDefinitions as $definition)
-		{
-			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
-		}
-
-		foreach ($this->dataDirectories as $entityName => $csvDirectory)
-		{
-			$this->createTable($entityName);
-		}
-
-		foreach ($this->dataDirectories as $entityName => $csvDirectory)
-		{
-			$this->importInitialData($entityName, $csvDirectory);
-		}
-
-		$this->repositoryFactory->getUnitOfWork()->commit();
+		$this->resolveRelations();
+		$this->writeXmlFiles();
+		$this->createTables();
+		$this->import();
+		$this->writeExtensionIni();
 	}
 
 	/**
@@ -355,5 +339,86 @@ class Installer
 		{
 			// @todo Implement HasManyThrough handling
 		}
+	}
+
+	private function loadInstalledExtensions()
+	{
+		$config           = $this->getExtensionIniFilename();
+		$this->extensions = file_exists($config) ? parse_ini_file($config, true) : [];
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getExtensionIniFilename():string
+	{
+		return $this->container->get('ConfigDirectory') . '/config/extensions.ini';
+	}
+
+	/**
+	 * Resolve all counter-relations
+	 *
+	 * @return  void
+	 */
+	private function resolveRelations()
+	{
+		foreach ($this->entityDefinitions as $definition)
+		{
+			$this->resolveBelongsTo($definition);
+			$this->resolveHasOneOrMany($definition);
+			$this->resolveHasManyThrough($definition);
+		}
+	}
+
+	/**
+	 * Store XML files in a central place
+	 *
+	 * @return  void
+	 */
+	private function writeXmlFiles()
+	{
+		foreach ($this->entityDefinitions as $definition)
+		{
+			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
+		}
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function createTables()
+	{
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->createTable($entityName);
+		}
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function import()
+	{
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->importInitialData($entityName, $csvDirectory);
+		}
+
+		$this->repositoryFactory->getUnitOfWork()->commit();
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function writeExtensionIni()
+	{
+		$ini = "; This file is auto-generated during the installation process. Don't change it manually.\n\n";
+
+		foreach ($this->extensions as $extension => $path)
+		{
+			$ini .= sprintf("%s=\"%s\"\n", $extension, $path);
+		}
+
+		file_put_contents($this->getExtensionIniFilename(), $ini);
 	}
 }

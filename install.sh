@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-rm -f data/entities/*.xml && ./joomla install \
+rm -f data/entities/*.xml \
+  && rm -f config/extensions.ini \
+  && ./joomla install -vvv \
     extensions/Article \
-    extensions/Workflow \
     libraries/incubator/Media \
     libraries/incubator/PageBuilder
