@@ -51,7 +51,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::setEvent
 	 * @since   1.0
 	 */
 	public function testSetEvent()
@@ -78,7 +77,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::addEvent
 	 * @since   1.0
 	 */
 	public function testAddEvent()
@@ -105,7 +103,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::hasEvent
 	 * @since   1.0
 	 */
 	public function testHasEvent()
@@ -122,7 +119,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::getEvent
 	 * @since   1.0
 	 */
 	public function testGetEventNonExisting()
@@ -136,7 +132,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::removeEvent
 	 * @since   1.0
 	 */
 	public function testRemoveEvent()
@@ -163,7 +158,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::getEvents
 	 * @since   1.0
 	 */
 	public function testGetEvents()
@@ -192,7 +186,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::clearEvents
 	 * @since   1.0
 	 */
 	public function testClearEvents()
@@ -218,7 +211,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::countEvents
 	 * @since   1.0
 	 */
 	public function testCountEvents()
@@ -241,7 +233,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::addListener
 	 * @since   1.0
 	 */
 	public function testAddListener()
@@ -318,7 +309,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::addListener
 	 * @since   1.0
 	 */
 	public function testAddListenerSpecifiedPriorities()
@@ -352,7 +342,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::addListener
 	 * @since   1.0
 	 */
 	public function testAddClosureListener()
@@ -376,7 +365,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::getListenerPriority
 	 * @since   1.0
 	 */
 	public function testGetListenerPriority()
@@ -398,7 +386,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::getListeners
 	 * @since   1.0
 	 */
 	public function testGetListeners()
@@ -444,7 +431,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::hasListener
 	 * @since   1.0
 	 */
 	public function testHasListener()
@@ -459,7 +445,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::removeListener
 	 * @since   1.0
 	 */
 	public function testRemoveListeners()
@@ -486,7 +471,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::clearListeners
 	 * @since   1.0
 	 */
 	public function testClearListeners()
@@ -540,7 +524,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  \Joomla\Event\Dispatcher::clearListeners
 	 * @since   1.0
 	 */
 	public function testCountListeners()
@@ -569,8 +552,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 * Test the addSubscriber method.
 	 *
 	 * @return  void
-	 *
-	 * @covers  \Joomla\Event\Dispatcher::addSubscriber
 	 */
 	public function testAddSubscriber()
 	{
@@ -601,8 +582,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 	 * Test the removeSubscriber method.
 	 *
 	 * @return  void
-	 *
-	 * @covers  \Joomla\Event\Dispatcher::removeSubscriber
 	 */
 	public function testRemoveSubscriber()
 	{

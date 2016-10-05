@@ -32,8 +32,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @testdox  Ensure the Router is instantiated correctly with no injected routes.
-	 *
-	 * @covers   \Joomla\Router\Router::__construct
 	 */
 	public function test__construct()
 	{
@@ -60,9 +58,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @testdox  Ensure the Router is instantiated correctly with injected routes.
-	 *
-	 * @covers   \Joomla\Router\Router::__construct
-	 * @uses     \Joomla\Router\Router::addRoutes
 	 */
 	public function test__constructNotEmpty()
 	{
@@ -114,9 +109,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @testdox  Ensure a route is added to the Router.
-	 *
-	 * @covers   \Joomla\Router\Router::addRoute
-	 * @uses     \Joomla\Router\Router::buildRegexAndVarList
 	 */
 	public function testAddRoute()
 	{
@@ -146,9 +138,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @testdox  Ensure several routes are added to the Router.
-	 *
-	 * @covers   \Joomla\Router\Router::addRoutes
-	 * @uses     \Joomla\Router\Router::addRoute
 	 */
 	public function testAddRoutes()
 	{
@@ -215,9 +204,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 	 * @param   array    $i  The expected return data.
 	 * @param   boolean  $m  True if routes should be set up.
 	 *
-	 * @covers        \Joomla\Router\Router::parseRoute
 	 * @dataProvider  seedTestParseRoute
-	 * @uses          \Joomla\Router\Router::addRoutes
 	 */
 	public function testParseRoute($r, $e, $i, $m)
 	{
