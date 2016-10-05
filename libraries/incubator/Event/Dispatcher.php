@@ -36,6 +36,9 @@ class Dispatcher implements DispatcherInterface
 
 	use LoggerAwareTrait;
 
+	/**
+	 * Dispatcher constructor.
+	 */
 	public function __construct()
 	{
 		$this->setLogger(new NullLogger);

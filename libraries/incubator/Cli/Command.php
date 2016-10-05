@@ -142,11 +142,11 @@ abstract class Command extends BaseCommand
 	}
 
 	/**
-	 * @param InputInterface  $input
-	 * @param OutputInterface $output
-	 * @param array           $header
+	 * @param   InputInterface  $input  The input
+	 * @param   OutputInterface $output The output
+	 * @param   string[]        $header The table headers
 	 *
-	 * @return Table
+	 * @return  Table
 	 */
 	protected function createTable(InputInterface $input, OutputInterface $output, array $header)
 	{

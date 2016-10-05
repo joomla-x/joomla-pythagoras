@@ -210,8 +210,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 			$column = $this->stripTableAlias($column);
 			$rows   = array_filter(
 				$rows,
-				function ($row) use ($column, $pattern)
-				{
+				function ($row) use ($column, $pattern) {
 					return preg_match("~{$pattern}~", $row[$column]);
 				}
 			);
@@ -295,7 +294,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	}
 
 	/**
-	 * @param   string $column
+	 * @param   string $column The column name
 	 *
 	 * @return  string
 	 */
@@ -310,9 +309,9 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	}
 
 	/**
-	 * @param   string $column
+	 * @param   string $column The column name
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 */
 	private function hasTableAlias($column)
 	{
@@ -320,7 +319,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	}
 
 	/**
-	 * @param   string $column
+	 * @param   string $column  The column name
 	 *
 	 * @return  string
 	 */

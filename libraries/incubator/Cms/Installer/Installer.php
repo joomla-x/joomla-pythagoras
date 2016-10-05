@@ -29,7 +29,9 @@ use Joomla\String\Normalise;
  */
 class Installer
 {
+	/** @var  string[] */
 	private $extensions;
+
 	/** @var EntityBuilder The entity builder */
 	private $builder;
 
@@ -54,7 +56,8 @@ class Installer
 	/**
 	 * Installer constructor.
 	 *
-	 * @param   string $dataDirectory The data directory
+	 * @param   string             $dataDirectory The data directory
+	 * @param   ContainerInterface $container     The container
 	 */
 	public function __construct($dataDirectory, ContainerInterface $container)
 	{
@@ -341,6 +344,9 @@ class Installer
 		}
 	}
 
+	/**
+	 * @return  void
+	 */
 	private function loadInstalledExtensions()
 	{
 		$config           = $this->getExtensionIniFilename();

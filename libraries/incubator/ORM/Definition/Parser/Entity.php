@@ -91,14 +91,14 @@ class Entity extends Element
 				break;
 
 			default:
-				throw new \Exception("Unknown relation type ". get_class($relation));
+				throw new \Exception("Unknown relation type " . get_class($relation));
 		}
 	}
 
 	/**
-	 * @param   string $column
+	 * @param   string  $column The column name
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 */
 	public function isTableColumn($column)
 	{

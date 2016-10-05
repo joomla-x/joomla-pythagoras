@@ -64,6 +64,11 @@ class AddRelationListener
 		);
 	}
 
+	/**
+	 * @param   string  $entityClass  The entity class
+	 *
+	 * @return  boolean
+	 */
 	private function hasCategories($entityClass)
 	{
 		return $entityClass == Article::class;

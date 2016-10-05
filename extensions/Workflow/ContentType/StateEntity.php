@@ -38,6 +38,7 @@ class StateEntity extends Paragraph
 		{
 			$text = $rel[0]->state->title;
 		}
-		parent::__construct('State: ' . $item->stateEntities->getAll()[0]->state->title);
+
+		parent::__construct('State: ' . $text);
 	}
 }

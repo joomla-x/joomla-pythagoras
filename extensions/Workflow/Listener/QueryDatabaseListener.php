@@ -66,20 +66,27 @@ class QueryDatabaseListener
 	}
 
 	/**
-	 * @param integer[] $states List of (IDs of) allowed states. An empty array marks all states allowed.
+	 * @param   integer[]  $states  List of (IDs of) allowed states. An empty array marks all states allowed.
+	 *
+	 * @return  void
 	 */
 	public function allowStates(array $states)
 	{
 		$this->allowedStates = $states;
 	}
 
+	/**
+	 * @param   string  $entityClass  The entity class
+	 *
+	 * @return  boolean
+	 */
 	private function hasWorkflow($entityClass)
 	{
 		return $entityClass == Article::class;
 	}
 
 	/**
-	 * @param   QueryBuilder $query
+	 * @param   QueryBuilder  $query  The query builder
 	 *
 	 * @return  string
 	 */

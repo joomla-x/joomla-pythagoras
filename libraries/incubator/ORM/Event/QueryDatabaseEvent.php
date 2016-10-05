@@ -24,7 +24,7 @@ class QueryDatabaseEvent extends Event
 	 * QueryDatabaseEvent constructor.
 	 *
 	 * @param   string       $entityClass The class of the entity
-	 * @param   QueryBuilder $builder
+	 * @param   QueryBuilder $builder     The query builder
 	 */
 	public function __construct($entityClass, QueryBuilder $builder)
 	{

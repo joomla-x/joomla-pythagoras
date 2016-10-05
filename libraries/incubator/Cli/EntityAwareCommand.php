@@ -176,6 +176,12 @@ abstract class EntityAwareCommand extends Command
 		return $records;
 	}
 
+	/**
+	 * @param   InputInterface  $input  The input
+	 * @param   OutputInterface $output The output
+	 *
+	 * @return  void
+	 */
 	protected function dumpSql(InputInterface $input, OutputInterface $output)
 	{
 		$connection = $this->repositoryFactory->getConnection();
@@ -209,8 +215,7 @@ abstract class EntityAwareCommand extends Command
 
 			$sql     = preg_replace_callback(
 				'~\?~',
-				function () use (&$params)
-				{
+				function () use (&$params) {
 					return array_shift($params);
 				},
 				$sql

@@ -90,7 +90,6 @@ class Application extends BaseApplication
 		{
 			$commandClass = __NAMESPACE__ . '\\Command\\' . basename($filename, '.php');
 
-			/** @var Command $command */
 			$command = new $commandClass;
 			$command->setContainer($this->container);
 			$this->add($command);
