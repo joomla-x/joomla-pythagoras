@@ -47,6 +47,9 @@ class Installer
 	/** @var Inflector The inflector */
 	private $inflector;
 
+	/** @var string[] */
+	private $dataDirectories = [];
+
 	/**
 	 * Installer constructor.
 	 *
@@ -63,14 +66,12 @@ class Installer
 		$this->loadExistingEntities();
 	}
 
-	private $dataDirectories = [];
-
 	/**
 	 * Installs an extension
 	 *
 	 * @param   string $source The path to the extension
 	 *
-	 * @return  void
+	 * @return  string[]
 	 */
 	public function install($source)
 	{
@@ -83,6 +84,8 @@ class Installer
 		{
 			$this->dataDirectories[$entityName] = $source . '/data';
 		}
+
+		return $entityNames;
 	}
 
 	/**
@@ -168,6 +171,10 @@ class Installer
 		foreach ($this->dataDirectories as $entityName => $csvDirectory)
 		{
 			$this->createTable($entityName);
+		}
+
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
 			$this->importInitialData($entityName, $csvDirectory);
 		}
 

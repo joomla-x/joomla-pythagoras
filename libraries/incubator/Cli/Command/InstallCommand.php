@@ -9,10 +9,10 @@
 namespace Joomla\Cli\Command;
 
 use Joomla\Cli\Command;
+use Joomla\Cms\Installer\Installer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Joomla\Cms\Installer\Installer;
 
 /**
  * The Install command allows the installation of Joomla! extensions from the command line.
@@ -31,9 +31,7 @@ class InstallCommand extends Command
 	{
 		$this
 			->setName('install')
-
 			->setDescription('Install a Joomla! extension')
-
 			->addArgument(
 				'extension',
 				InputArgument::REQUIRED | InputArgument::IS_ARRAY,
@@ -67,24 +65,33 @@ class InstallCommand extends Command
 
 				if (!file_exists($source))
 				{
-					$this->writeln($output, "Unable to locate $extension");
+					$this->writeln($output, "Unable to locate $extension", OutputInterface::VERBOSITY_NORMAL);
 
 					continue;
 				}
 
-				$installer->install($source);
+				$this->writeln($output, " - installing $extension", OutputInterface::VERBOSITY_VERBOSE);
+
+				$entityNames = $installer->install($source);
+
+				foreach ($entityNames as $entityName)
+				{
+					$this->writeln($output, "   - $entityName", OutputInterface::VERBOSITY_VERY_VERBOSE);
+				}
+
 				$count++;
 			}
 
+			$this->writeln($output, " - finishing", OutputInterface::VERBOSITY_VERY_VERBOSE);
 			$installer->finish();
 
-			$this->writeln($output, "Installed $count extension(s)");
+			$this->writeln($output, "Installed $count extension(s)", OutputInterface::VERBOSITY_NORMAL);
 
 			return 0;
 		}
 		catch (\Exception $e)
 		{
-			$this->writeln($output, $e->getMessage());
+			$this->writeln($output, $e->getMessage() . "\n\n" . $e->getTraceAsString());
 
 			return 1;
 		}
