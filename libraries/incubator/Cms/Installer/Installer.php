@@ -80,7 +80,8 @@ class Installer
 	 */
 	public function install($source)
 	{
-		$this->extensions[basename($source)] = $source;
+		$pattern = chr(1) . '^' . preg_quote(JPATH_ROOT) . '/' . chr(1);
+		$this->extensions[basename($source)] = preg_replace($pattern, '', $source);
 
 		$xmlDirectory = $source . '/entities';
 		$strategy     = new RecursiveDirectoryStrategy($xmlDirectory);
