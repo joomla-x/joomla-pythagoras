@@ -73,12 +73,12 @@ class RouterMiddleware implements MiddlewareInterface
 					});
 				}
 
-				$path  = preg_replace('~^/.+?index.php/?~', '', $request->getUri()->getPath());
+				$path  = preg_replace('~^/.*?index.php/?~', '', $request->getUri()->getPath());
 				$route = $router->parseRoute($path);
 				$page  = $route['controller']();
 				$vars  = $route['vars'];
 
-				$command = new DisplayPageCommand($page->id, $vars, $response->getBody(), $this->container);
+				$command = new DisplayPageCommand($page->id, $vars, $request, $response->getBody(), $this->container);
 				$request = $request->withAttribute('command', $command);
 				// @todo Emit afterRouting event
 			}

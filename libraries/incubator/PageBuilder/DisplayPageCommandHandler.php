@@ -8,6 +8,8 @@
 
 namespace Joomla\PageBuilder;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Logging\DebugStack;
 use Interop\Container\ContainerInterface;
 use Joomla\Content\CompoundTypeInterface;
 use Joomla\Content\ContentTypeInterface;
@@ -25,6 +27,7 @@ use Joomla\PageBuilder\Entity\Page;
 use Joomla\PageBuilder\Entity\Template;
 use Joomla\Renderer\HtmlRenderer;
 use Joomla\Service\CommandHandler;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -45,6 +48,9 @@ class DisplayPageCommandHandler extends CommandHandler
 	/** @var  string[] */
 	private $vars;
 
+	/** @var  ServerRequestInterface The request object */
+	private $request;
+
 	/**
 	 * @param DisplayPageCommand $command
 	 */
@@ -52,6 +58,7 @@ class DisplayPageCommandHandler extends CommandHandler
 	{
 		$id              = $command->getId();
 		$this->vars      = $command->getVars();
+		$this->request   = $command->getRequest();
 		$this->output    = $command->getStream();
 		$this->container = $command->getContainer();
 
@@ -90,10 +97,19 @@ class DisplayPageCommandHandler extends CommandHandler
 		$parts[1] = '</body>' . $parts[1];
 
 		$this->output->write($parts[0]);
+
 		foreach ($contentTree as $root)
 		{
 			$root->accept($this->output);
 		}
+
+		$queryParams = $this->request->getQueryParams();
+
+		if (isset($queryParams['debug']))
+		{
+			$this->dumpSql();
+		}
+
 		$this->output->writeJavascript();
 		$this->output->write($parts[1]);
 	}
@@ -332,5 +348,55 @@ class DisplayPageCommandHandler extends CommandHandler
 
 			$accordion->accept($output);
 		});
+	}
+
+	/**
+	 * @return  void
+	 */
+	protected function dumpSql()
+	{
+		$connection = $this->container->get('Repository')->getConnection();
+
+		if (!$connection instanceof Connection)
+		{
+			return;
+		}
+
+		$logger = $connection->getConfiguration()->getSQLLogger();
+
+		if (!$logger instanceof DebugStack)
+		{
+			return;
+		}
+
+		$queries = $logger->queries;
+
+		$table = '<table class="debug"><tr><th>#</th><th>SQL</th><th>Time</th></tr>';
+
+		foreach ($queries as $index => $query)
+		{
+			$sql    = $query['sql'];
+			$params = $query['params'];
+
+			ksort($params);
+
+			$sql = preg_replace_callback(
+				'~\?~',
+				function () use (&$params)
+				{
+					return array_shift($params);
+				},
+				$sql
+			);
+			$sql = preg_replace('~(WHERE|LIMIT|INNER\s+JOIN|LEFT\s+JOIN)~', "\n  \\1", $sql);
+			$sql = preg_replace('~(AND|OR)~', "\n    \\1", $sql);
+			$time = sprintf('%.3f ms', 1000 * $query['executionMS']);
+
+			$table .= "<tr><td>$index</td><td><pre>$sql</pre></td><td>$time</td></tr>";
+		}
+
+		$table .= '</table>';
+
+		$this->output->write($table);
 	}
 }
