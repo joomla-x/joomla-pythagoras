@@ -21,8 +21,8 @@ class StateEntity
 	public $id;
 
 	/** @var  integer  The reference to the entity */
-	public $entity_id;
+	public $entityId;
 
 	/** @var  integer  The reference to the state */
-	public $state_id;
+	public $stateId;
 }

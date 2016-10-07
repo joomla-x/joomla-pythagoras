@@ -9,6 +9,7 @@
 namespace Joomla\Cms\Installer;
 
 use Doctrine\DBAL\Schema\Table;
+use Interop\Container\ContainerInterface;
 use Joomla\DI\Container;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\BelongsTo;
@@ -16,7 +17,6 @@ use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Definition\Parser\HasMany;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Service\RepositoryFactory;
-use Joomla\ORM\Service\StorageServiceProvider;
 use Joomla\String\Inflector;
 use Joomla\String\Normalise;
 
@@ -29,6 +29,9 @@ use Joomla\String\Normalise;
  */
 class Installer
 {
+	/** @var  string[] */
+	private $extensions;
+
 	/** @var EntityBuilder The entity builder */
 	private $builder;
 
@@ -47,37 +50,39 @@ class Installer
 	/** @var Inflector The inflector */
 	private $inflector;
 
+	/** @var string[] */
+	private $dataDirectories = [];
+
 	/**
 	 * Installer constructor.
 	 *
-	 * @param   string $dataDirectory The data directory
+	 * @param   string             $dataDirectory The data directory
+	 * @param   ContainerInterface $container     The container
 	 */
-	public function __construct($dataDirectory)
+	public function __construct($dataDirectory, ContainerInterface $container)
 	{
-		$this->container     = new Container;
-		$this->dataDirectory = $dataDirectory;
-
-		$storage = new StorageServiceProvider;
-		$storage->register($this->container);
-
+		$this->container         = $container;
+		$this->dataDirectory     = $dataDirectory;
 		$this->repositoryFactory = $this->container->get('Repository');
 		$this->builder           = $this->repositoryFactory->getEntityBuilder();
 		$this->inflector         = Inflector::getInstance();
 
+		$this->loadInstalledExtensions();
 		$this->loadExistingEntities();
 	}
-
-	private $dataDirectories = [];
 
 	/**
 	 * Installs an extension
 	 *
 	 * @param   string $source The path to the extension
 	 *
-	 * @return  void
+	 * @return  string[]
 	 */
 	public function install($source)
 	{
+		$pattern = chr(1) . '^' . preg_quote(JPATH_ROOT) . '/' . chr(1);
+		$this->extensions[basename($source)] = preg_replace($pattern, '', $source);
+
 		$xmlDirectory = $source . '/entities';
 		$strategy     = new RecursiveDirectoryStrategy($xmlDirectory);
 		$this->builder->addLocatorStrategy($strategy);
@@ -87,6 +92,8 @@ class Installer
 		{
 			$this->dataDirectories[$entityName] = $source . '/data';
 		}
+
+		return $entityNames;
 	}
 
 	/**
@@ -155,27 +162,11 @@ class Installer
 	 */
 	public function finish()
 	{
-		// Resolve all counter-relations
-		foreach ($this->entityDefinitions as $definition)
-		{
-			$this->resolveBelongsTo($definition);
-			$this->resolveHasOneOrMany($definition);
-			$this->resolveHasManyThrough($definition);
-		}
-
-		// Store XML files in a central place
-		foreach ($this->entityDefinitions as $definition)
-		{
-			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
-		}
-
-		foreach ($this->dataDirectories as $entityName => $csvDirectory)
-		{
-			$this->createTable($entityName);
-			$this->importInitialData($entityName, $csvDirectory);
-		}
-
-		$this->repositoryFactory->getUnitOfWork()->commit();
+		$this->resolveRelations();
+		$this->writeXmlFiles();
+		$this->createTables();
+		$this->import();
+		$this->writeExtensionIni();
 	}
 
 	/**
@@ -296,7 +287,7 @@ class Installer
 			}
 
 			// No existing counter-relation found; create it.
-			$counterRelation                                     = new HasMany(
+			$counterRelation = new HasMany(
 				[
 					'name'      => $this->normalise($this->inflector->toPlural($definition->name)),
 					'entity'    => $definition->name,
@@ -330,7 +321,7 @@ class Installer
 			}
 
 			// No existing counter-relation found; create it.
-			$counterRelation                                       = new BelongsTo(
+			$counterRelation = new BelongsTo(
 				[
 					'name'   => $relation->reference,
 					'entity' => $definition->name,
@@ -352,5 +343,89 @@ class Installer
 		{
 			// @todo Implement HasManyThrough handling
 		}
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function loadInstalledExtensions()
+	{
+		$config           = $this->getExtensionIniFilename();
+		$this->extensions = file_exists($config) ? parse_ini_file($config, true) : [];
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getExtensionIniFilename()
+	{
+		return $this->container->get('ConfigDirectory') . '/config/extensions.ini';
+	}
+
+	/**
+	 * Resolve all counter-relations
+	 *
+	 * @return  void
+	 */
+	private function resolveRelations()
+	{
+		foreach ($this->entityDefinitions as $definition)
+		{
+			$this->resolveBelongsTo($definition);
+			$this->resolveHasOneOrMany($definition);
+			$this->resolveHasManyThrough($definition);
+		}
+	}
+
+	/**
+	 * Store XML files in a central place
+	 *
+	 * @return  void
+	 */
+	private function writeXmlFiles()
+	{
+		foreach ($this->entityDefinitions as $definition)
+		{
+			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
+		}
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function createTables()
+	{
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->createTable($entityName);
+		}
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function import()
+	{
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->importInitialData($entityName, $csvDirectory);
+		}
+
+		$this->repositoryFactory->getUnitOfWork()->commit();
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function writeExtensionIni()
+	{
+		$ini = "; This file is auto-generated during the installation process. Don't change it manually.\n\n";
+
+		foreach ($this->extensions as $extension => $path)
+		{
+			$ini .= sprintf("%s=\"%s\"\n", $extension, $path);
+		}
+
+		file_put_contents($this->getExtensionIniFilename(), $ini);
 	}
 }

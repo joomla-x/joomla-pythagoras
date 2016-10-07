@@ -36,6 +36,8 @@ class ExtensionDispatcher extends Dispatcher
 	 */
 	public function __construct(ExtensionFactoryInterface $factory)
 	{
+		parent::__construct();
+
 		$this->factory = $factory;
 	}
 
@@ -48,15 +50,22 @@ class ExtensionDispatcher extends Dispatcher
 	 */
 	public function dispatch(EventInterface $event)
 	{
+		$this->logger->debug(__METHOD__ . ": Dispatching " . $event->getName());
+
 		$name = $event->getName();
 
 		if (!key_exists($name, $this->loadedEvents))
 		{
+			$this->logger->debug(__METHOD__ . ": - Loading extension listeners");
+
 			$this->loadExtensionListeners($name, $this->factory->getExtensions());
 			$this->loadedEvents[$name] = $name;
 		}
 
-		return parent::dispatch($event);
+		$result = parent::dispatch($event);
+		$this->logger->debug(__METHOD__ . ": Done.");
+
+		return $result;
 	}
 
 	/**

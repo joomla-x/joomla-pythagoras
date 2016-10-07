@@ -9,6 +9,7 @@
 namespace Joomla\ORM\Entity;
 
 use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
@@ -19,7 +20,8 @@ use Joomla\ORM\Definition\Parser\HasMany;
 use Joomla\ORM\Definition\Parser\HasManyThrough;
 use Joomla\ORM\Definition\Parser\HasOne;
 use Joomla\ORM\Definition\Parser\XmlParser;
-use Joomla\ORM\Event\AfterCreateDefinitionEvent;
+use Joomla\ORM\Event\CreateDefinitionEvent;
+use Joomla\ORM\Event\DefinitionCreatedEvent;
 use Joomla\ORM\Exception\EntityNotDefinedException;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Operator;
@@ -53,9 +55,6 @@ class EntityBuilder
 	/** @var  EntityReflector  Reflector to manipulate the entity */
 	private $reflector;
 
-	/** @var  array */
-	private $config = [];
-
 	/** @var array */
 	private $alias = [];
 
@@ -69,6 +68,8 @@ class EntityBuilder
 	{
 		$this->locator           = $locator;
 		$this->repositoryFactory = $repositoryFactory;
+
+		$this->setDispatcher(new NullDispatcher);
 	}
 
 	public function addLocatorStrategy(StrategyInterface $strategy)
@@ -116,15 +117,6 @@ class EntityBuilder
 			'onAfterEntity'  => [$this, 'handleEntity'],
 			'onAfterField'   => [$this, 'handleField'],
 		], $this->locator);
-
-		try
-		{
-			$this->getDispatcher()->dispatch(new AfterCreateDefinitionEvent($entityClass, $definition, $this));
-		}
-		catch (\UnexpectedValueException $e)
-		{
-			// Dispatcher is not set, ignoring the exception
-		}
 
 		return $definition;
 	}
@@ -423,6 +415,8 @@ class EntityBuilder
 	 */
 	private function readDefinition($entityName)
 	{
+		$this->getDispatcher()->dispatch(new CreateDefinitionEvent($entityName, $this));
+
 		$entity          = new Entity;
 		$this->reflector = new EntityReflector($entity);
 		$filename        = $this->locateDescription($entityName);
@@ -433,6 +427,8 @@ class EntityBuilder
 		$this->alias[$definition->name] = $definition->class;
 
 		$this->setIdAccessors($definition->class, $entity->key());
+
+		$this->getDispatcher()->dispatch(new DefinitionCreatedEvent($definition->class, $definition, $this));
 
 		return $definition->class;
 	}
@@ -553,7 +549,7 @@ class EntityBuilder
 
 			try
 			{
-				$object = $repository->getById($objectId);
+				$object = !empty($objectId) ? $repository->getById($objectId) : null;
 			}
 			catch (EntityNotFoundException $e)
 			{

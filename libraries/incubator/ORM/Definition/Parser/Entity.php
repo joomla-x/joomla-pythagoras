@@ -63,6 +63,54 @@ class Entity extends Element
 	}
 
 	/**
+	 * Add a relations
+	 *
+	 * @param   Relation $relation The relation
+	 *
+	 * @return  void
+	 * @throws  \Exception
+	 */
+	public function addRelation(Relation $relation)
+	{
+		switch (get_class($relation))
+		{
+			case BelongsTo::class:
+				$this->relations['belongsTo'][] = $relation;
+				break;
+
+			case HasOne::class:
+				$this->relations['hasOne'][] = $relation;
+				break;
+
+			case HasMany::class:
+				$this->relations['hasMany'][] = $relation;
+				break;
+
+			case HasManyThrough::class:
+				$this->relations['hasManyThrough'][] = $relation;
+				break;
+
+			default:
+				throw new \Exception("Unknown relation type " . get_class($relation));
+		}
+	}
+
+	/**
+	 * @param   string  $column The column name
+	 *
+	 * @return  boolean
+	 */
+	public function isTableColumn($column)
+	{
+		if (!is_string($column))
+		{
+			return false;
+		}
+
+		return array_key_exists($column, $this->fields) || array_key_exists($column, $this->relations['belongsTo']);
+	}
+
+	/**
 	 * Set the relations
 	 *
 	 * @param   Relation[] $values The relations

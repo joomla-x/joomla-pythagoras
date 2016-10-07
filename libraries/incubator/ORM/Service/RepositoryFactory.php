@@ -10,6 +10,8 @@ namespace Joomla\ORM\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Joomla\Event\DispatcherAwareTrait;
+use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
@@ -52,6 +54,8 @@ class RepositoryFactory
 	/** @var EntityRegistry The entity registry to use in tests */
 	private $entityRegistry = null;
 
+	use DispatcherAwareTrait;
+
 	/**
 	 * RepositoryFactory constructor.
 	 *
@@ -74,6 +78,8 @@ class RepositoryFactory
 		);
 
 		$this->connections[get_class($connection)] = $connection;
+
+		$this->setDispatcher(new NullDispatcher);
 	}
 
 	/**
@@ -222,6 +228,8 @@ class RepositoryFactory
 					$meta->storage['table'],
 					$this->entityRegistry
 				);
+
+				$dataMapper->setDispatcher($this->getDispatcher());
 				break;
 
 			default:
@@ -256,6 +264,11 @@ class RepositoryFactory
 	 */
 	public function getConnection($type = null)
 	{
+		if (is_null($type))
+		{
+			return $this->connection;
+		}
+
 		if (!isset($this->connections[CsvDataGateway::class]) && isset($this->config['dataPath']))
 		{
 			$this->connections[CsvDataGateway::class] = new CsvDataGateway(JPATH_ROOT . '/' . $this->config['dataPath']);

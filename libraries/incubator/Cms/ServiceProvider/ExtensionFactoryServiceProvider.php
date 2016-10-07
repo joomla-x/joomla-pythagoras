@@ -9,6 +9,8 @@ namespace Joomla\Cms\ServiceProvider;
 
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Extension\DefaultExtensionFactory;
+use Joomla\Extension\ExtensionFactoryInterface;
 use Joomla\Extension\FileExtensionFactory;
 
 /**
@@ -54,10 +56,10 @@ class ExtensionFactoryServiceProvider implements ServiceProviderInterface
 	 *
 	 * @param   Container $container The container
 	 *
-	 * @return  FileExtensionFactory
+	 * @return  ExtensionFactoryInterface
 	 */
 	public function createExtensionFactory(Container $container)
 	{
-		return new FileExtensionFactory($container->get('ConfigDirectory') . '/extensions', $container);
+		return new DefaultExtensionFactory($container->get('ConfigDirectory'), $container);
 	}
 }

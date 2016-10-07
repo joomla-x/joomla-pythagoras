@@ -6,3 +6,4 @@
 !/data/entities/.gitkeep
 /data/sqlite.db
 /.htaccess
+/config/extensions.ini

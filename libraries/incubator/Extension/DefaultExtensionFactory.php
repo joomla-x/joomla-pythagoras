@@ -9,37 +9,31 @@
 namespace Joomla\Extension;
 
 use Interop\Container\ContainerInterface;
-use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class FileExtensionFactory
+ * Class DefaultExtensionFactory
  *
  * @package Joomla\Extension
  *
  * @since   1.0
  */
-class FileExtensionFactory implements ExtensionFactoryInterface
+class DefaultExtensionFactory implements ExtensionFactoryInterface
 {
-	/** @var string|AdapterInterface  The root folder the factory reads the extensions from. */
+	/** @var string  The root folder the factory reads the extensions from. */
 	private $rootFolder;
 
 	/** @var ExtensionInterface[][] Extensions cache. */
 	private $extensions = [];
 
-	/** @var array the loaded files */
-	private $loadedFiles = [];
-
 	/** @var ContainerInterface  The container */
 	private $container;
 
 	/**
-	 * FileExtensionFactory constructor.
+	 * DefaultExtensionFactory constructor.
 	 *
-	 * @param   string|AdapterInterface $rootFolder The root folder the factory reads the extensions from
-	 * @param   ContainerInterface      $container  The container
+	 * @param   string             $rootFolder The root folder the factory reads the extensions from
+	 * @param   ContainerInterface $container  The container
 	 *
 	 * @todo remove the container parameter and pass something which will lazy load the command bus and dispatcher
 	 */
@@ -65,40 +59,21 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 
 		$this->extensions[$group] = [];
 
-		$fs = $this->rootFolder;
+		$ini        = $this->rootFolder . '/config/extensions.ini';
+		$extensions = file_exists($ini) ? parse_ini_file($ini) : [];
 
-		if (is_string($this->rootFolder))
+		foreach ($extensions as $extension => $path)
 		{
-			// It is only the path
-			$fs = new Local($this->rootFolder);
-		}
+			$file = $path . '/config/extension.yml';
 
-		if (!$fs instanceof AbstractAdapter)
-		{
-			return [];
-		}
-
-		foreach ($fs->listContents($group, true) as $file)
-		{
-			if (strpos($file['path'], 'extension.yml') === false)
+			if (!file_exists($file))
 			{
 				continue;
 			}
 
-			$path = $fs->applyPathPrefix($file['path']);
+			$extension = new Extension;
 
-			if (key_exists($path, $this->loadedFiles))
-			{
-				// We have loaded it already
-				$this->extensions[$group][] = $this->loadedFiles[$path];
-				continue;
-			}
-
-			$extension                  = new Extension;
-			$this->loadedFiles[$path]   = $extension;
-			$this->extensions[$group][] = $extension;
-
-			$config = Yaml::parse($fs->read($file['path'])['contents'], Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
+			$config = Yaml::parse(file_get_contents($file), Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 
 			if (key_exists('listeners', $config))
 			{
@@ -109,6 +84,13 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 			{
 				$this->createQueryHandlers($extension, $config['queryhandlers']);
 			}
+
+			if (key_exists('contenttypes', $config))
+			{
+				$this->createContentTypes($extension, $config['contenttypes']);
+			}
+
+			$this->extensions[$group][] = $extension;
 		}
 
 		return $this->extensions[$group];
@@ -155,6 +137,20 @@ class FileExtensionFactory implements ExtensionFactoryInterface
 				$handler['query'],
 				new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher'))
 			);
+		}
+	}
+
+	/**
+	 * @param   Extension $extension    The extension
+	 * @param   array     $contentTypes Content type configurations
+	 *
+	 * @return  void
+	 */
+	private function createContentTypes(Extension $extension, array $contentTypes)
+	{
+		foreach ($contentTypes as $name => $contentType)
+		{
+			$extension->addContentType($name, $contentType['class']);
 		}
 	}
 }

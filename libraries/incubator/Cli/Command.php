@@ -11,6 +11,7 @@ namespace Joomla\Cli;
 use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -138,5 +139,30 @@ abstract class Command extends BaseCommand
 		$helper = new QuestionHelper;
 
 		return $helper->ask($input, $output, $question);
+	}
+
+	/**
+	 * @param   InputInterface  $input  The input
+	 * @param   OutputInterface $output The output
+	 * @param   string[]        $header The table headers
+	 *
+	 * @return  Table
+	 */
+	protected function createTable(InputInterface $input, OutputInterface $output, array $header)
+	{
+		$table = new Table($output);
+
+		if ($input->getOption('compact'))
+		{
+			$table->setStyle('compact');
+		}
+		else
+		{
+			$table->setStyle('default');
+		}
+
+		$table->setHeaders($header);
+
+		return $table;
 	}
 }

@@ -191,14 +191,14 @@ class StorageTestCases extends TestCase
 			->columns(['id', 'title'])
 			->getItems();
 
-		$this->assertEquals(
+		$this->assertEquals(print_r(
 			[
 				['id' => 1, 'title' => 'First Article'],
 				['id' => 2, 'title' => 'Second Article'],
 				['id' => 3, 'title' => 'Part One'],
 				['id' => 4, 'title' => 'Part Two'],
-			],
-			$result
+			], true),
+			print_r($result, true)
 		);
 
 		$result = $this->repo
@@ -586,7 +586,7 @@ class StorageTestCases extends TestCase
 		$article = $this->repo->getById(2);
 		$this->assertInstanceOf(RepositoryInterface::class, $article->children);
 
-		$children = $article->children->findAll()->getItems();
+		$children = $article->children->getAll();
 
 		$this->assertEquals(2, count($children));
 	}

@@ -39,4 +39,9 @@ interface ExtensionInterface
 	 * @see \Joomla\Event\DispatcherInterface::dispatch
 	 */
 	public function getListeners($eventName);
+
+	/**
+	 * @return string[]
+	 */
+	public function getContentTypes();
 }

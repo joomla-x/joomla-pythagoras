@@ -8,6 +8,9 @@
 
 namespace Joomla\Event;
 
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
 /**
  * Implementation of a DispatcherInterface supporting prioritized listeners.
  *
@@ -30,6 +33,16 @@ class Dispatcher implements DispatcherInterface
 	 * @since  1.0
 	 */
 	protected $listeners = [];
+
+	use LoggerAwareTrait;
+
+	/**
+	 * Dispatcher constructor.
+	 */
+	public function __construct()
+	{
+		$this->setLogger(new NullLogger);
+	}
 
 	/**
 	 * Set an event to the dispatcher. It will replace any event with the same name.
@@ -383,45 +396,6 @@ class Dispatcher implements DispatcherInterface
 	}
 
 	/**
-	 * Trigger an event.
-	 *
-	 * @param   EventInterface|string $event The event object or name.
-	 *
-	 * @return  EventInterface  The event after being passed through all listeners.
-	 *
-	 * @since       1.0
-	 * @deprecated  3.0  Use dispatch() instead.
-	 */
-	public function triggerEvent($event)
-	{
-		if (!($event instanceof EventInterface))
-		{
-			$event = $this->getDefaultEvent($event);
-		}
-
-		return $this->dispatch($event);
-	}
-
-	/**
-	 * Get an event object for the specified event name
-	 *
-	 * @param   string $name The event name to get an EventInterface object for
-	 *
-	 * @return  EventInterface
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	private function getDefaultEvent($name)
-	{
-		if (isset($this->events[$name]))
-		{
-			return $this->events[$name];
-		}
-
-		return new Event($name);
-	}
-
-	/**
 	 * Dispatches an event to all registered listeners.
 	 *
 	 * @param   EventInterface $event The event to pass to the event handlers/listeners.
@@ -432,6 +406,8 @@ class Dispatcher implements DispatcherInterface
 	 */
 	public function dispatch(EventInterface $event)
 	{
+		$this->logger->debug(__METHOD__ . ": Dispatching " . $event->getName());
+
 		if (isset($this->listeners[$event->getName()]))
 		{
 			foreach ($this->listeners[$event->getName()] as $listener)
@@ -444,6 +420,8 @@ class Dispatcher implements DispatcherInterface
 				call_user_func($listener, $event);
 			}
 		}
+
+		$this->logger->debug(__METHOD__ . ": Done.");
 
 		return $event;
 	}

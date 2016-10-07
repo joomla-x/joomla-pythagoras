@@ -9,25 +9,7 @@
  * @codingStandardsIgnoreStart
  */
 
-if (!function_exists('marshalMeasure'))
-{
-	/**
-	 * @param $measure
-	 *
-	 * @return string
-	 */
-	function marshalMeasure($measure):string
-	{
-		if (preg_match('~^\d+$~', $measure))
-		{
-			$measure .= 'px';
-
-			return $measure;
-		}
-
-		return $measure;
-	}
-}
+require_once dirname(__DIR__) . '/functions.php';
 
 if (!isset($content->params))
 {

@@ -19,11 +19,14 @@ use Joomla\Service\Query;
  */
 class Extension implements ExtensionInterface
 {
-	/** @var callable[] */
+	/** @var callable[][] */
 	private $listeners = [];
 
-	/** @var callable[] */
+	/** @var callable[][] */
 	private $queryHandlers = [];
+
+	/** @var string[] */
+	private $contentTypes = [];
 
 	/**
 	 * Get the listeners
@@ -95,5 +98,26 @@ class Extension implements ExtensionInterface
 		}
 
 		$this->queryHandlers[$className][] = $handler;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getContentTypes()
+	{
+		return $this->contentTypes;
+	}
+
+	/**
+	 * Add a content type
+	 *
+	 * @param   string   $name      The name of the content type
+	 * @param   string   $className The name of the query class
+	 *
+	 * @return  void
+	 */
+	public function addContentType($name, $className)
+	{
+		$this->contentTypes[$name] = $className;
 	}
 }

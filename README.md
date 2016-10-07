@@ -25,6 +25,8 @@ You can see the original document here: [docs/j4cdhms.md](docs/j4cdhms.md).
 
 The final decision is made, when the milestone is reached, or it shows out, that it can not be reached with the clean base approach.
 
+  - [How to test the Workflow Horizontal Component](docs/workflow.md)
+
 ## Installation
 
 In order to run Joomla! X in the current state, you need to have

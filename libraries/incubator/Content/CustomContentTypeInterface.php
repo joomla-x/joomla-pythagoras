@@ -8,31 +8,23 @@
 
 namespace Joomla\Content;
 
-use Interop\Container\ContainerInterface;
 use Joomla\Renderer\RendererInterface;
 
 /**
- * ContentType Interface
+ * CustomContentTypeInterface Interface
  *
  * @package  Joomla/Content
  *
  * @since    __DEPLOY_VERSION__
  */
-interface ContentTypeInterface
+interface CustomContentTypeInterface extends ContentTypeInterface
 {
 	/**
-	 * Visits the content type.
+	 * Register this content type to a renderer
 	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
+	 * @param   RendererInterface $renderer The renderer
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
-	public function accept(ContentTypeVisitorInterface $visitor);
-
-	/**
-	 * Gets the title for the content
-	 *
-	 * @return  string
-	 */
-	public function getTitle();
+	public function register(RendererInterface $renderer);
 }

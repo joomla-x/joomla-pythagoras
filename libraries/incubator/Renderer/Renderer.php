@@ -49,6 +49,8 @@ abstract class Renderer implements RendererInterface
 	{
 		$this->options   = $options;
 		$this->container = $container;
+
+		$this->registerFallback();
 	}
 
 	/**
@@ -75,6 +77,14 @@ abstract class Renderer implements RendererInterface
 		}
 
 		$this->handlers[strtolower($type)] = $handler;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getClass()
+	{
+		return get_class($this);
 	}
 
 	/**
@@ -370,5 +380,21 @@ abstract class Renderer implements RendererInterface
 	public function isSeekable()
 	{
 		return true;
+	}
+
+	/**
+	 * Define a fallback for non-registered content types.
+	 * The fallback will just ignore the content type.
+	 *
+	 * @return  void
+	 */
+	private function registerFallback()
+	{
+		$this->registerContentType(
+			'default',
+			function () {
+				return '';
+			}
+		);
 	}
 }
