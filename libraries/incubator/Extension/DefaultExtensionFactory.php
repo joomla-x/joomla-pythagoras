@@ -85,6 +85,11 @@ class DefaultExtensionFactory implements ExtensionFactoryInterface
 				$this->createQueryHandlers($extension, $config['queryhandlers']);
 			}
 
+			if (key_exists('contenttypes', $config))
+			{
+				$this->createContentTypes($extension, $config['contenttypes']);
+			}
+
 			$this->extensions[$group][] = $extension;
 		}
 
@@ -132,6 +137,20 @@ class DefaultExtensionFactory implements ExtensionFactoryInterface
 				$handler['query'],
 				new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher'))
 			);
+		}
+	}
+
+	/**
+	 * @param   Extension $extension    The extension
+	 * @param   array     $contentTypes Content type configurations
+	 *
+	 * @return  void
+	 */
+	private function createContentTypes(Extension $extension, array $contentTypes)
+	{
+		foreach ($contentTypes as $name => $contentType)
+		{
+			$extension->addContentType($name, $contentType['class']);
 		}
 	}
 }

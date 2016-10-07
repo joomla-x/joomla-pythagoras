@@ -510,4 +510,12 @@ class EventDecorator implements RendererInterface
 	{
 		return $this->delegate('visitDefaultMenu', [$defaultMenu]);
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getClass()
+	{
+		return $this->renderer->getClass();
+	}
 }

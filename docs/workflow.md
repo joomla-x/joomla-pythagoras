@@ -1,19 +1,27 @@
 # Workflow
 
-The Workflow Horizontal Component does not really deserve its name - it just adds some states to other entities:
+The **Workflow** extension is an example of a **Horizontal Component**. It adds states to entities:  
 
+* Published
+* Unpublished
+* Archived
+* Trashed
+
+This document demonstrates, how the **Article** **Vertical Component** gets the functionality automatically.
+ 
 ## Preparation
 
 Install the demo. Check out the `master` branch, and enter
 
 ```bash
 $ composer install
+$ docker-compose up -d
 $ ./install.sh
 ```
 
 on the console. This will install a couple of components, and register their entities.
 
-```bash
+```
 Joomla! installation expected in /home/nibra/Development/joomla-pythagoras
  - installing extensions/Article
    - Article
@@ -30,6 +38,10 @@ Installed 3 extension(s)
 
 ## Testing
 
+### Without Workflow
+
+#### Console
+
 Now, select the blog articles:
 
 ```bash
@@ -38,7 +50,7 @@ $ ./joomla show articles --dump-sql --filter="category=blog"
 
 You'll see a list of articles, and also an SQL dump.
 
-```bash
+```
 +----+----------------+----------+------------------+--------------------------------+----------------------------------+------------+---------+-----------+
 | id | title          | category | alias            | teaser                         | body                             | author     | license | parent_id |
 +----+----------------+----------+------------------+--------------------------------+----------------------------------+------------+---------+-----------+
@@ -58,7 +70,14 @@ You'll see a list of articles, and also an SQL dump.
 ```
 
 Please notice, that the Article Vertical Component does not know anything about states.
- 
+
+#### Browser
+
+Navigate your browser to `http://localhost:8080`. The demo start page will appear.
+In the menu, select 'Blog'. You'll see a blog view of the same articles, you selected on the console before. Also have a look on the 'About' page - that page will change, once the Workflow component is installed.
+
+### With Workflow
+
 Next, install the Workflow Horizontal Component:
 
 ```bash
@@ -67,16 +86,18 @@ $ ./joomla install extensions/Workflow
 
 The installer acknowledges
 
-```bash
+```
 Installed 1 extension(s)
 ```
 
-When you repeat the `joomla show` command, suddenly the result changes:
+#### Console
+
+When you repeat the `joomla show` command in the console, the result changes:
 
 ```bash
 $ ./joomla show articles --dump-sql --filter="category=blog"
 ```
-```bash
+```
 +----+----------------+----------+----------------+-------------------------+------------------------------+--------+---------+-----------+
 | id | title          | category | alias          | teaser                  | body                         | author | license | parent_id |
 +----+----------------+----------+----------------+-------------------------+------------------------------+--------+---------+-----------+
@@ -96,5 +117,9 @@ $ ./joomla show articles --dump-sql --filter="category=blog"
 
 Still, the Article component is not aware of the Workflow component, but the query has been modified to only return published articles (`state_id=1`).
 
-> **Note:** Currently, you can't filter by state. We're working on it!
+> **Note:** Currently, you can't filter by arbitrary state. We're working on it!
 
+#### Browser
+
+Navigate to the blog again as before. As you can see, only the published blog post is shown.
+On the 'About' page you will discover additional output above the article.

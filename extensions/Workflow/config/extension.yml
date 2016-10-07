@@ -3,3 +3,7 @@ listeners:
         class: \Joomla\Extension\Workflow\Listener\QueryDatabaseListener
         events:
             onQueryDatabase: addStateConstraint
+
+contenttypes:
+    WorkflowState:
+        class: \Joomla\Extension\Workflow\ContentType\WorkflowState

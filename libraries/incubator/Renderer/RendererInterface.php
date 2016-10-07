@@ -27,4 +27,9 @@ interface RendererInterface extends ContentTypeVisitorInterface, StreamInterface
 	 * @return  void
 	 */
 	public function registerContentType($type, $handler);
+
+	/**
+	 * @return string
+	 */
+	public function getClass();
 }

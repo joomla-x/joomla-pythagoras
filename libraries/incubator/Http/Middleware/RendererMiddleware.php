@@ -9,9 +9,13 @@
 namespace Joomla\Http\Middleware;
 
 use Interop\Container\ContainerInterface;
+use Joomla\Content\ContentTypeInterface;
+use Joomla\Content\CustomContentTypeInterface;
 use Joomla\Event\Dispatcher;
+use Joomla\Extension\ExtensionInterface;
 use Joomla\Http\MiddlewareInterface;
 use Joomla\Renderer\Factory as RendererFactory;
+use Joomla\Renderer\RendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -68,6 +72,21 @@ class RendererMiddleware implements MiddlewareInterface
 		$mapping = parse_ini_file(JPATH_ROOT . '/config/renderer.ini');
 
 		$renderer = (new RendererFactory($mapping))->create($acceptHeader, $this->container);
+
+		// @todo Register custom ContentTypes
+		$extensions = $this->container->get('extension_factory')->getExtensions();
+		foreach ($extensions as $extension)
+		{
+			/** @var ExtensionInterface $extension */
+			foreach ($extension->getContentTypes() as $contentTypeClass)
+			{
+				$contentType = new $contentTypeClass;
+
+				/** @var CustomContentTypeInterface $contentType */
+				$contentType->register($renderer);
+			}
+		}
+
 		$renderer = new \Joomla\Renderer\EventDecorator($renderer, $this->dispatcher);
 
 		$response = $next($request, $response->withBody($renderer));
