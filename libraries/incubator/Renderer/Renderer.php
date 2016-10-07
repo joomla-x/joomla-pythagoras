@@ -385,12 +385,16 @@ abstract class Renderer implements RendererInterface
 	/**
 	 * Define a fallback for non-registered content types.
 	 * The fallback will just ignore the content type.
+	 *
+	 * @return  void
 	 */
 	private function registerFallback()
 	{
-		$this->registerContentType('default', function ()
-		{
-			return '';
-		});
+		$this->registerContentType(
+			'default',
+			function () {
+				return '';
+			}
+		);
 	}
 }

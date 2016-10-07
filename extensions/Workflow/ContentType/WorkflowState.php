@@ -54,6 +54,13 @@ class WorkflowState extends AbstractContentType implements CustomContentTypeInte
 		return $visitor->visitWorkflowState($this);
 	}
 
+	/**
+	 * Register this content type to a renderer
+	 *
+	 * @param   RendererInterface $renderer The renderer
+	 *
+	 * @return  void
+	 */
 	public function register(RendererInterface $renderer)
 	{
 		$this->renderer = $renderer;
@@ -72,22 +79,40 @@ class WorkflowState extends AbstractContentType implements CustomContentTypeInte
 		$renderer->registerContentType('WorkflowState', [$this, $method]);
 	}
 
+	/**
+	 * Callback for HTML output
+	 *
+	 * @param   WorkflowState $content The content
+	 *
+	 * @return  int  Number of bytes written
+	 */
 	public function asHtml($content)
 	{
 		$state = $this->getState($content);
 
-		$this->renderer->write("<pre class=\"workflow-state workflow-{$state}\">State: $state</pre>");
+		return $this->renderer->write("<pre class=\"workflow-state workflow-{$state}\">State: $state</pre>");
 	}
 
+	/**
+	 * Callback for plain output
+	 *
+	 * @param   WorkflowState $content The content
+	 *
+	 * @return  int  Number of bytes written
+	 */
 	public function asPlain($content)
 	{
 		$state = $this->getState($content);
 
-		$this->renderer->write($state);
+		return $this->renderer->write($state);
 	}
 
 	/**
-	 * @return string
+	 * Retrieve the state from the content item
+	 *
+	 * @param   WorkflowState $content The content
+	 *
+	 * @return  string
 	 */
 	private function getState($content)
 	{

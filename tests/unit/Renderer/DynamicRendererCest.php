@@ -73,7 +73,7 @@ class DynamicRendererCest
 	}
 
 	/**
-	 * @testdox Exception is thrown, if an unknown content type is encountered, and no default is provided
+	 * @testdox If an unknown content type is encountered, an empty string is returned
 	 */
 	public function DynamicRendererThrowsExceptionOnMissingCallback(UnitTester $I)
 	{
@@ -83,14 +83,6 @@ class DynamicRendererCest
 
 		$content = new UnregisteredContentType('UnregisteredContentType');
 
-		try
-		{
-			$content->accept($renderer);
-			$I->fail('Expected NotFoundException was not thrown');
-		}
-		catch (\Exception $e)
-		{
-			$I->assertTrue($e instanceof NotFoundException);
-		}
+		$I->assertEquals('', $content->accept($renderer));
 	}
 }

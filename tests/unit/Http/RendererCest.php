@@ -8,10 +8,13 @@
 
 namespace Joomla\Tests\Unit\Http;
 
+use Joomla\Cms\ServiceProvider\EventDispatcherServiceProvider;
+use Joomla\Cms\ServiceProvider\ExtensionFactoryServiceProvider;
 use Joomla\DI\Container;
 use Joomla\Event\Dispatcher;
 use Joomla\Http\Application;
 use Joomla\Http\Middleware\RendererMiddleware;
+use Joomla\ORM\Service\StorageServiceProvider;
 use Joomla\Renderer\EventDecorator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -30,8 +33,14 @@ class RendererCest
 
 	public function RendererAddsTheEventDecorator(UnitTester $I)
 	{
-		$app = new Application([
-			new RendererMiddleware(new Dispatcher(), new Container()),
+		$container = new Container();
+		$container->set('ConfigDirectory', JPATH_ROOT);
+		$container->registerServiceProvider(new StorageServiceProvider, 'repository');
+		$container->registerServiceProvider(new EventDispatcherServiceProvider, 'dispatcher');
+		$container->registerServiceProvider(new ExtensionFactoryServiceProvider, 'extension_factory');
+
+		$app       = new Application([
+			new RendererMiddleware(new Dispatcher(), $container),
 			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
 			{
 				$body = $response->getBody();
