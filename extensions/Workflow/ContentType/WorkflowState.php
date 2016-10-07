@@ -84,13 +84,13 @@ class WorkflowState extends AbstractContentType implements CustomContentTypeInte
 	 *
 	 * @param   WorkflowState $content The content
 	 *
-	 * @return  int  Number of bytes written
+	 * @return  void
 	 */
 	public function asHtml($content)
 	{
 		$state = $this->getState($content);
 
-		return $this->renderer->write("<pre class=\"workflow-state workflow-{$state}\">State: $state</pre>");
+		$this->renderer->write("<pre class=\"workflow-state workflow-{$state}\">State: $state</pre>");
 	}
 
 	/**
@@ -98,13 +98,13 @@ class WorkflowState extends AbstractContentType implements CustomContentTypeInte
 	 *
 	 * @param   WorkflowState $content The content
 	 *
-	 * @return  int  Number of bytes written
+	 * @return  void
 	 */
 	public function asPlain($content)
 	{
 		$state = $this->getState($content);
 
-		return $this->renderer->write($state);
+		$this->renderer->write($state);
 	}
 
 	/**
