@@ -67,7 +67,11 @@ class VersionCommand extends Command
 	{
 		$this->setupEnvironment($input, $output);
 
-		if ($input->getOption('short'))
+		if ($input->getOption('long'))
+		{
+			$result = 'Joomla! X.0.0 Dev [ Pythagoras ]';
+		}
+		elseif ($input->getOption('short'))
 		{
 			$result = 'X.0.0';
 		}
@@ -77,10 +81,10 @@ class VersionCommand extends Command
 		}
 		else
 		{
-			$result = 'Joomla! X.0.0 Dev [ Pythagoras ].';
+			$result = "Joomla! X.0.0 Dev [ Pythagoras ].\n";
 		}
 
-		$output->writeln($result);
+		$output->write($result);
 
 		return 0;
 	}

@@ -254,6 +254,55 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
+	 * Performs the tests from the `cli` suite.
+	 *
+	 * @param array $option
+	 *
+	 * @option $coverage Whether or not to generate a code coverage report
+	 */
+	public function testCli($option = [
+		'coverage' => false
+	])
+	{
+		$inDocker = file_exists('/usr/local/lib/php/prepend.php');
+
+		if (!$inDocker)
+		{
+			$containerInfo = json_decode(`docker inspect cli_cli`);
+			$build         = false;
+
+			if (empty($containerInfo))
+			{
+				$this->say('Container not found.');
+				$build = true;
+			}
+			else
+			{
+				$dateOfContainerDefinition = $this->getMaxDate('build/docker/cli');
+				$dateOfContainerCreation   = strtotime(preg_replace('~\.\d+Z$~', 'Z', $containerInfo[0]->Created));
+
+				if ($dateOfContainerCreation < $dateOfContainerDefinition)
+				{
+					$this->say('Container definition has changed.');
+					$build = true;
+				}
+			}
+
+			if ($build)
+			{
+				$this->say('Building container.');
+				`docker-compose -f tests/cli/docker-compose.yml build`;
+			}
+
+			$this->say(`docker-compose -f tests/cli/docker-compose.yml up`);
+
+			return;
+		}
+
+		$this->test('cli', $option);
+	}
+
+	/**
 	 * Performs the tests from the selected suite.
 	 *
 	 * @param string $suite The test suite to conduct
@@ -293,7 +342,7 @@ class RoboFile extends \Robo\Tasks
 
 			$return = 0;
 		}
-		catch(\Exception $e)
+		catch (\Exception $e)
 		{
 			$return = 1;
 		}
@@ -398,8 +447,8 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function createSqlData()
 	{
-		$dataDir = __DIR__ . '/tests/unit/ORM/data';
-		$database   = $dataDir . '/original/sqlite.test.db';
+		$dataDir  = __DIR__ . '/tests/unit/ORM/data';
+		$database = $dataDir . '/original/sqlite.test.db';
 
 		$this->say('Creating test database in ' . $database);
 
@@ -457,7 +506,7 @@ class RoboFile extends \Robo\Tasks
 		$database = 'sqlite.test.db';
 
 		$originalDatabase = $dataDir . '/original/' . $database;
-		$workingDatabase = $dataDir . '/' . $database;
+		$workingDatabase  = $dataDir . '/' . $database;
 
 		if (!file_exists($originalDatabase))
 		{
@@ -510,5 +559,22 @@ class RoboFile extends \Robo\Tasks
 		fclose($fh);
 
 		return $rows;
+	}
+
+	private function getMaxDate($directory)
+	{
+		$maxDate = 0;
+
+		foreach (glob($directory . '/*') as $file)
+		{
+			$date = is_dir($file) ? $this->getMaxDate($file) : filemtime($file);
+
+			if ($date > $maxDate)
+			{
+				$maxDate = $date;
+			}
+		}
+
+		return $maxDate;
 	}
 }

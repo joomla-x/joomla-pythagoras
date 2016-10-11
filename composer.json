@@ -54,6 +54,7 @@
     "psr-4": {
       "Joomla\\Tests\\Unit\\": "tests/unit/",
       "Joomla\\Tests\\Unit\\ORM\\Mocks\\": "tests/unit/ORM/Mocks/",
+      "Joomla\\Tests\\Cli\\": "tests/cli/",
       "Joomla\\Tests\\Functional\\": "tests/functional/",
       "Joomla\\Tests\\System\\": "tests/acceptance/",
       "Joomla\\Tests\\Page\\": "tests/_support/Page/"
