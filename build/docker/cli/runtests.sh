@@ -4,8 +4,10 @@ echo "Preparing ..."
 
 WORK_DIR=/var/test
 
-cp /usr/local/lib/php/phpunit_coverage.php $WORK_DIR
 cd $WORK_DIR
+cp /usr/local/lib/php/prepend.php .
+cp /usr/local/lib/php/append.php .
+cp /usr/local/lib/php/phpunit_coverage.php .
 cp tests/cli/codeception.yml .
 
 echo "Running tests ..."
@@ -18,6 +20,8 @@ echo "Collecting results ..."
 php phpunit_coverage.php
 chmod -R 0777 build/reports/coverage-cli
 
+rm prepend.php
+rm append.php
 rm phpunit_coverage.php
 rm codeception.yml
 
