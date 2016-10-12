@@ -633,12 +633,84 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
-	 * @param $coverage
-	 * @param $cc
+	 * @param CodeCoverage $coverage
+	 * @param CodeCoverage $that
 	 */
-	private function mergeCoverage($coverage, $cc)
+	private function mergeCoverage(CodeCoverage $coverage, CodeCoverage $that)
 	{
-		$coverage->filter()->addFilesToWhitelist($cc->filter()->getWhitelistedFiles());
-		$coverage->merge($cc);
+		$filter = $coverage->filter();
+		$filter->setWhitelistedFiles(
+			array_merge($filter->getWhitelistedFiles(), $that->filter()->getWhitelistedFiles())
+		);
+
+		$thisData = $coverage->getData(true);
+		$thatData = $that->getData(true);
+
+		foreach ($thatData as $file => $lines)
+		{
+			if (!$this->hasCoverage($thatData, $file))
+			{
+				continue;
+			}
+
+			if (!$this->hasCoverage($thisData, $file))
+			{
+				if (!$filter->isFiltered($file))
+				{
+					$thisData[$file] = $lines;
+				}
+
+				continue;
+			}
+
+			foreach ($lines as $line => $data)
+			{
+				if ($data !== null)
+				{
+					if (!isset($thisData[$file][$line]))
+					{
+						$thisData[$file][$line] = $data;
+					}
+					else
+					{
+						$thisData[$file][$line] = array_unique(
+							array_merge($thisData[$file][$line], $data)
+						);
+					}
+				}
+			}
+		}
+		$coverage->setData($thisData);
+		$coverage->setTests(array_merge($coverage->getTests(), $that->getTests()));
+	}
+
+	/**
+	 * @param $coverageData
+	 * @param $file
+	 *
+	 * @return boolean
+	 */
+	private function hasCoverage($coverageData, $file)
+	{
+		if (!isset($coverageData[$file]))
+		{
+			return false;
+		}
+
+		$hasData = false;
+
+		foreach ($coverageData[$file] as $lines)
+		{
+			foreach ($lines as $data)
+			{
+				if (!is_array($data) || !empty($data))
+				{
+					$hasData = true;
+					break 2;
+				}
+			}
+		}
+
+		return $hasData;
 	}
 }
