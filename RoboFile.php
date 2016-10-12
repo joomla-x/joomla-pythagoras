@@ -8,7 +8,10 @@
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Table;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Symfony\Component\Yaml\Yaml;
+use SebastianBergmann\CodeCoverage\Report\Clover as XmlReport;
+use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
 
 /**
  * This is project's console commands configuration for Robo task runner.
@@ -250,7 +253,7 @@ class RoboFile extends \Robo\Tasks
 		'coverage' => false
 	])
 	{
-		$this->test('unit', $option);
+		$this->runTest('unit', $option);
 	}
 
 	/**
@@ -296,10 +299,54 @@ class RoboFile extends \Robo\Tasks
 
 			$this->say(`docker-compose -f tests/cli/docker-compose.yml up`);
 
+			$this->remap('/var/test', __DIR__, 'build/reports/coverage.cli.php');
+
 			return;
 		}
 
-		$this->test('cli', $option);
+		$this->runTest('cli', $option);
+	}
+
+	public function test($option = [
+		'coverage' => false
+	])
+	{
+		$this->testUnit($option);
+		$this->testCli($option);
+
+		if ($option['coverage'])
+		{
+			$coverage = $this->getCoverage('unit');
+			$this->mergeCoverage($coverage, $this->getCoverage('cli'));
+
+			$this->say("Writing XML report ...");
+			$writer = new XmlReport;
+			$writer->process($coverage, 'build/reports/junit.xml');
+
+			$this->say("Writing HTML report ...");
+			$writer = new HtmlReport;
+			$writer->process($coverage, 'build/reports/coverage');
+		}
+	}
+
+	/**
+	 * @param      $suite
+	 * @param bool $unlink
+	 *
+	 * @return CodeCoverage
+	 */
+	private function getCoverage($suite, $unlink = false)
+	{
+		$coverage = null;
+		$filename = "build/reports/coverage.$suite.php";
+		include $filename;
+
+		if ($unlink)
+		{
+			unlink($filename);
+		}
+
+		return $coverage;
 	}
 
 	/**
@@ -310,9 +357,7 @@ class RoboFile extends \Robo\Tasks
 	 *
 	 * @option $coverage Whether or not to generate a code coverage report
 	 */
-	public function test($suite = 'all', $option = [
-		'coverage' => false
-	])
+	protected function runTest($suite, $option)
 	{
 		$this->stopOnFail();
 		$this->initReports();
@@ -326,16 +371,12 @@ class RoboFile extends \Robo\Tasks
 				->taskCodecept($this->binDir . '/codecept')
 				->configFile($tempConfigFile);
 
-			if ($suite != 'all')
-			{
-				$codecept->suite($suite);
-			}
+			$codecept->suite($suite);
 
 			if ($option['coverage'])
 			{
 				$codecept
-					->coverageXml('coverage.' . $suite . '.xml')
-					->coverageHtml('coverage');
+					->coverage('coverage.' . $suite . '.php');
 			}
 
 			$codecept->option('verbose')->run();
@@ -408,7 +449,7 @@ class RoboFile extends \Robo\Tasks
 		'coverage' => false
 	])
 	{
-		$this->test('acceptance', $option);
+		$this->runTest('acceptance', $option);
 	}
 
 	/**
@@ -576,5 +617,28 @@ class RoboFile extends \Robo\Tasks
 		}
 
 		return $maxDate;
+	}
+
+	/**
+	 * @param $old
+	 * @param $new
+	 * @param $file
+	 */
+	private function remap($old, $new, $file)
+	{
+		$search  = preg_quote("'$old/", '~');
+		$replace = preg_quote("'$new/", '~');
+		$cmd     = "sed --in-place s~{$search}~{$replace}~ {$file}";
+		`$cmd`;
+	}
+
+	/**
+	 * @param $coverage
+	 * @param $cc
+	 */
+	private function mergeCoverage($coverage, $cc)
+	{
+		$coverage->filter()->addFilesToWhitelist($cc->filter()->getWhitelistedFiles());
+		$coverage->merge($cc);
 	}
 }

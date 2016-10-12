@@ -56,21 +56,31 @@ if (extension_loaded('xdebug'))
 		putenv('PHPUNIT_COVERAGE_WHITELIST=' . getcwd());
 	}
 
-	$whitelist = preg_split('~\s*,\s*~', getenv('PHPUNIT_COVERAGE_WHITELIST'));
-	$driver = new \SebastianBergmann\CodeCoverage\Driver\Xdebug;
-	$filter = new \SebastianBergmann\CodeCoverage\Filter;
-	foreach ($whitelist as $file)
+	if (!getenv('PHPUNIT_TEST_ID'))
 	{
-		if (is_dir($file))
-		{
-			$filter->addDirectoryToWhitelist($file);
-		}
-		else
-		{
-			$filter->addFileToWhitelist($file);
-		}
+		putenv('PHPUNIT_TEST_ID=cli');
 	}
 
-	$GLOBALS['PHPUNIT_COVERAGE_COLLECTOR'] = new \SebastianBergmann\CodeCoverage\CodeCoverage($driver, $filter);
-	$GLOBALS['PHPUNIT_COVERAGE_COLLECTOR']->start('cli');
+	$GLOBALS['PHPUNIT_COVERAGE_COLLECTOR'] = (function() {
+		$driver = new \SebastianBergmann\CodeCoverage\Driver\Xdebug;
+		$filter = new \SebastianBergmann\CodeCoverage\Filter;
+
+		foreach (preg_split('~\s*,\s*~', getenv('PHPUNIT_COVERAGE_WHITELIST')) as $file)
+		{
+			if (is_dir($file))
+			{
+				$filter->addDirectoryToWhitelist($file);
+			}
+			else
+			{
+				$filter->addFileToWhitelist($file);
+			}
+		}
+
+		$codeCoverage = new \SebastianBergmann\CodeCoverage\CodeCoverage($driver, $filter);
+		$codeCoverage->setAddUncoveredFilesFromWhitelist(true);
+		$codeCoverage->start(getenv('PHPUNIT_TEST_ID'));
+
+		return $codeCoverage;
+	})();
 }

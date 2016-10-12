@@ -12,13 +12,12 @@ cp tests/cli/codeception.yml .
 
 echo "Running tests ..."
 
-./libraries/vendor/bin/codecept run --coverage=coverage.serialized cli
+./libraries/vendor/bin/codecept run --coverage=coverage.cli.php cli
 return_code=$?
 
 echo "Collecting results ..."
 
 php phpunit_coverage.php
-chmod -R 0777 build/reports/coverage-cli
 
 rm prepend.php
 rm append.php

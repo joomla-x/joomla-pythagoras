@@ -16,6 +16,7 @@ class CliTestCase extends \PHPUnit_Framework_TestCase
 
 	protected function runInShell($command, $bail = true)
 	{
+		putenv('PHPUNIT_TEST_ID=' . xdebug_call_class() . '::' . xdebug_call_function());
 		$proc = proc_open(
 			'php -c build/config/php_coverage.ini ' . $command,
 			[

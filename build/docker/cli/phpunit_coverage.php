@@ -43,8 +43,7 @@
  */
 
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
-use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
+use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 
 require_once 'libraries/vendor/autoload.php';
 
@@ -67,10 +66,6 @@ foreach (glob($files) as $file)
 	$coverage->merge($cc);
 }
 
-echo "Writing Clover report ...\n";
-$writer = new CloverReport();
-$writer->process($coverage, getenv('PHPUNIT_COVERAGE_DATA_DIRECTORY') . '/reports/coverage.cli.xml');
-
-echo "Writing HTML report ...\n";
-$writer = new HtmlReport(35,70);
-$writer->process($coverage, getenv('PHPUNIT_COVERAGE_DATA_DIRECTORY') . '/reports/coverage-cli');
+echo "Writing PHP report ...\n";
+$writer = new PhpReport;
+$writer->process($coverage, getenv('PHPUNIT_COVERAGE_DATA_DIRECTORY') . '/reports/coverage.cli.php');
