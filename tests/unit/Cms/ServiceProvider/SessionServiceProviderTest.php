@@ -11,8 +11,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * @testdox The SessionServiceProvider implements the
-	 * ServiceProviderInterface interface
+	 * @testdox The SessionServiceProvider implements the ServiceProviderInterface interface
 	 */
 	public function testTheTestSessionServiceProviderImplementsTheServiceProviderInterface()
 	{
@@ -20,8 +19,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The SessionServiceProvider adds a SessionInterface to a
-	 * container
+	 * @testdox The SessionServiceProvider adds a SessionInterface to a container
 	 */
 	public function testSessionServiceProviderCreatesSessionInterface()
 	{
@@ -40,8 +38,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The SessionServiceProvider adds an SessionInterface to a
-	 * container with an alias
+	 * @testdox The SessionServiceProvider adds an SessionInterface to a container with an alias
 	 */
 	public function testSessionServiceProviderCreatesDispatcherWithAlias()
 	{

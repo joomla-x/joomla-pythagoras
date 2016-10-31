@@ -11,8 +11,7 @@ use Joomla\Extension\ExtensionFactoryInterface;
 class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @testdox The EventDispatcherServiceProvider implements the
-	 * ServiceProviderInterface interface
+	 * @testdox The EventDispatcherServiceProvider implements the ServiceProviderInterface interface
 	 */
 	public function testTheTestEventDispatcherServiceProviderImplementsTheServiceProviderInterface()
 	{
@@ -20,8 +19,7 @@ class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The EventDispatcherServiceProvider adds an EventDispatcher to a
-	 * container
+	 * @testdox The EventDispatcherServiceProvider adds an EventDispatcher to a container
 	 */
 	public function testEventDispatcherServiceProviderCreatesDispatcher()
 	{
@@ -35,8 +33,7 @@ class EventDispatcherServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The EventDispatcherServiceProvider adds an EventDispatcher to a
-	 * container with an alias
+	 * @testdox The EventDispatcherServiceProvider adds an EventDispatcher to a container with an alias
 	 */
 	public function testEventDispatcherServiceProviderCreatesDispatcherWithAlias()
 	{

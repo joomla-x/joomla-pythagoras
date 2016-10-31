@@ -10,8 +10,7 @@ use Joomla\Extension\ExtensionFactoryInterface;
 class ExtensionFactoryServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @testdox The ExtensionFactoryServiceProvider implements the
-	 * ServiceProviderInterface interface
+	 * @testdox The ExtensionFactoryServiceProvider implements the ServiceProviderInterface interface
 	 */
 	public function testTheTestExtensionFactoryServiceProviderImplementsTheServiceProviderInterface()
 	{
@@ -19,8 +18,7 @@ class ExtensionFactoryServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The ExtensionFactoryServiceProvider adds an ExtensionFactory to a
-	 * container
+	 * @testdox The ExtensionFactoryServiceProvider adds an ExtensionFactory to a container
 	 */
 	public function testExtensionFactoryServiceProviderCreatesExtensionFactory()
 	{
@@ -34,8 +32,7 @@ class ExtensionFactoryServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The ExtensionFactoryServiceProvider adds an ExtensionFactory to a
-	 * container with an alias
+	 * @testdox The ExtensionFactoryServiceProvider adds an ExtensionFactory to a container with an alias
 	 */
 	public function testExtensionFactoryServiceProviderCreatesExtensionFactoryWithAlias()
 	{

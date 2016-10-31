@@ -15,8 +15,7 @@ use Joomla\Tests\Unit\Service\Stubs\SimpleQuery;
 class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @testdox The CommandBusServiceProvider implements the
-	 * ServiceProviderInterface interface
+	 * @testdox The CommandBusServiceProvider implements the ServiceProviderInterface interface
 	 */
 	public function testTheTestCommandBusServiceProviderImplementsTheServiceProviderInterface()
 	{
@@ -24,8 +23,7 @@ class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The CommandBusServiceProvider adds an CommandBus to a
-	 * container
+	 * @testdox The CommandBusServiceProvider adds an CommandBus to a container
 	 */
 	public function testCommandBusServiceProviderCreatesCommandBus()
 	{
@@ -39,8 +37,7 @@ class CommandBusServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The CommandBusServiceProvider adds an CommandBus to a
-	 * container with an alias
+	 * @testdox The CommandBusServiceProvider adds an CommandBus to a container with an alias
 	 */
 	public function testCommandBusServiceProviderCreatesCommandBusWithAlias()
 	{
