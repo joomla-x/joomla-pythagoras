@@ -51,9 +51,6 @@ Show
 tactician ( or something else as we decide to use librairis )
 ????
 
-## Event System
-To showcase the new plugin system, a simple upper case plugin will be implemented which transforms the content of the renderer into upper case. The plugin is triggered on an event.
-
 #NOTE
 
 Term like ORM are the best aproximation of inteded functionality, in this example ORM does not mean a full fledged ORM as we might know it.
