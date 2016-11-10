@@ -9,7 +9,7 @@
  * @codingStandardsIgnoreStart
  */
 
-$class = $content->params->class ?? '';
+$class = isset($content->params->class) ? $content->params->class : '';
 ?>
 <div class="panel-group <?php echo $class; ?>" id="<?php echo $content->id; ?>">
 	<?php foreach ($content->elements as $i => $element) : ?>

@@ -45,7 +45,7 @@ $subTree = function($node, $callback, $level = 0) {
 	}
 };
 
-$class = $content->params->class ?? '';
+$class = isset($content->params->class) ? $content->params->class : '';
 ?>
 <div<?php echo $class ? " class=\"$class\"" : ''; ?>>
 	<ul class="nav nav-list tree">
