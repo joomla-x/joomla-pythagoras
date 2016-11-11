@@ -12,7 +12,7 @@
 ?>
 <div class="container">
 	<?php foreach ($content->elements as $i => $element) : ?>
-		<?php $class = $element->params->class ?? ''; ?>
+		<?php $class = isset($element->params->class) ? $element->params->class : ''; ?>
 		<div class="clearfix <?php echo $class; ?>">
 			<?php echo $element->html; ?>
 		</div>
