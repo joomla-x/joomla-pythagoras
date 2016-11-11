@@ -12,7 +12,7 @@
 ?>
 <div class="row container-fluid">
 	<?php foreach ($content->elements as $i => $element) : ?>
-		<div<?php echo isset($element->params->class) ? " class=\"{$element->params->class}\"" : ''; ?>>
+		<div<?php echo isset($content->params->grid[$i]) ? " class=\"col-md-{$content->params->grid[$i]}\"" : ''; ?>>
 			<?php echo $element->html; ?>
 		</div>
 	<?php endforeach; ?>
