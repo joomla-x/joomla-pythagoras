@@ -26,6 +26,7 @@ use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\PageBuilder\Entity\Layout;
 use Joomla\PageBuilder\Entity\Page;
 use Joomla\Renderer\Exception\NotFoundException;
 use Joomla\Tests\Unit\DumpTrait;
@@ -415,6 +416,12 @@ class HtmlRenderer extends Renderer
 
 		while ($url[0] != '/' && !empty($page->parent))
 		{
+			// @todo refactor
+			if ($page->parent instanceof Layout)
+			{
+				break;
+			}
+
 			$page = $page->parent;
 			$url  = $page->url . '/' . $url;
 		}
