@@ -121,7 +121,7 @@ class HtmlRenderer extends Renderer
 	 */
 	private function applyLayout($filename, $content)
 	{
-		$layout = JPATH_ROOT . $this->template . '/' . $filename;
+		$layout = JPATH_ROOT . '/' . $this->template . '/overrides/' . $filename;
 
 		if (!file_exists($layout))
 		{
