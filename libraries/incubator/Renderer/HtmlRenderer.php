@@ -310,17 +310,9 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitColumns(Columns $columns)
 	{
-		$len = 0;
-		$len += $this->write("<{$columns->type}>\n");
+		$this->preRenderChildElements($columns);
 
-		foreach ($columns->elements as $item)
-		{
-			$len += $item->content->accept($this);
-		}
-
-		$len += $this->write("</{$columns->type}>\n");
-
-		return $len;
+		return $this->applyLayout('columns.php', $columns);
 	}
 
 	/**
