@@ -6,3 +6,4 @@ id,title,url,parent_id,layout_id
 5,"FAQ","faq",3,3
 6,"Blog","blog",3,3
 7,":title",":alias",6,3
+8,"Shop","shop",3,3
