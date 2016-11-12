@@ -36,20 +36,32 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 35,logo-jd16de,Joomla\Content\Type\Image,,2,Image,,"{""id"":6}",{"class":"pull-right"},25,3,0
 36,state,Joomla\Extension\Workflow\ContentType\WorkflowState,,1,Article,,"{""id"":5}",,34,0,4
 37,duwbdub,Joomla\Content\Type\Columns,{"type":"who-cares"},1,,,,"{""grid"": [8,4]}",34,0,8
-38,about,Joomla\Content\Type\Article,,1,Article,,{"id":5},"{""levels"":2,""class"":""navbar  navbar-default navbar-fixed-top""}",37,0,8
+38,about,Joomla\Content\Type\Article,,1,Article,,{"id":5},"{""levels"":2,""class"":""navbar navbar-default navbar-fixed-top""}",37,0,8
 39,about2,Joomla\Content\Type\Article,,2,Article,,{"id":2},,37,0,8
-40,jx-nav,Joomla\Content\Type\defaultMenu,,1,Page,,{"id":9},"{""levels"":2,""id"": ""mainNav"", ""class"":""navbar navbar-default navbar-fixed-top affix-top""}",0,4,0
+40,jx-nav,Joomla\Content\Type\defaultMenu,,1,Page,,{"id":9},"{""levels"":2,""id"": ""mainNav"", ""class"":""navbar navbar-default navbar-fixed-top""}",0,4,0
 41,jx-header,Joomla\Content\Type\Compound,{"type": "header"},2,,,,,0,4,0
 42,jx-header-container,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "container"},41,0,9
 43,jx-header-content,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "header-content"},45,0,9
 44,jx-header-content-header,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "header-content-inner"},43,0,9
-45,js-header-content-cols,Joomla\Content\Type\Columns,,1,,,,"{""grid"": [7,5]}",42,0,9
-46,js-header-headline,Joomla\Content\Type\Headline,{"text":"Design for change!"},1,,,,,44,0,9
-47,js-header-sub-headline,Joomla\Content\Type\Headline,"{""text"": ""Pagebulider stronger Security and whole new approach für System Integrators inside."", ""level"": 3}",2,,,,,44,0,9
-48,js-header-call-to-action,Joomla\Content\Type\Link,"{""href"": ""#download"", ""text"": ""See the future of Joomla on Github""}",3,,,,{"class": "btn btn-outline btn-xl page-scroll"},44,0,9
+45,jx-header-content-cols,Joomla\Content\Type\Columns,,1,,,,"{""grid"": [7,5]}",42,0,9
+46,jx-header-headline,Joomla\Content\Type\Headline,{"text":"Design for change!"},1,,,,,44,0,9
+47,jx-header-sub-headline,Joomla\Content\Type\Headline,"{""text"": ""Pagebulider stronger Security and whole new approach für System Integrators inside."", ""level"": 3}",2,,,,,44,0,9
+48,js-header-call-to-action,Joomla\Content\Type\Link,"{""href"": ""https://github.com/joomla-projects/joomla-pythagoras"", ""text"": ""See the future of Joomla on Github""}",3,,,,{"class": "btn btn-outline btn-xl page-scroll"},44,0,9
 49,jx-header-device-container,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "device-container"},45,0,9
 50,jx-header-device-mockup,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "device-mockup iphone6_plus portrait white"},49,0,9
 51,jx-header-device,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "device"},50,0,9
 52,jx-header-device-screen,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "screen"},51,0,9
 53,jx-header-device-image,Joomla\Content\Type\Image,,2,Image,,{"id":7},,52,0,9
 54,jx-section-discover,Joomla\Content\Type\Compound,{"type": "section"},3,,,,"{""id"": ""discover"", ""class"": ""download bg-primary text-center""}",0,0,9
+55,jx-section-discover-container,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "container"},54,0,9
+56,jx-section-discover-row,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "row"},55,0,9
+57,jx-section-discover-column,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "col-md-8 col-md-offset-2"},55,0,9
+58,jx-section-discover-headline,Joomla\Content\Type\Headline,"{""text"":""Discover what all the buzz is about!"", ""level"": 2}",1,,,,{"class": "section-heading"},57,0,9
+59,jx-section-discover-paragraph,Joomla\Content\Type\Paragraph,{"text":"Ask me for Team up in the Joomla! X Team and see what you can do for the Future for of Joomla!"},2,,,,,57,0,9
+60,jx-section-discover-people-row,Joomla\Content\Type\Compound,"{""type"": ""div""}",3,,,,{"class": "row"},57,0,9
+61,jx-section-discover-people-nils,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "col-xs-6"},60,0,9
+62,jx-section-discover-people-nils-headline,Joomla\Content\Type\Headline,"{""text"":""Nils Braczek"", ""level"": 4}",2,,,,,61,0,9
+63,jx-header-discover-people-nils-image,Joomla\Content\Type\Image,,1,Image,,{"id":8},,61,0,9
+64,jx-section-discover-people-marco,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "col-xs-6"},60,0,9
+65,jx-section-discover-people-marco-headline,Joomla\Content\Type\Headline,"{""text"":""Marco Dings"", ""level"": 4}",2,,,,,64,0,9
+66,jx-header-discover-people-marco-image,Joomla\Content\Type\Image,,1,Image,,{"id":9},,64,0,9

@@ -9,4 +9,4 @@
  * @codingStandardsIgnoreStart
  */
 ?>
-<h<?php echo $content->level; ?>><?php echo $content->text; ?></h<?php echo $content->level; ?>>
+<h<?php echo $content->level; ?><?php echo (isset($content->params->class)) ? " class='{$content->params->class}'" : ""; ?>><?php echo $content->text; ?></h<?php echo $content->level; ?>>
