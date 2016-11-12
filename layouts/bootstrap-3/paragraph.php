@@ -10,7 +10,11 @@
  */
 ?>
 <?php if ($content->variant == Joomla\Content\Type\Paragraph::EMPHASISED) : ?>
-	<p><em><?php echo $content->text; ?></em></p>
+	<p<?php echo (isset($content->params->class)) ? " class='{$content->params->class}'" : ""; ?>>
+		<em><?php echo $content->text; ?></em>
+	</p>
 <?php else : ?>
-	<p><?php echo $content->text; ?></p>
+	<p<?php echo (isset($content->params->class)) ? " class='{$content->params->class}'" : ""; ?>>
+		<?php echo $content->text; ?>
+	</p>
 <?php endif; ?>

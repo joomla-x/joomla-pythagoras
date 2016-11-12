@@ -65,3 +65,10 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 64,jx-section-discover-people-marco,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "col-xs-6"},60,0,9
 65,jx-section-discover-people-marco-headline,Joomla\Content\Type\Headline,"{""text"":""Marco Dings"", ""level"": 4}",2,,,,,64,0,9
 66,jx-header-discover-people-marco-image,Joomla\Content\Type\Image,,1,Image,,{"id":9},,64,0,9
+67,jx-section-features,Joomla\Content\Type\Compound,{"type": "section"},3,,,,"{""id"": ""features"", ""class"": ""features""}",0,0,9
+68,jx-section-features-container,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "container"},67,0,9
+69,jx-section-features-row,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "row"},68,0,9
+70,jx-section-features-column,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "col-lg-12 text-center"},69,0,9
+71,jx-section-features-section-header,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "section-header"},70,0,9
+72,jx-section-features-headline,Joomla\Content\Type\Headline,"{""text"":""Unlimited Features, Unlimited Solutions"", ""level"": 2}",1,,,,,71,0,9
+73,jx-section-features-paragraph,Joomla\Content\Type\Paragraph,{"text":"Check out how X can help setup a new level in website building and development!"},2,,,,{"class": "text-muted"},71,0,9
