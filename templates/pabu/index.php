@@ -30,8 +30,7 @@
 
 		<!-- Theme CSS -->
 		<link href="/templates/pabu/css/pabu.min.css" rel="stylesheet">
-	</head>
-	<body id="page-top">
+
 		<!-- jQuery -->
 		<script src="/templates/pabu/vendor/jquery/jquery.min.js"></script>
 
@@ -43,5 +42,6 @@
 
 		<!-- Theme JavaScript -->
 		<script src="/templates/pabu/js/new-age.min.js"></script>
-	</body>
+	</head>
+	<body id="page-top"></body>
 </html>
