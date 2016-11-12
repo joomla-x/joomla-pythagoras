@@ -24,9 +24,9 @@
 		<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
 
 		<!-- Plugin CSS -->
-		<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
-		<link rel="stylesheet" href="vendor/device-mockups/device-mockups.min.css">
+		<link rel="stylesheet" href="/templates/pabu/vendor/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/templates/pabu/vendor/simple-line-icons/css/simple-line-icons.css">
+		<link rel="stylesheet" href="/templates/pabu/vendor/device-mockups/device-mockups.min.css">
 
 		<!-- Theme CSS -->
 		<link href="/templates/pabu/css/pabu.min.css" rel="stylesheet">
