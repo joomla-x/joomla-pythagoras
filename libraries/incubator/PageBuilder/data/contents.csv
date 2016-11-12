@@ -52,4 +52,4 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 51,jx-header-device,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "device"},50,0,9
 52,jx-header-device-screen,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "screen"},51,0,9
 53,jx-header-device-image,Joomla\Content\Type\Image,,2,Image,,{"id":7},,52,0,9
-54,jx-section-discover,Joomla\Content\Type\Compound,{"type": "section"},3,,,,{"class": "download bg-primary text-center"},0,0,9
+54,jx-section-discover,Joomla\Content\Type\Compound,{"type": "section"},3,,,,"{""id"": ""discover"", ""class"": ""download bg-primary text-center""}",0,0,9
