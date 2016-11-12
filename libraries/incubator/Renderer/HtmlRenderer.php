@@ -181,7 +181,13 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitCompound(Compound $compound)
 	{
+		$id = isset($compound->params->id) ? $compound->params->id : '';
 		$class = isset($compound->params->class) ? $compound->params->class : '';
+
+		if (!empty($class))
+		{
+			$id = " id=\"$id\"";
+		}
 
 		if (!empty($class))
 		{
@@ -189,7 +195,7 @@ class HtmlRenderer extends Renderer
 		}
 
 		$len = 0;
-		$len += $this->write("<{$compound->type}{$class}>\n");
+		$len += $this->write("<{$compound->type}{$id}{$class}>\n");
 
 		foreach ($compound->elements as $item)
 		{
