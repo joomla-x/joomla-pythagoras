@@ -10,7 +10,7 @@
  */
 ?>
 <a href="<?php echo $content->href; ?>"
-	<?php echo (isset($content->params->class)) ? "class={$content->params->class}" : ""; ?>>
+	<?php echo (isset($content->params->class)) ? "class='{$content->params->class}'" : ""; ?>>
 	<?php echo $content->text; ?>
 </a>
 

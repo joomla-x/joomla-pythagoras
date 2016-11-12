@@ -23,11 +23,12 @@ class Link extends AbstractContentType
 	/**
 	 * @var string
 	 */
-	private $href;
+	public $href;
+
 	/**
-	 * @var
+	 * @var string
 	 */
-	private $text;
+	public $text;
 
 	/**
 	 * Link constructor.
