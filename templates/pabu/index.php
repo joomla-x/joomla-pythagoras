@@ -31,5 +31,17 @@
 		<!-- Theme CSS -->
 		<link href="/templates/pabu/css/pabu.min.css" rel="stylesheet">
 	</head>
-	<body id="page-top"></body>
+	<body id="page-top">
+		<!-- jQuery -->
+		<script src="/templates/pabu/vendor/jquery/jquery.min.js"></script>
+
+		<!-- Bootstrap Core JavaScript -->
+		<script src="/templates/pabu/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- Plugin JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+		<!-- Theme JavaScript -->
+		<script src="/templates/pabu/js/new-age.min.js"></script>
+	</body>
 </html>
