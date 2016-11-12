@@ -18,6 +18,7 @@ use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Image;
+use Joomla\Content\Type\Link;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
@@ -210,6 +211,18 @@ class HtmlRenderer extends Renderer
 	public function visitImage(Image $image)
 	{
 		return $this->applyLayout('image.php', $image);
+	}
+
+	/**
+	 * Render a link
+	 *
+	 * @param Link $link
+	 *
+	 * @return int Number of bytes written to the output
+	 */
+	public function visitLink(Link $link)
+	{
+		return $this->applyLayout('link.php', $link);
 	}
 
 	/**
