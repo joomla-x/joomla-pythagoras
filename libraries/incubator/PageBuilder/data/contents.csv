@@ -47,3 +47,8 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 46,js-header-headline,Joomla\Content\Type\Headline,{"text":"Design for change!"},1,,,,,44,0,9
 47,js-header-sub-headline,Joomla\Content\Type\Headline,"{""text"": ""Pagebulider stronger Security and whole new approach für System Integrators inside."", ""level"": 3}",2,,,,,44,0,9
 48,js-header-call-to-action,Joomla\Content\Type\Link,"{""href"": ""#download"", ""text"": ""See the future of Joomla on Github""}",3,,,,{"class": "btn btn-outline btn-xl page-scroll"},44,0,9
+49,jx-header-device-container,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "device-container"},45,0,9
+50,jx-header-device-mockup,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "device-mockup iphone6_plus portrait white"},49,0,9
+51,jx-header-device,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "device"},50,0,9
+52,jx-header-device-screen,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "screen"},51,0,9
+53,jx-header-device-image,Joomla\Content\Type\Image,,2,Image,,{"id":7},,52,0,9
