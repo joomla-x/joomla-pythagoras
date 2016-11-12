@@ -46,3 +46,4 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 45,js-header-content-cols,Joomla\Content\Type\Columns,,1,,,,"{""grid"": [7,5]}",42,0,9
 46,js-header-headline,Joomla\Content\Type\Headline,{"text":"Design for change!"},1,,,,,44,0,9
 47,js-header-sub-headline,Joomla\Content\Type\Headline,"{""text"": ""Pagebulider stronger Security and whole new approach für System Integrators inside."", ""level"": 3}",2,,,,,44,0,9
+48,js-header-call-to-action,Joomla\Content\Type\Link,"{""href"": ""#download"", ""text"": ""See the future of Joomla on Github""}",3,,,,{"class": "btn btn-outline btn-xl page-scroll"},44,0,9
