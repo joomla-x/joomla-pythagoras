@@ -36,5 +36,13 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 35,logo-jd16de,Joomla\Content\Type\Image,,2,Image,,"{""id"":6}",{"class":"pull-right"},25,3,0
 36,state,Joomla\Extension\Workflow\ContentType\WorkflowState,,1,Article,,"{""id"":5}",,34,0,4
 37,duwbdub,Joomla\Content\Type\Columns,{"type":"who-cares"},1,,,,"{""grid"": [8,4]}",34,0,8
-38,about,Joomla\Content\Type\Article,,1,Article,,{"id":5},,37,0,8
+38,about,Joomla\Content\Type\Article,,1,Article,,{"id":5},"{""levels"":2,""class"":""navbar  navbar-default navbar-fixed-top affix-top""}",37,0,8
 39,about2,Joomla\Content\Type\Article,,2,Article,,{"id":2},,37,0,8
+40,jx-nav,Joomla\Content\Type\defaultMenu,,1,Page,,{"id":9},"{""levels"":2,""id"": ""mainNav"", ""class"":""navbar navbar-default navbar-fixed-top affix-top""}",0,4,0
+41,jx-header,Joomla\Content\Type\Compound,{"type": "header"},2,,,,,0,4,0
+42,jx-header-container,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "container"},41,0,9
+43,jx-header-content,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "header-content"},45,0,9
+44,jx-header-content-header,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "header-content-inner"},43,0,9
+45,js-header-content-cols,Joomla\Content\Type\Columns,,1,,,,"{""grid"": [7,5]}",42,0,9
+46,js-header-headline,Joomla\Content\Type\Headline,{"text":"Design for change!"},1,,,,,44,0,9
+47,js-header-sub-headline,Joomla\Content\Type\Headline,"{""text"": ""Pagebulider stronger Security and whole new approach für System Integrators inside."", ""level"": 3}",2,,,,,44,0,9
