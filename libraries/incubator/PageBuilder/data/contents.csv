@@ -36,7 +36,7 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 35,logo-jd16de,Joomla\Content\Type\Image,,2,Image,,"{""id"":6}",{"class":"pull-right"},25,3,0
 36,state,Joomla\Extension\Workflow\ContentType\WorkflowState,,1,Article,,"{""id"":5}",,34,0,4
 37,duwbdub,Joomla\Content\Type\Columns,{"type":"who-cares"},1,,,,"{""grid"": [8,4]}",34,0,8
-38,about,Joomla\Content\Type\Article,,1,Article,,{"id":5},"{""levels"":2,""class"":""navbar  navbar-default navbar-fixed-top affix-top""}",37,0,8
+38,about,Joomla\Content\Type\Article,,1,Article,,{"id":5},"{""levels"":2,""class"":""navbar  navbar-default navbar-fixed-top""}",37,0,8
 39,about2,Joomla\Content\Type\Article,,2,Article,,{"id":2},,37,0,8
 40,jx-nav,Joomla\Content\Type\defaultMenu,,1,Page,,{"id":9},"{""levels"":2,""id"": ""mainNav"", ""class"":""navbar navbar-default navbar-fixed-top affix-top""}",0,4,0
 41,jx-header,Joomla\Content\Type\Compound,{"type": "header"},2,,,,,0,4,0
@@ -52,3 +52,4 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 51,jx-header-device,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "device"},50,0,9
 52,jx-header-device-screen,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "screen"},51,0,9
 53,jx-header-device-image,Joomla\Content\Type\Image,,2,Image,,{"id":7},,52,0,9
+54,jx-section-discover,Joomla\Content\Type\Compound,{"type": "section"},3,,,,{"class": "download bg-primary text-center"},0,0,9
