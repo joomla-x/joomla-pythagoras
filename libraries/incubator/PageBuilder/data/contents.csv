@@ -76,4 +76,45 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 75,jx-section-features-row-2,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "row"},68,0,9
 76,jx-section-features-feature-1,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "col-xs-6"},75,0,9
 77,jx-section-features-feature-1-feature-item,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "feature-item"},76,0,9
-78,jx-section-features-feature-1-feature-icon,Joomla\Content\Type\Icon,"{""name"": ""icon-lock-open text-primary""}",1,,,,,77,0,9
+78,jx-section-features-feature-1-feature-icon,Joomla\Content\Type\Icon,"{""name"": ""icon-screen-smartphone text-primary""}",1,,,,,77,0,9
+79,jx-section-features-feature-1-feature-headline,Joomla\Content\Type\Headline,"{""text"": ""Pagebuilder"", ""level"": 3}",2,,,,,77,0,9
+80,jx-section-features-feature-1-feature-text,Joomla\Content\Type\Paragraph,"{""text"": ""Ready to use HTML/CSS device mockups, no Photoshop required!""}",3,,,,{"class": "text-muted"},77,0,9
+81,jx-section-features-feature-2,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "col-xs-6"},75,0,9
+82,jx-section-features-feature-2-feature-item,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "feature-item"},81,0,9
+83,jx-section-features-feature-2-feature-icon,Joomla\Content\Type\Icon,{"name": "icon-camera text-primary"},1,,,,,82,0,9
+84,jx-section-features-feature-2-feature-headline,Joomla\Content\Type\Headline,"{""text"": ""Framework agnostic"", ""level"": 3}",2,,,,,82,0,9
+85,jx-section-features-feature-2-feature-text,Joomla\Content\Type\Paragraph,"{""text"": ""Put an image, video, animation, or anything else in the screen!""}",3,,,,{"class": "text-muted"},82,0,9
+86,jx-section-features-feature-3,Joomla\Content\Type\Compound,"{""type"": ""div""}",3,,,,{"class": "col-xs-6"},106,0,9
+87,jx-section-features-feature-3-feature-item,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "feature-item"},86,0,9
+88,jx-section-features-feature-3-feature-icon,Joomla\Content\Type\Icon,{"name": "icon-present text-primary"},1,,,,,87,0,9
+89,jx-section-features-feature-3-feature-headline,Joomla\Content\Type\Headline,"{""text"": ""Stronger Security"", ""level"": 3}",2,,,,,87,0,9
+90,jx-section-features-feature-3-feature-text,Joomla\Content\Type\Paragraph,"{""text"": ""As always, this theme is free to download and use for any purpose!""}",3,,,,{"class": "text-muted"},87,0,9
+91,jx-section-features-feature-4,Joomla\Content\Type\Compound,"{""type"": ""div""}",4,,,,{"class": "col-xs-6"},106,0,9
+92,jx-section-features-feature-4-feature-item,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "feature-item"},91,0,9
+93,jx-section-features-feature-4-feature-icon,Joomla\Content\Type\Icon,"{""name"": ""icon-lock-open text-primary""}",1,,,,,92,0,9
+94,jx-section-features-feature-4-feature-headline,Joomla\Content\Type\Headline,"{""text"": ""State of the art"", ""level"": 3}",2,,,,,92,0,9
+95,jx-section-features-feature-4-feature-text,Joomla\Content\Type\Paragraph,{"text": "Architecture"},3,,,,{"class": "text-muted"},92,0,9
+96,jx-section-features-feature-5,Joomla\Content\Type\Compound,"{""type"": ""div""}",5,,,,{"class": "col-xs-6"},107,0,9
+97,jx-section-features-feature-5-feature-item,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "feature-item"},96,0,9
+98,jx-section-features-feature-5-feature-icon,Joomla\Content\Type\Icon,"{""name"": ""icon-lock-open text-primary""}",1,,,,,97,0,9
+99,jx-section-features-feature-5-feature-headline,Joomla\Content\Type\Headline,"{""text"": ""Future proof extensions"", ""level"": 3}",2,,,,,97,0,9
+100,jx-section-features-feature-5-feature-text,Joomla\Content\Type\Paragraph,{"text": "Don`t repeat yourself."},3,,,,{"class": "text-muted"},97,0,9
+101,jx-section-features-feature-6,Joomla\Content\Type\Compound,"{""type"": ""div""}",6,,,,{"class": "col-xs-6"},107,0,9
+102,jx-section-features-feature-6-feature-item,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "feature-item"},101,0,9
+103,jx-section-features-feature-6-feature-icon,Joomla\Content\Type\Icon,"{""name"": ""icon-lock-open text-primary""}",1,,,,,102,0,9
+104,jx-section-features-feature-6-feature-headline,Joomla\Content\Type\Headline,"{""text"": ""One Joomla, more possiblities"", ""level"": 3}",2,,,,,102,0,9
+105,jx-section-features-feature-6-feature-text,Joomla\Content\Type\Paragraph,"{""text"": ""Source and Output independent""}",3,,,,{"class": "text-muted"},102,0,9
+106,jx-section-features-row-3,Joomla\Content\Type\Compound,"{""type"": ""div""}",3,,,,{"class": "row"},68,0,9
+107,jx-section-features-row-4,Joomla\Content\Type\Compound,"{""type"": ""div""}",4,,,,{"class": "row"},68,0,9
+108,jx-section-cta,Joomla\Content\Type\Compound,{"type": "section"},4,,,,"{""id"": ""contribute"",""class"": ""cta""}",0,0,9
+109,jx-section-cta-content,Joomla\Content\Type\Compound,{"type": "div"},4,,,,{"class": "cta-content"},108,0,9
+110,jx-section-cta-container,Joomla\Content\Type\Compound,{"type": "div"},4,,,,{"class": "container"},109,0,9
+111,jx-section-cta-headline-1,Joomla\Content\Type\Headline,"{""text"": ""Stop waiting."", ""level"": 2}",1,,,,,110,0,9
+112,jx-section-cta-headline-2,Joomla\Content\Type\Headline,"{""text"": ""Start participating."", ""level"": 2}",2,,,,,110,0,9
+113,js-section-cta-call-to-action,Joomla\Content\Type\Link,"{""href"": ""https://github.com/joomla-projects/joomla-pythagoras"", ""text"": ""Ask us to get involved!""}",3,,,,{"class": "btn btn-outline btn-xl page-scroll"},110,0,9
+114,jx-section-contact,Joomla\Content\Type\Compound,{"type": "section"},5,,,,"{""id"": ""contact"",""class"": ""contact bg-primary""}",0,0,9
+115,jx-section-contact-container,Joomla\Content\Type\Compound,{"type": "div"},1,,,,{"class": "container"},114,0,9
+116,jx-section-contact-headline,Joomla\Content\Type\Headline,"{""text"": ""We love Joomla!"", ""level"": 2}",1,,,,,115,0,9
+117,jx-footer,Joomla\Content\Type\Compound,{"type": "footer"},6,,,,,0,0,9
+118,jx-footer-container,Joomla\Content\Type\Compound,{"type": "div"},1,,,,{"class": "container"},117,0,9
+119,jx-footer-paragraph,Joomla\Content\Type\Paragraph,{"text": "© 2016 Joomla! X. All Rights Reserved."},1,,,,,118,0,9
