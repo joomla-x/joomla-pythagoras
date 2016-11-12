@@ -17,7 +17,10 @@ use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\HorizontalLine;
+use Joomla\Content\Type\Icon;
 use Joomla\Content\Type\Image;
+use Joomla\Content\Type\Link;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
@@ -26,6 +29,7 @@ use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Repository\RepositoryInterface;
+use Joomla\PageBuilder\Entity\Layout;
 use Joomla\PageBuilder\Entity\Page;
 use Joomla\Renderer\Exception\NotFoundException;
 use Joomla\Tests\Unit\DumpTrait;
@@ -120,7 +124,7 @@ class HtmlRenderer extends Renderer
 	 */
 	private function applyLayout($filename, $content)
 	{
-		$layout = JPATH_ROOT . $this->template . '/' . $filename;
+		$layout = JPATH_ROOT . '/' . $this->template . '/overrides/' . $filename;
 
 		if (!file_exists($layout))
 		{
@@ -144,6 +148,18 @@ class HtmlRenderer extends Renderer
 	public function visitHeadline(Headline $headline)
 	{
 		return $this->applyLayout('headline.php', $headline);
+	}
+
+	/**
+	 * Render a horizontal line.
+	 *
+	 * @param   HorizontalLine $headline The horizontal line
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitHorizontalLine(HorizontalLine $headline)
+	{
+		return $this->write("<hr>\n");;
 	}
 
 	/**
@@ -179,7 +195,13 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitCompound(Compound $compound)
 	{
+		$id = isset($compound->params->id) ? $compound->params->id : '';
 		$class = isset($compound->params->class) ? $compound->params->class : '';
+
+		if (!empty($class))
+		{
+			$id = " id=\"$id\"";
+		}
 
 		if (!empty($class))
 		{
@@ -187,7 +209,7 @@ class HtmlRenderer extends Renderer
 		}
 
 		$len = 0;
-		$len += $this->write("<{$compound->type}{$class}>\n");
+		$len += $this->write("<{$compound->type}{$id}{$class}>\n");
 
 		foreach ($compound->elements as $item)
 		{
@@ -200,6 +222,18 @@ class HtmlRenderer extends Renderer
 	}
 
 	/**
+	 * Render an icon
+	 *
+	 * @param   Icon $icon The icon
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitIcon(Icon $icon)
+	{
+		return $this->applyLayout('icon.php', $icon);
+	}
+
+	/**
 	 * Render an image
 	 *
 	 * @param   Image $image The image
@@ -209,6 +243,18 @@ class HtmlRenderer extends Renderer
 	public function visitImage(Image $image)
 	{
 		return $this->applyLayout('image.php', $image);
+	}
+
+	/**
+	 * Render a link
+	 *
+	 * @param Link $link
+	 *
+	 * @return int Number of bytes written to the output
+	 */
+	public function visitLink(Link $link)
+	{
+		return $this->applyLayout('link.php', $link);
 	}
 
 	/**
@@ -415,6 +461,12 @@ class HtmlRenderer extends Renderer
 
 		while ($url[0] != '/' && !empty($page->parent))
 		{
+			// @todo refactor
+			if ($page->parent instanceof Layout)
+			{
+				break;
+			}
+
 			$page = $page->parent;
 			$url  = $page->url . '/' . $url;
 		}

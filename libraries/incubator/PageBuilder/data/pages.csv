@@ -7,3 +7,8 @@ id,title,url,parent_id,layout_id
 6,"Blog","blog",3,3
 7,":title",":alias",6,3
 8,"Shop","shop",3,3
+9,"Joomla! X","joomlax",0,4
+10,"Discover","discover",9,4
+11,"Features","features",9,4
+12,"Contribute","contribute",9,4
+13,"Contact","contact",9,4

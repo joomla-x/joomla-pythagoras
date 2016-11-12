@@ -5,3 +5,6 @@ id,caption,description,url,creator,license,mime_type,width,height,exif
 4,"Joomla!X Demo",,"media/demo.jpg",'','',"image/jpeg",730,242,
 5,"Joomla!X PoC Logo","Logo for the Joomla!X Proof of Concept.","media/JX_image_logo1.png","Elisa Foltyn","CC-BY-SA","image/png",597,307,
 6,"JoomlaDay Deutschland 2016","Logo for the JoomlaDay Deutschland 2016.","media/logo-jd16de.png","","","image/png",193,193,
+7,"JWC","Logo for the JWC.","media/jwc.png","","","image/png",621,1104,
+8,"Niels Braczek","Niels Braczek","media/niels.jpg","","","image/jpg",100,100,
+9,"Marco Dings","Marco Dings","media/marco.jpg","","","image/jpg",100,100,

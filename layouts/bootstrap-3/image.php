@@ -16,21 +16,6 @@ if (!isset($content->params))
 	$content->params = new stdClass;
 }
 
-if (!isset($content->params->class))
-{
-	$content->params->class = '';
-}
-
-if (!isset($content->params->width))
-{
-	$content->params->width = $content->image->width;
-}
-
-if (!isset($content->params->height))
-{
-	$content->params->height = $content->image->height;
-}
-
 $url = $content->image->url;
 
 if (!preg_match('~^(https?://|/)~', $url))
@@ -64,4 +49,4 @@ if (!empty($inlineCSS))
 	$inlineCSS = " style=\"{$inlineCSS}\"";
 }
 ?>
-<img class="img-responsive <?php echo $content->params->class; ?>" src="<?php echo $url; ?>" alt="<?php echo $content->alt; ?>"<?php echo $inlineCSS; ?>/>
+<img class="img-responsive <?php echo (isset($content->params->class)) ? $content->params->class  : ''; ?>" src="<?php echo $url; ?>" alt="<?php echo $content->alt; ?>"<?php echo $inlineCSS; ?>/>

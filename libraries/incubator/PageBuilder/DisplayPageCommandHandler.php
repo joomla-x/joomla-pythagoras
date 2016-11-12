@@ -92,7 +92,9 @@ class DisplayPageCommandHandler extends CommandHandler
 			// @todo Retrieve the title
 		}
 
-		$template = $this->loadTemplate(JPATH_ROOT . '/' . $page->layout->template->path . '/index.php', $data);
+		$templatePath = $page->layout->template->path;
+		$this->output->setTemplate($templatePath);
+		$template = $this->loadTemplate(JPATH_ROOT . '/' . $templatePath . '/index.php', $data);
 		$parts    = preg_split('~</body>~', $template, 2);
 		$parts[1] = '</body>' . $parts[1];
 
