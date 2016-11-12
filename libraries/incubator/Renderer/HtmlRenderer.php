@@ -17,6 +17,7 @@ use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
+use Joomla\Content\Type\HorizontalLine;
 use Joomla\Content\Type\Image;
 use Joomla\Content\Type\Link;
 use Joomla\Content\Type\Paragraph;
@@ -146,6 +147,18 @@ class HtmlRenderer extends Renderer
 	public function visitHeadline(Headline $headline)
 	{
 		return $this->applyLayout('headline.php', $headline);
+	}
+
+	/**
+	 * Render a horizontal line.
+	 *
+	 * @param   HorizontalLine $headline The horizontal line
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitHorizontalLine(HorizontalLine $headline)
+	{
+		return $this->write("<hr>\n");;
 	}
 
 	/**

@@ -69,6 +69,8 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 68,jx-section-features-container,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "container"},67,0,9
 69,jx-section-features-row,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "row"},68,0,9
 70,jx-section-features-column,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "col-lg-12 text-center"},69,0,9
-71,jx-section-features-section-header,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "section-header"},70,0,9
+71,jx-section-features-section-header,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "section-heading"},70,0,9
 72,jx-section-features-headline,Joomla\Content\Type\Headline,"{""text"":""Unlimited Features, Unlimited Solutions"", ""level"": 2}",1,,,,,71,0,9
 73,jx-section-features-paragraph,Joomla\Content\Type\Paragraph,{"text":"Check out how X can help setup a new level in website building and development!"},2,,,,{"class": "text-muted"},71,0,9
+74,jx-section-features-hr,Joomla\Content\Type\HorizontalLine,,3,,,,,71,0,9
+75,jx-section-features-row-2,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "row"},68,0,9
