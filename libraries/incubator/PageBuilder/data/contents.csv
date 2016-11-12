@@ -74,3 +74,6 @@ id,name,content_type,content_args,ordering,component,reference,selection,params,
 73,jx-section-features-paragraph,Joomla\Content\Type\Paragraph,{"text":"Check out how X can help setup a new level in website building and development!"},2,,,,{"class": "text-muted"},71,0,9
 74,jx-section-features-hr,Joomla\Content\Type\HorizontalLine,,3,,,,,71,0,9
 75,jx-section-features-row-2,Joomla\Content\Type\Compound,"{""type"": ""div""}",2,,,,{"class": "row"},68,0,9
+76,jx-section-features-feature-1,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "col-xs-6"},75,0,9
+77,jx-section-features-feature-1-feature-item,Joomla\Content\Type\Compound,"{""type"": ""div""}",1,,,,{"class": "feature-item"},76,0,9
+78,jx-section-features-feature-1-feature-icon,Joomla\Content\Type\Icon,"{""name"": ""icon-lock-open text-primary""}",1,,,,,77,0,9

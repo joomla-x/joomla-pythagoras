@@ -18,6 +18,7 @@ use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\HorizontalLine;
+use Joomla\Content\Type\Icon;
 use Joomla\Content\Type\Image;
 use Joomla\Content\Type\Link;
 use Joomla\Content\Type\Paragraph;
@@ -218,6 +219,18 @@ class HtmlRenderer extends Renderer
 		$len += $this->write("</{$compound->type}>\n");
 
 		return $len;
+	}
+
+	/**
+	 * Render an icon
+	 *
+	 * @param   Icon $icon The icon
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitIcon(Icon $icon)
+	{
+		return $this->applyLayout('icon.php', $icon);
 	}
 
 	/**
