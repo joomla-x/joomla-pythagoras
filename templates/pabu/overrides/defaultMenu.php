@@ -38,7 +38,7 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 		$tmp = explode('/', $menu->link);
 		$anchor = $tmp[count($tmp)-1];
 	?>
-	<li><a href="#<?php echo $anchor; ?>"><?php echo $menu->label; ?></a>
+	<li><a class="page-scroll" href="#<?php echo $anchor; ?>"><?php echo $menu->label; ?></a>
 		<?php
 
 		if (!empty($children))
