@@ -24,6 +24,7 @@ use Joomla\Content\Type\Link;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Span;
 use Joomla\Content\Type\Tabs;
 use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
@@ -184,6 +185,18 @@ class HtmlRenderer extends Renderer
 	public function visitParagraph(Paragraph $paragraph)
 	{
 		return $this->applyLayout('paragraph.php', $paragraph);
+	}
+
+	/**
+	 * Render a span element
+	 *
+	 * @param   Span $span The text
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitSpan(Span $span)
+	{
+		return $this->applyLayout('span.php', $span);
 	}
 
 	/**

@@ -29,7 +29,7 @@
 	<link rel="stylesheet" href="/templates/pabu/vendor/device-mockups/device-mockups.min.css">
 
 	<!-- Theme CSS -->
-	<link href="/templates/pabu/css/pabu.min.css" rel="stylesheet">
+	<link href="/templates/pabu/css/pabu.css" rel="stylesheet">
 </head>
 <body id="page-top">
 <!-- jQuery -->
