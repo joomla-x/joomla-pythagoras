@@ -29,10 +29,10 @@ The final decision is made, when the milestone is reached, or it shows out, that
 
 ## Installation
 
-In order to run Joomla! X in the current state, you need to have
+In order to run Joomla! X in the current state, you should have
 
-  - `composer` and
-  - `docker-compose`
+  - `composer` (required) and
+  - `docker-compose` (recommended)
   
 installed and working on your system.
 
@@ -49,7 +49,15 @@ You can check, which CLI commands are available with
 $ ./joomla list
 ```
 
-To see it in the browser, it is recommended to use the pre-configured docker environment. That environment will be used for system and acceptance tests, so you need it anyway.
+To see the rendered output of Joomla! X in the browser, it is recommended to use the pre-configured docker environment.
+
+> If you don't want to use the docker setup, please make sure, that your webserver can access the project directory 
+_as document root_. It depends on your setup, how the demo is accessed - normally, it should be just `localhost`.
+The current installer is very basic, and can not yet cater for sub-directories, so if your document root does not
+match the project root, images, JavaScript, and CSS can probably not be loaded.
+
+The docker environment will be used for system and acceptance tests, so you need it anyway for development.
+Of course, the final version will run without these development specific tools.
 
 ```bash
 $ docker-compose up -d
