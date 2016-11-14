@@ -49,7 +49,7 @@ You can check, which CLI commands are available with
 $ ./joomla list
 ```
 
-To see it in the browser, it is recommended to use the pre-configured docker environment.
+To see the rendered output of Joomla! X in the browser, it is recommended to use the pre-configured docker environment.
 
 > If you don't want to use the docker setup, please make sure, that your webserver can access the project directory 
 _as document root_. It depends on your setup, how the demo is accessed - normally, it should be just `localhost`.
