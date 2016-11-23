@@ -25,6 +25,7 @@
         <field name="reference" type="string"/>
         <field name="selection" type="json"/>
         <field name="params" type="json"/>
+        <field name="custom_css" type="string"/>
 
 
     </fields>

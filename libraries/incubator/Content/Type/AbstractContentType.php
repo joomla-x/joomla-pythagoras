@@ -18,27 +18,48 @@ use Joomla\Content\ContentTypeInterface;
  */
 abstract class AbstractContentType implements ContentTypeInterface
 {
-	/** @var  \stdClass */
-	public $params;
+	/** @var  string The identifier */
+	private $id;
 
-	/** @var  string */
-	protected $title;
+	/** @var  string The title */
+	private $title;
+
+	/** @var  \stdClass The parameters */
+	private $params;
 
 	/**
-	 * Magic getter.
+	 * AbstractContentType constructor.
 	 *
-	 * @param   string  $var  Name of the property
-	 *
-	 * @return  mixed
+	 * @param string    $title  The title
+	 * @param string    $id     The identifier
+	 * @param \stdClass $params The parameters
 	 */
-	public function __get($var)
+	public function __construct($title, $id, $params)
 	{
-		if (isset($this->$var))
-		{
-			return $this->$var;
-		}
+		$this
+			->setTitle($title)
+			->setId($id)
+			->setParameters($params);
+	}
 
-		throw new \UnexpectedValueException("Unknown property $var");
+	/**
+	 * @return string
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param string $id
+	 *
+	 * @return AbstractContentType
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
 	}
 
 	/**
@@ -47,5 +68,48 @@ abstract class AbstractContentType implements ContentTypeInterface
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @param string $title
+	 *
+	 * @return AbstractContentType
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+
+		return $this;
+	}
+
+	/**
+	 * @return \stdClass
+	 */
+	public function getParameters()
+	{
+		return $this->params;
+	}
+
+	/**
+	 * @param string $key     The key
+	 * @param mixed  $default The default value
+	 *
+	 * @return mixed
+	 */
+	public function getParameter($key, $default = null)
+	{
+		return isset($this->params->$key) ? $this->params->$key : $default;
+	}
+
+	/**
+	 * @param \stdClass $params
+	 *
+	 * @return AbstractContentType
+	 */
+	public function setParameters($params)
+	{
+		$this->params = $params;
+
+		return $this;
 	}
 }

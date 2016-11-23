@@ -27,6 +27,8 @@ class Span extends AbstractContentType
 	 */
 	public function __construct($text)
 	{
+		parent::__construct('Span', 'span-' . spl_object_hash($this), new \stdClass);
+
 		$this->text    = $text;
 	}
 

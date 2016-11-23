@@ -10,6 +10,7 @@ namespace Joomla\Content\Type;
 
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\ContentTypeVisitorInterface;
+use Joomla\Extension\Article\Entity\Article;
 
 /**
  * Teaser ContentType
@@ -17,8 +18,7 @@ use Joomla\Content\ContentTypeVisitorInterface;
  * @package  Joomla/Content
  * @since    __DEPLOY_VERSION__
  *
- * @property string                 $type
- * @property ContentTypeInterface[] $elements
+ * @property Article $article;
  */
 class Teaser extends AbstractContentType
 {
@@ -29,6 +29,8 @@ class Teaser extends AbstractContentType
 	 */
 	public function __construct($item)
 	{
+		parent::__construct($item->title, $item->alias, new \stdClass);
+
 		$this->article = $item;
 	}
 

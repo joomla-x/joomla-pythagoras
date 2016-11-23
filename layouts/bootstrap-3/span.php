@@ -9,6 +9,8 @@
  * @codingStandardsIgnoreStart
  */
 ?>
-<span<?php echo (isset($content->params->class)) ? " class='{$content->params->class}'" : ""; ?>>
+<!-- <?= __FILE__ ?> -->
+<span id="<?php echo $content->getId(); ?>"<?php echo (isset($content->getParameters()->class)) ? " class='{$content->getParameter()->class}'" : ""; ?>>
 	<?php echo $content->text; ?>
 </span>
+<!-- EOF <?= __FILE__ ?> -->

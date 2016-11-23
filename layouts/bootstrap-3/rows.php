@@ -10,11 +10,13 @@
  */
 
 ?>
-<div class="container">
+<!-- <?= __FILE__ ?> -->
+<div id="<?php echo $content->getId(); ?>" class="container">
 	<?php foreach ($content->elements as $i => $element) : ?>
-		<?php $class = isset($element->params->class) ? $element->params->class : ''; ?>
+		<?php $class = isset($element->getParameters()->class) ? $element->getParameters()->class : ''; ?>
 		<div class="clearfix <?php echo $class; ?>">
 			<?php echo $element->html; ?>
 		</div>
 	<?php endforeach; ?>
 </div>
+<!-- EOF <?= __FILE__ ?> -->

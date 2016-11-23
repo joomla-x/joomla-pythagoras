@@ -41,6 +41,10 @@
                description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
         />
 
+        <field name="image"
+               type="path"
+        />
+
         <field name="body"
                type="richtext"
                label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"

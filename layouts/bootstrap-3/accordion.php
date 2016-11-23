@@ -9,18 +9,19 @@
  * @codingStandardsIgnoreStart
  */
 
-$class = isset($content->params->class) ? $content->params->class : '';
+$class = $content->getParameter('class', '');
 ?>
-<div class="panel-group <?php echo $class; ?>" id="<?php echo $content->id; ?>">
+<!-- <?= __FILE__ ?> -->
+<div class="panel-group <?php echo $class; ?>" id="<?php echo $content->getId(); ?>">
 	<?php foreach ($content->elements as $i => $element) : ?>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#<?php echo $content->id; ?>" href="#<?php echo $content->id . '-' . $i; ?>">
-					<?php echo $element->title; ?></a>
+				<a data-toggle="collapse" data-parent="#<?php echo $content->getId(); ?>" href="#<?php echo $content->getId() . '-' . $i; ?>">
+					<?php echo $element->getTitle(); ?></a>
 			</h4>
 		</div>
-		<div id="<?php echo $content->id . '-' . $i; ?>" class="panel-collapse collapse<?php echo $i == 0 ? ' in' : ''; ?>">
+		<div id="<?php echo $content->getId() . '-' . $i; ?>" class="panel-collapse collapse<?php echo $i == 0 ? ' in' : ''; ?>">
 			<div class="panel-body">
 				<?php echo $element->html; ?>
 			</div>
@@ -28,3 +29,4 @@ $class = isset($content->params->class) ? $content->params->class : '';
 	</div>
 	<?php endforeach; ?>
 </div>
+<!-- EOF <?= __FILE__ ?> -->

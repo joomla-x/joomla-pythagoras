@@ -10,7 +10,8 @@
  */
 
 ?>
-<article>
+<!-- <?= __FILE__ ?> -->
+<article id="<?php echo $content->getId(); ?>">
 	<header>
 		<h1><?php echo $content->article->title; ?></h1>
 		<p>
@@ -24,3 +25,4 @@
 		<p><small>License: <?php echo $content->article->license; ?></small></p>
 	</footer>
 </article>
+<!-- EOF <?= __FILE__ ?> -->

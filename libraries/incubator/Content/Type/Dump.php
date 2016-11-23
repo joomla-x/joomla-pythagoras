@@ -28,6 +28,8 @@ class Dump extends AbstractContentType
 	 */
 	public function __construct($item)
 	{
+		parent::__construct('Dump', 'dump-' . spl_object_hash($this), new \stdClass);
+
 		$this->item = $item;
 	}
 

@@ -9,21 +9,6 @@
  * @codingStandardsIgnoreStart
  */
 
-if (!isset($content->params))
-{
-	$content->params = new stdClass;
-}
-
-if (!isset($content->params->class))
-{
-	$content->params->class = 'navbar navbar-inverse';
-}
-
-if (!isset($content->params->levels))
-{
-	$content->params->levels = 10;
-}
-
 $subTree = function($menu, $callback, $level, $maxlevel ) {
 	if (empty($menu) || $level >= $maxlevel)
 	{
@@ -55,7 +40,8 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 	<?php
 };
 ?>
-<nav class="<?php echo $content->params->class; ?>">
+<!-- <?= __FILE__ ?> -->
+<nav id="<?php echo $content->getId(); ?>" class="<?php echo $content->getParameter('class', 'navbar navbar-inverse'); ?>">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="<?php echo $content->item->link; ?>"><?php echo $content->item->label; ?></a>
@@ -64,11 +50,12 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 			<?php
 			foreach ($content->item->children as $item)
 			{
-				call_user_func($subTree, $item, $subTree, 0, $content->params->levels - 1);
+				call_user_func($subTree, $item, $subTree, 0, $content->getParameter('levels', 10) - 1);
 			}
 			?>
 		</ul>
 	</div>
 </nav>
+<!-- EOF <?= __FILE__ ?> -->
 <?php
 unset($subTree);

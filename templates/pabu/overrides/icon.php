@@ -9,4 +9,6 @@
  * @codingStandardsIgnoreStart
  */
 ?>
-<i class="<?php echo $content->name; ?>"></i>
+<!-- <?= __FILE__ ?> -->
+<i id="<?php echo $content->id; ?>" class="<?php echo $content->name; ?>"></i>
+<!-- EOF <?= __FILE__ ?> -->

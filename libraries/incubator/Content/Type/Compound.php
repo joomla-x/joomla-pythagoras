@@ -22,13 +22,21 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Compound extends AbstractCompoundType
 {
+	private $type;
+
 	/**
 	 * Compound constructor.
 	 *
-	 * @param   string $type The type represented by this class. In HTML, it is rendered as enclosing tag.
+	 * @param   string                 $type     The type represented by this class. In HTML, it is rendered as enclosing tag.
+	 * @param   string                 $title    The title
+	 * @param   string                 $id       The identifier
+	 * @param   \stdClass              $params   The parameters
+	 * @param   ContentTypeInterface[] $elements Content elements
 	 */
-	public function __construct($type)
+	public function __construct($type, $title, $id, $params, $elements = [])
 	{
+		parent::__construct($title, $id, $params, $elements);
+
 		$this->type = $type;
 	}
 
@@ -42,5 +50,13 @@ class Compound extends AbstractCompoundType
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{
 		return $visitor->visitCompound($this);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getType()
+	{
+		return $this->type;
 	}
 }

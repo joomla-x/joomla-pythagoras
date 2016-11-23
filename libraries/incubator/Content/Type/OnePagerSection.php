@@ -12,27 +12,16 @@ use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\ContentTypeVisitorInterface;
 
 /**
- * Article ContentType
+ * OnePagerSection ContentType
  *
  * @package  Joomla/Content
  * @since    __DEPLOY_VERSION__
  *
- * @property \Joomla\Extension\Article\Entity\Article $article
+ * @property string                 $type
+ * @property ContentTypeInterface[] $elements
  */
-class Article extends AbstractContentType
+class OnePagerSection extends Compound
 {
-	/**
-	 * Article constructor.
-	 *
-	 * @param   object  $item  The article
-	 */
-	public function __construct($item)
-	{
-		parent::__construct($item->title, $item->alias, new \stdClass);
-
-		$this->article = $item;
-	}
-
 	/**
 	 * Visits the content type.
 	 *
@@ -42,14 +31,6 @@ class Article extends AbstractContentType
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		return $visitor->visitArticle($this);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTitle()
-	{
-		return $this->article->title;
+		return $visitor->visitOnePagerSection($this);
 	}
 }

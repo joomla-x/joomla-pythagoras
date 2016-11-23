@@ -45,13 +45,15 @@ $subTree = function($node, $callback, $level = 0) {
 	}
 };
 
-$class = isset($content->params->class) ? $content->params->class : '';
+$class = $content->getParameter('class', '');
 ?>
-<div<?php echo $class ? " class=\"$class\"" : ''; ?>>
+<!-- <?= __FILE__ ?> -->
+<div id="<?php echo $content->getId(); ?>"<?php echo $class ? " class=\"$class\"" : ''; ?>>
 	<ul class="nav nav-list tree">
 		<?php echo call_user_func($subTree, $content->item, $subTree); ?>
 	</ul>
 </div>
+	<!-- EOF <?= __FILE__ ?> -->
 <?php
 unset($subTree);
 

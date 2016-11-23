@@ -21,6 +21,8 @@ use Joomla\Content\Type\HorizontalLine;
 use Joomla\Content\Type\Icon;
 use Joomla\Content\Type\Image;
 use Joomla\Content\Type\Link;
+use Joomla\Content\Type\OnePager;
+use Joomla\Content\Type\OnePagerSection;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
@@ -59,6 +61,9 @@ class HtmlRenderer extends Renderer
 	/** @var  string[]  Javascript code to add to output */
 	private $javascript = [];
 
+	/** @var  string[]  CSS code to add to output */
+	private $style = [];
+
 	use DumpTrait;
 
 	/**
@@ -89,9 +94,27 @@ class HtmlRenderer extends Renderer
 	 *
 	 * @return  void
 	 */
-	protected function addJavascript($label, $code)
+	public function addJavascript($label, $code)
 	{
 		$this->javascript[$label] = $code;
+	}
+
+	/**
+	 * @param string $namespace
+	 * @param string $css
+	 *
+	 * @return void
+	 */
+	public function addCss($namespace, $css)
+	{
+		$this->style[] = preg_replace_callback(
+			'~([^{\s]*\s?\{[^{]*?\})~sm',
+			function ($match) use ($namespace)
+			{
+				return "#{$namespace} {$match[0]}";
+			},
+			$css
+		);
 	}
 
 	/**
@@ -102,6 +125,16 @@ class HtmlRenderer extends Renderer
 		$this->write('<script type="text/javascript">');
 		$this->write(implode("\n", $this->javascript));
 		$this->write('</script>');
+	}
+
+	/**
+	 * @return  void
+	 */
+	public function writeCss()
+	{
+		$this->write('<style>');
+		$this->write(implode("\n", $this->style));
+		$this->write('</style>');
 	}
 
 	/**
@@ -125,7 +158,8 @@ class HtmlRenderer extends Renderer
 	 */
 	private function applyLayout($filename, $content)
 	{
-		$layout = JPATH_ROOT . '/' . $this->template . '/overrides/' . $filename;
+		$renderer = $this;
+		$layout   = JPATH_ROOT . '/' . $this->template . '/overrides/' . $filename;
 
 		if (!file_exists($layout))
 		{
@@ -160,7 +194,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitHorizontalLine(HorizontalLine $headline)
 	{
-		return $this->write("<hr>\n");;
+		return $this->write("<hr>\n");
 	}
 
 	/**
@@ -208,13 +242,9 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitCompound(Compound $compound)
 	{
-		$id = isset($compound->params->id) ? $compound->params->id : '';
-		$class = isset($compound->params->class) ? $compound->params->class : '';
+		$id = " id=\"{$compound->getId()}\"";
 
-		if (!empty($class))
-		{
-			$id = " id=\"$id\"";
-		}
+		$class = $compound->getParameter('class', '');
 
 		if (!empty($class))
 		{
@@ -222,16 +252,46 @@ class HtmlRenderer extends Renderer
 		}
 
 		$len = 0;
-		$len += $this->write("<{$compound->type}{$id}{$class}>\n");
+		$len += $this->write("<!-- Compound -->\n");
+		$len += $this->write("<{$compound->getType()}{$id}{$class}>\n");
 
 		foreach ($compound->elements as $item)
 		{
-			$len += $item->content->accept($this);
+			$len += $item->accept($this);
 		}
 
-		$len += $this->write("</{$compound->type}>\n");
+		$len += $this->write("</{$compound->getType()}>\n");
+		$len += $this->write("<!-- /Compound -->\n");
 
 		return $len;
+	}
+
+	/**
+	 * Render an OnePager
+	 *
+	 * @param   OnePager $page The page
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitOnePager(OnePager $page)
+	{
+		$this->preRenderChildElements($page);
+
+		return $this->applyLayout('onepager.php', $page);
+	}
+
+	/**
+	 * Render an OnePager section
+	 *
+	 * @param   OnePagerSection $section The page
+	 *
+	 * @return  integer Number of bytes written to the output
+	 */
+	public function visitOnePagerSection(OnePagerSection $section)
+	{
+		$this->preRenderChildElements($section);
+
+		return $this->applyLayout('onepagerSection.php', $section);
 	}
 
 	/**
@@ -279,7 +339,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitSlider(Slider $slider)
 	{
-		$slider->id = 'slider-' . spl_object_hash($slider);
+		$slider->setId('slider-' . spl_object_hash($slider));
 
 		$this->preRenderChildElements($slider);
 
@@ -295,7 +355,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitAccordion(Accordion $accordion)
 	{
-		$accordion->id = 'accordion-' . spl_object_hash($accordion);
+		$accordion->setId('accordion-' . spl_object_hash($accordion));
 
 		$this->preRenderChildElements($accordion);
 
@@ -311,7 +371,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitTree(Tree $tree)
 	{
-		$tree->id = 'tree-' . spl_object_hash($tree);
+		$tree->setId('tree-' . spl_object_hash($tree));
 
 		$this->preRenderChildElements($tree);
 
@@ -327,7 +387,7 @@ class HtmlRenderer extends Renderer
 	 */
 	public function visitTabs(Tabs $tabs)
 	{
-		$tabs->id = 'tabs-' . spl_object_hash($tabs);
+		$tabs->setId('tabs-' . spl_object_hash($tabs));
 
 		$this->preRenderChildElements($tabs);
 
@@ -452,8 +512,8 @@ class HtmlRenderer extends Renderer
 		foreach ($content->elements as $key => $item)
 		{
 			$this->output = '';
-			$item->content->accept($this);
-			$content->elements[$key]->html = $this->output;
+			$item->accept($this);
+			$item->html = $this->output;
 		}
 
 		$this->output = $stash;

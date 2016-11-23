@@ -9,4 +9,6 @@
  * @codingStandardsIgnoreStart
  */
 ?>
-<span class="fa fa-<?php echo $content->name; ?>"></span>
+<!-- <?= __FILE__ ?> -->
+<span id="<?php echo $content->getId(); ?>" class="fa fa-<?php echo $content->name; ?>"></span>
+<!-- EOF <?= __FILE__ ?> -->

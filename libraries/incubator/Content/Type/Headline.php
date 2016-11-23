@@ -29,6 +29,8 @@ class Headline extends AbstractContentType
 	 */
 	public function __construct($text, $level = 1)
 	{
+		parent::__construct($text, 'headline-' . spl_object_hash($this), new \stdClass);
+
 		$this->text  = $text;
 		$this->level = $level;
 	}

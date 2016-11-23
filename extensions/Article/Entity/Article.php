@@ -32,6 +32,9 @@ class Article
 	/** @var  string  The teaser text */
 	public $teaser;
 
+	/** @var  string  The image path */
+	public $image;
+
 	/** @var  string  The article's copy text */
 	public $body;
 
