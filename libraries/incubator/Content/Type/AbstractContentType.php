@@ -42,6 +42,16 @@ abstract class AbstractContentType implements ContentTypeInterface
 			->setParameters($params);
 	}
 
+	public function __get($property)
+	{
+		if (isset($this->{$property}))
+		{
+			return $this->{$property};
+		}
+
+		throw new \UnexpectedValueException("Property $property not found in " . get_class($this));
+	}
+
 	/**
 	 * @return string
 	 */

@@ -8,9 +8,8 @@
 
 namespace Joomla\Content\Type;
 
-use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\ContentTypeVisitorInterface;
-use Joomla\Extension\Article\Entity\Article;
+use Joomla\Extension\Article\Entity\Article as ArticleEntity;
 
 /**
  * Teaser ContentType
@@ -18,7 +17,7 @@ use Joomla\Extension\Article\Entity\Article;
  * @package  Joomla/Content
  * @since    __DEPLOY_VERSION__
  *
- * @property Article $article;
+ * @property ArticleEntity $article;
  */
 class Teaser extends AbstractContentType
 {

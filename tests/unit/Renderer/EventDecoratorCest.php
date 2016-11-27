@@ -77,14 +77,18 @@ class EventDecoratorCest
 	{
 		$knownContentTypes = [
 			Attribution::class => ['label', 'name'],
-			Compound::class    => ['type', []],
+			Compound::class    => ['type', 'title', 'id', new \stdClass, []],
 			Headline::class    => ['text'],
 			Paragraph::class   => ['text'],
 		];
 
 		foreach ($knownContentTypes as $className => $arguments)
 		{
-			if (count($arguments) == 2)
+			if (count($arguments) == 5)
+			{
+				$content = new $className($arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4]);
+			}
+			elseif (count($arguments) == 2)
 			{
 				$content = new $className($arguments[0], $arguments[1]);
 			}

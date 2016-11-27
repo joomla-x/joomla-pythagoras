@@ -12,7 +12,7 @@ class AbstractContentTypeTest extends \PHPUnit_Framework_TestCase
 	public function testAbstractContentTypeMagicGetter()
 	{
 		/** @var AbstractContentType $mock */
-		$mock = $this->getMockForAbstractClass(AbstractContentType::class);
+		$mock = $this->getMockForAbstractClass(AbstractContentType::class, [], '', false);
 
 		/** @noinspection PhpUndefinedFieldInspection */
 		$mock->test = 'hello';
@@ -29,7 +29,7 @@ class AbstractContentTypeTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException(\UnexpectedValueException::class);
 
 		/** @var AbstractContentType $mock */
-		$mock = $this->getMockForAbstractClass(AbstractContentType::class);
+		$mock = $this->getMockForAbstractClass(AbstractContentType::class, [], '', false);
 
 		$mock->__get('test');
 	}
