@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\String\StringHelper as JString;
+
 /**
  * Class to create and parse routes for the site application
  *

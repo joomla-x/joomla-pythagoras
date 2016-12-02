@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\String\Normalise;
+
 /**
  * Wrapper class for JStringNormalise
  *
@@ -31,7 +33,7 @@ class JStringWrapperNormalise
 	 */
 	public function fromCamelCase($input, $grouped = false)
 	{
-		return JStringNormalise::fromCamelCase($input, $grouped);
+		return Normalise::fromCamelCase($input, $grouped);
 	}
 
 	/**
@@ -46,7 +48,7 @@ class JStringWrapperNormalise
 	 */
 	public function toCamelCase($input)
 	{
-		return JStringNormalise::toCamelCase($input);
+		return Normalise::toCamelCase($input);
 	}
 
 	/**
@@ -61,7 +63,7 @@ class JStringWrapperNormalise
 	 */
 	public function toDashSeparated($input)
 	{
-		return JStringNormalise::toDashSeparated($input);
+		return Normalise::toDashSeparated($input);
 	}
 
 	/**
@@ -76,7 +78,7 @@ class JStringWrapperNormalise
 	 */
 	public function toSpaceSeparated($input)
 	{
-		return JStringNormalise::toSpaceSeparated($input);
+		return Normalise::toSpaceSeparated($input);
 	}
 
 	/**
@@ -91,7 +93,7 @@ class JStringWrapperNormalise
 	 */
 	public function toUnderscoreSeparated($input)
 	{
-		return JStringNormalise::toUnderscoreSeparated($input);
+		return Normalise::toUnderscoreSeparated($input);
 	}
 
 	/**
@@ -106,7 +108,7 @@ class JStringWrapperNormalise
 	 */
 	public function toVariable($input)
 	{
-		return JStringNormalise::toVariable($input);
+		return Normalise::toVariable($input);
 	}
 
 	/**
@@ -121,6 +123,6 @@ class JStringWrapperNormalise
 	 */
 	public function toKey($input)
 	{
-		return JStringNormalise::toKey($input);
+		return Normalise::toKey($input);
 	}
 }
