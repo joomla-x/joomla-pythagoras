@@ -665,12 +665,6 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 	{
 		$this->connect();
 
-		if (!is_resource($this->connection))
-		{
-			JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
-			throw new RuntimeException($this->errorMsg, $this->errorNum);
-		}
-
 		// Take a local copy so that we don't modify the original query and cause issues later
 		$query = $this->replacePrefix((string) $this->sql);
 
@@ -681,10 +675,6 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 
 		// Increment the query counter.
 		$this->count++;
-
-		// Reset the error values.
-		$this->errorNum = 0;
-		$this->errorMsg = '';
 
 		// If debugging is enabled then let's log the query.
 		if ($this->debug)
@@ -730,13 +720,13 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 				catch (RuntimeException $e)
 				{
 					// Get the error number and message.
-					$this->errorNum = (int) pg_result_error_field($this->cursor, PGSQL_DIAG_SQLSTATE) . ' ';
-					$this->errorMsg = pg_last_error($this->connection) . "SQL=" . $query;
+					$errorNum = (int) pg_result_error_field($this->cursor, PGSQL_DIAG_SQLSTATE) . ' ';
+					$errorMsg = pg_last_error($this->connection) . "SQL=" . $query;
 
 					// Throw the normal query exception.
-					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
 
-					throw new RuntimeException($this->errorMsg, null, $e);
+					throw new RuntimeException($errorMsg, null, $e);
 				}
 
 				// Since we were able to reconnect, run the query again.
@@ -746,13 +736,13 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 			else
 			{
 				// Get the error number and message.
-				$this->errorNum = (int) pg_result_error_field($this->cursor, PGSQL_DIAG_SQLSTATE) . ' ';
-				$this->errorMsg = pg_last_error($this->connection) . "SQL=" . $query;
+				$errorNum = (int) pg_result_error_field($this->cursor, PGSQL_DIAG_SQLSTATE) . ' ';
+				$errorMsg = pg_last_error($this->connection) . "SQL=" . $query;
 
 				// Throw the normal query exception.
-				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
 
-				throw new RuntimeException($this->errorMsg);
+				throw new RuntimeException($errorMsg);
 			}
 		}
 

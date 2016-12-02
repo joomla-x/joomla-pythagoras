@@ -374,12 +374,6 @@ abstract class JDatabaseDriverPdo extends JDatabaseDriver
 	{
 		$this->connect();
 
-		if (!is_object($this->connection))
-		{
-			JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
-			throw new RuntimeException($this->errorMsg, $this->errorNum);
-		}
-
 		// Take a local copy so that we don't modify the original query and cause issues later
 		$query = $this->replacePrefix((string) $this->sql);
 
@@ -391,10 +385,6 @@ abstract class JDatabaseDriverPdo extends JDatabaseDriver
 
 		// Increment the query counter.
 		$this->count++;
-
-		// Reset the error values.
-		$this->errorNum = 0;
-		$this->errorMsg = '';
 
 		// If debugging is enabled then let's log the query.
 		if ($this->debug)
@@ -460,13 +450,13 @@ abstract class JDatabaseDriverPdo extends JDatabaseDriver
 				catch (RuntimeException $e)
 				{
 					// Get the error number and message.
-					$this->errorNum = (int) $this->connection->errorCode();
-					$this->errorMsg = (string) 'SQL: ' . implode(", ", $this->connection->errorInfo());
+					$errorNum = (int) $this->connection->errorCode();
+					$errorMsg = (string) 'SQL: ' . implode(", ", $this->connection->errorInfo());
 
 					// Throw the normal query exception.
-					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
 
-					throw new RuntimeException($this->errorMsg, $this->errorNum, $e);
+					throw new RuntimeException($errorMsg, $errorNum, $e);
 				}
 
 				// Since we were able to reconnect, run the query again.
@@ -475,14 +465,10 @@ abstract class JDatabaseDriverPdo extends JDatabaseDriver
 			// The server was not disconnected.
 			else
 			{
-				// Get the error number and message from before we tried to reconnect.
-				$this->errorNum = $errorNum;
-				$this->errorMsg = $errorMsg;
-
 				// Throw the normal query exception.
-				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $errorNum, $errorMsg), JLog::ERROR, 'database-error');
 
-				throw new RuntimeException($this->errorMsg, $this->errorNum);
+				throw new RuntimeException($errorMsg, $errorNum);
 			}
 		}
 
@@ -900,43 +886,6 @@ abstract class JDatabaseDriverPdo extends JDatabaseDriver
 	}
 
 	/**
-	 * Method to get the next row in the result set from the database query as an object.
-	 *
-	 * @param   string  $class  The class name to use for the returned row object.
-	 *
-	 * @return  mixed   The result of the query as an array, false if there are no more rows.
-	 *
-	 * @since   12.1
-	 * @throws  RuntimeException
-	 * @deprecated  4.0 (CMS)  Use getIterator() instead
-	 */
-	public function loadNextObject($class = 'stdClass')
-	{
-		JLog::add(__METHOD__ . '() is deprecated. Use JDatabaseDriver::getIterator() instead.', JLog::WARNING, 'deprecated');
-		$this->connect();
-
-		// Execute the query and get the result set cursor.
-		if (!$this->executed)
-		{
-			if (!($this->execute()))
-			{
-				return $this->errorNum ? null : false;
-			}
-		}
-
-		// Get the next row from the result set as an object of type $class.
-		if ($row = $this->fetchObject(null, $class))
-		{
-			return $row;
-		}
-
-		// Free up system resources and return.
-		$this->freeResult();
-
-		return false;
-	}
-
-	/**
 	 * Method to get the next row in the result set from the database query as an array.
 	 *
 	 * @return  mixed  The result of the query as an array, false if there are no more rows.
@@ -959,41 +908,6 @@ abstract class JDatabaseDriverPdo extends JDatabaseDriver
 
 		// Get the next row from the result set as an object of type $class.
 		if ($row = $this->fetchAssoc())
-		{
-			return $row;
-		}
-
-		// Free up system resources and return.
-		$this->freeResult();
-
-		return false;
-	}
-
-	/**
-	 * Method to get the next row in the result set from the database query as an array.
-	 *
-	 * @return  mixed  The result of the query as an array, false if there are no more rows.
-	 *
-	 * @since   12.1
-	 * @throws  RuntimeException
-	 * @deprecated  4.0 (CMS)  Use getIterator() instead
-	 */
-	public function loadNextRow()
-	{
-		JLog::add(__METHOD__ . '() is deprecated. Use JDatabaseDriver::getIterator() instead.', JLog::WARNING, 'deprecated');
-		$this->connect();
-
-		// Execute the query and get the result set cursor.
-		if (!$this->executed)
-		{
-			if (!($this->execute()))
-			{
-				return $this->errorNum ? null : false;
-			}
-		}
-
-		// Get the next row from the result set as an object of type $class.
-		if ($row = $this->fetchArray())
 		{
 			return $row;
 		}
