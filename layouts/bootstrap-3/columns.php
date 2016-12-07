@@ -9,11 +9,14 @@
  * @codingStandardsIgnoreStart
  */
 
+$grid = $content->getParameter('grid', []);
 ?>
-<div class="row container-fluid">
+<!-- <?= __FILE__ ?> -->
+<div id="<?php echo $content->getId(); ?>" class="row container-fluid">
 	<?php foreach ($content->elements as $i => $element) : ?>
-		<div<?php echo isset($content->params->grid[$i]) ? " class=\"col-md-{$content->params->grid[$i]}\"" : ''; ?>>
+		<div<?php echo isset($grid[$i]) ? " class=\"col-md-{$grid[$i]}\"" : ''; ?>>
 			<?php echo $element->html; ?>
 		</div>
 	<?php endforeach; ?>
 </div>
+<!-- EOF <?= __FILE__ ?> -->

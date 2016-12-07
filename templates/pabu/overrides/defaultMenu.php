@@ -60,7 +60,8 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 	<?php
 };
 ?>
-	<nav <?php echo (!empty($content->params->id)) ? "id={$content->params->id}" : ""; ?> class="<?php echo $content->params->class; ?>" class="<?php echo $content->params->class; ?>">
+	<!-- <?= __FILE__ ?> -->
+	<nav id="<?php echo $content->id; ?>" class="<?php echo $content->params->class; ?>">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -80,5 +81,6 @@ $subTree = function($menu, $callback, $level, $maxlevel ) {
 			</div>
 		</div>
 	</nav>
+	<!-- EOF <?= __FILE__ ?> -->
 <?php
 unset($subTree);

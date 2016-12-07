@@ -28,6 +28,7 @@ class DefaultMenu extends AbstractContentType
 	 */
 	public function __construct($item)
 	{
+		parent::__construct('Menu', 'menu-' . spl_object_hash($this), new \stdClass);
 		$this->item = $item;
 	}
 

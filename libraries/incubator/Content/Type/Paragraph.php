@@ -32,6 +32,8 @@ class Paragraph extends AbstractContentType
 	 */
 	public function __construct($text, $variant = self::PLAIN)
 	{
+		parent::__construct('Paragraph', 'paragraph-' . spl_object_hash($this), new \stdClass);
+
 		$this->text    = $text;
 		$this->variant = $variant;
 	}

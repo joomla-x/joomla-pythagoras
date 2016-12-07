@@ -20,10 +20,8 @@ interface CompoundTypeInterface extends ContentTypeInterface
 	 * Add a content element as a child
 	 *
 	 * @param   ContentTypeInterface $content The content element
-	 * @param   string               $title   The title
-	 * @param   string               $link    The link
 	 *
 	 * @return  void
 	 */
-	public function add(ContentTypeInterface $content, $title = null, $link = null);
+	public function add(ContentTypeInterface $content);
 }

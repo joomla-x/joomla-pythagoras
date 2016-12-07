@@ -9,6 +9,8 @@
  * @codingStandardsIgnoreStart
  */
 ?>
-<p>
+<!-- <?= __FILE__ ?> -->
+<p id="<?php echo $content->getId(); ?>">
 	<small><?php echo $content->label; ?> <?php echo $content->name; ?></small>
 </p>
+<!-- EOF <?= __FILE__ ?> -->

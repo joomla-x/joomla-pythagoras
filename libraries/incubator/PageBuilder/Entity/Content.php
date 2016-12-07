@@ -26,4 +26,5 @@ class Content
 	public $reference;
 	public $selection;
 	public $params;
+	public $customCss;
 }

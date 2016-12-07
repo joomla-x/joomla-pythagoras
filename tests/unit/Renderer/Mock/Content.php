@@ -29,6 +29,39 @@ abstract class Content implements ContentTypeInterface
 	{
 		return $this->title;
 	}
+
+	/**
+	 * Gets the identifier for the content
+	 *
+	 * @return  string
+	 */
+	public function getId()
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Gets the parameters for the content
+	 *
+	 * @return  \stdClass
+	 */
+	public function getParameters()
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Gets the parameters for the content
+	 *
+	 * @param   string $key     The key
+	 * @param   mixed  $default The default value
+	 *
+	 * @return  mixed
+	 */
+	public function getParameter($key, $default = null)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
 }
 
 class ContentType extends Content
