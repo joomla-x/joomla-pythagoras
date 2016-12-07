@@ -11,8 +11,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * @testdox The ConfigServiceProvider implements the
-	 * ServiceProviderInterface interface
+	 * @testdox The ConfigServiceProvider implements the ServiceProviderInterface interface
 	 */
 	public function testTheTestConfigServiceProviderImplementsTheServiceProviderInterface()
 	{
@@ -50,8 +49,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The ConfigServiceProvider adds an config to a
-	 * container with variables from the environment
+	 * @testdox The ConfigServiceProvider adds an config to a container with variables from the environment
 	 */
 	public function testConfigServiceProviderCreatesConfigFromEnv()
 	{

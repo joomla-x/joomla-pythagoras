@@ -8,7 +8,7 @@ in this documentation.
 Use this as an example on how to turn test documentation into user documentation.
 Of course that requires a good testbase.
 
-To reproduce the test results, run `phpunit --testdox --bootstrap=libraries/vendor/autoload.php tests`
+To reproduce the test results, run `./libraries/vendor/bin/phpunit --testdox --bootstrap=tests/unit/_bootstrap.php tests`
 -->
 The Joomla! Dependency Injection package provides a simple `container-interop` (upcoming `PSR-11`) compatible
 Inversion of Control (IoC) Container for your application.

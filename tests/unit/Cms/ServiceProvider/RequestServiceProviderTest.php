@@ -10,8 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class RequestServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @testdox The RequestServiceProvider implements the
-	 * ServiceProviderInterface interface
+	 * @testdox The RequestServiceProvider implements the ServiceProviderInterface interface
 	 */
 	public function testTheTestRequestServiceProviderImplementsTheServiceProviderInterface()
 	{
@@ -19,8 +18,7 @@ class RequestServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The RequestServiceProvider adds a RequestInterface to a
-	 * container
+	 * @testdox The RequestServiceProvider adds a RequestInterface to a container
 	 */
 	public function testRequestServiceProviderCreatesRequestInterface()
 	{
@@ -33,8 +31,7 @@ class RequestServiceProviderTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @testdox The RequestServiceProvider adds an RequestInterface to a
-	 * container with an alias
+	 * @testdox The RequestServiceProvider adds an RequestInterface to a container with an alias
 	 */
 	public function testRequestServiceProviderCreatesDispatcherWithAlias()
 	{

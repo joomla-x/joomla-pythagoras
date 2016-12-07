@@ -9,7 +9,7 @@ internal: yes
 php: yes
 main: Joomla
 sourceCode: yes
-title: "Joomla! Next (4) Developer Documentation"
+title: "Joomla! X Developer Documentation"
 tree: yes
 exclude:
   - build

@@ -180,7 +180,6 @@ class RoboFile extends \Robo\Tasks
 		     ->config($this->config['toolcfg'] . '/apigen.full.yml')
 		     ->arg('--title="' . $this->config['title'] . ' Developer Documentation"')
 		     ->arg('--destination="' . $this->config['apidocs'] . '/full"')
-		     ->arg('--annotation-groups=package')
 		     ->run();
 	}
 

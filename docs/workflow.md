@@ -22,7 +22,7 @@ $ ./install.sh
 on the console. This will install a couple of components, and register their entities.
 
 ```
-Joomla! installation expected in /home/nibra/Development/joomla-pythagoras
+Joomla! installation expected in your/path/to/joomla-pythagoras
  - installing extensions/Article
    - Article
  - installing libraries/incubator/Media

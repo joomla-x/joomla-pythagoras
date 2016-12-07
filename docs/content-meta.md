@@ -27,7 +27,7 @@ The currently available options seem to be:
 
 There are several implementations of PHPCR.
 They all have in common, that they handle much more than just the content tree
-(eg., storage handling), which is not desirable for JoomlaX.
+(eg., storage handling), which is not desirable for Joomla! X.
 
 ## Solution
 

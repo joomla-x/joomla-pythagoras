@@ -8,7 +8,7 @@ internal: no
 php: no
 main: Joomla
 sourceCode: no
-title: "Joomla! Next (4) API Documentation"
+title: "Joomla! X API Documentation"
 tree: yes
 exclude:
   - build
