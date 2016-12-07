@@ -35,4 +35,6 @@ if (!$loaded)
 require_once __DIR__ . '/init.php';
 
 $console = new \Joomla\Cli\Application(initContainer());
-$console->run();
+$console->setAutoExit(false);
+
+return $console->run();

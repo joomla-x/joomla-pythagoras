@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+try
+{
+	$coverageWhitelist     = $_SERVER['PHPUNIT_COVERAGE_WHITELIST'];
+	$coverageDateDirectory = $_SERVER['PHPUNIT_COVERAGE_DATA_DIRECTORY'];
+
+	echo 'xdebug_code_coverage_started()  = ' . (xdebug_code_coverage_started() ? 'true' : 'false') . "\n";
+	echo 'PHPUNIT_COVERAGE_DATA_DIRECTORY = ' . (is_string($coverageDateDirectory) ? $coverageDateDirectory : var_export($coverageDateDirectory, true)) . "\n";
+	echo 'PHPUNIT_COVERAGE_WHITELIST      = ' . (is_string($coverageWhitelist) ? $coverageWhitelist : var_export($coverageWhitelist, true)) . "\n";
+}
+catch (\Exception $e)
+{
+	echo $e->getMessage();
+	return 1;
+}
+
+return 0;

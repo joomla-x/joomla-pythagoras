@@ -1,0 +1,7 @@
+cli:
+  build: build/docker/cli
+  environment:
+    PHPUNIT_COVERAGE_WHITELIST: administrator,bin,cli,components,installation,layouts,libraries/incubator,modules,plugins
+    PHPUNIT_COVERAGE_DATA_DIRECTORY: /var/test/build
+  volumes:
+    - .:/var/test
