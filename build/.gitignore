@@ -2,3 +2,13 @@
 /docs
 /reports
 /logs
+/pdepend-summary.xml
+/phpmd.xml
+/pdepend-pyramid.svg
+/phploc.xml
+/phpmetrics.html
+/phpcpd.xml
+/checkstyle.xml
+/phpmetrics.xml
+/pdepend-jdepend.svg
+/pdepend-jdepend.xml
