@@ -44,13 +44,13 @@ The article component as vertical will "get" the horizontals functionality autom
 
 Show
 * API
-* Joomla PHP
+* Joomla! PHP
 
 ## Command bus
 
-tactician ( or something else as we decide to use librairis )
+tactician ( or something else as we decide to use libraries )
 ????
 
 #NOTE
 
-Term like ORM are the best aproximation of inteded functionality, in this example ORM does not mean a full fledged ORM as we might know it.
+Terms like ORM are the best aproximation of inteded functionality, in this example ORM does not mean a full fledged ORM as we might know it.
