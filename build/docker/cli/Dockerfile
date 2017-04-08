@@ -9,23 +9,22 @@ RUN apt-get update \
         sqlite3 \
         libsqlite3-dev
 
+# Install Composer
+RUN cd /usr/src \
+    && curl -sS https://getcomposer.org/installer -o composer-setup.php \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
 # Install MailCatcher
 RUN gem install mailcatcher --no-ri --no-rdoc
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('SHA384', 'composer-setup.php') === 'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php --install-dir=/ \
-    && php -r "unlink('composer-setup.php');" \
-    && mv composer.phar /usr/local/bin/composer
-
 # Setup the Xdebug version to install
-ENV XDEBUG_VERSION 2.4.1
-ENV XDEBUG_SHA1 52b5cede5dcb815de469d671bfdc626aec8adee3
+ENV XDEBUG_VERSION 2.5.1
+ENV XDEBUG_SHA256 7fda9020fd5a2c549ae5a692fcabbb00f74e39dda81d53d25e622bdab4880ec2
 
 # Install Xdebug
 RUN set -x \
     && curl -SL "http://www.xdebug.org/files/xdebug-$XDEBUG_VERSION.tgz" -o xdebug.tgz \
-    && echo $XDEBUG_SHA1 xdebug.tgz | sha1sum -c - \
+    && echo $XDEBUG_SHA256 xdebug.tgz | sha256sum -c - \
     && mkdir -p /usr/src/xdebug \
     && tar -xf xdebug.tgz -C /usr/src/xdebug --strip-components=1 \
     && rm xdebug.* \
