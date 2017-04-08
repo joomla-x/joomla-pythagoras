@@ -270,7 +270,7 @@ class RoboFile extends \Robo\Tasks
 
 		if (!$inDocker)
 		{
-			$containerInfo = json_decode(`docker inspect cli_cli`);
+			$containerInfo = json_decode(`docker inspect joomlapythagoras_cli`);
 			$build         = false;
 
 			if (empty($containerInfo))
@@ -293,10 +293,10 @@ class RoboFile extends \Robo\Tasks
 			if ($build)
 			{
 				$this->say('Building container.');
-				`docker-compose -f tests/cli/docker-compose.yml build`;
+				`docker-compose -f docker-compose-cli.yml build`;
 			}
 
-			$this->say(`docker-compose -f tests/cli/docker-compose.yml up`);
+			$this->say(`docker-compose -f docker-compose-cli.yml up`);
 
 			$this->remap('/var/test', __DIR__, 'build/reports/coverage.cli.php');
 
