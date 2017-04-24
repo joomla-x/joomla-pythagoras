@@ -17,9 +17,13 @@ use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Image;
+use Joomla\Content\Type\Link;
+use Joomla\Content\Type\OnePager;
+use Joomla\Content\Type\OnePagerSection;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Span;
 use Joomla\Content\Type\Tabs;
 use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
@@ -53,15 +57,51 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * Render a headline.
+	 * Render an accordion
 	 *
-	 * @param   Headline $headline The headline
+	 * @param   Accordion $accordion The accordion
 	 *
 	 * @return  void
 	 */
-	public function visitHeadline(Headline $headline)
+	public function visitAccordion(Accordion $accordion)
 	{
-		$this->data[] = ['headline' => ['text' => $headline->text, 'level' => $headline->level]];
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render an article
+	 *
+	 * @param   Article $article The article
+	 *
+	 * @return  void
+	 */
+	public function visitArticle(Article $article)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render an attribution to an author
+	 *
+	 * @param   Attribution $attribution The attribution
+	 *
+	 * @return  void
+	 */
+	public function visitAttribution(Attribution $attribution)
+	{
+		$this->data[] = ['attribution' => ['label' => $attribution->label, 'name' => $attribution->name]];
+	}
+
+	/**
+	 * Render columns
+	 *
+	 * @param   Columns $columns The columns
+	 *
+	 * @return  void
+	 */
+	public function visitColumns(Columns $columns)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -86,15 +126,87 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * Render an attribution to an author
+	 * Render a defaultMenu
 	 *
-	 * @param   Attribution $attribution The attribution
+	 * @param   DefaultMenu $defaultMenu The defaultMenu
 	 *
 	 * @return  void
 	 */
-	public function visitAttribution(Attribution $attribution)
+	public function visitDefaultMenu(DefaultMenu $defaultMenu)
 	{
-		$this->data[] = ['attribution' => ['label' => $attribution->label, 'name' => $attribution->name]];
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render dump
+	 *
+	 * @param   ContentTypeInterface $dump The dump
+	 *
+	 * @return  void
+	 */
+	public function visitDump(ContentTypeInterface $dump)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a headline.
+	 *
+	 * @param   Headline $headline The headline
+	 *
+	 * @return  void
+	 */
+	public function visitHeadline(Headline $headline)
+	{
+		$this->data[] = ['headline' => ['text' => $headline->text, 'level' => $headline->level]];
+	}
+
+	/**
+	 * Render an image
+	 *
+	 * @param   Image $image The image
+	 *
+	 * @return  void
+	 */
+	public function visitImage(Image $image)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a link
+	 *
+	 * @param   Link $link The link
+	 *
+	 * @return  void
+	 */
+	public function visitLink(Link $link)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a one-pager
+	 *
+	 * @param   OnePager $onePager The one-pager
+	 *
+	 * @return  void
+	 */
+	public function visitOnePager(OnePager $onePager)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a one-pager section
+	 *
+	 * @param   OnePagerSection $onePagerSection The one-pager section
+	 *
+	 * @return  void
+	 */
+	public function visitOnePagerSection(OnePagerSection $onePagerSection)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -110,13 +222,13 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * Render an image
+	 * Render rows
 	 *
-	 * @param   Image $image The image
+	 * @param   Rows $rows The rows
 	 *
 	 * @return  void
 	 */
-	public function visitImage(Image $image)
+	public function visitRows(Rows $rows)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
@@ -134,25 +246,13 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * Render an accordion
+	 * Render an span
 	 *
-	 * @param   Accordion $accordion The accordion
-	 *
-	 * @return  void
-	 */
-	public function visitAccordion(Accordion $accordion)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a tree
-	 *
-	 * @param   Tree $tree The tree
+	 * @param   Span $span The span
 	 *
 	 * @return  void
 	 */
-	public function visitTree(Tree $tree)
+	public function visitSpan(Span $span)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
@@ -170,54 +270,6 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * Dump an item
-	 *
-	 * @param   ContentTypeInterface $dump The dump
-	 *
-	 * @return  void
-	 */
-	public function visitDump(ContentTypeInterface $dump)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render rows
-	 *
-	 * @param   Rows $rows The rows
-	 *
-	 * @return  void
-	 */
-	public function visitRows(Rows $rows)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render columns
-	 *
-	 * @param   Columns $columns The columns
-	 *
-	 * @return  void
-	 */
-	public function visitColumns(Columns $columns)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render an article
-	 *
-	 * @param   Article $article The article
-	 *
-	 * @return  void
-	 */
-	public function visitArticle(Article $article)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
 	 * Render a teaser
 	 *
 	 * @param   Teaser $teaser The teaser
@@ -230,13 +282,13 @@ class JsonRenderer extends Renderer
 	}
 
 	/**
-	 * Render a defaultMenu
+	 * Render a tree
 	 *
-	 * @param   DefaultMenu $defaultMenu The defaultMenu
+	 * @param   Tree $tree The tree
 	 *
 	 * @return  void
 	 */
-	public function visitDefaultMenu(DefaultMenu $defaultMenu)
+	public function visitTree(Tree $tree)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}

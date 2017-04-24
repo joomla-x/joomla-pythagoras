@@ -40,10 +40,10 @@ class Headline extends AbstractContentType
 	 *
 	 * @param   ContentTypeVisitorInterface $visitor The Visitor
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		return $visitor->visitHeadline($this);
+		$visitor->visitHeadline($this);
 	}
 }

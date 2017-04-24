@@ -25,10 +25,10 @@ class HorizontalLine extends AbstractContentType
 	 *
 	 * @param   ContentTypeVisitorInterface $visitor The Visitor
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function accept(ContentTypeVisitorInterface $visitor)
 	{
-		return $visitor->visitHorizontalLine($this);
+		$visitor->visitHorizontalLine($this);
 	}
 }

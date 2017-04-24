@@ -17,9 +17,13 @@ use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Image;
+use Joomla\Content\Type\Link;
+use Joomla\Content\Type\OnePager;
+use Joomla\Content\Type\OnePagerSection;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Span;
 use Joomla\Content\Type\Tabs;
 use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
@@ -35,6 +39,42 @@ class PlainRenderer extends Renderer
 {
 	/** @var string The MIME type */
 	protected $mediatype = 'text/plain';
+
+	/**
+	 * Render an accordion
+	 *
+	 * @param   Accordion $accordion The accordion
+	 *
+	 * @return  void
+	 */
+	public function visitAccordion(Accordion $accordion)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render an article
+	 *
+	 * @param   Article $article The article
+	 *
+	 * @return  void
+	 */
+	public function visitArticle(Article $article)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render an attribution to an author
+	 *
+	 * @param   Attribution $attribution The attribution
+	 *
+	 * @return  void
+	 */
+	public function visitAttribution(Attribution $attribution)
+	{
+		$this->write($attribution->label . ' ' . $attribution->text . "\n\n");
+	}
 
 	/**
 	 * Write data to the output.
@@ -56,15 +96,15 @@ class PlainRenderer extends Renderer
 	}
 
 	/**
-	 * Render a headline.
+	 * Render columns
 	 *
-	 * @param   Headline $headline The headline
+	 * @param   Columns $columns The columns
 	 *
 	 * @return  void
 	 */
-	public function visitHeadline(Headline $headline)
+	public function visitColumns(Columns $columns)
 	{
-		$this->write($headline->text . "\n" . str_repeat('=', strlen($headline->text)) . "\n\n");
+		$this->visitCompound($columns);
 	}
 
 	/**
@@ -83,85 +123,13 @@ class PlainRenderer extends Renderer
 	}
 
 	/**
-	 * Render an attribution to an author
+	 * Render a defaultMenu
 	 *
-	 * @param   Attribution $attribution The attribution
-	 *
-	 * @return  void
-	 */
-	public function visitAttribution(Attribution $attribution)
-	{
-		$this->write($attribution->label . ' ' . $attribution->text . "\n\n");
-	}
-
-	/**
-	 * Render a paragraph
-	 *
-	 * @param   Paragraph $paragraph The paragraph
+	 * @param   DefaultMenu $defaultMenu The defaultMenu
 	 *
 	 * @return  void
 	 */
-	public function visitParagraph(Paragraph $paragraph)
-	{
-		$this->write($paragraph->text . "\n\n");
-	}
-
-	/**
-	 * Render an image
-	 *
-	 * @param   Image $image The image
-	 *
-	 * @return  void
-	 */
-	public function visitImage(Image $image)
-	{
-		$this->write("![{$image->alt}]({$image->url})");
-	}
-
-	/**
-	 * Render an slider
-	 *
-	 * @param   Slider $slider The slider
-	 *
-	 * @return  void
-	 */
-	public function visitSlider(Slider $slider)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render an accordion
-	 *
-	 * @param   Accordion $accordion The accordion
-	 *
-	 * @return  void
-	 */
-	public function visitAccordion(Accordion $accordion)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a tree
-	 *
-	 * @param   Tree $tree The tree
-	 *
-	 * @return  void
-	 */
-	public function visitTree(Tree $tree)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render tabs
-	 *
-	 * @param   Tabs $tabs The tabs
-	 *
-	 * @return  void
-	 */
-	public function visitTabs(Tabs $tabs)
+	public function visitDefaultMenu(DefaultMenu $defaultMenu)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
@@ -179,6 +147,78 @@ class PlainRenderer extends Renderer
 	}
 
 	/**
+	 * Render a headline.
+	 *
+	 * @param   Headline $headline The headline
+	 *
+	 * @return  void
+	 */
+	public function visitHeadline(Headline $headline)
+	{
+		$this->write($headline->text . "\n" . str_repeat('=', strlen($headline->text)) . "\n\n");
+	}
+
+	/**
+	 * Render an image
+	 *
+	 * @param   Image $image The image
+	 *
+	 * @return  void
+	 */
+	public function visitImage(Image $image)
+	{
+		$this->write("![{$image->alt}]({$image->url})");
+	}
+
+	/**
+	 * Render a link
+	 *
+	 * @param   Link $link The link
+	 *
+	 * @return  void
+	 */
+	public function visitLink(Link $link)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a one-pager
+	 *
+	 * @param   OnePager $onePager The one-pager
+	 *
+	 * @return  void
+	 */
+	public function visitOnePager(OnePager $onePager)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a one-pager section
+	 *
+	 * @param   OnePagerSection $onePagerSection The one-pager section
+	 *
+	 * @return  void
+	 */
+	public function visitOnePagerSection(OnePagerSection $onePagerSection)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a paragraph
+	 *
+	 * @param   Paragraph $paragraph The paragraph
+	 *
+	 * @return  void
+	 */
+	public function visitParagraph(Paragraph $paragraph)
+	{
+		$this->write($paragraph->text . "\n\n");
+	}
+
+	/**
 	 * Render rows
 	 *
 	 * @param   Rows $rows The rows
@@ -191,25 +231,37 @@ class PlainRenderer extends Renderer
 	}
 
 	/**
-	 * Render columns
+	 * Render an slider
 	 *
-	 * @param   Columns $columns The columns
+	 * @param   Slider $slider The slider
 	 *
 	 * @return  void
 	 */
-	public function visitColumns(Columns $columns)
+	public function visitSlider(Slider $slider)
 	{
-		$this->visitCompound($columns);
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
-	 * Render an article
+	 * Render an span
 	 *
-	 * @param   Article $article The article
+	 * @param   Span $span The span
 	 *
 	 * @return  void
 	 */
-	public function visitArticle(Article $article)
+	public function visitSpan(Span $span)
+	{
+		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render tabs
+	 *
+	 * @param   Tabs $tabs The tabs
+	 *
+	 * @return  void
+	 */
+	public function visitTabs(Tabs $tabs)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
@@ -227,13 +279,13 @@ class PlainRenderer extends Renderer
 	}
 
 	/**
-	 * Render a defaultMenu
+	 * Render a tree
 	 *
-	 * @param   DefaultMenu $defaultMenu The defaultMenu
+	 * @param   Tree $tree The tree
 	 *
 	 * @return  void
 	 */
-	public function visitDefaultMenu(DefaultMenu $defaultMenu)
+	public function visitTree(Tree $tree)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}

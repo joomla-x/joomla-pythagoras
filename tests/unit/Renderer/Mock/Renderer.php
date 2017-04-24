@@ -9,8 +9,12 @@ use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Dump;
 use Joomla\Content\Type\Image;
+use Joomla\Content\Type\Link;
+use Joomla\Content\Type\OnePager;
+use Joomla\Content\Type\OnePagerSection;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Span;
 use Joomla\Content\Type\Tabs;
 use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
@@ -30,11 +34,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   \Joomla\Content\Type\Headline $headline The headline
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitHeadline(\Joomla\Content\Type\Headline $headline)
 	{
-		return 0;
 	}
 
 	/**
@@ -42,11 +45,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   \Joomla\Content\Type\Compound $compound The compound
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitCompound(\Joomla\Content\Type\Compound $compound)
 	{
-		return 0;
 	}
 
 	/**
@@ -54,11 +56,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   \Joomla\Content\Type\Attribution $attribution The attribution
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitAttribution(\Joomla\Content\Type\Attribution $attribution)
 	{
-		return 0;
 	}
 
 	/**
@@ -66,11 +67,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   \Joomla\Content\Type\Paragraph $paragraph The paragraph
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitParagraph(\Joomla\Content\Type\Paragraph $paragraph)
 	{
-		return 0;
 	}
 
 	/**
@@ -78,11 +78,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Image $image The image
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitImage(Image $image)
 	{
-		return 0;
 	}
 
 	/**
@@ -90,11 +89,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Slider $slider The slider
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitSlider(Slider $slider)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -102,11 +100,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Accordion $accordion The accordion
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitAccordion(Accordion $accordion)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -114,11 +111,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Tree $tree The tree
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTree(Tree $tree)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -126,11 +122,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Tabs $tabs The tabs
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTabs(Tabs $tabs)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -138,11 +133,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Dump $dump The dump
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitDump(ContentTypeInterface $dump)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -150,11 +144,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Rows $rows The rows
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitRows(Rows $rows)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -162,11 +155,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Columns $columns The columns
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitColumns(Columns $columns)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -174,11 +166,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Article $article The article
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitArticle(Article $article)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -186,11 +177,10 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   Teaser $teaser The teaser
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTeaser(Teaser $teaser)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
 	}
 
 	/**
@@ -198,10 +188,53 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @param   DefaultMenu $defaultMenu The defaultMenu
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitDefaultMenu(DefaultMenu $defaultMenu)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
+	}
+
+	/**
+	 * Render a link
+	 *
+	 * @param   Link $link The link
+	 *
+	 * @return  void
+	 */
+	public function visitLink(Link $link)
+	{
+	}
+
+	/**
+	 * Render a one-pager
+	 *
+	 * @param   OnePager $onePager The one-pager
+	 *
+	 * @return  void
+	 */
+	public function visitOnePager(OnePager $onePager)
+	{
+	}
+
+	/**
+	 * Render a one-pager section
+	 *
+	 * @param   OnePagerSection $onePagerSection The one-pager section
+	 *
+	 * @return  void
+	 */
+	public function visitOnePagerSection(OnePagerSection $onePagerSection)
+	{
+	}
+
+	/**
+	 * Render an span
+	 *
+	 * @param   Span $span The span
+	 *
+	 * @return  void
+	 */
+	public function visitSpan(Span $span)
+	{
 	}
 }
