@@ -48,7 +48,7 @@ class RouterMiddleware implements MiddlewareInterface
 	 * @param   ResponseInterface      $response The response object
 	 * @param   callable               $next     The next middleware handler
 	 *
-	 * @return  ResponseInterface
+	 * @return  ResponseInterface The response
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
 	{
@@ -68,7 +68,8 @@ class RouterMiddleware implements MiddlewareInterface
 
 				foreach ($pages as $page)
 				{
-					$router->get($this->expandUrl($page->url, $page), function () use ($page) {
+					$router->get($this->expandUrl($page->url, $page), function () use ($page)
+					{
 						return $page;
 					});
 				}
@@ -78,7 +79,7 @@ class RouterMiddleware implements MiddlewareInterface
 				$page  = $route['controller']();
 				$vars  = $route['vars'];
 
-				$command = new DisplayPageCommand($page->id, $vars, $request, $response->getBody(), $this->container);
+				$command = new DisplayPageCommand($page->id, $vars, $request, $this->container->get('Renderer'), $this->container);
 				$request = $request->withAttribute('command', $command);
 				// @todo Emit afterRouting event
 			}
@@ -92,10 +93,12 @@ class RouterMiddleware implements MiddlewareInterface
 	}
 
 	/**
-	 * @param $url
-	 * @param $page
+	 * Get the full URL for a page.
 	 *
-	 * @return string
+	 * @param string $url  The local URL
+	 * @param Page   $page The page belonging to that URL
+	 *
+	 * @return string The full URL
 	 */
 	private function expandUrl($url, $page)
 	{

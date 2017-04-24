@@ -41,11 +41,11 @@ class RendererCest
 
 		$app       = new Application([
 			new RendererMiddleware(new Dispatcher(), $container),
-			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
+			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I, $container)
 			{
-				$body = $response->getBody();
+				$renderer = $container->get('Renderer');
 
-				$I->assertEquals(EventDecorator::class, get_class($body));
+				$I->assertEquals(EventDecorator::class, get_class($renderer));
 
 				return $next($request, $response);
 			}

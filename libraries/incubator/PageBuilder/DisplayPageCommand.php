@@ -9,6 +9,7 @@
 namespace Joomla\PageBuilder;
 
 use Interop\Container\ContainerInterface;
+use Joomla\Renderer\RendererInterface;
 use Joomla\Service\Command;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -23,24 +24,24 @@ class DisplayPageCommand extends Command
 	private $id;
 	private $vars;
 	private $request;
-	private $stream;
+	private $renderer;
 	private $container;
 
 	/**
 	 * DisplayPageCommand constructor.
 	 *
-	 * @param   integer                $id      The page ID
-	 * @param   array                  $vars    Routing variables
-	 * @param   ServerRequestInterface $request The request object
-	 * @param   StreamInterface        $stream  The output stream
+	 * @param   integer                $id       The page ID
+	 * @param   array                  $vars     Routing variables
+	 * @param   ServerRequestInterface $request  The request object
+	 * @param   RendererInterface      $renderer The renderer
 	 * @param   ContainerInterface     $container
 	 */
-	public function __construct($id, $vars, $request, $stream, $container)
+	public function __construct($id, $vars, $request, $renderer, $container)
 	{
 		$this->id        = $id;
 		$this->vars      = $vars;
 		$this->request   = $request;
-		$this->stream    = $stream;
+		$this->renderer  = $renderer;
 		$this->container = $container;
 
 		parent::__construct();
@@ -73,9 +74,9 @@ class DisplayPageCommand extends Command
 	/**
 	 * @return StreamInterface
 	 */
-	public function getStream()
+	public function getRenderer()
 	{
-		return $this->stream;
+		return $this->renderer;
 	}
 
 	/**

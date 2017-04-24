@@ -58,7 +58,7 @@ It is a `Joomla\Event\Event` object with the following parameters:
 Parameter | Type | Description
 --------- | ---- | -----------
 `type` | string | The name of the ContentType
-`stream` | Psr\Http\Message\StreamInterface | The output stream in its current state
+`renderer` | Joomla\Renderer\RendererInterface | The output renderer in its current state
 
 ### onRender\<ContentType>Failure
 
