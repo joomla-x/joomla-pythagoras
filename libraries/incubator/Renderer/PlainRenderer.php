@@ -37,26 +37,22 @@ class PlainRenderer extends Renderer
 	protected $mediatype = 'text/plain';
 
 	/**
-	 * Write data to the stream.
+	 * Write data to the output.
 	 *
 	 * @param   ContentTypeInterface|string $content The string that is to be written.
 	 *
-	 * @return  integer  Returns the number of bytes written to the stream.
-	 * @throws  \RuntimeException on failure.
+	 * @return  void
 	 */
 	public function write($content)
 	{
 		if ($content instanceof ContentTypeInterface)
 		{
-			$len = $content->accept($this);
+			$content->accept($this);
 		}
 		else
 		{
 			echo $content;
-			$len = strlen($content);
 		}
-
-		return $len;
 	}
 
 	/**
@@ -64,11 +60,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Headline $headline The headline
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitHeadline(Headline $headline)
 	{
-		return $this->write($headline->text . "\n" . str_repeat('=', strlen($headline->text)) . "\n\n");
+		$this->write($headline->text . "\n" . str_repeat('=', strlen($headline->text)) . "\n\n");
 	}
 
 	/**
@@ -76,18 +72,14 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Compound $compound The compound
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitCompound(Compound $compound)
 	{
-		$len = 0;
-
 		foreach ($compound->elements as $item)
 		{
-			$len += $item->content->accept($this);
+			$item->content->accept($this);
 		}
-
-		return $len;
 	}
 
 	/**
@@ -95,11 +87,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Attribution $attribution The attribution
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitAttribution(Attribution $attribution)
 	{
-		return $this->write($attribution->label . ' ' . $attribution->text . "\n\n");
+		$this->write($attribution->label . ' ' . $attribution->text . "\n\n");
 	}
 
 	/**
@@ -107,11 +99,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Paragraph $paragraph The paragraph
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitParagraph(Paragraph $paragraph)
 	{
-		return $this->write($paragraph->text . "\n\n");
+		$this->write($paragraph->text . "\n\n");
 	}
 
 	/**
@@ -119,11 +111,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Image $image The image
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitImage(Image $image)
 	{
-		return $this->write("![{$image->alt}]({$image->url})");
+		$this->write("![{$image->alt}]({$image->url})");
 	}
 
 	/**
@@ -131,13 +123,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Slider $slider The slider
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitSlider(Slider $slider)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -145,13 +135,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Accordion $accordion The accordion
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitAccordion(Accordion $accordion)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -159,13 +147,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Tree $tree The tree
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTree(Tree $tree)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -173,13 +159,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Tabs $tabs The tabs
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTabs(Tabs $tabs)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -187,11 +171,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   ContentTypeInterface $dump The dump
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitDump(ContentTypeInterface $dump)
 	{
-		return $this->write(print_r($dump->item, true));
+		$this->write(print_r($dump->item, true));
 	}
 
 	/**
@@ -199,11 +183,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Rows $rows The rows
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitRows(Rows $rows)
 	{
-		return $this->visitCompound($rows);
+		$this->visitCompound($rows);
 	}
 
 	/**
@@ -211,11 +195,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Columns $columns The columns
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitColumns(Columns $columns)
 	{
-		return $this->visitCompound($columns);
+		$this->visitCompound($columns);
 	}
 
 	/**
@@ -223,13 +207,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Article $article The article
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitArticle(Article $article)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -237,13 +219,11 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Teaser $teaser The teaser
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTeaser(Teaser $teaser)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -251,12 +231,10 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   DefaultMenu $defaultMenu The defaultMenu
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitDefaultMenu(DefaultMenu $defaultMenu)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 }

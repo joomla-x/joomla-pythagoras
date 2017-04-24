@@ -131,7 +131,7 @@ class RendererMiddleware implements MiddlewareInterface
 	private function createStream(RendererInterface $renderer)
 	{
 		$stream  = fopen('php://temp', 'r+');
-		$content = $renderer->getContents();
+		$content = (string) $renderer;
 
 		if ($content !== '')
 		{
@@ -139,6 +139,16 @@ class RendererMiddleware implements MiddlewareInterface
 			fseek($stream, 0);
 		}
 
-		return new Stream($stream);
+		$options = [
+			'wrapper_data' => [
+				'renderer' => $renderer->getClass(),
+			],
+			'wrapper_type' => 'RFC2397',
+			'stream_type'  => 'RFC2397',
+			'mediatype'    => $renderer->getMediaType(),
+			'base64'       => false,
+		];
+
+		return new Stream($stream, $options);
 	}
 }

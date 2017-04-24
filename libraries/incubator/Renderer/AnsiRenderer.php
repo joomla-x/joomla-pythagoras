@@ -41,13 +41,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Headline $headline The headline
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitHeadline(Headline $headline)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -55,13 +53,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Compound $compound The compound
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitCompound(Compound $compound)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -69,13 +65,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Attribution $attribution The attribution
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitAttribution(Attribution $attribution)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -83,13 +77,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Paragraph $paragraph The paragraph
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitParagraph(Paragraph $paragraph)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -97,13 +89,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Image $image The image
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitImage(Image $image)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -111,13 +101,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Slider $slider The slider
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitSlider(Slider $slider)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -125,13 +113,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Accordion $accordion The accordion
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitAccordion(Accordion $accordion)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -139,13 +125,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Tree $tree The tree
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTree(Tree $tree)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -153,13 +137,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Tabs $tabs The tabs
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTabs(Tabs $tabs)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -167,13 +149,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   ContentTypeInterface $dump The dump
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitDump(ContentTypeInterface $dump)
 	{
-		return $this->write(print_r($dump->item, true));
-
-		return 0;
+		$this->write(print_r($dump->item, true));
 	}
 
 	/**
@@ -181,13 +161,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Rows $rows The rows
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitRows(Rows $rows)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -195,13 +173,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Columns $columns The columns
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitColumns(Columns $columns)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -209,13 +185,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Article $article The article
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitArticle(Article $article)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -223,13 +197,11 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   Teaser $teaser The teaser
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitTeaser(Teaser $teaser)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 
 	/**
@@ -237,12 +209,10 @@ class AnsiRenderer extends Renderer
 	 *
 	 * @param   DefaultMenu $defaultMenu The defaultMenu
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitDefaultMenu(DefaultMenu $defaultMenu)
 	{
 		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 }
