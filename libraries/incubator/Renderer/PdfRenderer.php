@@ -9,6 +9,7 @@
 namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
+use Joomla\Content\ContentTypeVisitorTrait;
 use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
@@ -40,231 +41,18 @@ class PdfRenderer extends Renderer
 	/** @var string The MIME type */
 	protected $mediatype = 'application/pdf';
 
-	/**
-	 * Render an accordion
-	 *
-	 * @param   Accordion $accordion The accordion
-	 *
-	 * @return  void
-	 */
-	public function visitAccordion(Accordion $accordion)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
+	use ContentTypeVisitorTrait;
 
 	/**
-	 * Render an article
+	 * Common handler for different ContentTypes.
 	 *
-	 * @param   Article $article The article
+	 * @param string               $method  The name of the originally called method
+	 * @param ContentTypeInterface $content The content
 	 *
-	 * @return  void
+	 * @return mixed
 	 */
-	public function visitArticle(Article $article)
+	public function visit($method, $content)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render an attribution to an author
-	 *
-	 * @param   Attribution $attribution The attribution
-	 *
-	 * @return  void
-	 */
-	public function visitAttribution(Attribution $attribution)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render columns
-	 *
-	 * @param   Columns $columns The columns
-	 *
-	 * @return  void
-	 */
-	public function visitColumns(Columns $columns)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a compound (block) element
-	 *
-	 * @param   Compound $compound The compound
-	 *
-	 * @return  void
-	 */
-	public function visitCompound(Compound $compound)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a defaultMenu
-	 *
-	 * @param   DefaultMenu $defaultMenu The defaultMenu
-	 *
-	 * @return  void
-	 */
-	public function visitDefaultMenu(DefaultMenu $defaultMenu)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render dump
-	 *
-	 * @param   ContentTypeInterface $dump The dump
-	 *
-	 * @return  void
-	 */
-	public function visitDump(ContentTypeInterface $dump)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a headline.
-	 *
-	 * @param   Headline $headline The headline
-	 *
-	 * @return  void
-	 */
-	public function visitHeadline(Headline $headline)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render an image
-	 *
-	 * @param   Image $image The image
-	 *
-	 * @return  void
-	 */
-	public function visitImage(Image $image)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a link
-	 *
-	 * @param   Link $link The link
-	 *
-	 * @return  void
-	 */
-	public function visitLink(Link $link)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a one-pager
-	 *
-	 * @param   OnePager $onePager The one-pager
-	 *
-	 * @return  void
-	 */
-	public function visitOnePager(OnePager $onePager)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a one-pager section
-	 *
-	 * @param   OnePagerSection $onePagerSection The one-pager section
-	 *
-	 * @return  void
-	 */
-	public function visitOnePagerSection(OnePagerSection $onePagerSection)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a paragraph
-	 *
-	 * @param   Paragraph $paragraph The paragraph
-	 *
-	 * @return  void
-	 */
-	public function visitParagraph(Paragraph $paragraph)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render rows
-	 *
-	 * @param   Rows $rows The rows
-	 *
-	 * @return  void
-	 */
-	public function visitRows(Rows $rows)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render an slider
-	 *
-	 * @param   Slider $slider The slider
-	 *
-	 * @return  void
-	 */
-	public function visitSlider(Slider $slider)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render an span
-	 *
-	 * @param   Span $span The span
-	 *
-	 * @return  void
-	 */
-	public function visitSpan(Span $span)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render tabs
-	 *
-	 * @param   Tabs $tabs The tabs
-	 *
-	 * @return  void
-	 */
-	public function visitTabs(Tabs $tabs)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a teaser
-	 *
-	 * @param   Teaser $teaser The teaser
-	 *
-	 * @return  void
-	 */
-	public function visitTeaser(Teaser $teaser)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-	}
-
-	/**
-	 * Render a tree
-	 *
-	 * @param   Tree $tree The tree
-	 *
-	 * @return  void
-	 */
-	public function visitTree(Tree $tree)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
+		throw new \LogicException($method . ' is not implemented.');
 	}
 }

@@ -135,7 +135,7 @@ class Renderer extends \Joomla\Renderer\Renderer
 	 *
 	 * @return  void
 	 */
-	public function visitDump(ContentTypeInterface $dump)
+	public function visitDump(Dump $dump)
 	{
 	}
 

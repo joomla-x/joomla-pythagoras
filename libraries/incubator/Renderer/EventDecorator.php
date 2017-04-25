@@ -9,6 +9,7 @@
 namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
+use Joomla\Content\ContentTypeVisitorTrait;
 use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
@@ -49,6 +50,21 @@ class EventDecorator implements RendererInterface
 
 	/** @var DispatcherInterface */
 	private $dispatcher;
+
+	use ContentTypeVisitorTrait;
+
+	/**
+	 * Common handler for different ContentTypes.
+	 *
+	 * @param string               $method  The name of the originally called method
+	 * @param ContentTypeInterface $content The content
+	 *
+	 * @return mixed
+	 */
+	public function visit($method, $content)
+	{
+		$this->delegate($method, [$content]);
+	}
 
 	/**
 	 * Decorator constructor.
@@ -116,234 +132,6 @@ class EventDecorator implements RendererInterface
 			$this->dispatcher->dispatch(new RegisterContentTypeFailureEvent($type, $exception));
 			throw $exception;
 		}
-	}
-
-	/**
-	 * Render an accordion
-	 *
-	 * @param   Accordion $accordion The accordion
-	 *
-	 * @return  void
-	 */
-	public function visitAccordion(Accordion $accordion)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render an article
-	 *
-	 * @param   Article $article The article
-	 *
-	 * @return  void
-	 */
-	public function visitArticle(Article $article)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render an attribution to an author
-	 *
-	 * @param   Attribution $attribution The attribution
-	 *
-	 * @return  void
-	 */
-	public function visitAttribution(Attribution $attribution)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render columns
-	 *
-	 * @param   Columns $columns The columns
-	 *
-	 * @return  void
-	 */
-	public function visitColumns(Columns $columns)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a compound (block) element
-	 *
-	 * @param   Compound $compound The compound
-	 *
-	 * @return  void
-	 */
-	public function visitCompound(Compound $compound)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a defaultMenu
-	 *
-	 * @param   DefaultMenu $defaultMenu The defaultMenu
-	 *
-	 * @return  void
-	 */
-	public function visitDefaultMenu(DefaultMenu $defaultMenu)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render dump
-	 *
-	 * @param   ContentTypeInterface $dump The dump
-	 *
-	 * @return  void
-	 */
-	public function visitDump(ContentTypeInterface $dump)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a headline.
-	 *
-	 * @param   Headline $headline The headline
-	 *
-	 * @return  void
-	 */
-	public function visitHeadline(Headline $headline)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render an image
-	 *
-	 * @param   Image $image The image
-	 *
-	 * @return  void
-	 */
-	public function visitImage(Image $image)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a link
-	 *
-	 * @param   Link $link The link
-	 *
-	 * @return  void
-	 */
-	public function visitLink(Link $link)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a one-pager
-	 *
-	 * @param   OnePager $onePager The one-pager
-	 *
-	 * @return  void
-	 */
-	public function visitOnePager(OnePager $onePager)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a one-pager section
-	 *
-	 * @param   OnePagerSection $onePagerSection The one-pager section
-	 *
-	 * @return  void
-	 */
-	public function visitOnePagerSection(OnePagerSection $onePagerSection)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a paragraph
-	 *
-	 * @param   Paragraph $paragraph The paragraph
-	 *
-	 * @return  void
-	 */
-	public function visitParagraph(Paragraph $paragraph)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render rows
-	 *
-	 * @param   Rows $rows The rows
-	 *
-	 * @return  void
-	 */
-	public function visitRows(Rows $rows)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render an slider
-	 *
-	 * @param   Slider $slider The slider
-	 *
-	 * @return  void
-	 */
-	public function visitSlider(Slider $slider)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render an span
-	 *
-	 * @param   Span $span The span
-	 *
-	 * @return  void
-	 */
-	public function visitSpan(Span $span)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render tabs
-	 *
-	 * @param   Tabs $tabs The tabs
-	 *
-	 * @return  void
-	 */
-	public function visitTabs(Tabs $tabs)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a teaser
-	 *
-	 * @param   Teaser $teaser The teaser
-	 *
-	 * @return  void
-	 */
-	public function visitTeaser(Teaser $teaser)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
-	}
-
-	/**
-	 * Render a tree
-	 *
-	 * @param   Tree $tree The tree
-	 *
-	 * @return  void
-	 */
-	public function visitTree(Tree $tree)
-	{
-		$this->delegate(__FUNCTION__, func_get_args());
 	}
 
 	/**
