@@ -52,12 +52,13 @@
     <!ATTLIST option
         value CDATA #IMPLIED>
 
-    <!ELEMENT relations (belongsTo|hasOne|hasMany|hasManyThrough)+>
+    <!ELEMENT relations (belongsTo|hasOne|hasMany|hasManyThrough)*>
 
     <!ELEMENT belongsTo EMPTY>
     <!ATTLIST belongsTo
         name ID #REQUIRED
         entity NMTOKEN #REQUIRED
+        reference NMTOKEN #REQUIRED
         label CDATA #IMPLIED
         description CDATA #IMPLIED
         default CDATA #IMPLIED>

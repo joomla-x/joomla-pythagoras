@@ -84,6 +84,36 @@ The expected behaviour for each relation type and CRUD operation is defined in t
 
 Example: A `Detail` has one `Extra`.
 
+```xml
+<!-- Detail.xml -->
+    <relations>
+        <hasOne
+            name="extra"
+            entity="Extra"
+            reference="detail_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in the related entity pointing to this entity
+
+```xml
+<!-- Extra.xml -->
+    <relations>
+        <belongsTo
+            name="detail"
+            entity="Detail"
+            reference="detail_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in this entity pointing to the related entity
+
 #### Read the `Extra` of a `Detail`
 
 ```php
@@ -132,6 +162,36 @@ When a `Detail` is deleted, the associated `Extra` (if existant) will be deleted
 ### hasMany
 
 Example: A `Master` can have multiple `Detail`s.
+
+```xml
+<!-- Master.xml -->
+    <relations>
+        <hasMany
+            name="details"
+            entity="Detail"
+            reference="master_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in the related entity pointing to this entity
+
+```xml
+<!-- Detail.xml -->
+    <relations>
+        <belongsTo
+            name="master"
+            entity="Master"
+            reference="master_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in this entity pointing to the related entity
 
 #### Read the `Detail`s of a `Master`
 
@@ -183,6 +243,36 @@ The system will detect the change and delete the `Detail`.
 
 Example: Many `Detail`s belong to a `Master`.
 
+```xml
+<!-- Detail.xml -->
+    <relations>
+        <belongsTo
+            name="master"
+            entity="Master"
+            reference="master_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in this entity pointing to the related entity
+
+```xml
+<!-- Master.xml -->
+    <relations>
+        <hasMany
+            name="details"
+            entity="Detail"
+            reference="master_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in the related entity pointing to this entity
+
 #### Read the `Master` of a `Detail`
 
 ```php
@@ -230,6 +320,44 @@ If `master_id` is not required, it will be set to null on the `Detail`. Otherwis
 ### hasManyThrough
 
 Example: `Master`s have many `Tag`s through a `Map`.
+
+```xml
+<!-- Master.xml -->
+    <relations>
+        <hasManyThrough
+            name="tags"
+            entity="Tag"
+            reference="master_id"
+            joinTable="map"
+            joinRef="tag_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in the map pointing to this entity
+- `joinTable`: The map containing pounting to both related entities
+- `joinRef`: The field name in the map pointing to the related entity
+
+```xml
+<!-- Tag.xml -->
+    <relations>
+        <hasManyThrough
+            name="masters"
+            entity="Master"
+            reference="tag_id"
+            joinTable="map"
+            joinRef="master_id"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in the map pointing to this entity
+- `joinTable`: The map containing pounting to both related entities
+- `joinRef`: The field name in the map pointing to the related entity
 
 #### Read the `Tag`s of a `Master`
 
