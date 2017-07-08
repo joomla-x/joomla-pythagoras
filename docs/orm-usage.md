@@ -337,7 +337,7 @@ Example: `Master`s have many `Tag`s through a `Map`.
 - `name`: The name of the (virtual) field in this entity
 - `entity`: The type of the related entity
 - `reference`: The field name in the map pointing to this entity
-- `joinTable`: The map containing pounting to both related entities
+- `joinTable`: The map containing pointers to both related entities
 - `joinRef`: The field name in the map pointing to the related entity
 
 ```xml

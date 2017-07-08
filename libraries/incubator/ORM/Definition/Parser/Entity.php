@@ -21,6 +21,8 @@ use DOMImplementation;
  */
 class Entity extends Element
 {
+	private $entityDtd = 'https://raw.githubusercontent.com/nibralab/joomla-architecture/master/code/Joomla/ORM/Definition/entity.dtd';
+
 	/** @var  string  Fully qualified class name of the entity */
 	public $class;
 
@@ -36,6 +38,7 @@ class Entity extends Element
 	/** @var Relation[][]  List of relations */
 	public $relations = [
 		'belongsTo'      => [],
+		'belongsToMany'  => [],
 		'hasOne'         => [],
 		'hasMany'        => [],
 		'hasManyThrough' => []
@@ -96,7 +99,7 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   string  $column The column name
+	 * @param   string $column The column name
 	 *
 	 * @return  boolean
 	 */
@@ -107,7 +110,7 @@ class Entity extends Element
 			return false;
 		}
 
-		return array_key_exists($column, $this->fields) || array_key_exists($column, $this->relations['belongsTo']);
+		return array_key_exists($column, $this->fields);
 	}
 
 	/**
@@ -168,15 +171,15 @@ class Entity extends Element
 	/**
 	 * Writes the XML file
 	 *
-	 * @param   string  $filename The filename
+	 * @param   string $filename The filename
 	 *
 	 * @return  void
 	 */
 	public function writeXml($filename)
 	{
-		$dom = new DOMImplementation;
-		$dtd = $dom->createDocumentType('entity', '', 'https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd');
-		$xml = $dom->createDocument('', '', $dtd);
+		$dom           = new DOMImplementation;
+		$dtd           = $dom->createDocumentType('entity', '', $this->entityDtd);
+		$xml           = $dom->createDocument('', '', $dtd);
 		$xml->encoding = 'UTF-8';
 
 		$root = $this->createRootElement($xml);
@@ -209,7 +212,7 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   DOMDocument  $xml The XML document
+	 * @param   DOMDocument $xml The XML document
 	 *
 	 * @return  DOMElement
 	 */
@@ -248,28 +251,43 @@ class Entity extends Element
 
 		foreach ($this->fields as $f)
 		{
-			$field = $xml->createElement('field');
-			$this->addAttributes($field, get_object_vars($f), ['value', 'validation', 'options']);
-
-			foreach ($f->validation as $rule => $value)
-			{
-				$validation = $xml->createElement('validation');
-				$this->addAttributes($validation, ['rule' => $rule, 'value' => $value]);
-				$field->appendChild($validation);
-			}
-
-			foreach ($f->options as $key => $value)
-			{
-				$option = $xml->createElement('option');
-
-				// @todo Implement handling of options
-				$field->appendChild($option);
-			}
-
-			$fields->appendChild($field);
+			$fields->appendChild($this->createFieldElement($xml, $f));
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * @param  DOMDocument $xml The XML document
+	 * @param  Field       $f   The field's XML
+	 *
+	 * @return DOMElement
+	 */
+	private function createFieldElement($xml, $f)
+	{
+		$field = $xml->createElement('field');
+		$this->addAttributes($field, get_object_vars($f), ['value', 'validation', 'options']);
+
+		foreach ($f->validation as $rule => $value)
+		{
+			$validation = $xml->createElement('validation');
+			$this->addAttributes($validation, ['rule' => $rule, 'value' => $value]);
+
+			$field->appendChild($validation);
+		}
+
+		foreach ($f->options as $key => $value)
+		{
+			$option = $xml->createElement('option');
+			$this->addAttributes($option, ['value' => $key]);
+
+			$text = $xml->createTextNode($value);
+			$option->appendChild($text);
+
+			$field->appendChild($option);
+		}
+
+		return $field;
 	}
 
 	/**
