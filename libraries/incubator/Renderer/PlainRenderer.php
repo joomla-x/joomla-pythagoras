@@ -9,17 +9,23 @@
 namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
+use Joomla\Content\ContentTypeVisitorTrait;
 use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
 use Joomla\Content\Type\Columns;
 use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
+use Joomla\Content\Type\Dump;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Image;
+use Joomla\Content\Type\Link;
+use Joomla\Content\Type\OnePager;
+use Joomla\Content\Type\OnePagerSection;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Span;
 use Joomla\Content\Type\Tabs;
 use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
@@ -36,58 +42,19 @@ class PlainRenderer extends Renderer
 	/** @var string The MIME type */
 	protected $mediatype = 'text/plain';
 
-	/**
-	 * Write data to the stream.
-	 *
-	 * @param   ContentTypeInterface|string $content The string that is to be written.
-	 *
-	 * @return  integer  Returns the number of bytes written to the stream.
-	 * @throws  \RuntimeException on failure.
-	 */
-	public function write($content)
-	{
-		if ($content instanceof ContentTypeInterface)
-		{
-			$len = $content->accept($this);
-		}
-		else
-		{
-			echo $content;
-			$len = strlen($content);
-		}
-
-		return $len;
-	}
+	use ContentTypeVisitorTrait;
 
 	/**
-	 * Render a headline.
+	 * Common handler for different ContentTypes.
 	 *
-	 * @param   Headline $headline The headline
+	 * @param string               $method  The name of the originally called method
+	 * @param ContentTypeInterface $content The content
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return mixed
 	 */
-	public function visitHeadline(Headline $headline)
+	public function visit($method, $content)
 	{
-		return $this->write($headline->text . "\n" . str_repeat('=', strlen($headline->text)) . "\n\n");
-	}
-
-	/**
-	 * Render a compound (block) element
-	 *
-	 * @param   Compound $compound The compound
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitCompound(Compound $compound)
-	{
-		$len = 0;
-
-		foreach ($compound->elements as $item)
-		{
-			$len += $item->content->accept($this);
-		}
-
-		return $len;
+		throw new \LogicException($method . ' is not implemented.');
 	}
 
 	/**
@@ -95,115 +62,30 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Attribution $attribution The attribution
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitAttribution(Attribution $attribution)
 	{
-		return $this->write($attribution->label . ' ' . $attribution->text . "\n\n");
+		$this->write($attribution->label . ' ' . $attribution->text . "\n\n");
 	}
 
 	/**
-	 * Render a paragraph
+	 * Write data to the output.
 	 *
-	 * @param   Paragraph $paragraph The paragraph
+	 * @param   ContentTypeInterface|string $content The string that is to be written.
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
-	public function visitParagraph(Paragraph $paragraph)
+	public function write($content)
 	{
-		return $this->write($paragraph->text . "\n\n");
-	}
-
-	/**
-	 * Render an image
-	 *
-	 * @param   Image $image The image
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitImage(Image $image)
-	{
-		return $this->write("![{$image->alt}]({$image->url})");
-	}
-
-	/**
-	 * Render an slider
-	 *
-	 * @param   Slider $slider The slider
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitSlider(Slider $slider)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render an accordion
-	 *
-	 * @param   Accordion $accordion The accordion
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitAccordion(Accordion $accordion)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render a tree
-	 *
-	 * @param   Tree $tree The tree
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTree(Tree $tree)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render tabs
-	 *
-	 * @param   Tabs $tabs The tabs
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTabs(Tabs $tabs)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Dump an item
-	 *
-	 * @param   ContentTypeInterface $dump The dump
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitDump(ContentTypeInterface $dump)
-	{
-		return $this->write(print_r($dump->item, true));
-	}
-
-	/**
-	 * Render rows
-	 *
-	 * @param   Rows $rows The rows
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitRows(Rows $rows)
-	{
-		return $this->visitCompound($rows);
+		if ($content instanceof ContentTypeInterface)
+		{
+			$content->accept($this);
+		}
+		else
+		{
+			echo $content;
+		}
 	}
 
 	/**
@@ -211,52 +93,85 @@ class PlainRenderer extends Renderer
 	 *
 	 * @param   Columns $columns The columns
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitColumns(Columns $columns)
 	{
-		return $this->visitCompound($columns);
+		$this->visitCompound($columns);
 	}
 
 	/**
-	 * Render an article
+	 * Render a compound (block) element
 	 *
-	 * @param   Article $article The article
+	 * @param   Compound $compound The compound
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
-	public function visitArticle(Article $article)
+	public function visitCompound(Compound $compound)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
+		foreach ($compound->elements as $item)
+		{
+			$item->content->accept($this);
+		}
 	}
 
 	/**
-	 * Render a teaser
+	 * Dump an item
 	 *
-	 * @param   Teaser $teaser The teaser
+	 * @param   Dump $dump The dump
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
-	public function visitTeaser(Teaser $teaser)
+	public function visitDump(Dump $dump)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
+		$this->write(print_r($dump->item, true));
 	}
 
 	/**
-	 * Render a defaultMenu
+	 * Render a headline.
 	 *
-	 * @param   DefaultMenu $defaultMenu The defaultMenu
+	 * @param   Headline $headline The headline
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
-	public function visitDefaultMenu(DefaultMenu $defaultMenu)
+	public function visitHeadline(Headline $headline)
 	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
+		$this->write($headline->text . "\n" . str_repeat('=', strlen($headline->text)) . "\n\n");
+	}
 
-		return 0;
+	/**
+	 * Render an image
+	 *
+	 * @param   Image $image The image
+	 *
+	 * @return  void
+	 */
+	public function visitImage(Image $image)
+	{
+		$this->write("![{$image->alt}]({$image->url})");
+	}
+
+	/**
+	 * Render a paragraph
+	 *
+	 * @param   Paragraph $paragraph The paragraph
+	 *
+	 * @return  void
+	 */
+	public function visitParagraph(Paragraph $paragraph)
+	{
+		$this->write($paragraph->text . "\n\n");
+	}
+
+	/**
+	 * Render rows
+	 *
+	 * @param   Rows $rows The rows
+	 *
+	 * @return  void
+	 */
+	public function visitRows(Rows $rows)
+	{
+		$this->visitCompound($rows);
 	}
 }

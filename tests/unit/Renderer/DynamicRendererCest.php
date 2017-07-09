@@ -51,12 +51,12 @@ class DynamicRendererCest
 		});
 
 		/** @var ContentTypeInterface[] $content */
-		$content = array(
+		$content = [
 			new ContentType('ContentType'),
 			new NewContentType('NewContentType'),
 			new OtherContentType('OtherContentType'),
 			new UnregisteredContentType('UnregisteredContentType'),
-		);
+		];
 
 		foreach ($content as $c)
 		{
@@ -68,7 +68,7 @@ class DynamicRendererCest
 			"static: NewContentType\n" .
 			"dynamic: OtherContentType\n" .
 			"default: UnregisteredContentType\n",
-			$renderer->getContents()
+			(string) $renderer
 		);
 	}
 

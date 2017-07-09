@@ -42,21 +42,8 @@ class EventDecoratorCest
 				},
 				null
 			],
-			'close'               => [null],
-			'detach'              => [null],
-			'rewind'              => [null],
-			'seek'                => [0, null],
-			'getMetadata'         => [null],
 			'__toString'          => ['content'],
-			'read'                => [8192, 'content'],
-			'getContents'         => ['content'],
-			'getSize'             => [6],
-			'tell'                => [0],
-			'write'               => ['content', 6],
-			'eof'                 => [false],
-			'isReadable'          => [true],
-			'isWritable'          => [true],
-			'isSeekable'          => [true],
+			'write'               => ['content', null],
 		];
 
 		foreach ($mockMethods as $method => $arguments)

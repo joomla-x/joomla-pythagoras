@@ -9,6 +9,7 @@
 namespace Joomla\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
+use Joomla\Content\ContentTypeVisitorTrait;
 use Joomla\Content\Type\Accordion;
 use Joomla\Content\Type\Article;
 use Joomla\Content\Type\Attribution;
@@ -17,9 +18,13 @@ use Joomla\Content\Type\Compound;
 use Joomla\Content\Type\DefaultMenu;
 use Joomla\Content\Type\Headline;
 use Joomla\Content\Type\Image;
+use Joomla\Content\Type\Link;
+use Joomla\Content\Type\OnePager;
+use Joomla\Content\Type\OnePagerSection;
 use Joomla\Content\Type\Paragraph;
 use Joomla\Content\Type\Rows;
 use Joomla\Content\Type\Slider;
+use Joomla\Content\Type\Span;
 use Joomla\Content\Type\Tabs;
 use Joomla\Content\Type\Teaser;
 use Joomla\Content\Type\Tree;
@@ -42,33 +47,41 @@ class JsonRenderer extends Renderer
 	/** @var int The current output buffer length */
 	protected $len = 0;
 
-	/**
-	 * Update the content
-	 *
-	 * @return integer
-	 */
-	private function updateContent()
-	{
-		$this->output = json_encode($this->data, JSON_PRETTY_PRINT);
-		$total        = strlen($this->output);
-		$len          = $total - $this->len;
-		$this->len    = $total;
+	use ContentTypeVisitorTrait;
 
-		return $len;
+	/**
+	 * Common handler for different ContentTypes.
+	 *
+	 * @param string               $method  The name of the originally called method
+	 * @param ContentTypeInterface $content The content
+	 *
+	 * @return mixed
+	 */
+	public function visit($method, $content)
+	{
+		throw new \LogicException($method . ' is not implemented.');
 	}
 
 	/**
-	 * Render a headline.
+	 * Get the content from the buffer
 	 *
-	 * @param   Headline $headline The headline
-	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return string
 	 */
-	public function visitHeadline(Headline $headline)
+	public function __toString()
 	{
-		$this->data[] = ['headline' => ['text' => $headline->text, 'level' => $headline->level]];
+		return json_encode($this->data, JSON_PRETTY_PRINT);
+	}
 
-		return $this->updateContent();
+	/**
+	 * Render an attribution to an author
+	 *
+	 * @param   Attribution $attribution The attribution
+	 *
+	 * @return  void
+	 */
+	public function visitAttribution(Attribution $attribution)
+	{
+		$this->data[] = ['attribution' => ['label' => $attribution->label, 'name' => $attribution->name]];
 	}
 
 	/**
@@ -76,7 +89,7 @@ class JsonRenderer extends Renderer
 	 *
 	 * @param   Compound $compound The compound
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitCompound(Compound $compound)
 	{
@@ -90,22 +103,18 @@ class JsonRenderer extends Renderer
 
 		$stash[]    = [$compound->type => $this->data];
 		$this->data = $stash;
-
-		return $this->updateContent();
 	}
 
 	/**
-	 * Render an attribution to an author
+	 * Render a headline.
 	 *
-	 * @param   Attribution $attribution The attribution
+	 * @param   Headline $headline The headline
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
-	public function visitAttribution(Attribution $attribution)
+	public function visitHeadline(Headline $headline)
 	{
-		$this->data[] = ['attribution' => ['label' => $attribution->label, 'name' => $attribution->name]];
-
-		return $this->updateContent();
+		$this->data[] = ['headline' => ['text' => $headline->text, 'level' => $headline->level]];
 	}
 
 	/**
@@ -113,166 +122,10 @@ class JsonRenderer extends Renderer
 	 *
 	 * @param   Paragraph $paragraph The paragraph
 	 *
-	 * @return  integer Number of bytes written to the output
+	 * @return  void
 	 */
 	public function visitParagraph(Paragraph $paragraph)
 	{
 		$this->data[] = ['paragraph' => ['text' => $paragraph->text, 'variant' => $paragraph->variant]];
-
-		return $this->updateContent();
-	}
-
-	/**
-	 * Render an image
-	 *
-	 * @param   Image $image The image
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitImage(Image $image)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render an slider
-	 *
-	 * @param   Slider $slider The slider
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitSlider(Slider $slider)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render an accordion
-	 *
-	 * @param   Accordion $accordion The accordion
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitAccordion(Accordion $accordion)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render a tree
-	 *
-	 * @param   Tree $tree The tree
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTree(Tree $tree)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render tabs
-	 *
-	 * @param   Tabs $tabs The tabs
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTabs(Tabs $tabs)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Dump an item
-	 *
-	 * @param   ContentTypeInterface $dump The dump
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitDump(ContentTypeInterface $dump)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render rows
-	 *
-	 * @param   Rows $rows The rows
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitRows(Rows $rows)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render columns
-	 *
-	 * @param   Columns $columns The columns
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitColumns(Columns $columns)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render an article
-	 *
-	 * @param   Article $article The article
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitArticle(Article $article)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render a teaser
-	 *
-	 * @param   Teaser $teaser The teaser
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTeaser(Teaser $teaser)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
-	}
-
-	/**
-	 * Render a defaultMenu
-	 *
-	 * @param   DefaultMenu $defaultMenu The defaultMenu
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitDefaultMenu(DefaultMenu $defaultMenu)
-	{
-		throw new \LogicException(__METHOD__ . ' is not implemented.');
-
-		return 0;
 	}
 }

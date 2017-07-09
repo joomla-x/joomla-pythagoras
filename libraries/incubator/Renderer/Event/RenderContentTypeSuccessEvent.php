@@ -9,30 +9,30 @@
 namespace Joomla\Renderer\Event;
 
 use Joomla\Event\Event;
-use Psr\Http\Message\StreamInterface;
+use Joomla\Renderer\RendererInterface;
 
 /**
  * Class RenderContentTypeSuccessEvent
  *
  * @package Joomla\Renderer
  *
- * @since  1.0
+ * @since   __DEPLOY_VERSION__
  */
 class RenderContentTypeSuccessEvent extends Event
 {
 	/**
 	 * RenderContentTypeSuccessEvent constructor.
 	 *
-	 * @param   string           $type    The name of the content type
-	 * @param   StreamInterface  $stream  The stream to which the content is added
+	 * @param   string            $type     The name of the content type
+	 * @param   RendererInterface $renderer The renderer to which the content is added
 	 */
-	public function __construct($type, $stream)
+	public function __construct($type, $renderer)
 	{
 		parent::__construct(
 			'onAfter' . $type,
 			[
-				'type'   => $type,
-				'stream' => $stream
+				'type'     => $type,
+				'renderer' => clone($renderer)
 			]
 		);
 	}
