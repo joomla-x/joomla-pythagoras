@@ -72,6 +72,73 @@ class Installer
 	}
 
 	/**
+	 * @return  void
+	 */
+	private function loadInstalledExtensions()
+	{
+		$config           = $this->getExtensionIniFilename();
+		$this->extensions = file_exists($config) ? parse_ini_file($config, true) : [];
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getExtensionIniFilename()
+	{
+		return $this->container->get('ConfigDirectory') . '/config/extensions.ini';
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function loadExistingEntities()
+	{
+		$this->importDefinition($this->dataDirectory . '/entities/*.xml');
+	}
+
+	/**
+	 * @param   string $pattern A filename pattern
+	 *
+	 * @return  string[]  A list of entity names
+	 */
+	private function importDefinition($pattern)
+	{
+		$entityNames = [];
+
+		foreach ($this->findFiles($pattern) as $file)
+		{
+			$basename   = basename($file, '.xml');
+			$definition = $this->builder->getMeta($basename);
+
+			if (!empty($this->entityDefinitions[$basename]))
+			{
+				if ($this->entityDefinitions[$basename]->class == $definition->class)
+				{
+					// Might be an update
+					continue;
+				}
+
+				throw new \RuntimeException("Another definition for $basename already exists!");
+			}
+
+			$this->entityDefinitions[$basename] = $definition;
+			$entityNames[]                      = $basename;
+		}
+
+		return $entityNames;
+	}
+
+	/**
+	 * @param   string $pattern A filename pattern
+	 *
+	 * @return  string[]  A list of file names
+	 */
+	private function findFiles($pattern)
+	{
+		return glob($pattern);
+	}
+
+	/**
 	 * Installs an extension
 	 *
 	 * @param   string $source The path to the extension
@@ -80,7 +147,7 @@ class Installer
 	 */
 	public function install($source)
 	{
-		$pattern = chr(1) . '^' . preg_quote(JPATH_ROOT) . '/' . chr(1);
+		$pattern                             = chr(1) . '^' . preg_quote(JPATH_ROOT) . '/' . chr(1);
 		$this->extensions[basename($source)] = preg_replace($pattern, '', $source);
 
 		$xmlDirectory = $source . '/entities';
@@ -94,6 +161,204 @@ class Installer
 		}
 
 		return $entityNames;
+	}
+
+	/**
+	 * Finishes the installation
+	 *
+	 * @return  void
+	 */
+	public function finish()
+	{
+		$this->resolveRelations();
+		$this->writeXmlFiles();
+		$this->createTables();
+		$this->import();
+		$this->writeExtensionIni();
+	}
+
+	/**
+	 * Resolve all counter-relations
+	 *
+	 * @return  void
+	 */
+	private function resolveRelations()
+	{
+		foreach ($this->entityDefinitions as $definition)
+		{
+			$this->resolveBelongsTo($definition);
+			$this->resolveHasOneOrMany($definition);
+			$this->resolveHasManyThrough($definition);
+		}
+	}
+
+	/**
+	 * @param   EntityStructure $definition The entity structure
+	 *
+	 * @return  void
+	 */
+	private function resolveBelongsTo($definition)
+	{
+		foreach ($definition->relations['belongsTo'] as $relation)
+		{
+			$counterMeta      = $this->entityDefinitions[$relation->entity];
+
+			if ($counterMeta->role == 'lookup')
+			{
+				continue;
+			}
+
+			$counterRelations = $counterMeta->relations;
+
+			foreach (array_merge($counterRelations['hasOne'], $counterRelations['hasMany']) as $counterRelation)
+			{
+				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->reference)
+				{
+					break 2;
+				}
+			}
+
+			// No existing counter-relation found; create it.
+			$counterRelation = new HasMany(
+				[
+					'name'      => $this->normalise($this->inflector->toPlural($definition->name)),
+					'entity'    => $definition->name,
+					'reference' => $relation->reference,
+				]
+			);
+
+			$this->entityDefinitions[$relation->entity]->relations['hasMany'][$counterRelation->name] = $counterRelation;
+		}
+	}
+
+	/**
+	 * @param   string $word A word
+	 *
+	 * @return  string
+	 */
+	private function normalise($word)
+	{
+		return Normalise::toUnderscoreSeparated(strtolower(Normalise::fromCamelCase($word)));
+	}
+
+	/**
+	 * @param   EntityStructure $definition The entity structure
+	 *
+	 * @return  void
+	 */
+	private function resolveHasOneOrMany($definition)
+	{
+		foreach (array_merge($definition->relations['hasMany'], $definition->relations['hasOne']) as $relation)
+		{
+			$counterEntity    = $relation->entity;
+			$counterMeta      = $this->entityDefinitions[$counterEntity];
+			$counterRelations = $counterMeta->relations;
+
+			foreach ($counterRelations['belongsTo'] as $counterRelation)
+			{
+				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->reference)
+				{
+					break 2;
+				}
+			}
+
+			// No existing counter-relation found; create it.
+			$counterRelation = new BelongsTo(
+				[
+					'name'   => $this->normalise($definition->name),
+					'entity' => $definition->name,
+					'reference' => $relation->reference,
+				]
+			);
+
+			$this->entityDefinitions[$counterEntity]->relations['belongsTo'][$counterRelation->name] = $counterRelation;
+		}
+	}
+
+	/**
+	 * @param   EntityStructure $definition The entity structure
+	 *
+	 * @return  void
+	 */
+	private function resolveHasManyThrough($definition)
+	{
+		foreach ($definition->relations['hasManyThrough'] as $relation)
+		{
+			// @todo Implement HasManyThrough handling
+		}
+	}
+
+	/**
+	 * Store XML files in a central place
+	 *
+	 * @return  void
+	 */
+	private function writeXmlFiles()
+	{
+		foreach ($this->entityDefinitions as $definition)
+		{
+			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
+		}
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function createTables()
+	{
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->createTable($entityName);
+		}
+	}
+
+	/**
+	 * @param   string $entityName The name of the entity
+	 *
+	 * @return  void
+	 */
+	private function createTable($entityName)
+	{
+		$prefix        = '';
+		$schemaManager = $this->repositoryFactory->getSchemaManager();
+
+		if ($schemaManager !== null)
+		{
+			$meta      = $this->entityDefinitions[$entityName];
+			$tableName = $prefix . $meta->storage['table'];
+			$table     = new Table($tableName);
+
+			foreach ($meta->fields as $field)
+			{
+				// @todo add proper type handling
+				$type = 'string';
+
+				if (in_array($field->type, ['int', 'integer', 'id']))
+				{
+					$type = 'integer';
+				}
+
+				$table->addColumn($field->columnName($field->name), $type, ['notNull' => false]);
+			}
+
+			$primary = explode(',', $meta->primary);
+			$table->setPrimaryKey($primary);
+
+			$schemaManager->dropAndCreateTable($table);
+		}
+	}
+
+	/**
+	 * @return  void
+	 */
+	private function import()
+	{
+		foreach ($this->dataDirectories as $entityName => $csvDirectory)
+		{
+			$this->importInitialData($entityName, $csvDirectory);
+		}
+
+		$this->repositoryFactory->getUnitOfWork()->commit();
 	}
 
 	/**
@@ -133,8 +398,9 @@ class Installer
 	 */
 	private function loadData($dataFile)
 	{
-		$fh   = fopen($dataFile, 'r');
-		$keys = fgetcsv($fh);
+		$fh          = fopen($dataFile, 'r');
+		$keys        = fgetcsv($fh);
+		$columnCount = count($keys);
 
 		$rows = [];
 
@@ -147,271 +413,16 @@ class Installer
 				break;
 			}
 
+			if (count($row) != $columnCount)
+			{
+				echo "\n$dataFile: problem with row " . implode(', ', $row) . "\n";
+			}
 			$rows[] = array_combine($keys, $row);
 		}
 
 		fclose($fh);
 
 		return $rows;
-	}
-
-	/**
-	 * Finishes the installation
-	 *
-	 * @return  void
-	 */
-	public function finish()
-	{
-		$this->resolveRelations();
-		$this->writeXmlFiles();
-		$this->createTables();
-		$this->import();
-		$this->writeExtensionIni();
-	}
-
-	/**
-	 * @return  void
-	 */
-	private function loadExistingEntities()
-	{
-		$this->importDefinition($this->dataDirectory . '/entities/*.xml');
-	}
-
-	/**
-	 * @param   string $pattern A filename pattern
-	 *
-	 * @return  string[]  A list of file names
-	 */
-	private function findFiles($pattern)
-	{
-		return glob($pattern);
-	}
-
-	/**
-	 * @param   string $pattern A filename pattern
-	 *
-	 * @return  string[]  A list of entity names
-	 */
-	private function importDefinition($pattern)
-	{
-		$entityNames = [];
-
-		foreach ($this->findFiles($pattern) as $file)
-		{
-			$basename   = basename($file, '.xml');
-			$definition = $this->builder->getMeta($basename);
-
-			if (!empty($this->entityDefinitions[$basename]))
-			{
-				if ($this->entityDefinitions[$basename]->class == $definition->class)
-				{
-					// Might be an update
-					continue;
-				}
-
-				throw new \RuntimeException("Another definition for $basename already exists!");
-			}
-
-			$this->entityDefinitions[$basename] = $definition;
-			$entityNames[]                      = $basename;
-		}
-
-		return $entityNames;
-	}
-
-	/**
-	 * @param   string $entityName The name of the entity
-	 *
-	 * @return  void
-	 */
-	private function createTable($entityName)
-	{
-		$prefix        = '';
-		$schemaManager = $this->repositoryFactory->getSchemaManager();
-
-		if ($schemaManager !== null)
-		{
-			$meta      = $this->entityDefinitions[$entityName];
-			$tableName = $prefix . $meta->storage['table'];
-			$table     = new Table($tableName);
-
-			foreach (array_merge($meta->fields, $meta->relations['belongsTo']) as $field)
-			{
-				// @todo add proper type handling
-				$type = 'string';
-
-				if (in_array($field->type, ['int', 'integer', 'id']))
-				{
-					$type = 'integer';
-				}
-
-				$table->addColumn($field->columnName($field->name), $type);
-			}
-
-			$primary = explode(',', $meta->primary);
-			$table->setPrimaryKey($primary);
-
-			$schemaManager->dropAndCreateTable($table);
-		}
-	}
-
-	/**
-	 * @param   string $word A word
-	 *
-	 * @return  string
-	 */
-	private function normalise($word)
-	{
-		return Normalise::toUnderscoreSeparated(strtolower(Normalise::fromCamelCase($word)));
-	}
-
-	/**
-	 * @param   EntityStructure $definition The entity structure
-	 *
-	 * @return  void
-	 */
-	private function resolveBelongsTo($definition)
-	{
-		foreach ($definition->relations['belongsTo'] as $relation)
-		{
-			$counterEntity    = $relation->entity;
-			$counterMeta      = $this->entityDefinitions[$counterEntity];
-			$counterRelations = $counterMeta->relations;
-
-			foreach (array_merge($counterRelations['hasOne'], $counterRelations['hasMany']) as $counterRelation)
-			{
-				if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->name)
-				{
-					break 2;
-				}
-			}
-
-			// No existing counter-relation found; create it.
-			$counterRelation = new HasMany(
-				[
-					'name'      => $this->normalise($this->inflector->toPlural($definition->name)),
-					'entity'    => $definition->name,
-					'reference' => $relation->name,
-				]
-			);
-
-			$this->entityDefinitions[$counterEntity]->relations['hasMany'][$counterRelation->name] = $counterRelation;
-		}
-	}
-
-	/**
-	 * @param   EntityStructure $definition The entity structure
-	 *
-	 * @return  void
-	 */
-	private function resolveHasOneOrMany($definition)
-	{
-		foreach (array_merge($definition->relations['hasMany'], $definition->relations['hasOne']) as $relation)
-		{
-			$counterEntity    = $relation->entity;
-			$counterMeta      = $this->entityDefinitions[$counterEntity];
-			$counterRelations = $counterMeta->relations;
-
-			foreach ($counterRelations['belongsTo'] as $counterRelation)
-			{
-				if ($counterRelation->entity == $definition->name && $counterRelation->name == $relation->reference)
-				{
-					break 2;
-				}
-			}
-
-			// No existing counter-relation found; create it.
-			$counterRelation = new BelongsTo(
-				[
-					'name'   => $relation->reference,
-					'entity' => $definition->name,
-				]
-			);
-
-			$this->entityDefinitions[$counterEntity]->relations['belongsTo'][$counterRelation->name] = $counterRelation;
-		}
-	}
-
-	/**
-	 * @param   EntityStructure $definition The entity structure
-	 *
-	 * @return  void
-	 */
-	private function resolveHasManyThrough($definition)
-	{
-		foreach ($definition->relations['hasManyThrough'] as $relation)
-		{
-			// @todo Implement HasManyThrough handling
-		}
-	}
-
-	/**
-	 * @return  void
-	 */
-	private function loadInstalledExtensions()
-	{
-		$config           = $this->getExtensionIniFilename();
-		$this->extensions = file_exists($config) ? parse_ini_file($config, true) : [];
-	}
-
-	/**
-	 * @return string
-	 */
-	private function getExtensionIniFilename()
-	{
-		return $this->container->get('ConfigDirectory') . '/config/extensions.ini';
-	}
-
-	/**
-	 * Resolve all counter-relations
-	 *
-	 * @return  void
-	 */
-	private function resolveRelations()
-	{
-		foreach ($this->entityDefinitions as $definition)
-		{
-			$this->resolveBelongsTo($definition);
-			$this->resolveHasOneOrMany($definition);
-			$this->resolveHasManyThrough($definition);
-		}
-	}
-
-	/**
-	 * Store XML files in a central place
-	 *
-	 * @return  void
-	 */
-	private function writeXmlFiles()
-	{
-		foreach ($this->entityDefinitions as $definition)
-		{
-			$definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
-		}
-	}
-
-	/**
-	 * @return  void
-	 */
-	private function createTables()
-	{
-		foreach ($this->dataDirectories as $entityName => $csvDirectory)
-		{
-			$this->createTable($entityName);
-		}
-	}
-
-	/**
-	 * @return  void
-	 */
-	private function import()
-	{
-		foreach ($this->dataDirectories as $entityName => $csvDirectory)
-		{
-			$this->importInitialData($entityName, $csvDirectory);
-		}
-
-		$this->repositoryFactory->getUnitOfWork()->commit();
 	}
 
 	/**
