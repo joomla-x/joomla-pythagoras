@@ -10,7 +10,7 @@ namespace Joomla\PageBuilder;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Logging\DebugStack;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Joomla\Content\CompoundTypeInterface;
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\AbstractContentType;

@@ -360,7 +360,6 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->stopOnFail();
 		$this->initReports();
-		$this->createTestdata();
 
 		$tempConfigFile = $this->buildConfig($this->config['toolcfg'], $option['coverage']);
 

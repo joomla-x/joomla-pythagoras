@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\PageBuilder\Entity\Page">
 
     <storage>
@@ -8,36 +8,69 @@
     </storage>
 
     <fields>
-        <field name="id"
-               type="id"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               default="null"
+        <field
+            name="id"
+            type="id"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            default="null"
         >
             <validation rule="positive"/>
             <validation rule="integer"/>
         </field>
 
-        <field name="title"
-               type="title"
-               label="JGLOBAL_TITLE"
+        <field
+            name="title"
+            type="title"
+            label="JGLOBAL_TITLE"
         >
             <validation rule="maxlen" value="64"/>
         </field>
 
-        <field name="url" type="url"/>
+        <field
+            name="url"
+            type="url"
+        />
+
+        <field
+            name="parent_id"
+            type="foreignkey"
+            entity="Page"
+        >
+        </field>
+
+        <field
+            name="layout_id"
+            type="foreignkey"
+            entity="Layout"
+        >
+        </field>
 
     </fields>
 
     <relations>
-        <belongsTo name="parent_id"
-                   entity="Page"
-                   label="JFIELD_PARENT_LABEL"
-                   description="JFIELD_PARENT_DESC"
+        <belongsTo
+            name="parent"
+            entity="Page"
+            reference="parent_id"
+            label="JFIELD_PARENT_LABEL"
+            description="JFIELD_PARENT_DESC"
         />
-        <belongsTo name="layout_id" entity="Layout"/>
-        <hasMany name="children" entity="Page" reference="parent_id"/>
-        <hasMany name="content" entity="Content" reference="page_id"/>
+        <belongsTo
+            name="layout"
+            entity="Layout"
+            reference="layout_id"
+        />
+        <hasMany
+            name="children"
+            entity="Page"
+            reference="parent_id"
+        />
+        <hasMany
+            name="content"
+            entity="Content"
+            reference="page_id"
+        />
     </relations>
 
 </entity>

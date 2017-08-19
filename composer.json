@@ -14,7 +14,6 @@
   },
   "require": {
     "league/flysystem": "^1.0",
-    "doctrine/dbal": "^2.5.5",
     "league/tactician": "^1.0",
     "monolog/monolog": "^1.17",
     "matthiasmullie/scrapbook": "^1.0",
@@ -24,7 +23,10 @@
     "vlucas/phpdotenv": "^2.2",
     "joomla/registry": "^1.5",
     "aura/session": "^2.0",
-    "joomla/string": "^1.4"
+    "joomla/string": "^1.4",
+    "joomla-x/event": "3.0.x-dev",
+    "joomla-x/di": "3.0.x-dev",
+    "joomla-x/orm": "dev-master"
   },
   "require-dev": {
     "codeception/codeception": "^2.0",
@@ -51,7 +53,6 @@
   "autoload-dev": {
     "psr-4": {
       "Joomla\\Tests\\Unit\\": "tests/unit/",
-      "Joomla\\Tests\\Unit\\ORM\\Mocks\\": "tests/unit/ORM/Mocks/",
       "Joomla\\Tests\\Cli\\": "tests/cli/",
       "Joomla\\Tests\\Functional\\": "tests/functional/",
       "Joomla\\Tests\\System\\": "tests/acceptance/",

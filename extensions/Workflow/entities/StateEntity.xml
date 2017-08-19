@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\Extension\Workflow\Entity\StateEntity">
 
     <storage>
@@ -8,23 +8,43 @@
     </storage>
 
     <fields>
-        <field name="id"
-               type="id"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               default="null"
+        <field
+            name="id"
+            type="id"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            default="null"
         >
             <validation rule="positive"/>
             <validation rule="integer"/>
         </field>
+
+        <field
+            name="entity_id"
+            type="foreignkey"
+            entity="Article"
+        >
+        </field>
+
+        <field
+            name="state_id"
+            type="foreignkey"
+            entity="State"
+        >
+        </field>
+
     </fields>
 
     <relations>
-    	<belongsTo name="entity_id"
-                   entity="Article"
+        <belongsTo
+            name="entity"
+            entity="Article"
+            reference="entity_id"
         />
-    	<belongsTo name="state_id"
-                   entity="State"
+        <belongsTo
+            name="state"
+            entity="State"
+            reference="state_id"
         />
     </relations>
 

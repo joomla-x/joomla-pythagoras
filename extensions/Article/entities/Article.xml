@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\Extension\Article\Entity\Article">
 
     <storage>
@@ -8,60 +8,76 @@
     </storage>
 
     <fields>
-        <field name="id"
-               type="id"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               default="null"
+        <field
+            name="id"
+            type="id"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            default="null"
         >
             <validation rule="positive"/>
             <validation rule="integer"/>
         </field>
 
-        <field name="title"
-               type="title"
-               label="JGLOBAL_TITLE"
+        <field
+            name="title"
+            type="title"
+            label="JGLOBAL_TITLE"
         >
             <validation rule="maxlen" value="64"/>
         </field>
 
-        <field name="category"
-               type="text"
+        <field
+            name="parent_id"
+            type="foreignkey"
+            entity="Article"
+        >
+        </field>
+
+        <field
+            name="category"
+            type="text"
         />
 
-        <field name="alias"
-               type="text"
-               label="JGLOBAL_FIELD_ALIAS_LABEL"
-               description="JGLOBAL_FIELD_ALIAS_DESC"
+        <field
+            name="alias"
+            type="text"
+            label="JGLOBAL_FIELD_ALIAS_LABEL"
+            description="JGLOBAL_FIELD_ALIAS_DESC"
         />
 
-        <field name="teaser"
-               type="richtext"
-               label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
-               description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
+        <field
+            name="teaser"
+            type="richtext"
+            label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
+            description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
         />
 
-        <field name="image"
-               type="path"
+        <field
+            name="image"
+            type="path"
         />
 
-        <field name="body"
-               type="richtext"
-               label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
-               description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
+        <field
+            name="body"
+            type="richtext"
+            label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
+            description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
         />
 
-        <field name="author"
-               type="text"
-               label="COM_CONTENT_FIELD_CREATED_BY_ALIAS_LABEL"
-               description="COM_CONTENT_FIELD_CREATED_BY_ALIAS_DESC"
-               default=""
+        <field
+            name="author"
+            type="text"
+            label="COM_CONTENT_FIELD_CREATED_BY_ALIAS_LABEL"
+            description="COM_CONTENT_FIELD_CREATED_BY_ALIAS_DESC"
+            default=""
         />
 
-        <field name="license"
-               type="text"
-               label="JFIELD_META_RIGHTS_LABEL"
-               description="JFIELD_META_RIGHTS_DESC"
+        <field
+            name="license"
+            type="text"
+            label="JFIELD_META_RIGHTS_LABEL"
+            description="JFIELD_META_RIGHTS_DESC"
         >
             <validation rule="regex" value="copy(right|left)"/>
         </field>
@@ -69,14 +85,17 @@
     </fields>
 
     <relations>
-        <belongsTo name="parent_id"
-                   entity="Article"
-                   label="JFIELD_PARENT_LABEL"
-                   description="JFIELD_PARENT_DESC"
+        <belongsTo
+            name="parent"
+            entity="Article"
+            reference="parent_id"
+            label="JFIELD_PARENT_LABEL"
+            description="JFIELD_PARENT_DESC"
         />
-        <hasMany name="children"
-                 entity="Article"
-                 reference="parent_id"
+        <hasMany
+            name="children"
+            entity="Article"
+            reference="parent_id"
         />
     </relations>
 

@@ -104,10 +104,10 @@ class EventDecoratorCest
 			$contentType = preg_replace('~^.*\\\~', '', $className);
 			$method      = 'visit' . $contentType;
 
-			/** @var Dispatcher $mockDispatcher */
+			/** @var Dispatcher|\Mockery\MockInterface $mockDispatcher */
 			$mockDispatcher = Mockery::mock(Dispatcher::class);
-			$mockDispatcher->shouldReceive('dispatch')->once()->with(RenderContentTypeEvent::class);
-			$mockDispatcher->shouldReceive('dispatch')->once()->with(RenderContentTypeSuccessEvent::class);
+			$mockDispatcher->shouldReceive('dispatch')->once()->with('onRenderContentType', RenderContentTypeEvent::class);
+			$mockDispatcher->shouldReceive('dispatch')->once()->with('onRenderContentTypeSuccess', RenderContentTypeSuccessEvent::class);
 
 			/** @var RendererInterface $mockRenderer */
 			$mockRenderer = Mockery::mock(Renderer::class);

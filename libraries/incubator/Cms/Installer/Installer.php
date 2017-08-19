@@ -9,7 +9,7 @@
 namespace Joomla\Cms\Installer;
 
 use Doctrine\DBAL\Schema\Table;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Joomla\DI\Container;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\BelongsTo;

@@ -8,7 +8,7 @@
 
 namespace Joomla\PageBuilder;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Joomla\Service\Command;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;

@@ -41,7 +41,7 @@ class ExtensionDispatcherTest extends \PHPUnit_Framework_TestCase
 			        $plugin
 		        ]);
 		$dispatcher = new ExtensionDispatcher($factory);
-		$dispatcher->dispatch(new Event('unit'));
+		$dispatcher->dispatch('onUnit', new Event('unit'));
 
 		$listeners = $dispatcher->getListeners('unit');
 		$this->assertCount(1, $listeners);

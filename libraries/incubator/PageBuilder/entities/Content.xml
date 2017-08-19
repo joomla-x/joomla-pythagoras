@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\PageBuilder\Entity\Content">
 
     <storage>
@@ -8,7 +8,8 @@
     </storage>
 
     <fields>
-        <field name="id"
+        <field
+            name="id"
                type="id"
                label="JGLOBAL_FIELD_ID_LABEL"
                description="JGLOBAL_FIELD_ID_DESC"
@@ -17,23 +18,83 @@
             <validation rule="positive"/>
             <validation rule="integer"/>
         </field>
-        <field name="name" type="string"/>
-        <field name="content_type" type="string"/>
-        <field name="content_args" type="json"/>
-        <field name="ordering" type="integer"/>
-        <field name="component" type="string"/>
-        <field name="reference" type="string"/>
-        <field name="selection" type="json"/>
-        <field name="params" type="json"/>
-        <field name="custom_css" type="string"/>
+        <field
+            name="name"
+            type="string"
+        />
+        <field
+            name="content_type"
+            type="string"
+        />
+        <field
+            name="content_args"
+            type="json"
+        />
+        <field
+            name="ordering"
+            type="integer"
+        />
+        <field
+            name="component"
+            type="string"
+        />
+        <field
+            name="reference"
+            type="string"
+        />
+        <field
+            name="selection"
+            type="json"
+        />
+        <field
+            name="params"
+            type="json"
+        />
+        <field
+            name="custom_css"
+            type="string"
+        />
+
+        <field
+            name="parent_id"
+            type="foreignkey"
+            entity="Content"
+        >
+        </field>
+
+        <field
+            name="layout_id"
+            type="foreignkey"
+            entity="Layout"
+        >
+        </field>
+
+        <field
+            name="page_id"
+            type="foreignkey"
+            entity="Page"
+        >
+        </field>
 
 
     </fields>
 
     <relations>
-        <belongsTo name="parent_id" entity="Content"/>
-        <belongsTo name="layout_id" entity="Layout"/>
-        <belongsTo name="page_id" entity="Page"/>
+        <belongsTo
+            name="parent"
+            entity="Content"
+            reference="parent_id"
+        />
+        <belongsTo
+            name="layout"
+            entity="Layout"
+            reference="layout_id"
+        />
+        <belongsTo
+            name="page"
+            entity="Page"
+            reference="page_id"
+        />
     </relations>
 
 </entity>

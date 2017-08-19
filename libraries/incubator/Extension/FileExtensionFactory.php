@@ -8,7 +8,7 @@
 
 namespace Joomla\Extension;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;

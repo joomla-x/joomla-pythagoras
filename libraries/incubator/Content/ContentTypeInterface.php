@@ -8,7 +8,7 @@
 
 namespace Joomla\Content;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Joomla\Renderer\RendererInterface;
 
 /**

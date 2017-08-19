@@ -69,16 +69,16 @@ class EventDecorator implements RendererInterface
 	 */
 	public function registerContentType($type, $handler)
 	{
-		$this->dispatcher->dispatch(new RegisterContentTypeEvent($type, $handler));
+		$this->dispatcher->dispatch('onRegisterContentType', new RegisterContentTypeEvent($type, $handler));
 
 		try
 		{
 			$this->renderer->registerContentType($type, $handler);
-			$this->dispatcher->dispatch(new RegisterContentTypeSuccessEvent($type, $handler));
+			$this->dispatcher->dispatch('onRegisterContentTypeSuccess', new RegisterContentTypeSuccessEvent($type, $handler));
 		}
 		catch (\Exception $exception)
 		{
-			$this->dispatcher->dispatch(new RegisterContentTypeFailureEvent($type, $exception));
+			$this->dispatcher->dispatch('onRegisterContentTypeFailure', new RegisterContentTypeFailureEvent($type, $exception));
 			throw $exception;
 		}
 	}
@@ -310,18 +310,18 @@ class EventDecorator implements RendererInterface
 		if (preg_match('~^visit(.+)~', $method, $match))
 		{
 			$type = $match[1];
-			$this->dispatcher->dispatch(new RenderContentTypeEvent($type, $arguments[0]));
+			$this->dispatcher->dispatch('onRenderContentType', new RenderContentTypeEvent($type, $arguments[0]));
 
 			try
 			{
 				$result = call_user_func_array([$this->renderer, $method], $arguments);
-				$this->dispatcher->dispatch(new RenderContentTypeSuccessEvent($type, $this->renderer));
+				$this->dispatcher->dispatch('onRenderContentTypeSuccess', new RenderContentTypeSuccessEvent($type, $this->renderer));
 
 				return $result;
 			}
 			catch (\Exception $exception)
 			{
-				$this->dispatcher->dispatch(new RenderContentTypeFailureEvent($type, $exception));
+				$this->dispatcher->dispatch('onRenderContentTypeFailure', new RenderContentTypeFailureEvent($type, $exception));
 				throw $exception;
 			}
 		}

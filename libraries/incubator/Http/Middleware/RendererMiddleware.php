@@ -8,7 +8,7 @@
 
 namespace Joomla\Http\Middleware;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Joomla\Event\Dispatcher;
 use Joomla\Http\MiddlewareInterface;
 use Joomla\Renderer\EventDecorator;

@@ -14,6 +14,7 @@ use Joomla\Renderer\HtmlRenderer;
 use Joomla\Renderer\JsonRenderer;
 use Joomla\Renderer\PlainRenderer;
 use Joomla\Renderer\XmlRenderer;
+use Joomla\Tests\Unit\Renderer\Mock\ArbitraryInteropContainer;
 use UnitTester;
 
 class RendererFactoryCest
@@ -57,7 +58,7 @@ class RendererFactoryCest
 	 */
 	public function RendererFactoryCreatesTheCorrectRenderer(UnitTester $I)
 	{
-		$container = new \ArbitraryInteropContainer();
+		$container = new ArbitraryInteropContainer();
 
 		foreach ($this->dataAcceptHeaders() as $foo)
 		{

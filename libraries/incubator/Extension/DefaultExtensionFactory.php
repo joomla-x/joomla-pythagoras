@@ -8,7 +8,7 @@
 
 namespace Joomla\Extension;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**

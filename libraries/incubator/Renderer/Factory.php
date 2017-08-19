@@ -8,7 +8,7 @@
 
 namespace Joomla\Renderer;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Joomla\Http\Header\AcceptHeader;
 use Joomla\Renderer\Exception\NotFoundException;
 

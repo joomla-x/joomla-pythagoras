@@ -42,13 +42,18 @@ class ExtensionDispatcher extends Dispatcher
 	}
 
 	/**
-	 * Call the extensions
+	 * Dispatches an event to all registered listeners.
 	 *
-	 * @param   EventInterface $event The event
+	 * @param   string         $name    The name of the event to dispatch.
+	 *                                  The name of the event is the name of the method that is invoked on listeners.
+	 * @param   EventInterface $event   The event to pass to the event handlers/listeners.
+	 *                                  If not supplied, an empty EventInterface instance is created.
 	 *
 	 * @return  EventInterface
+	 *
+	 * @since   __DEPLOY_VERSION__
 	 */
-	public function dispatch(EventInterface $event)
+	public function dispatch(string $name, EventInterface $event = null): EventInterface
 	{
 		$this->logger->debug(__METHOD__ . ": Dispatching " . $event->getName());
 
@@ -62,7 +67,7 @@ class ExtensionDispatcher extends Dispatcher
 			$this->loadedEvents[$name] = $name;
 		}
 
-		$result = parent::dispatch($event);
+		$result = parent::dispatch($name, $event);
 		$this->logger->debug(__METHOD__ . ": Done.");
 
 		return $result;

@@ -84,10 +84,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
 		$this->installer->finish();
 
 		$originalStructure = $this->getStructureFromFile(__DIR__ . '/data/ext_article/entities/Article.xml');
-		$this->assertFalse(in_array('category_id', $originalStructure['relations']['belongsTo']));
+		$this->assertFalse(in_array('category', $originalStructure['relations']['belongsTo']));
 
 		$cachedStructure = $this->getStructureFromFile($this->dataDirectory . '/entities/Article.xml');
-		$this->assertTrue(in_array('category_id', $cachedStructure['relations']['belongsTo']));
+		$this->assertTrue(in_array('category', $cachedStructure['relations']['belongsTo']));
 	}
 
 	/**

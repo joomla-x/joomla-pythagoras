@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\Extension\Category\Entity\Category">
 
     <storage>
@@ -8,40 +8,53 @@
     </storage>
 
     <fields>
-        <field name="id"
-               type="id"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               default="null"
+        <field
+            name="id"
+            type="id"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            default="null"
         >
             <validation rule="positive"/>
             <validation rule="integer"/>
         </field>
 
-        <field name="title"
-               type="title"
-               label="JGLOBAL_TITLE"
+        <field
+            name="title"
+            type="title"
+            label="JGLOBAL_TITLE"
         >
             <validation rule="maxlen" value="64"/>
         </field>
 
-        <field name="body"
-               type="richtext"
-               label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
-               description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
+        <field
+            name="parent_id"
+            type="foreignkey"
+            entity="Category"
+        >
+        </field>
+
+        <field
+            name="body"
+            type="richtext"
+            label="COM_CONTENT_FIELD_ARTICLETEXT_LABEL"
+            description="COM_CONTENT_FIELD_ARTICLETEXT_DESC"
         />
 
     </fields>
 
     <relations>
-        <belongsTo name="parent_id"
-                   entity="category"
-                   label="JFIELD_PARENT_LABEL"
-                   description="JFIELD_PARENT_DESC"
+        <belongsTo
+            name="parent"
+            entity="Category"
+            reference="parent_id"
+            label="JFIELD_PARENT_LABEL"
+            description="JFIELD_PARENT_DESC"
         />
-        <hasMany name="children"
-                 entity="category"
-                 reference="parent_id"
+        <hasMany
+            name="children"
+            entity="Category"
+            reference="parent_id"
         />
     </relations>
 
