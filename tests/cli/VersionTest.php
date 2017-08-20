@@ -15,14 +15,14 @@ class VersionTest extends CliTestCase
 	 */
 	public function testWithoutParams()
 	{
-		$output = $this->runInShell('./joomla version');
+		$output = $this->runInShell('src/joomla version');
 		$this->assertContains('Joomla! X.0.0 Dev', $output['stdout']);
 		$this->assertContains('Pythagoras', $output['stdout']);
 	}
 
 	public function testHelp()
 	{
-		$output = $this->runInShell('./joomla version --help');
+		$output = $this->runInShell('src/joomla version --help');
 		$this->assertContains('version [options]', $output['stdout']);
 		$this->assertContains('--long', $output['stdout']);
 		$this->assertContains('--short', $output['stdout']);
@@ -53,7 +53,7 @@ class VersionTest extends CliTestCase
 	 */
 	public function testOptions($option, $expected)
 	{
-		$output = $this->runInShell('./joomla version ' . $option);
+		$output = $this->runInShell('src/joomla version ' . $option);
 		$this->assertEquals($expected, $output['stdout']);
 	}
 }

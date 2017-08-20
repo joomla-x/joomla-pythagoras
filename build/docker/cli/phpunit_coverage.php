@@ -45,7 +45,7 @@
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 
-require_once 'libraries/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 $coverage = new CodeCoverage;
 $filter   = $coverage->filter();

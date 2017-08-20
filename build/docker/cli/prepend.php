@@ -42,7 +42,7 @@
  * @since      File available since Release 1.0.0
  */
 
-require_once 'libraries/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 if (extension_loaded('xdebug'))
 {

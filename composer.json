@@ -9,9 +9,6 @@
   ],
   "homepage": "https://github.com/joomla/joomla-cms",
   "license": "GPL-2.0+",
-  "config": {
-    "vendor-dir": "libraries/vendor"
-  },
   "require": {
     "league/flysystem": "^1.0",
     "league/tactician": "^1.0",
@@ -46,8 +43,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Joomla\\": "libraries/incubator/",
-      "Joomla\\Extension\\": "extensions/"
+      "Joomla\\": "src/libraries/incubator/",
+      "Joomla\\Extension\\": "src/extensions/"
     }
   },
   "autoload-dev": {

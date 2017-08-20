@@ -29,7 +29,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
 		$this->mkdir($this->dataDirectory . '/entities');
 
 		$container       = new Container;
-		$container->set('ConfigDirectory', JPATH_ROOT);
+		$container->set('ConfigDirectory', __DIR__);
 		$container->registerServiceProvider(new StorageServiceProvider, 'repository');
 		$container->registerServiceProvider(new EventDispatcherServiceProvider, 'dispatcher');
 		$container->registerServiceProvider(new ExtensionFactoryServiceProvider, 'extension_factory');

@@ -11,7 +11,7 @@ cp /usr/local/lib/php/phpunit_coverage.php .
 
 echo "Running tests ..."
 
-./libraries/vendor/bin/robo test:cli --coverage
+./vendor/bin/robo test:cli --coverage
 return_code=$?
 
 echo "Collecting results ..."

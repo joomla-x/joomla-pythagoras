@@ -15,7 +15,7 @@ class BaseTest extends CliTestCase
 	 */
 	public function testWithoutParams()
 	{
-		$output = $this->runInShell('./joomla');
+		$output = $this->runInShell('src/joomla');
 		$this->assertRegExp('/^Usage:/m', $output['stdout']);
 		$this->assertRegExp('/Options:/m', $output['stdout']);
 		$this->assertRegExp('/Available commands:/m', $output['stdout']);

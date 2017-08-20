@@ -1,8 +1,8 @@
-/cache/*
-/libraries/vendor
-/logs/*
-/tmp/*
-/data/entities/*.xml
-/data/sqlite.db
+/src/cache/*
+/src/libraries/vendor
+/src/logs/*
+/src/tmp/*
+/src/data/entities/*.xml
+/src/data/sqlite.db
 /.htaccess
-/config/extensions.ini
+/src/config/extensions.ini

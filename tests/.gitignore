@@ -1,5 +1,6 @@
 /_support/_generated
 /_output/*
-/unit/ORM/data/sqlite.test.db
+/unit/Cms/Installer/config/extensions.ini
+/unit/Cms/Installer/data/sqlite.test.db
 /unit/ORM/data/*.csv
-/unit/ORM/data/original/sqlite.test.db
+/unit/ORM/data/sqlite.test.db

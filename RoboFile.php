@@ -414,15 +414,7 @@ class RoboFile extends \Robo\Tasks
 		$config['coverage']['enabled']   = $enableCoverage;
 		$config['coverage']['whitelist'] = [
 			'include' => [
-				'administrator/*.php',
-				'bin/*.php',
-				'cli/*.php',
-				'components/*.php',
-				'installation/*.php',
-				'layouts/*.php',
-				'libraries/incubator/*.php',
-				'modules/*.php',
-				'plugins/*.php',
+				'src/*.php',
 			],
 		];
 		$config['paths']['log']          = $this->config['reports'];

@@ -1,7 +1,9 @@
 <?php
+$basedir = dirname(dirname(__DIR__));
+
 if (!defined('JPATH_ROOT'))
 {
-	define('JPATH_ROOT', dirname(dirname(__DIR__)));
+	define('JPATH_ROOT', $basedir . '/src');
 }
 
-require_once JPATH_ROOT . '/libraries/vendor/autoload.php';
+require_once $basedir . '/vendor/autoload.php';
