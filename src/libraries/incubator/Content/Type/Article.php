@@ -21,35 +21,35 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Article extends AbstractContentType
 {
-	/**
-	 * Article constructor.
-	 *
-	 * @param   object  $item  The article
-	 */
-	public function __construct($item)
-	{
-		parent::__construct($item->title, $item->alias, new \stdClass);
+    /**
+     * Article constructor.
+     *
+     * @param   object  $item  The article
+     */
+    public function __construct($item)
+    {
+        parent::__construct($item->title, $item->alias, new \stdClass);
 
-		$this->article = $item;
-	}
+        $this->article = $item;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitArticle($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitArticle($this);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTitle()
-	{
-		return $this->article->title;
-	}
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->article->title;
+    }
 }

@@ -13,303 +13,312 @@ use Joomla\Router\Router;
  */
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * An instance of the object to be tested.
-	 *
-	 * @var  Router
-	 */
-	protected $instance;
+    /**
+     * An instance of the object to be tested.
+     *
+     * @var  Router
+     */
+    protected $instance;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setUp()
-	{
-		parent::setUp();
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
 
-		$this->instance = new Router;
-	}
+        $this->instance = new Router;
+    }
 
-	/**
-	 * @testdox  Ensure the Router is instantiated correctly with no injected routes.
-	 */
-	public function test__construct()
-	{
-		$emptyRoutes = [
-			'GET' => [],
-			'PUT' => [],
-			'POST' => [],
-			'DELETE' => [],
-			'HEAD' => [],
-			'OPTIONS' => [],
-			'TRACE' => [],
-			'PATCH' => []
-		];
+    /**
+     * @testdox  Ensure the Router is instantiated correctly with no injected routes.
+     */
+    public function test__construct()
+    {
+        $emptyRoutes = [
+            'GET'     => [],
+            'PUT'     => [],
+            'POST'    => [],
+            'DELETE'  => [],
+            'HEAD'    => [],
+            'OPTIONS' => [],
+            'TRACE'   => [],
+            'PATCH'   => [],
+        ];
 
-		$router = new Router;
+        $router = new Router;
 
-		$this->assertAttributeEquals(
-			$emptyRoutes,
-			'routes',
-			$router,
-			'A Router should have no known routes by default.'
-		);
-	}
+        $this->assertAttributeEquals(
+            $emptyRoutes,
+            'routes',
+            $router,
+            'A Router should have no known routes by default.'
+        );
+    }
 
-	/**
-	 * @testdox  Ensure the Router is instantiated correctly with injected routes.
-	 */
-	public function test__constructNotEmpty()
-	{
-		$routes = [
-			[
-				'pattern' => 'login',
-				'controller' => 'login'
-			],
-			[
-				'pattern' => 'requests/:request_id',
-				'controller' => 'request',
-				'rules' => [
-					'request_id' => '(\d+)'
-				]
-			]
-		];
+    /**
+     * @testdox  Ensure the Router is instantiated correctly with injected routes.
+     */
+    public function test__constructNotEmpty()
+    {
+        $routes = [
+            [
+                'pattern'    => 'login',
+                'controller' => 'login',
+            ],
+            [
+                'pattern'    => 'requests/:request_id',
+                'controller' => 'request',
+                'rules'      => [
+                    'request_id' => '(\d+)',
+                ],
+            ],
+        ];
 
-		$rules = [
-			'GET' => [
-				[
-					'regex' => chr(1) . '^login$' . chr(1),
-					'vars' => [],
-					'controller' => 'login'
-				],
-				[
-					'regex' => chr(1) . '^requests/((\d+))$' . chr(1),
-					'vars' => ['request_id'],
-					'controller' => 'request'
-				]
-			],
-			'PUT' => [],
-			'POST' => [],
-			'DELETE' => [],
-			'HEAD' => [],
-			'OPTIONS' => [],
-			'TRACE' => [],
-			'PATCH' => []
-		];
+        $rules = [
+            'GET'     => [
+                [
+                    'regex'      => chr(1) . '^login$' . chr(1),
+                    'vars'       => [],
+                    'controller' => 'login',
+                ],
+                [
+                    'regex'      => chr(1) . '^requests/((\d+))$' . chr(1),
+                    'vars'       => ['request_id'],
+                    'controller' => 'request',
+                ],
+            ],
+            'PUT'     => [],
+            'POST'    => [],
+            'DELETE'  => [],
+            'HEAD'    => [],
+            'OPTIONS' => [],
+            'TRACE'   => [],
+            'PATCH'   => [],
+        ];
 
-		$router = new Router($routes);
+        $router = new Router($routes);
 
-		$this->assertAttributeEquals(
-			$rules,
-			'routes',
-			$router,
-			'When passing an array of routes when instantiating a Router, the maps property should be set accordingly.'
-		);
-	}
+        $this->assertAttributeEquals(
+            $rules,
+            'routes',
+            $router,
+            'When passing an array of routes when instantiating a Router, the maps property should be set accordingly.'
+        );
+    }
 
-	/**
-	 * @testdox  Ensure a route is added to the Router.
-	 */
-	public function testAddRoute()
-	{
-		$this->instance->addRoute('GET', 'foo', 'MyApplicationFoo');
+    /**
+     * @testdox  Ensure a route is added to the Router.
+     */
+    public function testAddRoute()
+    {
+        $this->instance->addRoute('GET', 'foo', 'MyApplicationFoo');
 
-		$this->assertAttributeEquals(
-			[
-				'GET' => [
-					[
-						'regex' => chr(1) . '^foo$' . chr(1),
-						'vars' => [],
-						'controller' => 'MyApplicationFoo'
-					]
-				],
-				'PUT' => [],
-				'POST' => [],
-				'DELETE' => [],
-				'HEAD' => [],
-				'OPTIONS' => [],
-				'TRACE' => [],
-				'PATCH' => []
-			],
-			'routes',
-			$this->instance
-		);
-	}
+        $this->assertAttributeEquals(
+            [
+                'GET'     => [
+                    [
+                        'regex'      => chr(1) . '^foo$' . chr(1),
+                        'vars'       => [],
+                        'controller' => 'MyApplicationFoo',
+                    ],
+                ],
+                'PUT'     => [],
+                'POST'    => [],
+                'DELETE'  => [],
+                'HEAD'    => [],
+                'OPTIONS' => [],
+                'TRACE'   => [],
+                'PATCH'   => [],
+            ],
+            'routes',
+            $this->instance
+        );
+    }
 
-	/**
-	 * @testdox  Ensure several routes are added to the Router.
-	 */
-	public function testAddRoutes()
-	{
-		$routes = [
-			[
-				'pattern' => 'login',
-				'controller' => 'login'
-			],
-			[
-				'pattern' => 'user/:name/:id',
-				'controller' => 'UserController',
-				'rules' => [
-					'id' => '(\d+)'
-				]
-			],
-			[
-				'pattern' => 'requests/:request_id',
-				'controller' => 'request',
-				'rules' => [
-					'request_id' => '(\d+)'
-				]
-			]
-		];
+    /**
+     * @testdox  Ensure several routes are added to the Router.
+     */
+    public function testAddRoutes()
+    {
+        $routes = [
+            [
+                'pattern'    => 'login',
+                'controller' => 'login',
+            ],
+            [
+                'pattern'    => 'user/:name/:id',
+                'controller' => 'UserController',
+                'rules'      => [
+                    'id' => '(\d+)',
+                ],
+            ],
+            [
+                'pattern'    => 'requests/:request_id',
+                'controller' => 'request',
+                'rules'      => [
+                    'request_id' => '(\d+)',
+                ],
+            ],
+        ];
 
-		$rules = [
-			'GET' => [
-				[
-					'regex' => chr(1) . '^login$' . chr(1),
-					'vars' => [],
-					'controller' => 'login'
-				],
-				[
-					'regex' => chr(1) . '^user/([^/]*)/((\d+))$' . chr(1),
-					'vars' => [
-						'name',
-						'id'
-					],
-					'controller' => 'UserController'
-				],
-				[
-					'regex' => chr(1) . '^requests/((\d+))$' . chr(1),
-					'vars' => ['request_id'],
-					'controller' => 'request'
-				]
-			],
-			'PUT' => [],
-			'POST' => [],
-			'DELETE' => [],
-			'HEAD' => [],
-			'OPTIONS' => [],
-			'TRACE' => [],
-			'PATCH' => []
-		];
+        $rules = [
+            'GET'     => [
+                [
+                    'regex'      => chr(1) . '^login$' . chr(1),
+                    'vars'       => [],
+                    'controller' => 'login',
+                ],
+                [
+                    'regex'      => chr(1) . '^user/([^/]*)/((\d+))$' . chr(1),
+                    'vars'       => [
+                        'name',
+                        'id',
+                    ],
+                    'controller' => 'UserController',
+                ],
+                [
+                    'regex'      => chr(1) . '^requests/((\d+))$' . chr(1),
+                    'vars'       => ['request_id'],
+                    'controller' => 'request',
+                ],
+            ],
+            'PUT'     => [],
+            'POST'    => [],
+            'DELETE'  => [],
+            'HEAD'    => [],
+            'OPTIONS' => [],
+            'TRACE'   => [],
+            'PATCH'   => [],
+        ];
 
-		$this->instance->addRoutes($routes);
-		$this->assertAttributeEquals($rules, 'routes', $this->instance);
-	}
+        $this->instance->addRoutes($routes);
+        $this->assertAttributeEquals($rules, 'routes', $this->instance);
+    }
 
-	/**
-	 * @testdox  Ensure the Router parses routes.
-	 *
-	 * @param   string   $r  The route to parse.
-	 * @param   boolean  $e  True if an exception is expected.
-	 * @param   array    $i  The expected return data.
-	 * @param   boolean  $m  True if routes should be set up.
-	 *
-	 * @dataProvider  seedTestParseRoute
-	 */
-	public function testParseRoute($r, $e, $i, $m)
-	{
-		if ($m)
-		{
-			$this->setRoutes();
-		}
+    /**
+     * @testdox       Ensure the Router parses routes.
+     *
+     * @param   string  $r The route to parse.
+     * @param   boolean $e True if an exception is expected.
+     * @param   array   $i The expected return data.
+     * @param   boolean $m True if routes should be set up.
+     *
+     * @dataProvider  seedTestParseRoute
+     */
+    public function testParseRoute($r, $e, $i, $m)
+    {
+        if ($m) {
+            $this->setRoutes();
+        }
 
-		// If we should expect an exception set that up.
-		if ($e)
-		{
-			$this->expectException('InvalidArgumentException');
-		}
+        // If we should expect an exception set that up.
+        if ($e) {
+            $this->expectException('InvalidArgumentException');
+        }
 
-		// Execute the route parsing.
-		$actual = $this->instance->parseRoute($r);
+        // Execute the route parsing.
+        $actual = $this->instance->parseRoute($r);
 
-		// Test the assertions.
-		$this->assertEquals($i, $actual, 'Incorrect value returned.');
-	}
+        // Test the assertions.
+        $this->assertEquals($i, $actual, 'Incorrect value returned.');
+    }
 
-	/**
-	 * Provides test data for the testParseRoute method.
-	 *
-	 * @return  array
-	 */
-	public static function seedTestParseRoute()
-	{
-		// Route Pattern, Throws Exception, Return Data, MapSetup
-		return [
-			['', true, [], false],
-			['articles/4', true, [], false],
-			['', false, ['controller' => 'DefaultController', 'vars' => []], true],
-			['login', false, ['controller' => 'LoginController', 'vars' => []], true],
-			['articles', false, ['controller' => 'ArticlesController', 'vars' => []], true],
-			['articles/4', false, ['controller' => 'ArticleController', 'vars' => ['article_id' => 4]], true],
-			['articles/4/crap', true, [], true],
-			['test', true, [], true],
-			['test/foo', true, [], true],
-			['test/foo/path', true, [], true],
-			['test/foo/path/bar', false, ['controller' => 'TestController', 'vars' => ['seg1' => 'foo', 'seg2' => 'bar']], true],
-			['content/article-1/*', false, ['controller' => 'ContentController', 'vars' => []], true],
-			[
-				'content/cat-1/article-1',
-				false,
-				['controller' => 'ArticleController', 'vars' => ['category' => 'cat-1', 'article' => 'article-1']],
-				true
-			],
-			[
-				'content/cat-1/cat-2/article-1',
-				false,
-				['controller' => 'ArticleController', 'vars' => ['category' => 'cat-1/cat-2', 'article' => 'article-1']],
-				true
-			],
-			[
-				'content/cat-1/cat-2/cat-3/article-1',
-				false,
-				['controller' => 'ArticleController', 'vars' => ['category' => 'cat-1/cat-2/cat-3', 'article' => 'article-1']],
-				true
-			]
-		];
-	}
+    /**
+     * Provides test data for the testParseRoute method.
+     *
+     * @return  array
+     */
+    public static function seedTestParseRoute()
+    {
+        // Route Pattern, Throws Exception, Return Data, MapSetup
+        return [
+            ['', true, [], false],
+            ['articles/4', true, [], false],
+            ['', false, ['controller' => 'DefaultController', 'vars' => []], true],
+            ['login', false, ['controller' => 'LoginController', 'vars' => []], true],
+            ['articles', false, ['controller' => 'ArticlesController', 'vars' => []], true],
+            ['articles/4', false, ['controller' => 'ArticleController', 'vars' => ['article_id' => 4]], true],
+            ['articles/4/crap', true, [], true],
+            ['test', true, [], true],
+            ['test/foo', true, [], true],
+            ['test/foo/path', true, [], true],
+            [
+                'test/foo/path/bar',
+                false,
+                ['controller' => 'TestController', 'vars' => ['seg1' => 'foo', 'seg2' => 'bar']],
+                true,
+            ],
+            ['content/article-1/*', false, ['controller' => 'ContentController', 'vars' => []], true],
+            [
+                'content/cat-1/article-1',
+                false,
+                ['controller' => 'ArticleController', 'vars' => ['category' => 'cat-1', 'article' => 'article-1']],
+                true,
+            ],
+            [
+                'content/cat-1/cat-2/article-1',
+                false,
+                [
+                    'controller' => 'ArticleController',
+                    'vars'       => ['category' => 'cat-1/cat-2', 'article' => 'article-1'],
+                ],
+                true,
+            ],
+            [
+                'content/cat-1/cat-2/cat-3/article-1',
+                false,
+                [
+                    'controller' => 'ArticleController',
+                    'vars'       => ['category' => 'cat-1/cat-2/cat-3', 'article' => 'article-1'],
+                ],
+                true,
+            ],
+        ];
+    }
 
-	/**
-	 * Setup the router with routes.
-	 *
-	 * @return  void
-	 */
-	protected function setRoutes()
-	{
-		$this->instance->addRoutes(
-			[
-				[
-				   'pattern' => 'login',
-				   'controller' => 'LoginController'
-				],
-				[
-				   'pattern' => 'logout',
-				   'controller' => 'LogoutController'
-				],
-				[
-				   'pattern' => 'articles',
-				   'controller' => 'ArticlesController'
-				],
-				[
-				   'pattern' => 'articles/:article_id',
-				   'controller' => 'ArticleController'
-				],
-				[
-				   'pattern' => 'test/:seg1/path/:seg2',
-				   'controller' => 'TestController'
-				],
-				[
-				   'pattern' => 'content/:/\*',
-				   'controller' => 'ContentController'
-				],
-				[
-				   'pattern' => 'content/*category/:article',
-				   'controller' => 'ArticleController'
-				],
-				[
-					'pattern' => '/',
-					'controller' => 'DefaultController'
-				]
-			]
-		);
-	}
+    /**
+     * Setup the router with routes.
+     *
+     * @return  void
+     */
+    protected function setRoutes()
+    {
+        $this->instance->addRoutes(
+            [
+                [
+                    'pattern'    => 'login',
+                    'controller' => 'LoginController',
+                ],
+                [
+                    'pattern'    => 'logout',
+                    'controller' => 'LogoutController',
+                ],
+                [
+                    'pattern'    => 'articles',
+                    'controller' => 'ArticlesController',
+                ],
+                [
+                    'pattern'    => 'articles/:article_id',
+                    'controller' => 'ArticleController',
+                ],
+                [
+                    'pattern'    => 'test/:seg1/path/:seg2',
+                    'controller' => 'TestController',
+                ],
+                [
+                    'pattern'    => 'content/:/\*',
+                    'controller' => 'ContentController',
+                ],
+                [
+                    'pattern'    => 'content/*category/:article',
+                    'controller' => 'ArticleController',
+                ],
+                [
+                    'pattern'    => '/',
+                    'controller' => 'DefaultController',
+                ],
+            ]
+        );
+    }
 }

@@ -24,26 +24,25 @@ namespace Joomla\Service;
  */
 abstract class DomainEvent extends Value
 {
-	/**
-	 * Check for equality of this event against another event.
-	 *
-	 * This overrides the generic equality test because we want to
-	 * include the requestedon timestamp too.
-	 *
-	 * @param   Value $other Another value object to compare with this one.
-	 *
-	 * @return  boolean
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function equals(Value $other)
-	{
-		// Must have occurred at the same time.
-		if ($this->requestedon != $other->requestedon)
-		{
-			return false;
-		}
+    /**
+     * Check for equality of this event against another event.
+     *
+     * This overrides the generic equality test because we want to
+     * include the requestedon timestamp too.
+     *
+     * @param   Value $other Another value object to compare with this one.
+     *
+     * @return  boolean
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function equals(Value $other)
+    {
+        // Must have occurred at the same time.
+        if ($this->requestedon != $other->requestedon) {
+            return false;
+        }
 
-		return parent::equals($other);
-	}
+        return parent::equals($other);
+    }
 }

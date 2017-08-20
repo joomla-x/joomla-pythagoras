@@ -24,73 +24,72 @@ use Joomla\Event\DispatcherInterface;
  */
 abstract class CommandHandler
 {
-	use DispatcherAwareTrait;
+    use DispatcherAwareTrait;
 
-	/** @var CommandBus The command bus */
-	private $commandBus = null;
+    /** @var CommandBus The command bus */
+    private $commandBus = null;
 
-	/** @var array The domain events */
-	private $pendingEvents = array();
+    /** @var array The domain events */
+    private $pendingEvents = array();
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   CommandBus          $commandBus A command bus
-	 * @param   DispatcherInterface $dispatcher A dispatcher
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function __construct(CommandBus $commandBus, DispatcherInterface $dispatcher)
-	{
-		$this->commandBus = $commandBus;
-		$this->setDispatcher($dispatcher);
-	}
+    /**
+     * Constructor.
+     *
+     * @param   CommandBus          $commandBus A command bus
+     * @param   DispatcherInterface $dispatcher A dispatcher
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function __construct(CommandBus $commandBus, DispatcherInterface $dispatcher)
+    {
+        $this->commandBus = $commandBus;
+        $this->setDispatcher($dispatcher);
+    }
 
-	/**
-	 * Get the command bus.
-	 *
-	 * @return   CommandBus
-	 */
-	public function getCommandBus()
-	{
-		return $this->commandBus;
-	}
+    /**
+     * Get the command bus.
+     *
+     * @return   CommandBus
+     */
+    public function getCommandBus()
+    {
+        return $this->commandBus;
+    }
 
-	/**
-	 * Release all pending domain events.
-	 *
-	 * As a convenience, a new event can also be raised at the same time.
-	 *
-	 * @param   DomainEvent $event An event to be raised.
-	 *
-	 * @return  array of DomainEvent objects.
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function releaseEvents($event = null)
-	{
-		if ($event instanceof DomainEvent)
-		{
-			$this->raiseEvent($event);
-		}
+    /**
+     * Release all pending domain events.
+     *
+     * As a convenience, a new event can also be raised at the same time.
+     *
+     * @param   DomainEvent $event An event to be raised.
+     *
+     * @return  array of DomainEvent objects.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function releaseEvents($event = null)
+    {
+        if ($event instanceof DomainEvent) {
+            $this->raiseEvent($event);
+        }
 
-		$events              = $this->pendingEvents;
-		$this->pendingEvents = array();
+        $events              = $this->pendingEvents;
+        $this->pendingEvents = array();
 
-		return $events;
-	}
+        return $events;
+    }
 
-	/**
-	 * Raise a domain event.
-	 *
-	 * @param   DomainEvent $event Domain event object.
-	 *
-	 * @return  void
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function raiseEvent(DomainEvent $event)
-	{
-		$this->pendingEvents[] = $event;
-	}
+    /**
+     * Raise a domain event.
+     *
+     * @param   DomainEvent $event Domain event object.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function raiseEvent(DomainEvent $event)
+    {
+        $this->pendingEvents[] = $event;
+    }
 }

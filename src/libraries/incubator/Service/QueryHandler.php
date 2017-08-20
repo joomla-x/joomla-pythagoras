@@ -21,32 +21,32 @@ use Joomla\Event\DispatcherInterface;
  */
 abstract class QueryHandler
 {
-	use DispatcherAwareTrait;
+    use DispatcherAwareTrait;
 
-	/** @var CommandBus The message bus */
-	protected $messageBus = null;
+    /** @var CommandBus The message bus */
+    protected $messageBus = null;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   CommandBus          $messageBus A command bus
-	 * @param   DispatcherInterface $dispatcher A dispatcher
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function __construct(CommandBus $messageBus, DispatcherInterface $dispatcher)
-	{
-		$this->messageBus = $messageBus;
-		$this->setDispatcher($dispatcher);
-	}
+    /**
+     * Constructor.
+     *
+     * @param   CommandBus          $messageBus A command bus
+     * @param   DispatcherInterface $dispatcher A dispatcher
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function __construct(CommandBus $messageBus, DispatcherInterface $dispatcher)
+    {
+        $this->messageBus = $messageBus;
+        $this->setDispatcher($dispatcher);
+    }
 
-	/**
-	 * Get the command bus.
-	 *
-	 * @return   CommandBus
-	 */
-	public function getCommandBus()
-	{
-		return $this->messageBus;
-	}
+    /**
+     * Get the command bus.
+     *
+     * @return   CommandBus
+     */
+    public function getCommandBus()
+    {
+        return $this->messageBus;
+    }
 }

@@ -21,26 +21,26 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class DefaultMenu extends AbstractContentType
 {
-	/**
-	 * DefaultMenu constructor.
-	 *
-	 * @param   object $item The item to be displayed as a menu
-	 */
-	public function __construct($item)
-	{
-		parent::__construct('Menu', 'menu-' . spl_object_hash($this), new \stdClass);
-		$this->item = $item;
-	}
+    /**
+     * DefaultMenu constructor.
+     *
+     * @param   object $item The item to be displayed as a menu
+     */
+    public function __construct($item)
+    {
+        parent::__construct('Menu', 'menu-' . spl_object_hash($this), new \stdClass);
+        $this->item = $item;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitDefaultMenu($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitDefaultMenu($this);
+    }
 }

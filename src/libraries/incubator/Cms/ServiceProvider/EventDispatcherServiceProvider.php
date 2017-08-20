@@ -20,44 +20,43 @@ use Joomla\Extension\ExtensionDispatcher;
  */
 class EventDispatcherServiceProvider implements ServiceProviderInterface
 {
-	/** @var string  The access key */
-	private $key = 'EventDispatcher';
+    /** @var string  The access key */
+    private $key = 'EventDispatcher';
 
-	/**
-	 * Add the dispatcher to a container
-	 *
-	 * @param   Container $container The container
-	 * @param   string    $alias     An optional alias
-	 *
-	 * @return  void
-	 */
-	public function register(Container $container, $alias = null)
-	{
-		$container->set(
-			$this->key,
-			[
-				$this,
-				'createDispatcher'
-			],
-			true,
-			true
-		);
+    /**
+     * Add the dispatcher to a container
+     *
+     * @param   Container $container The container
+     * @param   string    $alias     An optional alias
+     *
+     * @return  void
+     */
+    public function register(Container $container, $alias = null)
+    {
+        $container->set(
+            $this->key,
+            [
+                $this,
+                'createDispatcher'
+            ],
+            true,
+            true
+        );
 
-		if (!empty($alias))
-		{
-			$container->alias($alias, $this->key);
-		}
-	}
+        if (!empty($alias)) {
+            $container->alias($alias, $this->key);
+        }
+    }
 
-	/**
-	 * Create the dispatcher
-	 *
-	 * @param   Container $container The container
-	 *
-	 * @return  ExtensionDispatcher
-	 */
-	public function createDispatcher(Container $container)
-	{
-		return new ExtensionDispatcher($container->get('extension_factory'));
-	}
+    /**
+     * Create the dispatcher
+     *
+     * @param   Container $container The container
+     *
+     * @return  ExtensionDispatcher
+     */
+    public function createDispatcher(Container $container)
+    {
+        return new ExtensionDispatcher($container->get('extension_factory'));
+    }
 }

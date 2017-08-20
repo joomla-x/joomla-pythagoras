@@ -22,43 +22,42 @@ use Joomla\Service\CommandBus;
  */
 class CommandBusMiddleware implements MiddlewareInterface
 {
-	/** @var CommandBus  */
-	private $commandBus;
+    /** @var CommandBus  */
+    private $commandBus;
 
-	/**
-	 * RendererMiddleware constructor.
-	 *
-	 * @param   CommandBus $commandBus The command bus
-	 */
-	public function __construct(CommandBus $commandBus)
-	{
-		$this->commandBus = $commandBus;
-	}
+    /**
+     * RendererMiddleware constructor.
+     *
+     * @param   CommandBus $commandBus The command bus
+     */
+    public function __construct(CommandBus $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
 
-	/**
-	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-	 *
-	 * @internal
-	 *
-	 * @param   ServerRequestInterface $request  The request object
-	 * @param   ResponseInterface      $response The response object
-	 * @param   callable               $next     The next middleware handler
-	 *
-	 * @return  ResponseInterface
-	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-	{
-		$command = $request->getAttribute('command');
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request  The request object
+     * @param   ResponseInterface      $response The response object
+     * @param   callable               $next     The next middleware handler
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        $command = $request->getAttribute('command');
 
-		if (empty($command))
-		{
-			throw new \RuntimeException('No command provided');
-		}
+        if (empty($command)) {
+            throw new \RuntimeException('No command provided');
+        }
 
-		$this->commandBus->handle($command);
+        $this->commandBus->handle($command);
 
-		$response = $next($request, $response);
+        $response = $next($request, $response);
 
-		return $response;
-	}
+        return $response;
+    }
 }

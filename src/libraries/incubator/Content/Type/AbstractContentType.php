@@ -18,108 +18,107 @@ use Joomla\Content\ContentTypeInterface;
  */
 abstract class AbstractContentType implements ContentTypeInterface
 {
-	/** @var  string The identifier */
-	private $id;
+    /** @var  string The identifier */
+    private $id;
 
-	/** @var  string The title */
-	private $title;
+    /** @var  string The title */
+    private $title;
 
-	/** @var  \stdClass The parameters */
-	private $params;
+    /** @var  \stdClass The parameters */
+    private $params;
 
-	/**
-	 * AbstractContentType constructor.
-	 *
-	 * @param string    $title  The title
-	 * @param string    $id     The identifier
-	 * @param \stdClass $params The parameters
-	 */
-	public function __construct($title, $id, $params)
-	{
-		$this
-			->setTitle($title)
-			->setId($id)
-			->setParameters($params);
-	}
+    /**
+     * AbstractContentType constructor.
+     *
+     * @param string    $title  The title
+     * @param string    $id     The identifier
+     * @param \stdClass $params The parameters
+     */
+    public function __construct($title, $id, $params)
+    {
+        $this
+            ->setTitle($title)
+            ->setId($id)
+            ->setParameters($params);
+    }
 
-	public function __get($property)
-	{
-		if (isset($this->{$property}))
-		{
-			return $this->{$property};
-		}
+    public function __get($property)
+    {
+        if (isset($this->{$property})) {
+            return $this->{$property};
+        }
 
-		throw new \UnexpectedValueException("Property $property not found in " . get_class($this));
-	}
+        throw new \UnexpectedValueException("Property $property not found in " . get_class($this));
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param string $id
-	 *
-	 * @return AbstractContentType
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
+    /**
+     * @param string $id
+     *
+     * @return AbstractContentType
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTitle()
-	{
-		return $this->title;
-	}
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * @param string $title
-	 *
-	 * @return AbstractContentType
-	 */
-	public function setTitle($title)
-	{
-		$this->title = $title;
+    /**
+     * @param string $title
+     *
+     * @return AbstractContentType
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return \stdClass
-	 */
-	public function getParameters()
-	{
-		return $this->params;
-	}
+    /**
+     * @return \stdClass
+     */
+    public function getParameters()
+    {
+        return $this->params;
+    }
 
-	/**
-	 * @param string $key     The key
-	 * @param mixed  $default The default value
-	 *
-	 * @return mixed
-	 */
-	public function getParameter($key, $default = null)
-	{
-		return isset($this->params->$key) ? $this->params->$key : $default;
-	}
+    /**
+     * @param string $key     The key
+     * @param mixed  $default The default value
+     *
+     * @return mixed
+     */
+    public function getParameter($key, $default = null)
+    {
+        return isset($this->params->$key) ? $this->params->$key : $default;
+    }
 
-	/**
-	 * @param \stdClass $params
-	 *
-	 * @return AbstractContentType
-	 */
-	public function setParameters($params)
-	{
-		$this->params = $params;
+    /**
+     * @param \stdClass $params
+     *
+     * @return AbstractContentType
+     */
+    public function setParameters($params)
+    {
+        $this->params = $params;
 
-		return $this;
-	}
+        return $this;
+    }
 }

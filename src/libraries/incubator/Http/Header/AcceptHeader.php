@@ -17,13 +17,13 @@ namespace Joomla\Http\Header;
  */
 class AcceptHeader extends QualifiedHeader
 {
-	/**
-	 * AcceptHeader constructor.
-	 *
-	 * @param   string  $header  The 'Accept' header
-	 */
-	public function __construct($header)
-	{
-		parent::__construct($header, '/', '*');
-	}
+    /**
+     * AcceptHeader constructor.
+     *
+     * @param   string  $header  The 'Accept' header
+     */
+    public function __construct($header)
+    {
+        parent::__construct($header, '/', '*');
+    }
 }

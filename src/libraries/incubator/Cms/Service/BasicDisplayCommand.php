@@ -20,28 +20,28 @@ use Joomla\Service\Command;
  */
 class BasicDisplayCommand extends Command
 {
-	/** @var string The name of the entity to be displayed */
-	public $entityName;
+    /** @var string The name of the entity to be displayed */
+    public $entityName;
 
-	/** @var integer The ID of the entity */
-	public $id;
+    /** @var integer The ID of the entity */
+    public $id;
 
-	/** @var RendererInterface The renderer to use for output */
-	public $renderer;
+    /** @var RendererInterface The renderer to use for output */
+    public $renderer;
 
-	/**
-	 * DisplayCommand constructor.
-	 *
-	 * @param   string            $entityName The name of the entity to be displayed
-	 * @param   integer           $id         The ID of the entity
-	 * @param   RendererInterface $renderer   The renderer to use for output
-	 */
-	public function __construct($entityName, $id, $renderer)
-	{
-		$this->entityName = $entityName;
-		$this->id         = $id;
-		$this->renderer   = $renderer;
+    /**
+     * DisplayCommand constructor.
+     *
+     * @param   string            $entityName The name of the entity to be displayed
+     * @param   integer           $id         The ID of the entity
+     * @param   RendererInterface $renderer   The renderer to use for output
+     */
+    public function __construct($entityName, $id, $renderer)
+    {
+        $this->entityName = $entityName;
+        $this->id         = $id;
+        $this->renderer   = $renderer;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 }

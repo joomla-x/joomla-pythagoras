@@ -20,20 +20,20 @@ use Psr\Http\Message\StreamInterface;
  */
 class RenderContentTypeSuccessEvent extends Event
 {
-	/**
-	 * RenderContentTypeSuccessEvent constructor.
-	 *
-	 * @param   string           $type    The name of the content type
-	 * @param   StreamInterface  $stream  The stream to which the content is added
-	 */
-	public function __construct($type, $stream)
-	{
-		parent::__construct(
-			'onAfter' . $type,
-			[
-				'type'   => $type,
-				'stream' => $stream
-			]
-		);
-	}
+    /**
+     * RenderContentTypeSuccessEvent constructor.
+     *
+     * @param   string           $type    The name of the content type
+     * @param   StreamInterface  $stream  The stream to which the content is added
+     */
+    public function __construct($type, $stream)
+    {
+        parent::__construct(
+            'onAfter' . $type,
+            [
+                'type'   => $type,
+                'stream' => $stream
+            ]
+        );
+    }
 }

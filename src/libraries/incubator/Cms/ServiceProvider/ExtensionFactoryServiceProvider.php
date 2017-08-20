@@ -22,44 +22,43 @@ use Joomla\Extension\FileExtensionFactory;
  */
 class ExtensionFactoryServiceProvider implements ServiceProviderInterface
 {
-	/** @var string The access key for the container */
-	private $key = 'ExtensionFactory';
+    /** @var string The access key for the container */
+    private $key = 'ExtensionFactory';
 
-	/**
-	 * Add the plugin factory to a container
-	 *
-	 * @param   Container $container The container
-	 * @param   string    $alias     An optional alias
-	 *
-	 * @return  void
-	 */
-	public function register(Container $container, $alias = null)
-	{
-		$container->set(
-			$this->key,
-			[
-				$this,
-				'createExtensionFactory'
-			],
-			true,
-			true
-		);
+    /**
+     * Add the plugin factory to a container
+     *
+     * @param   Container $container The container
+     * @param   string    $alias     An optional alias
+     *
+     * @return  void
+     */
+    public function register(Container $container, $alias = null)
+    {
+        $container->set(
+            $this->key,
+            [
+                $this,
+                'createExtensionFactory'
+            ],
+            true,
+            true
+        );
 
-		if (!empty($alias))
-		{
-			$container->alias($alias, $this->key);
-		}
-	}
+        if (!empty($alias)) {
+            $container->alias($alias, $this->key);
+        }
+    }
 
-	/**
-	 * Create the plugin factory
-	 *
-	 * @param   Container $container The container
-	 *
-	 * @return  ExtensionFactoryInterface
-	 */
-	public function createExtensionFactory(Container $container)
-	{
-		return new DefaultExtensionFactory($container->get('ConfigDirectory'), $container);
-	}
+    /**
+     * Create the plugin factory
+     *
+     * @param   Container $container The container
+     *
+     * @return  ExtensionFactoryInterface
+     */
+    public function createExtensionFactory(Container $container)
+    {
+        return new DefaultExtensionFactory($container->get('ConfigDirectory'), $container);
+    }
 }

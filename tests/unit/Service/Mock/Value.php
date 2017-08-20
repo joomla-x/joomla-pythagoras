@@ -10,13 +10,12 @@ namespace Joomla\Tests\Unit\Service\Mock;
 
 class Value extends \Joomla\Service\Value
 {
-	public function __construct(array $args)
-	{
-		foreach ($args as $key => $value)
-		{
-			$this->{$key} = $value;
-		}
+    public function __construct(array $args)
+    {
+        foreach ($args as $key => $value) {
+            $this->{$key} = $value;
+        }
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 }

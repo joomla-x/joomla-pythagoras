@@ -39,7 +39,8 @@
     "phpunit/phpunit": "^5",
     "phpunit/php-code-coverage": "^4",
     "phpunit/phpunit-mock-objects": "^3.2",
-    "consolidation/robo": "^1.0"
+    "consolidation/robo": "^1.0",
+    "phpunit/dbunit": "~2"
   },
   "autoload": {
     "psr-4": {

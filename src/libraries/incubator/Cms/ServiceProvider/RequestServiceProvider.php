@@ -23,39 +23,38 @@ use Zend\Diactoros\ServerRequest;
  */
 class RequestServiceProvider implements ServiceProviderInterface
 {
-	/**
-	 * @param   Container $container The DI container
-	 * @param   string    $alias     An optional alias
-	 *
-	 * @return  void
-	 */
-	public function register(Container $container, $alias = null)
-	{
-		$container->set(
-			'Request',
-			[
-				$this,
-				'createRequest'
-			],
-			true,
-			true
-		);
+    /**
+     * @param   Container $container The DI container
+     * @param   string    $alias     An optional alias
+     *
+     * @return  void
+     */
+    public function register(Container $container, $alias = null)
+    {
+        $container->set(
+            'Request',
+            [
+                $this,
+                'createRequest'
+            ],
+            true,
+            true
+        );
 
-		if ($alias)
-		{
-			$container->alias($alias, 'Request');
-		}
-	}
+        if ($alias) {
+            $container->alias($alias, 'Request');
+        }
+    }
 
-	/**
-	 * Create a request
-	 *
-	 * @param   Container  $container  The container
-	 *
-	 * @return  ServerRequest
-	 */
-	public function createRequest(Container $container)
-	{
-		return ServerRequestFactory::fromGlobals();
-	}
+    /**
+     * Create a request
+     *
+     * @param   Container  $container  The container
+     *
+     * @return  ServerRequest
+     */
+    public function createRequest(Container $container)
+    {
+        return ServerRequestFactory::fromGlobals();
+    }
 }

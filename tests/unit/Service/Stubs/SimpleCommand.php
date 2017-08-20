@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Tests\Unit\Service\Stubs;
 
 use Joomla\Service\Command;
@@ -13,10 +14,10 @@ use Joomla\Service\Command;
  */
 final class SimpleCommand extends Command
 {
-	public function __construct($test = null)
-	{
-		$this->test = $test;
+    public function __construct($test = null)
+    {
+        $this->test = $test;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 }

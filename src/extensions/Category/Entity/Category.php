@@ -17,23 +17,23 @@ namespace Joomla\Extension\Category\Entity;
  */
 class Category
 {
-	/** @var  integer  The ID */
-	public $id;
+    /** @var  integer  The ID */
+    public $id;
 
-	/** @var  string  The title */
-	public $title;
+    /** @var  string  The title */
+    public $title;
 
-	/** @var  string  The article's copy text */
-	public $body;
+    /** @var  string  The article's copy text */
+    public $body;
 
-	/**
-	 * Returns the string representation of this entity.
-	 * This might be needed if added to entities, that already use a literal category value.
-	 *
-	 * @return   string
-	 */
-	public function __toString()
-	{
-		return $this->title;
-	}
+    /**
+     * Returns the string representation of this entity.
+     * This might be needed if added to entities, that already use a literal category value.
+     *
+     * @return   string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
 }

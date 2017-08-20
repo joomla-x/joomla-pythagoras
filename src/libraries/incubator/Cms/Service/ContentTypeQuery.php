@@ -20,17 +20,17 @@ use Joomla\Service\Query;
  */
 class ContentTypeQuery extends Query
 {
-	/**
-	 * ContentTypeQuery constructor.
-	 *
-	 * @param   EntityInterface $entity   The entity to be rendered
-	 * @param   array           $elements The elements created so far
-	 */
-	public function __construct(EntityInterface $entity, $elements)
-	{
-		$this->entity   = $entity;
-		$this->elements = $elements;
+    /**
+     * ContentTypeQuery constructor.
+     *
+     * @param   EntityInterface $entity   The entity to be rendered
+     * @param   array           $elements The elements created so far
+     */
+    public function __construct(EntityInterface $entity, $elements)
+    {
+        $this->entity   = $entity;
+        $this->elements = $elements;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 }

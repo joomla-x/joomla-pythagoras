@@ -27,102 +27,100 @@ use Joomla\Tests\Unit\DumpTrait;
  */
 class WorkflowState extends AbstractContentType implements CustomContentTypeInterface
 {
-	/** @var  RendererInterface */
-	private $renderer;
+    /** @var  RendererInterface */
+    private $renderer;
 
-	use DumpTrait;
+    use DumpTrait;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   object $item The item to be displayed
-	 */
-	public function __construct($item = null)
-	{
-		$this->item = $item;
-	}
+    /**
+     * Constructor.
+     *
+     * @param   object $item The item to be displayed
+     */
+    public function __construct($item = null)
+    {
+        $this->item = $item;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitWorkflowState($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitWorkflowState($this);
+    }
 
-	/**
-	 * Register this content type to a renderer
-	 *
-	 * @param   RendererInterface $renderer The renderer
-	 *
-	 * @return  void
-	 */
-	public function register(RendererInterface $renderer)
-	{
-		$this->renderer = $renderer;
+    /**
+     * Register this content type to a renderer
+     *
+     * @param   RendererInterface $renderer The renderer
+     *
+     * @return  void
+     */
+    public function register(RendererInterface $renderer)
+    {
+        $this->renderer = $renderer;
 
-		switch ($renderer->getClass())
-		{
-			case HtmlRenderer::class:
-				$method = 'asHtml';
-				break;
+        switch ($renderer->getClass()) {
+            case HtmlRenderer::class:
+                $method = 'asHtml';
+                break;
 
-			default:
-				$method = 'asPlain';
-				break;
-		}
+            default:
+                $method = 'asPlain';
+                break;
+        }
 
-		$renderer->registerContentType('WorkflowState', [$this, $method]);
-	}
+        $renderer->registerContentType('WorkflowState', [$this, $method]);
+    }
 
-	/**
-	 * Callback for HTML output
-	 *
-	 * @param   WorkflowState $content The content
-	 *
-	 * @return  void
-	 */
-	public function asHtml($content)
-	{
-		$state = $this->getState($content);
+    /**
+     * Callback for HTML output
+     *
+     * @param   WorkflowState $content The content
+     *
+     * @return  void
+     */
+    public function asHtml($content)
+    {
+        $state = $this->getState($content);
 
-		$this->renderer->write("<pre class=\"workflow-state workflow-{$state}\">State: $state</pre>");
-	}
+        $this->renderer->write("<pre class=\"workflow-state workflow-{$state}\">State: $state</pre>");
+    }
 
-	/**
-	 * Callback for plain output
-	 *
-	 * @param   WorkflowState $content The content
-	 *
-	 * @return  void
-	 */
-	public function asPlain($content)
-	{
-		$state = $this->getState($content);
+    /**
+     * Callback for plain output
+     *
+     * @param   WorkflowState $content The content
+     *
+     * @return  void
+     */
+    public function asPlain($content)
+    {
+        $state = $this->getState($content);
 
-		$this->renderer->write($state);
-	}
+        $this->renderer->write($state);
+    }
 
-	/**
-	 * Retrieve the state from the content item
-	 *
-	 * @param   WorkflowState $content The content
-	 *
-	 * @return  string
-	 */
-	private function getState($content)
-	{
-		$state = $content->item->stateEntities->getAll();
+    /**
+     * Retrieve the state from the content item
+     *
+     * @param   WorkflowState $content The content
+     *
+     * @return  string
+     */
+    private function getState($content)
+    {
+        $state = $content->item->stateEntities->getAll();
 
-		if (empty($state))
-		{
-			return '';
-		}
+        if (empty($state)) {
+            return '';
+        }
 
-		return strtolower($state[0]->state->title);
-	}
+        return strtolower($state[0]->state->title);
+    }
 }

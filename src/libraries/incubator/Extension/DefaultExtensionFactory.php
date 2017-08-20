@@ -20,137 +20,127 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DefaultExtensionFactory implements ExtensionFactoryInterface
 {
-	/** @var string  The root folder the factory reads the extensions from. */
-	private $rootFolder;
+    /** @var string  The root folder the factory reads the extensions from. */
+    private $rootFolder;
 
-	/** @var ExtensionInterface[][] Extensions cache. */
-	private $extensions = [];
+    /** @var ExtensionInterface[][] Extensions cache. */
+    private $extensions = [];
 
-	/** @var ContainerInterface  The container */
-	private $container;
+    /** @var ContainerInterface  The container */
+    private $container;
 
-	/**
-	 * DefaultExtensionFactory constructor.
-	 *
-	 * @param   string             $rootFolder The root folder the factory reads the extensions from
-	 * @param   ContainerInterface $container  The container
-	 *
-	 * @todo remove the container parameter and pass something which will lazy load the command bus and dispatcher
-	 */
-	public function __construct($rootFolder, ContainerInterface $container)
-	{
-		$this->rootFolder = $rootFolder;
-		$this->container  = $container;
-	}
+    /**
+     * DefaultExtensionFactory constructor.
+     *
+     * @param   string             $rootFolder The root folder the factory reads the extensions from
+     * @param   ContainerInterface $container  The container
+     *
+     * @todo remove the container parameter and pass something which will lazy load the command bus and dispatcher
+     */
+    public function __construct($rootFolder, ContainerInterface $container)
+    {
+        $this->rootFolder = $rootFolder;
+        $this->container  = $container;
+    }
 
-	/**
-	 * Get the extensions
-	 *
-	 * @param   string $group The extension group
-	 *
-	 * @return  ExtensionInterface[]
-	 */
-	public function getExtensions($group = '')
-	{
-		if (key_exists($group, $this->extensions))
-		{
-			return $this->extensions[$group];
-		}
+    /**
+     * Get the extensions
+     *
+     * @param   string $group The extension group
+     *
+     * @return  ExtensionInterface[]
+     */
+    public function getExtensions($group = '')
+    {
+        if (key_exists($group, $this->extensions)) {
+            return $this->extensions[$group];
+        }
 
-		$this->extensions[$group] = [];
+        $this->extensions[$group] = [];
 
-		$ini        = $this->rootFolder . '/config/extensions.ini';
-		$extensions = file_exists($ini) ? parse_ini_file($ini) : [];
+        $ini        = $this->rootFolder . '/config/extensions.ini';
+        $extensions = file_exists($ini) ? parse_ini_file($ini) : [];
 
-		foreach ($extensions as $extension => $path)
-		{
-			$file = $path . '/config/extension.yml';
+        foreach ($extensions as $extension => $path) {
+            $file = $path . '/config/extension.yml';
 
-			if (!file_exists($file))
-			{
-				continue;
-			}
+            if (!file_exists($file)) {
+                continue;
+            }
 
-			$extension = new Extension;
+            $extension = new Extension;
 
-			$config = Yaml::parse(file_get_contents($file), Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
+            $config = Yaml::parse(file_get_contents($file), Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 
-			if (key_exists('listeners', $config))
-			{
-				$this->createListeners($extension, $config['listeners']);
-			}
+            if (key_exists('listeners', $config)) {
+                $this->createListeners($extension, $config['listeners']);
+            }
 
-			if (key_exists('queryhandlers', $config))
-			{
-				$this->createQueryHandlers($extension, $config['queryhandlers']);
-			}
+            if (key_exists('queryhandlers', $config)) {
+                $this->createQueryHandlers($extension, $config['queryhandlers']);
+            }
 
-			if (key_exists('contenttypes', $config))
-			{
-				$this->createContentTypes($extension, $config['contenttypes']);
-			}
+            if (key_exists('contenttypes', $config)) {
+                $this->createContentTypes($extension, $config['contenttypes']);
+            }
 
-			$this->extensions[$group][] = $extension;
-		}
+            $this->extensions[$group][] = $extension;
+        }
 
-		return $this->extensions[$group];
-	}
+        return $this->extensions[$group];
+    }
 
-	/**
-	 * Create listeners
-	 *
-	 * @param   Extension $extension       The extension
-	 * @param   array     $listenersConfig The configuration
-	 *
-	 * @return  void
-	 */
-	private function createListeners(Extension $extension, array $listenersConfig)
-	{
-		foreach ($listenersConfig as $listener)
-		{
-			$listenerInstance = new $listener['class'];
+    /**
+     * Create listeners
+     *
+     * @param   Extension $extension       The extension
+     * @param   array     $listenersConfig The configuration
+     *
+     * @return  void
+     */
+    private function createListeners(Extension $extension, array $listenersConfig)
+    {
+        foreach ($listenersConfig as $listener) {
+            $listenerInstance = new $listener['class'];
 
-			foreach ($listener['events'] as $eventName => $method)
-			{
-				$extension->addListener(
-					$eventName,
-					[
-						$listenerInstance,
-						$method
-					]
-				);
-			}
-		}
-	}
+            foreach ($listener['events'] as $eventName => $method) {
+                $extension->addListener(
+                    $eventName,
+                    [
+                        $listenerInstance,
+                        $method
+                    ]
+                );
+            }
+        }
+    }
 
-	/**
-	 * @param   Extension $extension      The extension
-	 * @param   array     $handlersConfig Handler configuration
-	 *
-	 * @return  void
-	 */
-	private function createQueryHandlers(Extension $extension, array $handlersConfig)
-	{
-		foreach ($handlersConfig as $handler)
-		{
-			$extension->addQueryHandler(
-				$handler['query'],
-				new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher'))
-			);
-		}
-	}
+    /**
+     * @param   Extension $extension      The extension
+     * @param   array     $handlersConfig Handler configuration
+     *
+     * @return  void
+     */
+    private function createQueryHandlers(Extension $extension, array $handlersConfig)
+    {
+        foreach ($handlersConfig as $handler) {
+            $extension->addQueryHandler(
+                $handler['query'],
+                new $handler['class']($this->container->get('CommandBus'), $this->container->get('EventDispatcher'))
+            );
+        }
+    }
 
-	/**
-	 * @param   Extension $extension    The extension
-	 * @param   array     $contentTypes Content type configurations
-	 *
-	 * @return  void
-	 */
-	private function createContentTypes(Extension $extension, array $contentTypes)
-	{
-		foreach ($contentTypes as $name => $contentType)
-		{
-			$extension->addContentType($name, $contentType['class']);
-		}
-	}
+    /**
+     * @param   Extension $extension    The extension
+     * @param   array     $contentTypes Content type configurations
+     *
+     * @return  void
+     */
+    private function createContentTypes(Extension $extension, array $contentTypes)
+    {
+        foreach ($contentTypes as $name => $contentType) {
+            $extension->addContentType($name, $contentType['class']);
+        }
+    }
 }

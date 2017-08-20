@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Tests\Unit\Service\Stubs;
 
 use Joomla\Service\Query;
@@ -13,10 +14,10 @@ use Joomla\Service\Query;
  */
 final class SimpleQuery extends Query
 {
-	public function __construct($test = null)
-	{
-		$this->test = $test;
+    public function __construct($test = null)
+    {
+        $this->test = $test;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 }

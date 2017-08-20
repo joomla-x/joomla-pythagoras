@@ -21,71 +21,64 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class VersionCommand extends Command
 {
-	/**
-	 * Configure the options for the version command
-	 *
-	 * @return  void
-	 */
-	protected function configure()
-	{
-		$this
-			->setName('version')
+    /**
+     * Configure the options for the version command
+     *
+     * @return  void
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('version')
 
-			->setDescription('Show the Joomla! version')
+            ->setDescription('Show the Joomla! version')
 
-			->addOption(
-				'long',
-				'l',
-				InputOption::VALUE_NONE,
-				'The long version info, eg. Joomla! x.y.z Stable [ Codename ] DD-Month-YYYY HH:ii GMT (default).'
-			)
+            ->addOption(
+                'long',
+                'l',
+                InputOption::VALUE_NONE,
+                'The long version info, eg. Joomla! x.y.z Stable [ Codename ] DD-Month-YYYY HH:ii GMT (default).'
+            )
 
-			->addOption(
-				'short',
-				's',
-				InputOption::VALUE_NONE,
-				'The short version info, eg. x.y.z'
-			)
+            ->addOption(
+                'short',
+                's',
+                InputOption::VALUE_NONE,
+                'The short version info, eg. x.y.z'
+            )
 
-			->addOption(
-				'release',
-				'r',
-				InputOption::VALUE_NONE,
-				'The release info, eg. x.y'
-			);
-	}
+            ->addOption(
+                'release',
+                'r',
+                InputOption::VALUE_NONE,
+                'The release info, eg. x.y'
+            );
+    }
 
-	/**
-	 * Execute the version command
-	 *
-	 * @param   InputInterface   $input   An InputInterface instance
-	 * @param   OutputInterface  $output  An OutputInterface instance
-	 *
-	 * @return  integer  0 if everything went fine, 1 on error
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		$this->setupEnvironment($input, $output);
+    /**
+     * Execute the version command
+     *
+     * @param   InputInterface   $input   An InputInterface instance
+     * @param   OutputInterface  $output  An OutputInterface instance
+     *
+     * @return  integer  0 if everything went fine, 1 on error
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->setupEnvironment($input, $output);
 
-		if ($input->getOption('long'))
-		{
-			$result = 'Joomla! X.0.0 Dev [ Pythagoras ]';
-		}
-		elseif ($input->getOption('short'))
-		{
-			$result = 'X.0.0';
-		}
-		elseif ($input->getOption('release'))
-		{
-			$result = 'X.0';
-		}
-		else
-		{
-			$result = "Joomla! X.0.0 Dev [ Pythagoras ].\n";
-		}
+        if ($input->getOption('long')) {
+            $result = 'Joomla! X.0.0 Dev [ Pythagoras ]';
+        } elseif ($input->getOption('short')) {
+            $result = 'X.0.0';
+        } elseif ($input->getOption('release')) {
+            $result = 'X.0';
+        } else {
+            $result = "Joomla! X.0.0 Dev [ Pythagoras ].\n";
+        }
 
-		$output->write($result);
+        $output->write($result);
 
-		return 0;
-	}
+        return 0;
+    }
 }

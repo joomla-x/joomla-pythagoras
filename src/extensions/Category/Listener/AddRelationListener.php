@@ -23,54 +23,53 @@ use Joomla\ORM\Event\DefinitionCreatedEvent;
  */
 class AddRelationListener
 {
-	/**
-	 * Event handler
-	 *
-	 * @param   DefinitionCreatedEvent $event The event
-	 *
-	 * @return  void
-	 */
-	public function addCategoryRelation(DefinitionCreatedEvent $event)
-	{
-		$entityClass = $event->getEntityClass();
-		$definition  = $event->getDefinition();
-		$builder     = $event->getEntityBuilder();
+    /**
+     * Event handler
+     *
+     * @param   DefinitionCreatedEvent $event The event
+     *
+     * @return  void
+     */
+    public function addCategoryRelation(DefinitionCreatedEvent $event)
+    {
+        $entityClass = $event->getEntityClass();
+        $definition  = $event->getDefinition();
+        $builder     = $event->getEntityBuilder();
 
-		if (!$this->hasCategories($entityClass))
-		{
-			return;
-		}
+        if (!$this->hasCategories($entityClass)) {
+            return;
+        }
 
-		$definition->addRelation(
-			new BelongsTo(
-				[
-					'name'      => 'category_id',
-					'entity'    => 'Category',
-					'reference' => 'id'
-				]
-			)
-		);
+        $definition->addRelation(
+            new BelongsTo(
+                [
+                    'name'      => 'category_id',
+                    'entity'    => 'Category',
+                    'reference' => 'id'
+                ]
+            )
+        );
 
-		$meta = $builder->getMeta(Category::class);
+        $meta = $builder->getMeta(Category::class);
 
-		$meta->addRelation(
-			new HasMany(
-				[
-					'name'      => $definition->columnName($definition->name),
-					'entity'    => $definition->name,
-					'reference' => 'category_id'
-				]
-			)
-		);
-	}
+        $meta->addRelation(
+            new HasMany(
+                [
+                    'name'      => $definition->columnName($definition->name),
+                    'entity'    => $definition->name,
+                    'reference' => 'category_id'
+                ]
+            )
+        );
+    }
 
-	/**
-	 * @param   string  $entityClass  The entity class
-	 *
-	 * @return  boolean
-	 */
-	private function hasCategories($entityClass)
-	{
-		return $entityClass == Article::class;
-	}
+    /**
+     * @param   string  $entityClass  The entity class
+     *
+     * @return  boolean
+     */
+    private function hasCategories($entityClass)
+    {
+        return $entityClass == Article::class;
+    }
 }

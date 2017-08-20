@@ -24,65 +24,62 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ShowCommand extends EntityAwareCommand
 {
-	/**
-	 * Configure the options for the version command
-	 *
-	 * @return  void
-	 */
-	protected function configure()
-	{
-		$this
-			->setName('show')
-			->setDescription('Show a list of entities')
-			->addOption(
-				'label',
-				'l',
-				InputOption::VALUE_NONE,
-				'Use labels as column headers instead of column names.'
-			)
-			->addOption(
-				'compact',
-				null,
-				InputOption::VALUE_NONE,
-				'Output a compact table.'
-			);
-	}
+    /**
+     * Configure the options for the version command
+     *
+     * @return  void
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('show')
+            ->setDescription('Show a list of entities')
+            ->addOption(
+                'label',
+                'l',
+                InputOption::VALUE_NONE,
+                'Use labels as column headers instead of column names.'
+            )
+            ->addOption(
+                'compact',
+                null,
+                InputOption::VALUE_NONE,
+                'Output a compact table.'
+            );
+    }
 
-	/**
-	 * @param   InputInterface            $input  An InputInterface instance
-	 * @param   OutputInterface           $output An OutputInterface instance
-	 * @param   CollectionFinderInterface $finder The finder
-	 * @param   string                    $entity The entity name
-	 *
-	 * @return  void
-	 */
-	protected function doIt(InputInterface $input, OutputInterface $output, $finder, $entity)
-	{
-		$entityBuilder = $this->repositoryFactory->getEntityBuilder();
-		$meta          = $entityBuilder->getMeta($entity);
-		$fields        = array_merge($meta->fields, $meta->relations['belongsTo']);
-		$headers       = [];
-		$useLabel      = $input->getOption('label');
+    /**
+     * @param   InputInterface            $input  An InputInterface instance
+     * @param   OutputInterface           $output An OutputInterface instance
+     * @param   CollectionFinderInterface $finder The finder
+     * @param   string                    $entity The entity name
+     *
+     * @return  void
+     */
+    protected function doIt(InputInterface $input, OutputInterface $output, $finder, $entity)
+    {
+        $entityBuilder = $this->repositoryFactory->getEntityBuilder();
+        $meta          = $entityBuilder->getMeta($entity);
+        $fields        = array_merge($meta->fields, $meta->relations['belongsTo']);
+        $headers       = [];
+        $useLabel      = $input->getOption('label');
 
-		foreach ($fields as $field)
-		{
-			if (!$useLabel)
-			{
-				$headers[] = $field->name;
+        foreach ($fields as $field) {
+            if (!$useLabel) {
+                $headers[] = $field->name;
 
-				continue;
-			}
+                continue;
+            }
 
-			$headers[] = isset($field->label) ? $field->label : $field->entity;
-		}
+            $headers[] = isset($field->label) ? $field->label : $field->entity;
+        }
 
-		$table = $this->createTable($input, $output, $headers);
+        $table = $this->createTable($input, $output, $headers);
 
-		foreach ($this->getRecords($finder) as $record)
-		{
-			$table->addRow($entityBuilder->reduce($record));
-		}
+        foreach ($this->getRecords($finder) as $record) {
+            $table->addRow($entityBuilder->reduce($record));
+        }
 
-		$table->render();
-	}
+        $table->render();
+    }
 }

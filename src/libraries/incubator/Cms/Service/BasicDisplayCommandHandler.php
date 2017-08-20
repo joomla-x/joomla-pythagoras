@@ -26,70 +26,64 @@ use Joomla\Service\CommandHandler;
  */
 class BasicDisplayCommandHandler extends CommandHandler
 {
-	/**
-	 * Execute the DisplayCommand.
-	 *
-	 * @param   DisplayCommand $command The command to execute.
-	 *
-	 * @return  void
-	 */
-	public function handle(BasicDisplayCommand $command)
-	{
-		$repository = $this->getCommandBus()->handle(new RepositoryQuery($command->entityName));
-		$entity     = $repository->findById($command->id);
+    /**
+     * Execute the DisplayCommand.
+     *
+     * @param   DisplayCommand $command The command to execute.
+     *
+     * @return  void
+     */
+    public function handle(BasicDisplayCommand $command)
+    {
+        $repository = $this->getCommandBus()->handle(new RepositoryQuery($command->entityName));
+        $entity     = $repository->findById($command->id);
 
-		if (!$entity instanceof EntityInterface)
-		{
-			return;
-		}
+        if (!$entity instanceof EntityInterface) {
+            return;
+        }
 
-		$compound = new Compound(
-			$command->entityName,
-			$this->getElements($entity)
-		);
+        $compound = new Compound(
+            $command->entityName,
+            $this->getElements($entity)
+        );
 
-		$compound->accept($command->renderer);
-	}
+        $compound->accept($command->renderer);
+    }
 
-	/**
-	 * Returns an array of ContentTypeInterface's. Subclasses can override it to
-	 * add component specific elements.
-	 *
-	 * @param   EntityInterface $entity The entity
-	 *
-	 * @return  \Joomla\Content\ContentTypeInterface[]
-	 */
-	protected function getElements(EntityInterface $entity)
-	{
-		$elements = [];
+    /**
+     * Returns an array of ContentTypeInterface's. Subclasses can override it to
+     * add component specific elements.
+     *
+     * @param   EntityInterface $entity The entity
+     *
+     * @return  \Joomla\Content\ContentTypeInterface[]
+     */
+    protected function getElements(EntityInterface $entity)
+    {
+        $elements = [];
 
-		if ($entity->has('title'))
-		{
-			$elements['title'] = new Headline($entity->title, 1);
-		}
+        if ($entity->has('title')) {
+            $elements['title'] = new Headline($entity->title, 1);
+        }
 
-		if ($entity->has('author'))
-		{
-			$elements['author'] = new Attribution('Written by', $entity->author);
-		}
+        if ($entity->has('author')) {
+            $elements['author'] = new Attribution('Written by', $entity->author);
+        }
 
-		if ($entity->has('teaser'))
-		{
-			$elements['teaser'] = new Paragraph($entity->teaser, Paragraph::EMPHASISED);
-		}
+        if ($entity->has('teaser')) {
+            $elements['teaser'] = new Paragraph($entity->teaser, Paragraph::EMPHASISED);
+        }
 
-		if ($entity->has('body'))
-		{
-			$elements['body'] = new Paragraph($entity->body);
-		}
+        if ($entity->has('body')) {
+            $elements['body'] = new Paragraph($entity->body);
+        }
 
-		$elementsData = $this->getCommandBus()->handle(new ContentTypeQuery($entity, $elements));
+        $elementsData = $this->getCommandBus()->handle(new ContentTypeQuery($entity, $elements));
 
-		foreach ($elementsData as $data)
-		{
-			$elements = array_merge($elements, $data);
-		}
+        foreach ($elementsData as $data) {
+            $elements = array_merge($elements, $data);
+        }
 
-		return $elements;
-	}
+        return $elements;
+    }
 }

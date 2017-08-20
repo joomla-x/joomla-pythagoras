@@ -17,43 +17,43 @@ namespace Joomla\Cms\Entity;
  */
 class Menu
 {
-	/** @var  string The label */
-	public $label;
+    /** @var  string The label */
+    public $label;
 
-	/** @var  string The icon */
-	public $icon;
+    /** @var  string The icon */
+    public $icon;
 
-	/** @var  string The link */
-	public $link;
+    /** @var  string The link */
+    public $link;
 
-	/** @var  Menu[] The child menu entries */
-	public $children;
+    /** @var  Menu[] The child menu entries */
+    public $children;
 
-	/**
-	 * Menu constructor.
-	 *
-	 * @param   string $label    The label
-	 * @param   string $link     The link
-	 * @param   string $icon     The icon
-	 * @param   Menu[] $children The child menu entries
-	 */
-	public function __construct($label, $link, $icon = null, $children = [])
-	{
-		$this->label    = $label;
-		$this->link     = $link;
-		$this->icon     = $icon;
-		$this->children = $children;
-	}
+    /**
+     * Menu constructor.
+     *
+     * @param   string $label    The label
+     * @param   string $link     The link
+     * @param   string $icon     The icon
+     * @param   Menu[] $children The child menu entries
+     */
+    public function __construct($label, $link, $icon = null, $children = [])
+    {
+        $this->label    = $label;
+        $this->link     = $link;
+        $this->icon     = $icon;
+        $this->children = $children;
+    }
 
-	/**
-	 * Adds a child menu entry
-	 *
-	 * @param   Menu $child  A child menu entry
-	 *
-	 * @return  void
-	 */
-	public function add(Menu $child)
-	{
-		$this->children[] = $child;
-	}
+    /**
+     * Adds a child menu entry
+     *
+     * @param   Menu $child  A child menu entry
+     *
+     * @return  void
+     */
+    public function add(Menu $child)
+    {
+        $this->children[] = $child;
+    }
 }

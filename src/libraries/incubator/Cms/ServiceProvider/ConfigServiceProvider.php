@@ -22,26 +22,25 @@ use Joomla\Registry\Registry;
  */
 class ConfigServiceProvider implements ServiceProviderInterface
 {
-	/**
-	 * Add the configuration from the environment to a container
-	 *
-	 * @param   Container $container The container
-	 * @param   string    $alias     An optional alias, defaults to 'config'
-	 *
-	 * @return  void
-	 */
-	public function register(Container $container, $alias = 'config')
-	{
-		$file = '.env';
+    /**
+     * Add the configuration from the environment to a container
+     *
+     * @param   Container $container The container
+     * @param   string    $alias     An optional alias, defaults to 'config'
+     *
+     * @return  void
+     */
+    public function register(Container $container, $alias = 'config')
+    {
+        $file = '.env';
 
-		if ($container->has('ConfigFileName'))
-		{
-			$file = $container->get('ConfigFileName');
-		}
+        if ($container->has('ConfigFileName')) {
+            $file = $container->get('ConfigFileName');
+        }
 
-		$dotenv = new Dotenv($container->get('ConfigDirectory'), $file);
-		$dotenv->overload();
+        $dotenv = new Dotenv($container->get('ConfigDirectory'), $file);
+        $dotenv->overload();
 
-		$container->set($alias, new Registry($_ENV), true);
-	}
+        $container->set($alias, new Registry($_ENV), true);
+    }
 }

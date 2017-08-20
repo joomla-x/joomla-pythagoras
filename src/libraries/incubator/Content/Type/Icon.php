@@ -21,32 +21,32 @@ use Joomla\Content\ContentTypeVisitorInterface;
 class Icon extends AbstractContentType
 {
 
-	/**
-	 * @var string
-	 */
-	public $name;
+    /**
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * Icon constructor.
-	 *
-	 * @param $name
-	 */
-	public function __construct($name)
-	{
-		parent::__construct($name, 'icon-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Icon constructor.
+     *
+     * @param $name
+     */
+    public function __construct($name)
+    {
+        parent::__construct($name, 'icon-' . spl_object_hash($this), new \stdClass);
 
-		$this->name = $name;
-	}
+        $this->name = $name;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitIcon($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitIcon($this);
+    }
 }

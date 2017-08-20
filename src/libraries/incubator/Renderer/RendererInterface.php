@@ -20,16 +20,16 @@ use Psr\Http\Message\StreamInterface;
  */
 interface RendererInterface extends ContentTypeVisitorInterface, StreamInterface
 {
-	/**
-	 * @param   string                $type    The content type
-	 * @param   callable|array|string $handler The handler for that type
-	 *
-	 * @return  void
-	 */
-	public function registerContentType($type, $handler);
+    /**
+     * @param   string                $type    The content type
+     * @param   callable|array|string $handler The handler for that type
+     *
+     * @return  void
+     */
+    public function registerContentType($type, $handler);
 
-	/**
-	 * @return string
-	 */
-	public function getClass();
+    /**
+     * @return string
+     */
+    public function getClass();
 }

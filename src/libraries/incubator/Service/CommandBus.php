@@ -23,32 +23,32 @@ namespace Joomla\Service;
  */
 class CommandBus
 {
-	/** @var \League\Tactician\CommandBus The command bus */
-	private $commandBus = null;
+    /** @var \League\Tactician\CommandBus The command bus */
+    private $commandBus = null;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   array $middleware Array of middleware decorators.
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function __construct(array $middleware)
-	{
-		$this->commandBus = new \League\Tactician\CommandBus($middleware);
-	}
+    /**
+     * Constructor.
+     *
+     * @param   array $middleware Array of middleware decorators.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function __construct(array $middleware)
+    {
+        $this->commandBus = new \League\Tactician\CommandBus($middleware);
+    }
 
-	/**
-	 * Handle a command or query.
-	 *
-	 * @param   Message $message A command object.
-	 *
-	 * @return  mixed
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function handle(Message $message)
-	{
-		return $this->commandBus->handle($message);
-	}
+    /**
+     * Handle a command or query.
+     *
+     * @param   Message $message A command object.
+     *
+     * @return  mixed
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function handle(Message $message)
+    {
+        return $this->commandBus->handle($message);
+    }
 }

@@ -22,24 +22,23 @@ use League\Tactician\Plugins\LockingMiddleware;
  */
 class CommandLockingMiddleware extends LockingMiddleware
 {
-	/**
-	 * Execute the given command.
-	 *
-	 * @param   object   $message The Command or Query to execute.
-	 * @param   callable $next    The next middleware object to be called.
-	 *
-	 * @return  mixed|void
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function execute($message, callable $next)
-	{
-		// Only lock for Commands.
-		if ($message instanceof Command)
-		{
-			return parent::execute($message, $next);
-		}
+    /**
+     * Execute the given command.
+     *
+     * @param   object   $message The Command or Query to execute.
+     * @param   callable $next    The next middleware object to be called.
+     *
+     * @return  mixed|void
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function execute($message, callable $next)
+    {
+        // Only lock for Commands.
+        if ($message instanceof Command) {
+            return parent::execute($message, $next);
+        }
 
-		return $next($message);
-	}
+        return $next($message);
+    }
 }

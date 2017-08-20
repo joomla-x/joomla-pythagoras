@@ -17,15 +17,14 @@ use Joomla\DI\Loader\IniLoader;
  */
 function initContainer()
 {
-	$container = new \Joomla\DI\Container;
-	$container->set('ConfigDirectory', __DIR__);
+    $container = new \Joomla\DI\Container;
+    $container->set('ConfigDirectory', __DIR__);
 
-	(new IniLoader($container))->loadFromFile(__DIR__ . '/config/services.ini');
+    (new IniLoader($container))->loadFromFile(__DIR__ . '/config/services.ini');
 
-	if (!defined('JPATH_ROOT'))
-	{
-		define('JPATH_ROOT', $container->get('config')->get('JPATH_ROOT', __DIR__));
-	}
+    if (!defined('JPATH_ROOT')) {
+        define('JPATH_ROOT', $container->get('config')->get('JPATH_ROOT', __DIR__));
+    }
 
-	return $container;
+    return $container;
 }

@@ -20,15 +20,15 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class HorizontalLine extends AbstractContentType
 {
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitHorizontalLine($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitHorizontalLine($this);
+    }
 }

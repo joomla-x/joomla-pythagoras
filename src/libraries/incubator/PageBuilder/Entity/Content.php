@@ -17,14 +17,14 @@ namespace Joomla\PageBuilder\Entity;
  */
 class Content
 {
-	public $id;
-	public $name;
-	public $contentType;
-	public $contentArgs;
-	public $ordering;
-	public $component;
-	public $reference;
-	public $selection;
-	public $params;
-	public $customCss;
+    public $id;
+    public $name;
+    public $contentType;
+    public $contentArgs;
+    public $ordering;
+    public $component;
+    public $reference;
+    public $selection;
+    public $params;
+    public $customCss;
 }

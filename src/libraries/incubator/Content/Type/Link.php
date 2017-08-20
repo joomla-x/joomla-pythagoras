@@ -20,37 +20,37 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Link extends AbstractContentType
 {
-	/**
-	 * @var string
-	 */
-	public $href;
+    /**
+     * @var string
+     */
+    public $href;
 
-	/**
-	 * @var string
-	 */
-	public $text;
+    /**
+     * @var string
+     */
+    public $text;
 
-	/**
-	 * Link constructor.
-	 *
-	 */
-	public function __construct($href, $text)
-	{
-		parent::__construct('Link', 'link-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Link constructor.
+     *
+     */
+    public function __construct($href, $text)
+    {
+        parent::__construct('Link', 'link-' . spl_object_hash($this), new \stdClass);
 
-		$this->href = $href;
-		$this->text = $text;
-	}
+        $this->href = $href;
+        $this->text = $text;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitLink($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitLink($this);
+    }
 }

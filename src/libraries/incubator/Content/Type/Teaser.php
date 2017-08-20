@@ -21,27 +21,27 @@ use Joomla\Extension\Article\Entity\Article as ArticleEntity;
  */
 class Teaser extends AbstractContentType
 {
-	/**
-	 * Teaser constructor.
-	 *
-	 * @param   object $item The article
-	 */
-	public function __construct($item)
-	{
-		parent::__construct($item->title, $item->alias, new \stdClass);
+    /**
+     * Teaser constructor.
+     *
+     * @param   object $item The article
+     */
+    public function __construct($item)
+    {
+        parent::__construct($item->title, $item->alias, new \stdClass);
 
-		$this->article = $item;
-	}
+        $this->article = $item;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitTeaser($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitTeaser($this);
+    }
 }

@@ -17,12 +17,12 @@ namespace Joomla\Extension\Category\Entity;
  */
 class CategoryEntityMap
 {
-	/** @var  integer  The ID of the category */
-	public $categoryId;
+    /** @var  integer  The ID of the category */
+    public $categoryId;
 
-	/** @var  string  The type of the related entity */
-	public $entityType;
+    /** @var  string  The type of the related entity */
+    public $entityType;
 
-	/** @var  integer  The ID of the related entity */
-	public $entityId;
+    /** @var  integer  The ID of the related entity */
+    public $entityId;
 }

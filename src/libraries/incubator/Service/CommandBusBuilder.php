@@ -41,168 +41,165 @@ use League\Tactician\Middleware;
  */
 class CommandBusBuilder
 {
-	// Command name extractor.
-	private $commandNameExtractor = null;
+    // Command name extractor.
+    private $commandNameExtractor = null;
 
-	// Handler locator.
-	private $handlerLocator = null;
+    // Handler locator.
+    private $handlerLocator = null;
 
-	// Method name inflector.
-	private $methodNameInflector = null;
+    // Method name inflector.
+    private $methodNameInflector = null;
 
-	// Middleware stack.
-	private $middleware = [];
+    // Middleware stack.
+    private $middleware = [];
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   DispatcherInterface $dispatcher Optional domain event dispatcher.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function __construct(DispatcherInterface $dispatcher = null)
-	{
-		// Set the default command name extractor.
-		$this->commandNameExtractor = new ClassNameExtractor;
+    /**
+     * Constructor.
+     *
+     * @param   DispatcherInterface $dispatcher Optional domain event dispatcher.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function __construct(DispatcherInterface $dispatcher = null)
+    {
+        // Set the default command name extractor.
+        $this->commandNameExtractor = new ClassNameExtractor;
 
-		// Set the default handler locator.
-		$this->handlerLocator = new CallableLocator(
-			function ($commandName) use ($dispatcher)
-			{
-				// Break apart the fully-qualified class name.
-				// We do this so that the namespace path is not modified.
-				$parts = explode('\\', $commandName);
+        // Set the default handler locator.
+        $this->handlerLocator = new CallableLocator(
+            function ($commandName) use ($dispatcher) {
+                // Break apart the fully-qualified class name.
+                // We do this so that the namespace path is not modified.
+                $parts = explode('\\', $commandName);
 
-				// Get the class name only.
-				$className = array_pop($parts);
+                // Get the class name only.
+                $className = array_pop($parts);
 
-				// Determine the handler class name from the command class name.
-				$handlerName = str_replace('Command', 'CommandHandler', $className);
-				$handlerName = str_replace('Query', 'QueryHandler', $handlerName);
+                // Determine the handler class name from the command class name.
+                $handlerName = str_replace('Command', 'CommandHandler', $className);
+                $handlerName = str_replace('Query', 'QueryHandler', $handlerName);
 
-				// Construct the fully-qualified class name of the handler.
-				$serviceName = implode('\\', $parts) . '\\' . $handlerName;
+                // Construct the fully-qualified class name of the handler.
+                $serviceName = implode('\\', $parts) . '\\' . $handlerName;
 
-				return new $serviceName($this->getCommandBus(), $dispatcher);
-			}
-		);
+                return new $serviceName($this->getCommandBus(), $dispatcher);
+            }
+        );
 
-		// Set the default method name inflector.
-		$this->methodNameInflector = new HandleInflector;
+        // Set the default method name inflector.
+        $this->methodNameInflector = new HandleInflector;
 
-		// Default middleware starts with the conditional command locking plugin.
-		$this->middleware[] = new CommandLockingMiddleware;
+        // Default middleware starts with the conditional command locking plugin.
+        $this->middleware[] = new CommandLockingMiddleware;
 
-		// If we have a dispatcher, we can also add the domain event publishing plugin.
-		if (!is_null($dispatcher))
-		{
-			$this->middleware[] = new DomainEventMiddleware(
-				$dispatcher,
-				function ()
-				{
-					return $this->getCommandBus();
-				}
-			);
-		}
-	}
+        // If we have a dispatcher, we can also add the domain event publishing plugin.
+        if (!is_null($dispatcher)) {
+            $this->middleware[] = new DomainEventMiddleware(
+                $dispatcher,
+                function () {
+                    return $this->getCommandBus();
+                }
+            );
+        }
+    }
 
-	/**
-	 * Builds and returns the specified command bus.
-	 *
-	 * @return  CommandBus
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function getCommandBus()
-	{
-		// Construct the command handler middleware from its three elements.
-		$handlerMiddleware = new CommandHandlerMiddleware(
-			$this->commandNameExtractor,
-			$this->handlerLocator,
-			$this->methodNameInflector
-		);
+    /**
+     * Builds and returns the specified command bus.
+     *
+     * @return  CommandBus
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function getCommandBus()
+    {
+        // Construct the command handler middleware from its three elements.
+        $handlerMiddleware = new CommandHandlerMiddleware(
+            $this->commandNameExtractor,
+            $this->handlerLocator,
+            $this->methodNameInflector
+        );
 
-		// Add the command handler middleware to the end of the middleware array.
-		$this->middleware[] = $handlerMiddleware;
+        // Add the command handler middleware to the end of the middleware array.
+        $this->middleware[] = $handlerMiddleware;
 
-		return new CommandBus($this->middleware);
-	}
+        return new CommandBus($this->middleware);
+    }
 
-	/**
-	 * Get the middleware stack.
-	 *
-	 * This allows the building program to manipulate the default stack, for example.
-	 *
-	 * @return  Middleware[]
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function getMiddleware()
-	{
-		return $this->middleware;
-	}
+    /**
+     * Get the middleware stack.
+     *
+     * This allows the building program to manipulate the default stack, for example.
+     *
+     * @return  Middleware[]
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function getMiddleware()
+    {
+        return $this->middleware;
+    }
 
-	/**
-	 * Set the command name extractor, overriding the default.
-	 *
-	 * @param   CommandNameExtractor $commandNameExtractor Command name extractor.
-	 *
-	 * @return  CommandBusBuilder  This object for method chaining.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function setCommandNameExtractor(CommandNameExtractor $commandNameExtractor)
-	{
-		$this->commandNameExtractor = $commandNameExtractor;
+    /**
+     * Set the command name extractor, overriding the default.
+     *
+     * @param   CommandNameExtractor $commandNameExtractor Command name extractor.
+     *
+     * @return  CommandBusBuilder  This object for method chaining.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function setCommandNameExtractor(CommandNameExtractor $commandNameExtractor)
+    {
+        $this->commandNameExtractor = $commandNameExtractor;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set the handler locator, overriding the default.
-	 *
-	 * @param   HandlerLocator $handlerLocator Handler locator.
-	 *
-	 * @return  CommandBusBuilder  This object for method chaining.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function setHandlerLocator(HandlerLocator $handlerLocator)
-	{
-		$this->handlerLocator = $handlerLocator;
+    /**
+     * Set the handler locator, overriding the default.
+     *
+     * @param   HandlerLocator $handlerLocator Handler locator.
+     *
+     * @return  CommandBusBuilder  This object for method chaining.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function setHandlerLocator(HandlerLocator $handlerLocator)
+    {
+        $this->handlerLocator = $handlerLocator;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set the method name inflector, overriding the default.
-	 *
-	 * @param   MethodNameInflector $methodNameInflector Method name inflector.
-	 *
-	 * @return  CommandBusBuilder  This object for method chaining.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function setMethodNameInflector(MethodNameInflector $methodNameInflector)
-	{
-		$this->methodNameInflector = $methodNameInflector;
+    /**
+     * Set the method name inflector, overriding the default.
+     *
+     * @param   MethodNameInflector $methodNameInflector Method name inflector.
+     *
+     * @return  CommandBusBuilder  This object for method chaining.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function setMethodNameInflector(MethodNameInflector $methodNameInflector)
+    {
+        $this->methodNameInflector = $methodNameInflector;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set the middleware stack, overriding or modifying the default stack.
-	 *
-	 * @param   Middleware[] $middleware An array of Middleware objects.
-	 *
-	 * @return  CommandBusBuilder  This object for method chaining.
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	public function setMiddleware(array $middleware = [])
-	{
-		$this->middleware = $middleware;
+    /**
+     * Set the middleware stack, overriding or modifying the default stack.
+     *
+     * @param   Middleware[] $middleware An array of Middleware objects.
+     *
+     * @return  CommandBusBuilder  This object for method chaining.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function setMiddleware(array $middleware = [])
+    {
+        $this->middleware = $middleware;
 
-		return $this;
-	}
+        return $this;
+    }
 }

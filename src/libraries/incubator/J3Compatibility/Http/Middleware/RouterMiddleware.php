@@ -20,36 +20,35 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RouterMiddleware implements MiddlewareInterface
 {
-	/**
-	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-	 *
-	 * @internal
-	 *
-	 * @param   ServerRequestInterface $request  The request object
-	 * @param   ResponseInterface      $response The response object
-	 * @param   callable               $next     The next middleware handler
-	 *
-	 * @return  ResponseInterface
-	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-	{
-		$attributes = $request->getAttributes();
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request  The request object
+     * @param   ResponseInterface      $response The response object
+     * @param   callable               $next     The next middleware handler
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        $attributes = $request->getAttributes();
 
-		if (!isset($attributes['command']) && $this->isLegacy())
-		{
-			// @todo Emit afterRouting event
-		}
+        if (!isset($attributes['command']) && $this->isLegacy()) {
+            // @todo Emit afterRouting event
+        }
 
-		return $next($request, $response);
-	}
+        return $next($request, $response);
+    }
 
-	/**
-	 * Check if the requested option belongs to a legacy component
-	 *
-	 * @return boolean
-	 */
-	private function isLegacy()
-	{
-		return isset($_REQUEST['option']) && preg_match('~^com_~', $_REQUEST['option']);
-	}
+    /**
+     * Check if the requested option belongs to a legacy component
+     *
+     * @return boolean
+     */
+    private function isLegacy()
+    {
+        return isset($_REQUEST['option']) && preg_match('~^com_~', $_REQUEST['option']);
+    }
 }

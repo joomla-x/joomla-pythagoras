@@ -21,32 +21,32 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Paragraph extends AbstractContentType
 {
-	const PLAIN = 0;
-	const EMPHASISED = 1;
+    const PLAIN = 0;
+    const EMPHASISED = 1;
 
-	/**
-	 * Paragraph constructor.
-	 *
-	 * @param   string  $text    The copy of the paragraph
-	 * @param   integer $variant Emphasis variant, see class constants
-	 */
-	public function __construct($text, $variant = self::PLAIN)
-	{
-		parent::__construct('Paragraph', 'paragraph-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Paragraph constructor.
+     *
+     * @param   string  $text    The copy of the paragraph
+     * @param   integer $variant Emphasis variant, see class constants
+     */
+    public function __construct($text, $variant = self::PLAIN)
+    {
+        parent::__construct('Paragraph', 'paragraph-' . spl_object_hash($this), new \stdClass);
 
-		$this->text    = $text;
-		$this->variant = $variant;
-	}
+        $this->text    = $text;
+        $this->variant = $variant;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitParagraph($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitParagraph($this);
+    }
 }

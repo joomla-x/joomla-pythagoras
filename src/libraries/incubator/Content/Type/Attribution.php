@@ -21,29 +21,29 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Attribution extends AbstractContentType
 {
-	/**
-	 * Attribution constructor.
-	 *
-	 * @param   string $label The text before the author's name
-	 * @param   string $name  The author's name
-	 */
-	public function __construct($label, $name)
-	{
-		parent::__construct($label, 'lbl-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Attribution constructor.
+     *
+     * @param   string $label The text before the author's name
+     * @param   string $name  The author's name
+     */
+    public function __construct($label, $name)
+    {
+        parent::__construct($label, 'lbl-' . spl_object_hash($this), new \stdClass);
 
-		$this->label = $label;
-		$this->name  = $name;
-	}
+        $this->label = $label;
+        $this->name  = $name;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitAttribution($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitAttribution($this);
+    }
 }

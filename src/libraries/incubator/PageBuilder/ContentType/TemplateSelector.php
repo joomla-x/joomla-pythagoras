@@ -23,25 +23,25 @@ use Joomla\Content\Type\AbstractContentType;
  */
 class TemplateSelector extends AbstractContentType
 {
-	/**
-	 * Compound constructor.
-	 *
-	 * @param   string $type The type represented by this class. In HTML, it is rendered as enclosing tag.
-	 */
-	public function __construct($type)
-	{
-		$this->type = $type;
-	}
+    /**
+     * Compound constructor.
+     *
+     * @param   string $type The type represented by this class. In HTML, it is rendered as enclosing tag.
+     */
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitTemplateSelector($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitTemplateSelector($this);
+    }
 }

@@ -22,39 +22,38 @@ use Joomla\Session\Session;
  */
 class SessionServiceProvider implements ServiceProviderInterface
 {
-	/**
-	 * @param   Container $container The DI container
-	 * @param   string    $alias     An optional alias
-	 *
-	 * @return  void
-	 */
-	public function register(Container $container, $alias = null)
-	{
-		$container->set(
-			'Session',
-			[
-				$this,
-				'createSession'
-			],
-			true,
-			true
-		);
+    /**
+     * @param   Container $container The DI container
+     * @param   string    $alias     An optional alias
+     *
+     * @return  void
+     */
+    public function register(Container $container, $alias = null)
+    {
+        $container->set(
+            'Session',
+            [
+                $this,
+                'createSession'
+            ],
+            true,
+            true
+        );
 
-		if ($alias)
-		{
-			$container->alias($alias, 'Session');
-		}
-	}
+        if ($alias) {
+            $container->alias($alias, 'Session');
+        }
+    }
 
-	/**
-	 * Create a session
-	 *
-	 * @param   Container  $container  The container
-	 *
-	 * @return  Session
-	 */
-	public function createSession(Container $container)
-	{
-		return new Session($container->get('Request')->getCookieParams());
-	}
+    /**
+     * Create a session
+     *
+     * @param   Container  $container  The container
+     *
+     * @return  Session
+     */
+    public function createSession(Container $container)
+    {
+        return new Session($container->get('Request')->getCookieParams());
+    }
 }

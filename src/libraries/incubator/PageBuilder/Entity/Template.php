@@ -17,7 +17,7 @@ namespace Joomla\PageBuilder\Entity;
  */
 class Template
 {
-	public $id;
-	public $path;
-	public $scripting;
+    public $id;
+    public $path;
+    public $scripting;
 }

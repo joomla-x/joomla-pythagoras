@@ -19,20 +19,20 @@ use Joomla\Service\QueryHandler;
  */
 class ContentTypeQueryHandler extends QueryHandler
 {
-	/**
-	 * Handle the query.
-	 *
-	 * @param   ContentTypeQuery $query The query
-	 *
-	 * @return  array
-	 */
-	public function handle(ContentTypeQuery $query)
-	{
-		$entity   = $query->entity;
-		$elements = $query->elements;
+    /**
+     * Handle the query.
+     *
+     * @param   ContentTypeQuery $query The query
+     *
+     * @return  array
+     */
+    public function handle(ContentTypeQuery $query)
+    {
+        $entity   = $query->entity;
+        $elements = $query->elements;
 
-		return [
-			$elements
-		];
-	}
+        return [
+            $elements
+        ];
+    }
 }

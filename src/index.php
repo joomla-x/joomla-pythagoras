@@ -22,14 +22,14 @@ require_once 'init.php';
 $container = initContainer();
 
 $app = new Application(
-	[
-		new ResponseSenderMiddleware,
-		new RendererMiddleware($container->get('dispatcher'), $container),
-		new PageBuilderRouterMiddleware($container),
-		new DefaultRouterMiddleware,
-		new LegacyRouterMiddleware,
-		new CommandBusMiddleware($container->get('command_bus')),
-	]
+    [
+        new ResponseSenderMiddleware,
+        new RendererMiddleware($container->get('dispatcher'), $container),
+        new PageBuilderRouterMiddleware($container),
+        new DefaultRouterMiddleware,
+        new LegacyRouterMiddleware,
+        new CommandBusMiddleware($container->get('command_bus')),
+    ]
 );
 
 $response = $app->run($container->get('Request'));

@@ -28,59 +28,56 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RendererMiddleware implements MiddlewareInterface
 {
-	/** @var Dispatcher  */
-	private $dispatcher;
+    /** @var Dispatcher  */
+    private $dispatcher;
 
-	/** @var  ContainerInterface */
-	private $container;
+    /** @var  ContainerInterface */
+    private $container;
 
-	/**
-	 * RendererMiddleware constructor.
-	 *
-	 * @param   Dispatcher         $dispatcher The event dispatcher
-	 * @param   ContainerInterface $container  The container
-	 */
-	public function __construct(Dispatcher $dispatcher, ContainerInterface $container)
-	{
-		$this->dispatcher = $dispatcher;
-		$this->container  = $container;
-	}
+    /**
+     * RendererMiddleware constructor.
+     *
+     * @param   Dispatcher         $dispatcher The event dispatcher
+     * @param   ContainerInterface $container  The container
+     */
+    public function __construct(Dispatcher $dispatcher, ContainerInterface $container)
+    {
+        $this->dispatcher = $dispatcher;
+        $this->container  = $container;
+    }
 
-	/**
-	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-	 *
-	 * @internal
-	 *
-	 * @param   ServerRequestInterface $request  The request object
-	 * @param   ResponseInterface      $response The response object
-	 * @param   callable               $next     The next middleware handler
-	 *
-	 * @return  ResponseInterface
-	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-	{
-		$acceptHeader = $request->getHeaderLine('Accept');
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request  The request object
+     * @param   ResponseInterface      $response The response object
+     * @param   callable               $next     The next middleware handler
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        $acceptHeader = $request->getHeaderLine('Accept');
 
-		if (empty($acceptHeader))
-		{
-			$acceptHeader = 'text/plain';
-		}
+        if (empty($acceptHeader)) {
+            $acceptHeader = 'text/plain';
+        }
 
-		$mapping  = parse_ini_file(JPATH_ROOT . '/config/renderer.ini');
-		$renderer = (new RendererFactory($mapping))->create($acceptHeader, $this->container);
+        $mapping  = parse_ini_file(JPATH_ROOT . '/config/renderer.ini');
+        $renderer = (new RendererFactory($mapping))->create($acceptHeader, $this->container);
 
-		foreach ($this->container->get('extension_factory')->getExtensions() as $extension)
-		{
-			foreach ($extension->getContentTypes() as $contentTypeClass)
-			{
-				(new $contentTypeClass)->register($renderer);
-			}
-		}
+        foreach ($this->container->get('extension_factory')->getExtensions() as $extension) {
+            foreach ($extension->getContentTypes() as $contentTypeClass) {
+                (new $contentTypeClass)->register($renderer);
+            }
+        }
 
-		$renderer = new EventDecorator($renderer, $this->dispatcher);
+        $renderer = new EventDecorator($renderer, $this->dispatcher);
 
-		$response = $next($request, $response->withBody($renderer));
+        $response = $next($request, $response->withBody($renderer));
 
-		return $response;
-	}
+        return $response;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Tests\Unit\Extension\Stubs;
 
 use Joomla\Event\Event;
@@ -10,7 +11,7 @@ use Joomla\Event\Event;
  */
 class SimpleEventListener
 {
-	public function onEventTest(Event $event)
-	{
-	}
+    public function onEventTest(Event $event)
+    {
+    }
 }

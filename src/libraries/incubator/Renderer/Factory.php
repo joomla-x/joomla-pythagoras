@@ -21,38 +21,37 @@ use Joomla\Renderer\Exception\NotFoundException;
  */
 class Factory
 {
-	/** @var array Mapping of MIME types to matching renderers */
-	protected $mediaTypeMap;
+    /** @var array Mapping of MIME types to matching renderers */
+    protected $mediaTypeMap;
 
-	/**
-	 * Factory constructor.
-	 *
-	 * @param   array $mapping An associative array mapping mime types to renderer classes
-	 */
-	public function __construct(array $mapping)
-	{
-		$this->mediaTypeMap = $mapping;
-	}
+    /**
+     * Factory constructor.
+     *
+     * @param   array $mapping An associative array mapping mime types to renderer classes
+     */
+    public function __construct(array $mapping)
+    {
+        $this->mediaTypeMap = $mapping;
+    }
 
-	/**
-	 * @param   string             $acceptHeader The 'Accept' header
-	 * @param   ContainerInterface $container    The container
-	 *
-	 * @return mixed
-	 */
-	public function create($acceptHeader, ContainerInterface $container)
-	{
-		$header = new AcceptHeader($acceptHeader);
+    /**
+     * @param   string             $acceptHeader The 'Accept' header
+     * @param   ContainerInterface $container    The container
+     *
+     * @return mixed
+     */
+    public function create($acceptHeader, ContainerInterface $container)
+    {
+        $header = new AcceptHeader($acceptHeader);
 
-		$match = $header->getBestMatch(array_keys($this->mediaTypeMap));
+        $match = $header->getBestMatch(array_keys($this->mediaTypeMap));
 
-		if (!isset($match['token']))
-		{
-			throw(new NotFoundException("No matching renderer found for\n\t$acceptHeader"));
-		}
+        if (!isset($match['token'])) {
+            throw(new NotFoundException("No matching renderer found for\n\t$acceptHeader"));
+        }
 
-		$classname = $this->mediaTypeMap[$match['token']];
+        $classname = $this->mediaTypeMap[$match['token']];
 
-		return new $classname($match, $container);
-	}
+        return new $classname($match, $container);
+    }
 }

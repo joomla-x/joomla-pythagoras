@@ -19,12 +19,12 @@ use Joomla\Renderer\RendererInterface;
  */
 interface CustomContentTypeInterface extends ContentTypeInterface
 {
-	/**
-	 * Register this content type to a renderer
-	 *
-	 * @param   RendererInterface $renderer The renderer
-	 *
-	 * @return  void
-	 */
-	public function register(RendererInterface $renderer);
+    /**
+     * Register this content type to a renderer
+     *
+     * @param   RendererInterface $renderer The renderer
+     *
+     * @return  void
+     */
+    public function register(RendererInterface $renderer);
 }

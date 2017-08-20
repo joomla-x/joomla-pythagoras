@@ -19,20 +19,20 @@ use Joomla\Event\Event;
  */
 class RegisterContentTypeFailureEvent extends Event
 {
-	/**
-	 * RegisterContentTypeFailureEvent constructor.
-	 *
-	 * @param   string      $type       The name of the content type
-	 * @param   \Exception  $exception  The exception
-	 */
-	public function __construct($type, $exception)
-	{
-		parent::__construct(
-			'onRegisterContentTypeFailure',
-			[
-				'type'      => $type,
-				'exception' => $exception
-			]
-		);
-	}
+    /**
+     * RegisterContentTypeFailureEvent constructor.
+     *
+     * @param   string      $type       The name of the content type
+     * @param   \Exception  $exception  The exception
+     */
+    public function __construct($type, $exception)
+    {
+        parent::__construct(
+            'onRegisterContentTypeFailure',
+            [
+                'type'      => $type,
+                'exception' => $exception
+            ]
+        );
+    }
 }

@@ -22,41 +22,42 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Compound extends AbstractCompoundType
 {
-	private $type;
+    private $type;
 
-	/**
-	 * Compound constructor.
-	 *
-	 * @param   string                 $type     The type represented by this class. In HTML, it is rendered as enclosing tag.
-	 * @param   string                 $title    The title
-	 * @param   string                 $id       The identifier
-	 * @param   \stdClass              $params   The parameters
-	 * @param   ContentTypeInterface[] $elements Content elements
-	 */
-	public function __construct($type, $title, $id, $params, $elements = [])
-	{
-		parent::__construct($title, $id, $params, $elements);
+    /**
+     * Compound constructor.
+     *
+     * @param   string                 $type     The type represented by this class.
+     *                                           In HTML, it is rendered as enclosing tag.
+     * @param   string                 $title    The title
+     * @param   string                 $id       The identifier
+     * @param   \stdClass              $params   The parameters
+     * @param   ContentTypeInterface[] $elements Content elements
+     */
+    public function __construct($type, $title, $id, $params, $elements = [])
+    {
+        parent::__construct($title, $id, $params, $elements);
 
-		$this->type = $type;
-	}
+        $this->type = $type;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitCompound($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitCompound($this);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }

@@ -33,138 +33,138 @@ use Joomla\Content\Type\Tree;
  */
 interface ContentTypeVisitorInterface
 {
-	/**
-	 * Render a headline.
-	 *
-	 * @param   Headline $headline The headline
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitHeadline(Headline $headline);
+    /**
+     * Render a headline.
+     *
+     * @param   Headline $headline The headline
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitHeadline(Headline $headline);
 
-	/**
-	 * Render a compound (block) element
-	 *
-	 * @param   Compound $compound The compound
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitCompound(Compound $compound);
+    /**
+     * Render a compound (block) element
+     *
+     * @param   Compound $compound The compound
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitCompound(Compound $compound);
 
-	/**
-	 * Render an attribution to an author
-	 *
-	 * @param   Attribution $attribution The attribution
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitAttribution(Attribution $attribution);
+    /**
+     * Render an attribution to an author
+     *
+     * @param   Attribution $attribution The attribution
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitAttribution(Attribution $attribution);
 
-	/**
-	 * Render a paragraph
-	 *
-	 * @param   Paragraph $paragraph The paragraph
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitParagraph(Paragraph $paragraph);
+    /**
+     * Render a paragraph
+     *
+     * @param   Paragraph $paragraph The paragraph
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitParagraph(Paragraph $paragraph);
 
-	/**
-	 * Render an image
-	 *
-	 * @param   Image $image The image
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitImage(Image $image);
+    /**
+     * Render an image
+     *
+     * @param   Image $image The image
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitImage(Image $image);
 
-	/**
-	 * Render an slider
-	 *
-	 * @param   Slider $slider The slider
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitSlider(Slider $slider);
+    /**
+     * Render an slider
+     *
+     * @param   Slider $slider The slider
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitSlider(Slider $slider);
 
-	/**
-	 * Render an accordion
-	 *
-	 * @param   Accordion $accordion The accordion
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitAccordion(Accordion $accordion);
+    /**
+     * Render an accordion
+     *
+     * @param   Accordion $accordion The accordion
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitAccordion(Accordion $accordion);
 
-	/**
-	 * Render a tree
-	 *
-	 * @param   Tree $tree The tree
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTree(Tree $tree);
+    /**
+     * Render a tree
+     *
+     * @param   Tree $tree The tree
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitTree(Tree $tree);
 
-	/**
-	 * Render tabs
-	 *
-	 * @param   Tabs $tabs The tabs
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTabs(Tabs $tabs);
+    /**
+     * Render tabs
+     *
+     * @param   Tabs $tabs The tabs
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitTabs(Tabs $tabs);
 
-	/**
-	 * Dump an item
-	 *
-	 * @param   ContentTypeInterface $dump The dump
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitDump(ContentTypeInterface $dump);
+    /**
+     * Dump an item
+     *
+     * @param   ContentTypeInterface $dump The dump
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitDump(ContentTypeInterface $dump);
 
-	/**
-	 * Render rows
-	 *
-	 * @param   Rows $rows The rows
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitRows(Rows $rows);
+    /**
+     * Render rows
+     *
+     * @param   Rows $rows The rows
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitRows(Rows $rows);
 
-	/**
-	 * Render columns
-	 *
-	 * @param   Columns $columns The columns
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitColumns(Columns $columns);
+    /**
+     * Render columns
+     *
+     * @param   Columns $columns The columns
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitColumns(Columns $columns);
 
-	/**
-	 * Render an article
-	 *
-	 * @param   Article $article The article
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitArticle(Article $article);
+    /**
+     * Render an article
+     *
+     * @param   Article $article The article
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitArticle(Article $article);
 
-	/**
-	 * Render a teaser
-	 *
-	 * @param   Teaser $teaser The teaser
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitTeaser(Teaser $teaser);
+    /**
+     * Render a teaser
+     *
+     * @param   Teaser $teaser The teaser
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitTeaser(Teaser $teaser);
 
-	/**
-	 * Render a defaultMenu
-	 *
-	 * @param   DefaultMenu $defaultMenu The defaultMenu
-	 *
-	 * @return  integer Number of bytes written to the output
-	 */
-	public function visitDefaultMenu(DefaultMenu $defaultMenu);
+    /**
+     * Render a defaultMenu
+     *
+     * @param   DefaultMenu $defaultMenu The defaultMenu
+     *
+     * @return  integer Number of bytes written to the output
+     */
+    public function visitDefaultMenu(DefaultMenu $defaultMenu);
 }

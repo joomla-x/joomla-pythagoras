@@ -22,37 +22,37 @@ use Joomla\Media\Entity\Image as ImageEntity;
  */
 class Image extends AbstractContentType
 {
-	/**
-	 * Image constructor.
-	 *
-	 * @param   ImageEntity $item The location of the image file
-	 * @param   string      $alt  The alternative description
-	 */
-	public function __construct(ImageEntity $item, $alt = '')
-	{
-		parent::__construct($item->caption, 'img-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Image constructor.
+     *
+     * @param   ImageEntity $item The location of the image file
+     * @param   string      $alt  The alternative description
+     */
+    public function __construct(ImageEntity $item, $alt = '')
+    {
+        parent::__construct($item->caption, 'img-' . spl_object_hash($this), new \stdClass);
 
-		$this->image = $item;
-		$this->alt   = $alt;
-	}
+        $this->image = $item;
+        $this->alt   = $alt;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitImage($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitImage($this);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTitle()
-	{
-		return $this->image->caption;
-	}
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->image->caption;
+    }
 }

@@ -17,13 +17,13 @@ namespace Joomla\Extension;
  */
 interface ExtensionFactoryInterface
 {
-	/**
-	 * Returns an array of ExtensionInterface's for the given group.
-	 * If the group is not defined all plugins are returned.
-	 *
-	 * @param   string $groupName The name of the plugin group
-	 *
-	 * @return  ExtensionInterface[]
-	 */
-	public function getExtensions($groupName = '');
+    /**
+     * Returns an array of ExtensionInterface's for the given group.
+     * If the group is not defined all plugins are returned.
+     *
+     * @param   string $groupName The name of the plugin group
+     *
+     * @return  ExtensionInterface[]
+     */
+    public function getExtensions($groupName = '');
 }

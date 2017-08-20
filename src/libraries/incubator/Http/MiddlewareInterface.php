@@ -20,16 +20,16 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface MiddlewareInterface
 {
-	/**
-	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-	 *
-	 * @internal
-	 *
-	 * @param   ServerRequestInterface $request  The request object
-	 * @param   ResponseInterface      $response The response object
-	 * @param   callable               $next     The next middleware handler
-	 *
-	 * @return  ResponseInterface
-	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next);
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request  The request object
+     * @param   ResponseInterface      $response The response object
+     * @param   callable               $next     The next middleware handler
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next);
 }

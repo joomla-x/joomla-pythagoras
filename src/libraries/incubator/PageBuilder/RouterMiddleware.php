@@ -26,95 +26,87 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RouterMiddleware implements MiddlewareInterface
 {
-	/** @var Container */
-	private $container;
+    /** @var Container */
+    private $container;
 
-	/**
-	 * RouterMiddleware constructor.
-	 *
-	 * @param   Container $container The container
-	 */
-	public function __construct(Container $container)
-	{
-		$this->container = $container;
-	}
+    /**
+     * RouterMiddleware constructor.
+     *
+     * @param   Container $container The container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
-	/**
-	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-	 *
-	 * @internal
-	 *
-	 * @param   ServerRequestInterface $request  The request object
-	 * @param   ResponseInterface      $response The response object
-	 * @param   callable               $next     The next middleware handler
-	 *
-	 * @return  ResponseInterface
-	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-	{
-		$attributes = $request->getAttributes();
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request  The request object
+     * @param   ResponseInterface      $response The response object
+     * @param   callable               $next     The next middleware handler
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        $attributes = $request->getAttributes();
 
-		if (!isset($attributes['command']))
-		{
-			try
-			{
-				/** @var RepositoryInterface $repository */
-				$repository = $this->container->get('Repository')->forEntity(Page::class);
+        if (!isset($attributes['command'])) {
+            try {
+                /** @var RepositoryInterface $repository */
+                $repository = $this->container->get('Repository')->forEntity(Page::class);
 
-				/** @var Page[] $pages */
-				$pages = $repository->getAll();
+                /** @var Page[] $pages */
+                $pages = $repository->getAll();
 
-				$router = new Router;
+                $router = new Router;
 
-				foreach ($pages as $page)
-				{
-					$router->get($this->expandUrl($page->url, $page), function () use ($page) {
-						return $page;
-					});
-				}
+                foreach ($pages as $page) {
+                    $router->get($this->expandUrl($page->url, $page), function () use ($page) {
+                        return $page;
+                    });
+                }
 
-				$path  = preg_replace('~^/.*?index.php/?~', '', $request->getUri()->getPath());
-				$route = $router->parseRoute($path);
-				$page  = $route['controller']();
-				$vars  = $route['vars'];
+                $path  = preg_replace('~^/.*?index.php/?~', '', $request->getUri()->getPath());
+                $route = $router->parseRoute($path);
+                $page  = $route['controller']();
+                $vars  = $route['vars'];
 
-				$command = new DisplayPageCommand($page->id, $vars, $request, $response->getBody(), $this->container);
-				$request = $request->withAttribute('command', $command);
-				// @todo Emit afterRouting event
-			}
-			catch (InvalidArgumentException $e)
-			{
-				// Do nothing
-			}
-		}
+                $command = new DisplayPageCommand($page->id, $vars, $request, $response->getBody(), $this->container);
+                $request = $request->withAttribute('command', $command);
+                // @todo Emit afterRouting event
+            } catch (InvalidArgumentException $e) {
+                // Do nothing
+            }
+        }
 
-		return $next($request, $response);
-	}
+        return $next($request, $response);
+    }
 
-	/**
-	 * @param $url
-	 * @param $page
-	 *
-	 * @return string
-	 */
-	private function expandUrl($url, $page)
-	{
-		if (empty($url))
-		{
-			return '/';
-		}
+    /**
+     * @param $url
+     * @param $page
+     *
+     * @return string
+     */
+    private function expandUrl($url, $page)
+    {
+        if (empty($url)) {
+            return '/';
+        }
 
-		while ($url[0] != '/' && !empty($page->parent))
-		{
-			$page = $page->parent;
-			$url  = $page->url . '/' . $url;
-		}
+        while ($url[0] != '/' && !empty($page->parent)) {
+            $page = $page->parent;
+            $url  = $page->url . '/' . $url;
+        }
 
-		if ($url[0] != '/')
-		{
-			$url = '/' . $url;
-		}
+        if ($url[0] != '/') {
+            $url = '/' . $url;
+        }
 
-		return $url;
-	}
+        return $url;
+    }
 }

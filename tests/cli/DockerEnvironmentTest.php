@@ -10,41 +10,41 @@ namespace Joomla\Tests\Cli;
 
 class DockerEnvironmentTest extends CliTestCase
 {
-	public function testDockerEnvironmentProducesNoError()
-	{
-		$output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
+    public function testDockerEnvironmentProducesNoError()
+    {
+        $output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
 
-		$this->assertEquals(0, $output['return']);
-		$this->assertEquals('', $output['stderr']);
-	}
+        $this->assertEquals(0, $output['return']);
+        $this->assertEquals('', $output['stderr']);
+    }
 
-	public function testDockerEnvironmentUsesBuildDirectory()
-	{
-		$output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
+    public function testDockerEnvironmentUsesBuildDirectory()
+    {
+        $output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
 
-		$this->assertContains('PHPUNIT_COVERAGE_DATA_DIRECTORY = /var/test/build', $output['stdout']);
-	}
+        $this->assertContains('PHPUNIT_COVERAGE_DATA_DIRECTORY = /var/test/build', $output['stdout']);
+    }
 
-	public function testCodeCoverageIsStarted()
-	{
-		$output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
+    public function testCodeCoverageIsStarted()
+    {
+        $output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
 
-		$this->assertContains('xdebug_code_coverage_started()  = true', $output['stdout']);
-	}
+        $this->assertContains('xdebug_code_coverage_started()  = true', $output['stdout']);
+    }
 
-	public function testServerArrayIsNotChanged()
-	{
-		$server = $_SERVER;
+    public function testServerArrayIsNotChanged()
+    {
+        $server = $_SERVER;
 
-		$this->runInShell(__DIR__ . '/Fixture/cli-command', false);
+        $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
 
-		$this->assertEquals($server, $_SERVER);
-	}
+        $this->assertEquals($server, $_SERVER);
+    }
 
-	public function DISABLEDtestDumpStdout()
-	{
-		$output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
+    public function DISABLEDtestDumpStdout()
+    {
+        $output = $this->runInShell(__DIR__ . '/Fixture/cli-command', false);
 
-		$this->assertEquals('', $output['stdout'], 'No output');
-	}
+        $this->assertEquals('', $output['stdout'], 'No output');
+    }
 }

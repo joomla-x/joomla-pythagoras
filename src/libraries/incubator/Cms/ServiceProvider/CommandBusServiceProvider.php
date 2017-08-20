@@ -23,54 +23,51 @@ use Joomla\Service\CommandBusBuilder;
  */
 class CommandBusServiceProvider implements ServiceProviderInterface
 {
-	/**
-	 * @param   Container $container The DI container
-	 * @param   string    $alias     An optional alias
-	 *
-	 * @return  void
-	 */
-	public function register(Container $container, $alias = null)
-	{
-		$container->set(
-			'CommandBus',
-			[
-				$this,
-				'createCommandBus'
-			],
-			true,
-			true
-		);
+    /**
+     * @param   Container $container The DI container
+     * @param   string    $alias     An optional alias
+     *
+     * @return  void
+     */
+    public function register(Container $container, $alias = null)
+    {
+        $container->set(
+            'CommandBus',
+            [
+                $this,
+                'createCommandBus'
+            ],
+            true,
+            true
+        );
 
-		if ($alias)
-		{
-			$container->alias($alias, 'CommandBus');
-		}
-	}
+        if ($alias) {
+            $container->alias($alias, 'CommandBus');
+        }
+    }
 
-	/**
-	 * @param   Container  $container  The container
-	 *
-	 * @return  \Joomla\Service\CommandBus
-	 */
-	public function createCommandBus(Container $container)
-	{
-		// Construct the command handler middleware
-		$middleware = [];
+    /**
+     * @param   Container  $container  The container
+     *
+     * @return  \Joomla\Service\CommandBus
+     */
+    public function createCommandBus(Container $container)
+    {
+        // Construct the command handler middleware
+        $middleware = [];
 
-		if ($container->has('CommandBusMiddleware'))
-		{
-			$middleware = (array) $container->get('CommandBusMiddleware');
-		}
+        if ($container->has('CommandBusMiddleware')) {
+            $middleware = (array) $container->get('CommandBusMiddleware');
+        }
 
-		if ($container->has('extension_factory'))
-		{
-			$middleware[] = new ExtensionQueryMiddleware($container->get('extension_factory'));
-		}
+        if ($container->has('extension_factory')) {
+            $middleware[] = new ExtensionQueryMiddleware($container->get('extension_factory'));
+        }
 
-		$builder    = new CommandBusBuilder($container->get('EventDispatcher'));
-		$middleware = array_merge($middleware, $builder->getMiddleware());
-		$builder->setMiddleware($middleware);
+        $builder    = new CommandBusBuilder($container->get('EventDispatcher'));
+        $middleware = array_merge($middleware, $builder->getMiddleware());
+        $builder->setMiddleware($middleware);
 
-		return $builder->getCommandBus();
-	}
+        return $builder->getCommandBus();
+    }
 }

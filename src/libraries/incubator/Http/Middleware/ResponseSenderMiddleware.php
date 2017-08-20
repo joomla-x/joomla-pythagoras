@@ -21,101 +21,95 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class ResponseSenderMiddleware implements MiddlewareInterface
 {
-	/**
-	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-	 *
-	 * @internal
-	 *
-	 * @param   ServerRequestInterface $request  The request object
-	 * @param   ResponseInterface      $response The response object
-	 * @param   callable               $next     The next middleware handler
-	 *
-	 * @return  ResponseInterface
-	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
-	{
-		$response = $next($request, $response);
-		$this->sendStatus($response);
-		$this->sendHeaders($response);
-		$this->sendBody($response);
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request  The request object
+     * @param   ResponseInterface      $response The response object
+     * @param   callable               $next     The next middleware handler
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+    {
+        $response = $next($request, $response);
+        $this->sendStatus($response);
+        $this->sendHeaders($response);
+        $this->sendBody($response);
 
-		return $response;
-	}
+        return $response;
+    }
 
-	/**
-	 * Send the status
-	 *
-	 * @param   ResponseInterface $response The response object
-	 *
-	 * @return  void
-	 */
-	protected function sendStatus(ResponseInterface $response)
-	{
-		$version = $response->getProtocolVersion();
-		$status  = $response->getStatusCode();
-		$phrase  = $response->getReasonPhrase();
-		header("HTTP/{$version} {$status} {$phrase}");
-	}
+    /**
+     * Send the status
+     *
+     * @param   ResponseInterface $response The response object
+     *
+     * @return  void
+     */
+    protected function sendStatus(ResponseInterface $response)
+    {
+        $version = $response->getProtocolVersion();
+        $status  = $response->getStatusCode();
+        $phrase  = $response->getReasonPhrase();
+        header("HTTP/{$version} {$status} {$phrase}");
+    }
 
-	/**
-	 * Send the headers
-	 *
-	 * @param   ResponseInterface $response The response object
-	 *
-	 * @return  void
-	 */
-	protected function sendHeaders(ResponseInterface $response)
-	{
-		foreach ($response->getHeaders() as $name => $values)
-		{
-			$this->sendHeader($name, $values);
-		}
-	}
+    /**
+     * Send the headers
+     *
+     * @param   ResponseInterface $response The response object
+     *
+     * @return  void
+     */
+    protected function sendHeaders(ResponseInterface $response)
+    {
+        foreach ($response->getHeaders() as $name => $values) {
+            $this->sendHeader($name, $values);
+        }
+    }
 
-	/**
-	 * Send one header
-	 *
-	 * @param   string  $name    The header tag
-	 * @param   array   $values  The values
-	 *
-	 * @return  void
-	 */
-	protected function sendHeader($name, $values)
-	{
-		$name = str_replace('-', ' ', $name);
-		$name = ucwords($name);
-		$name = str_replace(' ', '-', $name);
+    /**
+     * Send one header
+     *
+     * @param   string  $name    The header tag
+     * @param   array   $values  The values
+     *
+     * @return  void
+     */
+    protected function sendHeader($name, $values)
+    {
+        $name = str_replace('-', ' ', $name);
+        $name = ucwords($name);
+        $name = str_replace(' ', '-', $name);
 
-		foreach ($values as $value)
-		{
-			header("{$name}: {$value}", false);
-		}
-	}
+        foreach ($values as $value) {
+            header("{$name}: {$value}", false);
+        }
+    }
 
-	/**
-	 * Send the body
-	 *
-	 * @param   ResponseInterface $response The response object
-	 *
-	 * @return  void
-	 */
-	protected function sendBody(ResponseInterface $response)
-	{
-		$stream = $response->getBody();
+    /**
+     * Send the body
+     *
+     * @param   ResponseInterface $response The response object
+     *
+     * @return  void
+     */
+    protected function sendBody(ResponseInterface $response)
+    {
+        $stream = $response->getBody();
 
-		// @todo emit onBeforeOutput event
-		if ($stream->isSeekable())
-		{
-			$stream->rewind();
+        // @todo emit onBeforeOutput event
+        if ($stream->isSeekable()) {
+            $stream->rewind();
 
-			while (!$stream->eof())
-			{
-				echo $stream->read(8192);
-			}
-		}
-		else
-		{
-			echo $stream;
-		}
-	}
+            while (!$stream->eof()) {
+                echo $stream->read(8192);
+            }
+        } else {
+            echo $stream;
+        }
+    }
 }

@@ -17,9 +17,9 @@ namespace Joomla\Extension\Workflow\Entity;
  */
 class State
 {
-	/** @var  integer  The ID */
-	public $id;
+    /** @var  integer  The ID */
+    public $id;
 
-	/** @var  string  The title */
-	public $title;
+    /** @var  string  The title */
+    public $title;
 }

@@ -23,34 +23,33 @@ use Zend\Diactoros\ServerRequest;
 
 class RendererCest
 {
-	public function _before(UnitTester $I)
-	{
-	}
+    public function _before(UnitTester $I)
+    {
+    }
 
-	public function _after(UnitTester $I)
-	{
-	}
+    public function _after(UnitTester $I)
+    {
+    }
 
-	public function RendererAddsTheEventDecorator(UnitTester $I)
-	{
-		$container = new Container();
-		$container->set('ConfigDirectory', JPATH_ROOT);
-		$container->registerServiceProvider(new StorageServiceProvider, 'repository');
-		$container->registerServiceProvider(new EventDispatcherServiceProvider, 'dispatcher');
-		$container->registerServiceProvider(new ExtensionFactoryServiceProvider, 'extension_factory');
+    public function RendererAddsTheEventDecorator(UnitTester $I)
+    {
+        $container = new Container();
+        $container->set('ConfigDirectory', JPATH_ROOT);
+        $container->registerServiceProvider(new StorageServiceProvider, 'repository');
+        $container->registerServiceProvider(new EventDispatcherServiceProvider, 'dispatcher');
+        $container->registerServiceProvider(new ExtensionFactoryServiceProvider, 'extension_factory');
 
-		$app       = new Application([
-			new RendererMiddleware(new Dispatcher(), $container),
-			function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I)
-			{
-				$body = $response->getBody();
+        $app = new Application([
+            new RendererMiddleware(new Dispatcher(), $container),
+            function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($I) {
+                $body = $response->getBody();
 
-				$I->assertEquals(EventDecorator::class, get_class($body));
+                $I->assertEquals(EventDecorator::class, get_class($body));
 
-				return $next($request, $response);
-			}
-		]);
+                return $next($request, $response);
+            },
+        ]);
 
-		$app->run(new ServerRequest());
-	}
+        $app->run(new ServerRequest());
+    }
 }

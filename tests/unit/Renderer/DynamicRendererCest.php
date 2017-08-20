@@ -10,7 +10,6 @@ namespace Joomla\Tests\Unit\Renderer;
 
 use Joomla\Content\ContentTypeInterface;
 use Joomla\DI\Container;
-use Joomla\Renderer\Exception\NotFoundException;
 use Joomla\Tests\Unit\Renderer\Mock\Content;
 use Joomla\Tests\Unit\Renderer\Mock\ContentType;
 use Joomla\Tests\Unit\Renderer\Mock\NewContentType;
@@ -21,68 +20,66 @@ use UnitTester;
 
 class DynamicRendererCest
 {
-	public function _before(UnitTester $I)
-	{
-	}
+    public function _before(UnitTester $I)
+    {
+    }
 
-	public function _after(UnitTester $I)
-	{
-	}
+    public function _after(UnitTester $I)
+    {
+    }
 
-	/**
-	 * @testdox Callbacks can be used to render custom content types
-	 */
-	public function DynamicRendererUsesCallbacks(UnitTester $I)
-	{
-		require_once __DIR__ . '/Mock/Content.php';
+    /**
+     * @testdox Callbacks can be used to render custom content types
+     */
+    public function DynamicRendererUsesCallbacks(UnitTester $I)
+    {
+        require_once __DIR__ . '/Mock/Content.php';
 
-		$renderer = new Renderer(['token' => '*/*'], new Container());
+        $renderer = new Renderer(['token' => '*/*'], new Container());
 
-		// Static method
-		$renderer->registerContentType('NewContent', [NewContentType::class, 'asHtml']);
+        // Static method
+        $renderer->registerContentType('NewContent', [NewContentType::class, 'asHtml']);
 
-		// Dynamic method
-		$renderer->registerContentType('OtherContent', 'asHtml');
+        // Dynamic method
+        $renderer->registerContentType('OtherContent', 'asHtml');
 
-		// Callable
-		$renderer->registerContentType('Default', function (Content $content)
-		{
-			return 'default: ' . $content->getContents() . "\n";
-		});
+        // Callable
+        $renderer->registerContentType('Default', function (Content $content) {
+            return 'default: ' . $content->getContents() . "\n";
+        });
 
-		/** @var ContentTypeInterface[] $content */
-		$content = array(
-			new ContentType('ContentType'),
-			new NewContentType('NewContentType'),
-			new OtherContentType('OtherContentType'),
-			new UnregisteredContentType('UnregisteredContentType'),
-		);
+        /** @var ContentTypeInterface[] $content */
+        $content = [
+            new ContentType('ContentType'),
+            new NewContentType('NewContentType'),
+            new OtherContentType('OtherContentType'),
+            new UnregisteredContentType('UnregisteredContentType'),
+        ];
 
-		foreach ($content as $c)
-		{
-			$c->accept($renderer);
-		}
+        foreach ($content as $c) {
+            $c->accept($renderer);
+        }
 
-		$I->assertEquals(
-			"standard: ContentType\n" .
-			"static: NewContentType\n" .
-			"dynamic: OtherContentType\n" .
-			"default: UnregisteredContentType\n",
-			$renderer->getContents()
-		);
-	}
+        $I->assertEquals(
+            "standard: ContentType\n" .
+            "static: NewContentType\n" .
+            "dynamic: OtherContentType\n" .
+            "default: UnregisteredContentType\n",
+            $renderer->getContents()
+        );
+    }
 
-	/**
-	 * @testdox If an unknown content type is encountered, an empty string is returned
-	 */
-	public function DynamicRendererThrowsExceptionOnMissingCallback(UnitTester $I)
-	{
-		require_once __DIR__ . '/Mock/Content.php';
+    /**
+     * @testdox If an unknown content type is encountered, an empty string is returned
+     */
+    public function DynamicRendererThrowsExceptionOnMissingCallback(UnitTester $I)
+    {
+        require_once __DIR__ . '/Mock/Content.php';
 
-		$renderer = new Renderer(['token' => '*/*'], new Container());
+        $renderer = new Renderer(['token' => '*/*'], new Container());
 
-		$content = new UnregisteredContentType('UnregisteredContentType');
+        $content = new UnregisteredContentType('UnregisteredContentType');
 
-		$I->assertEquals('', $content->accept($renderer));
-	}
+        $I->assertEquals('', $content->accept($renderer));
+    }
 }

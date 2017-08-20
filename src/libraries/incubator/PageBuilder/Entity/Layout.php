@@ -19,9 +19,9 @@ use Joomla\ORM\Repository\RepositoryInterface;
  */
 class Layout
 {
-	public $id;
-	public $title;
+    public $id;
+    public $title;
 
-	/** @var  RepositoryInterface */
-	public $content;
+    /** @var  RepositoryInterface */
+    public $content;
 }

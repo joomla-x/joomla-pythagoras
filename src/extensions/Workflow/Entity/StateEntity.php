@@ -17,12 +17,12 @@ namespace Joomla\Extension\Workflow\Entity;
  */
 class StateEntity
 {
-	/** @var  integer  The ID */
-	public $id;
+    /** @var  integer  The ID */
+    public $id;
 
-	/** @var  integer  The reference to the entity */
-	public $entityId;
+    /** @var  integer  The reference to the entity */
+    public $entityId;
 
-	/** @var  integer  The reference to the state */
-	public $stateId;
+    /** @var  integer  The reference to the state */
+    public $stateId;
 }

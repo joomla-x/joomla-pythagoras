@@ -17,30 +17,30 @@ namespace Joomla\Extension\Article\Entity;
  */
 class Article
 {
-	/** @var  integer  The ID */
-	public $id;
+    /** @var  integer  The ID */
+    public $id;
 
-	/** @var  string  The title */
-	public $title;
+    /** @var  string  The title */
+    public $title;
 
-	/** @var  string  A category */
-	public $category;
+    /** @var  string  A category */
+    public $category;
 
-	/** @var  string  The (relative) URL */
-	public $alias;
+    /** @var  string  The (relative) URL */
+    public $alias;
 
-	/** @var  string  The teaser text */
-	public $teaser;
+    /** @var  string  The teaser text */
+    public $teaser;
 
-	/** @var  string  The image path */
-	public $image;
+    /** @var  string  The image path */
+    public $image;
 
-	/** @var  string  The article's copy text */
-	public $body;
+    /** @var  string  The article's copy text */
+    public $body;
 
-	/** @var  string  The author's name */
-	public $author;
+    /** @var  string  The author's name */
+    public $author;
 
-	/** @var  string  The license of the article */
-	public $license;
+    /** @var  string  The license of the article */
+    public $license;
 }

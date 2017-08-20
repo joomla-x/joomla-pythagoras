@@ -17,22 +17,22 @@ namespace Joomla\Session;
  */
 interface SessionInterface
 {
-	/**
-	 * Returns the value in the session for the given key.
-	 *
-	 * @param   string $key The key
-	 *
-	 * @return  mixed
-	 */
-	public function get($key);
+    /**
+     * Returns the value in the session for the given key.
+     *
+     * @param   string $key The key
+     *
+     * @return  mixed
+     */
+    public function get($key);
 
-	/**
-	 * Registres the given value for the given key in the registry.
-	 *
-	 * @param   string $key   The key
-	 * @param   mixed  $value The value, must be serializable
-	 *
-	 * @return  void
-	 */
-	public function set($key, $value);
+    /**
+     * Registres the given value for the given key in the registry.
+     *
+     * @param   string $key   The key
+     * @param   mixed  $value The value, must be serializable
+     *
+     * @return  void
+     */
+    public function set($key, $value);
 }

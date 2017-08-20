@@ -23,72 +23,69 @@ use Joomla\Event\EventInterface;
  */
 class ExtensionDispatcher extends Dispatcher
 {
-	/** @var ExtensionFactoryInterface The extension factory */
-	private $factory;
+    /** @var ExtensionFactoryInterface The extension factory */
+    private $factory;
 
-	/** @var string[] The loaded events */
-	private $loadedEvents = [];
+    /** @var string[] The loaded events */
+    private $loadedEvents = [];
 
-	/**
-	 * ExtensionDispatcher constructor.
-	 *
-	 * @param   ExtensionFactoryInterface $factory The extension factory
-	 */
-	public function __construct(ExtensionFactoryInterface $factory)
-	{
-		parent::__construct();
+    /**
+     * ExtensionDispatcher constructor.
+     *
+     * @param   ExtensionFactoryInterface $factory The extension factory
+     */
+    public function __construct(ExtensionFactoryInterface $factory)
+    {
+        parent::__construct();
 
-		$this->factory = $factory;
-	}
+        $this->factory = $factory;
+    }
 
-	/**
-	 * Dispatches an event to all registered listeners.
-	 *
-	 * @param   string         $name    The name of the event to dispatch.
-	 *                                  The name of the event is the name of the method that is invoked on listeners.
-	 * @param   EventInterface $event   The event to pass to the event handlers/listeners.
-	 *                                  If not supplied, an empty EventInterface instance is created.
-	 *
-	 * @return  EventInterface
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function dispatch(string $name, EventInterface $event = null): EventInterface
-	{
-		$this->logger->debug(__METHOD__ . ": Dispatching " . $event->getName());
+    /**
+     * Dispatches an event to all registered listeners.
+     *
+     * @param   string         $name    The name of the event to dispatch.
+     *                                  The name of the event is the name of the method that is invoked on listeners.
+     * @param   EventInterface $event   The event to pass to the event handlers/listeners.
+     *                                  If not supplied, an empty EventInterface instance is created.
+     *
+     * @return  EventInterface
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function dispatch(string $name, EventInterface $event = null): EventInterface
+    {
+        $this->logger->debug(__METHOD__ . ": Dispatching " . $event->getName());
 
-		$name = $event->getName();
+        $name = $event->getName();
 
-		if (!key_exists($name, $this->loadedEvents))
-		{
-			$this->logger->debug(__METHOD__ . ": - Loading extension listeners");
+        if (!key_exists($name, $this->loadedEvents)) {
+            $this->logger->debug(__METHOD__ . ": - Loading extension listeners");
 
-			$this->loadExtensionListeners($name, $this->factory->getExtensions());
-			$this->loadedEvents[$name] = $name;
-		}
+            $this->loadExtensionListeners($name, $this->factory->getExtensions());
+            $this->loadedEvents[$name] = $name;
+        }
 
-		$result = parent::dispatch($name, $event);
-		$this->logger->debug(__METHOD__ . ": Done.");
+        $result = parent::dispatch($name, $event);
+        $this->logger->debug(__METHOD__ . ": Done.");
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * Loads the listeners from the given extensions and attaches them.
-	 *
-	 * @param   string               $name       The event name
-	 * @param   ExtensionInterface[] $extensions A list of extensions
-	 *
-	 * @return  void
-	 */
-	private function loadExtensionListeners($name, array $extensions)
-	{
-		foreach ($extensions as $extension)
-		{
-			foreach ($extension->getListeners($name) as $listener)
-			{
-				$this->addListener($name, $listener);
-			}
-		}
-	}
+    /**
+     * Loads the listeners from the given extensions and attaches them.
+     *
+     * @param   string               $name       The event name
+     * @param   ExtensionInterface[] $extensions A list of extensions
+     *
+     * @return  void
+     */
+    private function loadExtensionListeners($name, array $extensions)
+    {
+        foreach ($extensions as $extension) {
+            foreach ($extension->getListeners($name) as $listener) {
+                $this->addListener($name, $listener);
+            }
+        }
+    }
 }

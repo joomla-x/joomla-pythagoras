@@ -20,20 +20,20 @@ use Joomla\Event\Event;
  */
 class RenderContentTypeEvent extends Event
 {
-	/**
-	 * RenderContentTypeEvent constructor.
-	 *
-	 * @param   string               $type     The name of the content type
-	 * @param   ContentTypeInterface $content  The content element
-	 */
-	public function __construct($type, $content)
-	{
-		parent::__construct(
-			'onBeforeRender' . $type,
-			[
-				'type'    => $type,
-				'content' => $content
-			]
-		);
-	}
+    /**
+     * RenderContentTypeEvent constructor.
+     *
+     * @param   string               $type     The name of the content type
+     * @param   ContentTypeInterface $content  The content element
+     */
+    public function __construct($type, $content)
+    {
+        parent::__construct(
+            'onBeforeRender' . $type,
+            [
+                'type'    => $type,
+                'content' => $content
+            ]
+        );
+    }
 }

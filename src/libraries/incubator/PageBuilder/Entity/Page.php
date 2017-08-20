@@ -17,7 +17,7 @@ namespace Joomla\PageBuilder\Entity;
  */
 class Page
 {
-	public $id;
-	public $title;
-	public $url;
+    public $id;
+    public $title;
+    public $url;
 }

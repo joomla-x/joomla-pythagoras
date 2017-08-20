@@ -22,51 +22,48 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RouterMiddleware implements MiddlewareInterface
 {
-	/**
-	 * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
-	 *
-	 * @internal
-	 *
-	 * @param   ServerRequestInterface $request  The request object
-	 * @param   ResponseInterface      $response The response object
-	 * @param   callable               $next     The next middleware handler
-	 *
-	 * @return  ResponseInterface
-	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-	{
-		$attributes = $request->getAttributes();
+    /**
+     * Execute the middleware. Don't call this method directly; it is used by the `Application` internally.
+     *
+     * @internal
+     *
+     * @param   ServerRequestInterface $request  The request object
+     * @param   ResponseInterface      $response The response object
+     * @param   callable               $next     The next middleware handler
+     *
+     * @return  ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        $attributes = $request->getAttributes();
 
-		if (!isset($attributes['command']))
-		{
-			switch (strtoupper($request->getMethod()))
-			{
-				case 'GET':
-					$params = new Registry($request->getQueryParams());
-					break;
+        if (!isset($attributes['command'])) {
+            switch (strtoupper($request->getMethod())) {
+                case 'GET':
+                    $params = new Registry($request->getQueryParams());
+                    break;
 
-				case 'POST':
-				default:
-					$params = new Registry($request->getAttributes());
-					break;
-			}
+                case 'POST':
+                default:
+                    $params = new Registry($request->getAttributes());
+                    break;
+            }
 
-			$extension = ucfirst(strtolower($params->get('option', 'Article')));
-			$action  = ucfirst(strtolower($params->get('task', 'display')));
-			$entity  = $params->get('entity', 'error');
-			$id      = $params->get('id', null);
+            $extension = ucfirst(strtolower($params->get('option', 'Article')));
+            $action  = ucfirst(strtolower($params->get('task', 'display')));
+            $entity  = $params->get('entity', 'error');
+            $id      = $params->get('id', null);
 
-			$commandClass = "\\Joomla\\Extension\\{$extension}\\Command\\{$action}Command";
+            $commandClass = "\\Joomla\\Extension\\{$extension}\\Command\\{$action}Command";
 
-			if (class_exists($commandClass))
-			{
-				$command = new $commandClass($entity, $id, $response->getBody());
-				$request = $request->withAttribute('command', $command);
-			}
+            if (class_exists($commandClass)) {
+                $command = new $commandClass($entity, $id, $response->getBody());
+                $request = $request->withAttribute('command', $command);
+            }
 
-			// @todo Emit afterRouting event
-		}
+            // @todo Emit afterRouting event
+        }
 
-		return $next($request, $response);
-	}
+        return $next($request, $response);
+    }
 }

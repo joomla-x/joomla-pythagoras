@@ -17,33 +17,33 @@ namespace Joomla\Media\Entity;
  */
 class Image
 {
-	/** @var  string The ID */
-	public $id;
+    /** @var  string The ID */
+    public $id;
 
-	/** @var  string A caption */
-	public $caption;
+    /** @var  string A caption */
+    public $caption;
 
-	/** @var  string The description */
-	public $description;
+    /** @var  string The description */
+    public $description;
 
-	/** @var  string The URL for the image (src) */
-	public $url;
+    /** @var  string The URL for the image (src) */
+    public $url;
 
-	/** @var  string Name of the creator of the image */
-	public $creator;
+    /** @var  string Name of the creator of the image */
+    public $creator;
 
-	/** @var  string The license of the image */
-	public $license;
+    /** @var  string The license of the image */
+    public $license;
 
-	/** @var  string The Mime type */
-	public $mimeType;
+    /** @var  string The Mime type */
+    public $mimeType;
 
-	/** @var  integer The width */
-	public $width;
+    /** @var  integer The width */
+    public $width;
 
-	/** @var  integer The height */
-	public $height;
+    /** @var  integer The height */
+    public $height;
 
-	/** @var  string JSON encoded EXIF data */
-	public $exif;
+    /** @var  string JSON encoded EXIF data */
+    public $exif;
 }

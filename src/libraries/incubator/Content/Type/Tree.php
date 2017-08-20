@@ -21,27 +21,27 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Tree extends AbstractContentType
 {
-	/**
-	 * Tree constructor.
-	 *
-	 * @param   object $item The item to be displayed as a tree
-	 */
-	public function __construct($item)
-	{
-		parent::__construct('Tree', 'tree-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Tree constructor.
+     *
+     * @param   object $item The item to be displayed as a tree
+     */
+    public function __construct($item)
+    {
+        parent::__construct('Tree', 'tree-' . spl_object_hash($this), new \stdClass);
 
-		$this->item = $item;
-	}
+        $this->item = $item;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitTree($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitTree($this);
+    }
 }

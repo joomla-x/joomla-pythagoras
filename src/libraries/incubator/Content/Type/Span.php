@@ -20,27 +20,27 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Span extends AbstractContentType
 {
-	/**
-	 * Paragraph constructor.
-	 *
-	 * @param   string  $text    The copy of the paragraph
-	 */
-	public function __construct($text)
-	{
-		parent::__construct('Span', 'span-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Paragraph constructor.
+     *
+     * @param   string  $text    The copy of the paragraph
+     */
+    public function __construct($text)
+    {
+        parent::__construct('Span', 'span-' . spl_object_hash($this), new \stdClass);
 
-		$this->text    = $text;
-	}
+        $this->text    = $text;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitSpan($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitSpan($this);
+    }
 }

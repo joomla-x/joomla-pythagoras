@@ -25,144 +25,139 @@ use Symfony\Component\Console\Question\Question;
  */
 abstract class Command extends BaseCommand
 {
-	/** @var  ContainerInterface */
-	protected $container;
+    /** @var  ContainerInterface */
+    protected $container;
 
-	/** @var  string */
-	protected $basePath;
+    /** @var  string */
+    protected $basePath;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param   string  $name  The name of the command
-	 */
-	public function __construct($name = null)
-	{
-		parent::__construct($name);
+    /**
+     * Constructor.
+     *
+     * @param   string  $name  The name of the command
+     */
+    public function __construct($name = null)
+    {
+        parent::__construct($name);
 
-		$this->addGlobalOptions();
-	}
+        $this->addGlobalOptions();
+    }
 
-	/**
-	 * Sets a Dependancy Injection Container
-	 *
-	 * @param   ContainerInterface $container The container
-	 *
-	 * @return  void
-	 */
-	public function setContainer(ContainerInterface $container)
-	{
-		$this->container = $container;
-	}
+    /**
+     * Sets a Dependancy Injection Container
+     *
+     * @param   ContainerInterface $container The container
+     *
+     * @return  void
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
-	/**
-	 * Add options common to all commands
-	 *
-	 * @return  void
-	 */
-	protected function addGlobalOptions()
-	{
-		$this
-			->addOption(
-				'basepath',
-				'b',
-				InputOption::VALUE_REQUIRED,
-				'The root of the Joomla! installation. Defaults to the current working directory.',
-				getcwd()
-			);
-	}
+    /**
+     * Add options common to all commands
+     *
+     * @return  void
+     */
+    protected function addGlobalOptions()
+    {
+        $this
+            ->addOption(
+                'basepath',
+                'b',
+                InputOption::VALUE_REQUIRED,
+                'The root of the Joomla! installation. Defaults to the current working directory.',
+                getcwd()
+            );
+    }
 
-	/**
-	 * Setup the environment
-	 *
-	 * @param   InputInterface   $input  An InputInterface instance
-	 * @param   OutputInterface  $output An OutputInterface instance
-	 *
-	 * @return  void
-	 */
-	protected function setupEnvironment(InputInterface $input, OutputInterface $output)
-	{
-		$this->basePath = $this->handleBasePath($input, $output);
-	}
+    /**
+     * Setup the environment
+     *
+     * @param   InputInterface   $input  An InputInterface instance
+     * @param   OutputInterface  $output An OutputInterface instance
+     *
+     * @return  void
+     */
+    protected function setupEnvironment(InputInterface $input, OutputInterface $output)
+    {
+        $this->basePath = $this->handleBasePath($input, $output);
+    }
 
-	/**
-	 * Read the base path from the options
-	 *
-	 * @param   InputInterface   $input   An InputInterface instance
-	 * @param   OutputInterface  $output  An OutputInterface instance
-	 *
-	 * @return  string  The base path
-	 */
-	private function handleBasePath(InputInterface $input, OutputInterface $output)
-	{
-		$path = realpath($input->getOption('basepath'));
+    /**
+     * Read the base path from the options
+     *
+     * @param   InputInterface   $input   An InputInterface instance
+     * @param   OutputInterface  $output  An OutputInterface instance
+     *
+     * @return  string  The base path
+     */
+    private function handleBasePath(InputInterface $input, OutputInterface $output)
+    {
+        $path = realpath($input->getOption('basepath'));
 
-		if (!defined('JPATH_ROOT'))
-		{
-			define('JPATH_ROOT', $path);
-		}
+        if (!defined('JPATH_ROOT')) {
+            define('JPATH_ROOT', $path);
+        }
 
-		$this->writeln($output, 'Joomla! installation expected in ' . $path, OutputInterface::VERBOSITY_DEBUG);
+        $this->writeln($output, 'Joomla! installation expected in ' . $path, OutputInterface::VERBOSITY_DEBUG);
 
-		return $path;
-	}
+        return $path;
+    }
 
-	/**
-	 * Proxy for OutputInterface::writeln()
-	 *
-	 * @param   OutputInterface  $output   An OutputInterface instance
-	 * @param   string|array     $message  The message
-	 * @param   int              $level    One of OutputInterface::VERBOSITY_*
-	 * @param   int              $mode     One of OutputInterface::OUTPUT_*
-	 *
-	 * @return  void
-	 */
-	protected function writeln(OutputInterface $output, $message, $level = OutputInterface::VERBOSITY_NORMAL, $mode = OutputInterface::OUTPUT_NORMAL)
-	{
-		if ($output->getVerbosity() >= $level)
-		{
-			$output->writeln($message, $mode);
-		}
-	}
+    /**
+     * Proxy for OutputInterface::writeln()
+     *
+     * @param   OutputInterface  $output   An OutputInterface instance
+     * @param   string|array     $message  The message
+     * @param   int              $level    One of OutputInterface::VERBOSITY_*
+     * @param   int              $mode     One of OutputInterface::OUTPUT_*
+     *
+     * @return  void
+     */
+    protected function writeln(OutputInterface $output, $message, $level = OutputInterface::VERBOSITY_NORMAL, $mode = OutputInterface::OUTPUT_NORMAL)
+    {
+        if ($output->getVerbosity() >= $level) {
+            $output->writeln($message, $mode);
+        }
+    }
 
-	/**
-	 * Proxy for QuestionHelper::ask()
-	 *
-	 * @param   InputInterface  $input    An InputInterface instance
-	 * @param   OutputInterface $output   An OutputInterface instance
-	 * @param   Question        $question The question
-	 *
-	 * @return  string
-	 */
-	protected function ask(InputInterface $input, OutputInterface $output, Question $question)
-	{
-		$helper = new QuestionHelper;
+    /**
+     * Proxy for QuestionHelper::ask()
+     *
+     * @param   InputInterface  $input    An InputInterface instance
+     * @param   OutputInterface $output   An OutputInterface instance
+     * @param   Question        $question The question
+     *
+     * @return  string
+     */
+    protected function ask(InputInterface $input, OutputInterface $output, Question $question)
+    {
+        $helper = new QuestionHelper;
 
-		return $helper->ask($input, $output, $question);
-	}
+        return $helper->ask($input, $output, $question);
+    }
 
-	/**
-	 * @param   InputInterface  $input  The input
-	 * @param   OutputInterface $output The output
-	 * @param   string[]        $header The table headers
-	 *
-	 * @return  Table
-	 */
-	protected function createTable(InputInterface $input, OutputInterface $output, array $header)
-	{
-		$table = new Table($output);
+    /**
+     * @param   InputInterface  $input  The input
+     * @param   OutputInterface $output The output
+     * @param   string[]        $header The table headers
+     *
+     * @return  Table
+     */
+    protected function createTable(InputInterface $input, OutputInterface $output, array $header)
+    {
+        $table = new Table($output);
 
-		if ($input->getOption('compact'))
-		{
-			$table->setStyle('compact');
-		}
-		else
-		{
-			$table->setStyle('default');
-		}
+        if ($input->getOption('compact')) {
+            $table->setStyle('compact');
+        } else {
+            $table->setStyle('default');
+        }
 
-		$table->setHeaders($header);
+        $table->setHeaders($header);
 
-		return $table;
-	}
+        return $table;
+    }
 }

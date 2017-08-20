@@ -19,20 +19,20 @@ use Joomla\Event\Event;
  */
 class RegisterContentTypeSuccessEvent extends Event
 {
-	/**
-	 * RegisterContentTypeSuccessEvent constructor.
-	 *
-	 * @param   string    $type     The name of the content type
-	 * @param   callable  $handler  The content type handler
-	 */
-	public function __construct($type, $handler)
-	{
-		parent::__construct(
-			'onAfterRegisterContentType',
-			[
-				'type'    => $type,
-				'handler' => $handler
-			]
-		);
-	}
+    /**
+     * RegisterContentTypeSuccessEvent constructor.
+     *
+     * @param   string    $type     The name of the content type
+     * @param   callable  $handler  The content type handler
+     */
+    public function __construct($type, $handler)
+    {
+        parent::__construct(
+            'onAfterRegisterContentType',
+            [
+                'type'    => $type,
+                'handler' => $handler
+            ]
+        );
+    }
 }

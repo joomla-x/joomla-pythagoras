@@ -20,69 +20,69 @@ use Psr\Http\Message\StreamInterface;
  */
 class DisplayPageCommand extends Command
 {
-	private $id;
-	private $vars;
-	private $request;
-	private $stream;
-	private $container;
+    private $id;
+    private $vars;
+    private $request;
+    private $stream;
+    private $container;
 
-	/**
-	 * DisplayPageCommand constructor.
-	 *
-	 * @param   integer                $id      The page ID
-	 * @param   array                  $vars    Routing variables
-	 * @param   ServerRequestInterface $request The request object
-	 * @param   StreamInterface        $stream  The output stream
-	 * @param   ContainerInterface     $container
-	 */
-	public function __construct($id, $vars, $request, $stream, $container)
-	{
-		$this->id        = $id;
-		$this->vars      = $vars;
-		$this->request   = $request;
-		$this->stream    = $stream;
-		$this->container = $container;
+    /**
+     * DisplayPageCommand constructor.
+     *
+     * @param   integer                $id      The page ID
+     * @param   array                  $vars    Routing variables
+     * @param   ServerRequestInterface $request The request object
+     * @param   StreamInterface        $stream  The output stream
+     * @param   ContainerInterface     $container
+     */
+    public function __construct($id, $vars, $request, $stream, $container)
+    {
+        $this->id        = $id;
+        $this->vars      = $vars;
+        $this->request   = $request;
+        $this->stream    = $stream;
+        $this->container = $container;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getVars()
-	{
-		return $this->vars;
-	}
+    /**
+     * @return mixed
+     */
+    public function getVars()
+    {
+        return $this->vars;
+    }
 
-	/**
-	 * @return ServerRequestInterface
-	 */
-	public function getRequest()
-	{
-		return $this->request;
-	}
+    /**
+     * @return ServerRequestInterface
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
 
-	/**
-	 * @return StreamInterface
-	 */
-	public function getStream()
-	{
-		return $this->stream;
-	}
+    /**
+     * @return StreamInterface
+     */
+    public function getStream()
+    {
+        return $this->stream;
+    }
 
-	/**
-	 * @return ContainerInterface
-	 */
-	public function getContainer()
-	{
-		return $this->container;
-	}
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
 }

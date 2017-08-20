@@ -10,14 +10,14 @@ namespace Joomla\Tests\Cli;
 
 class BaseTest extends CliTestCase
 {
-	/**
-	 * @testdox Invoking `joomla` without arguments displays the help message
-	 */
-	public function testWithoutParams()
-	{
-		$output = $this->runInShell('src/joomla');
-		$this->assertRegExp('/^Usage:/m', $output['stdout']);
-		$this->assertRegExp('/Options:/m', $output['stdout']);
-		$this->assertRegExp('/Available commands:/m', $output['stdout']);
-	}
+    /**
+     * @testdox Invoking `joomla` without arguments displays the help message
+     */
+    public function testWithoutParams()
+    {
+        $output = $this->runInShell('src/joomla');
+        $this->assertRegExp('/^Usage:/m', $output['stdout']);
+        $this->assertRegExp('/Options:/m', $output['stdout']);
+        $this->assertRegExp('/Available commands:/m', $output['stdout']);
+    }
 }

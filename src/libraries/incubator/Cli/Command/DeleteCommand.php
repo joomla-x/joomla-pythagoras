@@ -22,62 +22,58 @@ use Symfony\Component\Console\Question\Question;
  */
 class DeleteCommand extends EntityAwareCommand
 {
-	/**
-	 * Configure the options for the version command
-	 *
-	 * @return  void
-	 */
-	protected function configure()
-	{
-		$this
-			->setName('delete')
-			->setDescription('Delete entities');
-	}
+    /**
+     * Configure the options for the version command
+     *
+     * @return  void
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('delete')
+            ->setDescription('Delete entities');
+    }
 
-	/**
-	 * @param   InputInterface            $input  An InputInterface instance
-	 * @param   OutputInterface           $output An OutputInterface instance
-	 * @param   CollectionFinderInterface $finder The finder
-	 * @param   string                    $entity The entity name
-	 *
-	 * @return  void
-	 */
-	protected function doIt(InputInterface $input, OutputInterface $output, $finder, $entity)
-	{
-		$count              = 0;
-		$force              = $input->getOption('no-interaction');
-		$repository         = $this->repositoryFactory->forEntity($entity);
-		$idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
+    /**
+     * @param   InputInterface            $input  An InputInterface instance
+     * @param   OutputInterface           $output An OutputInterface instance
+     * @param   CollectionFinderInterface $finder The finder
+     * @param   string                    $entity The entity name
+     *
+     * @return  void
+     */
+    protected function doIt(InputInterface $input, OutputInterface $output, $finder, $entity)
+    {
+        $count              = 0;
+        $force              = $input->getOption('no-interaction');
+        $repository         = $this->repositoryFactory->forEntity($entity);
+        $idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
 
-		foreach ($this->getRecords($finder) as $record)
-		{
-			$id     = $idAccessorRegistry->getEntityId($record);
-			$choice = 'no';
+        foreach ($this->getRecords($finder) as $record) {
+            $id     = $idAccessorRegistry->getEntityId($record);
+            $choice = 'no';
 
-			if (!$force)
-			{
-				$question = new Question(
-					"Delete $entity #$id (yes,No,all)? ",
-					'no'
-				);
-				$question->setAutocompleterValues(['yes', 'no', 'all']);
+            if (!$force) {
+                $question = new Question(
+                    "Delete $entity #$id (yes,No,all)? ",
+                    'no'
+                );
+                $question->setAutocompleterValues(['yes', 'no', 'all']);
 
-				$choice = $this->ask($input, $output, $question);
+                $choice = $this->ask($input, $output, $question);
 
-				if ($choice == 'all')
-				{
-					$force = true;
-				}
-			}
+                if ($choice == 'all') {
+                    $force = true;
+                }
+            }
 
-			if ($force || $choice == 'yes')
-			{
-				$repository->remove($record);
-				$count++;
-			}
-		}
+            if ($force || $choice == 'yes') {
+                $repository->remove($record);
+                $count++;
+            }
+        }
 
-		$repository->commit();
-		$this->writeln($output, "Deleted $count $entity item(s).");
-	}
+        $repository->commit();
+        $this->writeln($output, "Deleted $count $entity item(s).");
+    }
 }

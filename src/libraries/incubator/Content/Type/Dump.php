@@ -21,27 +21,27 @@ use Joomla\Content\ContentTypeVisitorInterface;
  */
 class Dump extends AbstractContentType
 {
-	/**
-	 * Dump constructor.
-	 *
-	 * @param   object $item The item to be displayed as a dump
-	 */
-	public function __construct($item)
-	{
-		parent::__construct('Dump', 'dump-' . spl_object_hash($this), new \stdClass);
+    /**
+     * Dump constructor.
+     *
+     * @param   object $item The item to be displayed as a dump
+     */
+    public function __construct($item)
+    {
+        parent::__construct('Dump', 'dump-' . spl_object_hash($this), new \stdClass);
 
-		$this->item = $item;
-	}
+        $this->item = $item;
+    }
 
-	/**
-	 * Visits the content type.
-	 *
-	 * @param   ContentTypeVisitorInterface $visitor The Visitor
-	 *
-	 * @return  mixed
-	 */
-	public function accept(ContentTypeVisitorInterface $visitor)
-	{
-		return $visitor->visitDump($this);
-	}
+    /**
+     * Visits the content type.
+     *
+     * @param   ContentTypeVisitorInterface $visitor The Visitor
+     *
+     * @return  mixed
+     */
+    public function accept(ContentTypeVisitorInterface $visitor)
+    {
+        return $visitor->visitDump($this);
+    }
 }
