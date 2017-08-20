@@ -37,110 +37,27 @@ class Router implements \Serializable
         'HEAD'    => [],
         'OPTIONS' => [],
         'TRACE'   => [],
-        'PATCH'   => []
+        'PATCH'   => [],
     ];
 
     /**
      * Constructor.
      *
-     * @param   array  $maps  An optional array of route maps
+     * @param   array $maps An optional array of route maps
      *
      * @since   1.0
      */
     public function __construct(array $maps = [])
     {
-        if (! empty($maps)) {
+        if (!empty($maps)) {
             $this->addRoutes($maps);
         }
     }
 
     /**
-     * Add a route of the specified method to the router. If the pattern already exists it will be overwritten.
-     *
-     * @param   string  $method      Request method to match. One of GET, POST, PUT, DELETE, HEAD, OPTIONS, TRACE or PATCH
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the named route variables.
-     *
-     * @return  $this
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    public function addRoute($method, $pattern, $controller, array $rules = [])
-    {
-        list($regex, $vars) = $this->buildRegexAndVarList($pattern, $rules);
-
-        $this->routes[strtoupper($method)][] = [
-            'regex'      => $regex,
-            'vars'       => $vars,
-            'controller' => $controller
-        ];
-
-        return $this;
-    }
-
-    /**
-     * Parse the given pattern to extract the named variables and build a proper regular expression for use when parsing the routes.
-     *
-     * @param   string  $pattern  The route pattern to use for matching.
-     * @param   array   $rules    An array of regex rules keyed using the named route variables.
-     *
-     * @return  array
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    protected function buildRegexAndVarList($pattern, array $rules = [])
-    {
-        // Sanitize and explode the pattern.
-        $pattern = explode('/', trim(parse_url((string) $pattern, PHP_URL_PATH), ' /'));
-
-        // Prepare the route variables
-        $vars = [];
-
-        // Initialize regular expression
-        $regex = [];
-
-        // Loop on each segment
-        foreach ($pattern as $segment) {
-            if ($segment == '*') {
-                // Match a splat with no variable.
-                $regex[] = '.*';
-            } elseif (isset($segment[0]) && $segment[0] == '*') {
-                // Match a splat and capture the data to a named variable.
-                $vars[] = substr($segment, 1);
-                $regex[] = '(.*)';
-            } elseif (isset($segment[0]) && $segment[0] == '\\' && $segment[1] == '*') {
-                // Match an escaped splat segment.
-                $regex[] = '\*' . preg_quote(substr($segment, 2));
-            } elseif ($segment == ':') {
-                // Match an unnamed variable without capture.
-                $regex[] = '([^/]*)';
-            } elseif (isset($segment[0]) && $segment[0] == ':') {
-                // Match a named variable and capture the data.
-                $varName = substr($segment, 1);
-                $vars[] = $varName;
-
-                // Use the regex in the rules array if it has been defined.
-                $regex[] = array_key_exists($varName, $rules) ? '(' . $rules[$varName] . ')' : '([^/]*)';
-            } elseif (isset($segment[0]) && $segment[0] == '\\' && $segment[1] == ':') {
-                // Match a segment with an escaped variable character prefix.
-                $regex[] = preg_quote(substr($segment, 1));
-            } else {
-                // Match the standard segment.
-                $regex[] = preg_quote($segment);
-            }
-        }
-
-        return [
-            chr(1) . '^' . implode('/', $regex) . '$' . chr(1),
-            $vars
-        ];
-    }
-
-    /**
      * Add an array of route maps to the router.  If the pattern already exists it will be overwritten.
      *
-     * @param   array  $routes  A list of route maps to add to the router as $pattern => $controller.
+     * @param   array $routes A list of route maps to add to the router as $pattern => $controller.
      *
      * @return  $this
      *
@@ -151,12 +68,12 @@ class Router implements \Serializable
     {
         foreach ($routes as $route) {
             // Ensure a `pattern` key exists
-            if (! array_key_exists('pattern', $route)) {
+            if (!array_key_exists('pattern', $route)) {
                 throw new \UnexpectedValueException('Route map must contain a pattern variable.');
             }
 
             // Ensure a `controller` key exists
-            if (! array_key_exists('controller', $route)) {
+            if (!array_key_exists('controller', $route)) {
                 throw new \UnexpectedValueException('Route map must contain a controller variable.');
             }
 
@@ -171,10 +88,95 @@ class Router implements \Serializable
     }
 
     /**
+     * Add a route of the specified method to the router. If the pattern already exists it will be overwritten.
+     *
+     * @param   string $method     Request method to match.
+     *                             One of GET, POST, PUT, DELETE, HEAD, OPTIONS, TRACE or PATCH
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the named route variables.
+     *
+     * @return  $this
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function addRoute($method, $pattern, $controller, array $rules = [])
+    {
+        list($regex, $vars) = $this->buildRegexAndVarList($pattern, $rules);
+
+        $this->routes[strtoupper($method)][] = [
+            'regex'      => $regex,
+            'vars'       => $vars,
+            'controller' => $controller,
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Parse the given pattern to extract the named variables and build a proper regular expression for use when
+     * parsing the routes.
+     *
+     * @param   string $pattern The route pattern to use for matching.
+     * @param   array  $rules   An array of regex rules keyed using the named route variables.
+     *
+     * @return  array
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    protected function buildRegexAndVarList($pattern, array $rules = [])
+    {
+        // Sanitize and explode the pattern.
+        $pattern = explode('/', trim(parse_url((string)$pattern, PHP_URL_PATH), ' /'));
+
+        // Prepare the route variables
+        $vars = [];
+
+        // Initialize regular expression
+        $regex = [];
+
+        // Loop on each segment
+        foreach ($pattern as $segment) {
+            if ($segment == '*') {
+                // Match a splat with no variable.
+                $regex[] = '.*';
+            } elseif (isset($segment[0]) && $segment[0] == '*') {
+                // Match a splat and capture the data to a named variable.
+                $vars[]  = substr($segment, 1);
+                $regex[] = '(.*)';
+            } elseif (isset($segment[0]) && $segment[0] == '\\' && $segment[1] == '*') {
+                // Match an escaped splat segment.
+                $regex[] = '\*' . preg_quote(substr($segment, 2));
+            } elseif ($segment == ':') {
+                // Match an unnamed variable without capture.
+                $regex[] = '([^/]*)';
+            } elseif (isset($segment[0]) && $segment[0] == ':') {
+                // Match a named variable and capture the data.
+                $varName = substr($segment, 1);
+                $vars[]  = $varName;
+
+                // Use the regex in the rules array if it has been defined.
+                $regex[] = array_key_exists($varName, $rules) ? '(' . $rules[$varName] . ')' : '([^/]*)';
+            } elseif (isset($segment[0]) && $segment[0] == '\\' && $segment[1] == ':') {
+                // Match a segment with an escaped variable character prefix.
+                $regex[] = preg_quote(substr($segment, 1));
+            } else {
+                // Match the standard segment.
+                $regex[] = preg_quote($segment);
+            }
+        }
+
+        return [
+            chr(1) . '^' . implode('/', $regex) . '$' . chr(1),
+            $vars,
+        ];
+    }
+
+    /**
      * Parse the given route and return the name of a controller mapped to the given route.
      *
-     * @param   string  $route   The route string for which to find and execute a controller.
-     * @param   string  $method  Request method to match. One of GET, POST, PUT, DELETE, HEAD, OPTIONS, TRACE or PATCH
+     * @param   string $route  The route string for which to find and execute a controller.
+     * @param   string $method Request method to match. One of GET, POST, PUT, DELETE, HEAD, OPTIONS, TRACE or PATCH
      *
      * @return  array   An array containing the controller and the matched variables.
      *
@@ -185,7 +187,7 @@ class Router implements \Serializable
     {
         $method = strtoupper($method);
 
-        if (! array_key_exists($method, $this->routes)) {
+        if (!array_key_exists($method, $this->routes)) {
             throw new \InvalidArgumentException(sprintf('%s is not a valid HTTP method.', $method));
         }
 
@@ -204,7 +206,7 @@ class Router implements \Serializable
 
                 return [
                     'controller' => $rule['controller'],
-                    'vars'       => $vars
+                    'vars'       => $vars,
                 ];
             }
         }
@@ -215,9 +217,9 @@ class Router implements \Serializable
     /**
      * Add a GET route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -231,9 +233,9 @@ class Router implements \Serializable
     /**
      * Add a POST route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -247,9 +249,9 @@ class Router implements \Serializable
     /**
      * Add a PUT route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -263,9 +265,9 @@ class Router implements \Serializable
     /**
      * Add a DELETE route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -279,9 +281,9 @@ class Router implements \Serializable
     /**
      * Add a HEAD route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -295,9 +297,9 @@ class Router implements \Serializable
     /**
      * Add a OPTIONS route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -311,9 +313,9 @@ class Router implements \Serializable
     /**
      * Add a TRACE route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -327,9 +329,9 @@ class Router implements \Serializable
     /**
      * Add a PATCH route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -343,9 +345,9 @@ class Router implements \Serializable
     /**
      * Add a UNIVERSAL (catchall) route to the router. If the pattern already exists it will be overwritten.
      *
-     * @param   string  $pattern     The route pattern to use for matching.
-     * @param   mixed   $controller  The controller to map to the given pattern.
-     * @param   array   $rules       An array of regex rules keyed using the route variables.
+     * @param   string $pattern    The route pattern to use for matching.
+     * @param   mixed  $controller The controller to map to the given pattern.
+     * @param   array  $rules      An array of regex rules keyed using the route variables.
      *
      * @return  $this
      *
@@ -359,7 +361,7 @@ class Router implements \Serializable
             $this->routes[$method][] = [
                 'regex'      => $regex,
                 'vars'       => $vars,
-                'controller' => $controller
+                'controller' => $controller,
             ];
         }
 
@@ -392,7 +394,7 @@ class Router implements \Serializable
     /**
      * Constructs the object from a serialized string
      *
-     * @param   string  $serialized  The string representation of the object.
+     * @param   string $serialized The string representation of the object.
      *
      * @return  void
      *

@@ -116,8 +116,12 @@ abstract class Command extends BaseCommand
      *
      * @return  void
      */
-    protected function writeln(OutputInterface $output, $message, $level = OutputInterface::VERBOSITY_NORMAL, $mode = OutputInterface::OUTPUT_NORMAL)
-    {
+    protected function writeln(
+        OutputInterface $output,
+        $message,
+        $level = OutputInterface::VERBOSITY_NORMAL,
+        $mode = OutputInterface::OUTPUT_NORMAL
+    ) {
         if ($output->getVerbosity() >= $level) {
             $output->writeln($message, $mode);
         }

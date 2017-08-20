@@ -10,7 +10,6 @@ namespace Joomla\PageBuilder;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Logging\DebugStack;
-use Psr\Container\ContainerInterface;
 use Joomla\Content\CompoundTypeInterface;
 use Joomla\Content\ContentTypeInterface;
 use Joomla\Content\Type\AbstractContentType;
@@ -29,6 +28,7 @@ use Joomla\PageBuilder\Entity\Template;
 use Joomla\Renderer\HtmlRenderer;
 use Joomla\Service\CommandHandler;
 use Joomla\Tests\Unit\DumpTrait;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -114,14 +114,39 @@ class DisplayPageCommandHandler extends CommandHandler
         $this->output->write($parts[1]);
     }
 
-    private function loadTemplate($path, $data = [])
+    private function registerContentTypes()
     {
-        extract($data);
+        $container = $this->container;
+        $output    = $this->output;
 
-        ob_start();
-        include $path;
+        $this->output->registerContentType(
+            'TemplateSelector',
+            function (TemplateSelector $selector) use ($container, $output) {
+                /** @var RepositoryInterface $repo */
+                $repo      = $container->get('Repository')->forEntity(Template::class);
+                $templates = $repo->getAll();
 
-        return ob_get_clean();
+                // @todo Grouping
+                $groups    = [
+                    'Available Templates' => $templates,
+                ];
+                $accordion = new Accordion('Accordion Title', null, new \stdClass);
+
+                foreach ($groups as $title => $group) {
+                    $compound = new Compound('div', $title, null, new \stdClass);
+
+                    foreach ($group as $item) {
+                        $imageData      = new ImageEntity();
+                        $imageData->url = '/' . $item->path . '/preview.png';
+                        $image          = new Image($imageData, $item->path);
+                        $compound->add($image);
+                    }
+                    $accordion->add($compound);
+                }
+
+                $accordion->accept($output);
+            }
+        );
     }
 
     private function flatten($content)
@@ -165,17 +190,22 @@ class DisplayPageCommandHandler extends CommandHandler
         return $result;
     }
 
-    private function objectListToTree(array $items, $id = 'id', $parentId = 'parentId', $children = 'children', $ordering = 'ordering')
-    {
+    private function objectListToTree(
+        array $items,
+        $id = 'id',
+        $parentId = 'parentId',
+        $children = 'children',
+        $ordering = 'ordering'
+    ) {
         $result = [];
 
         foreach ($items as $item) {
-            $item->{$children}          = [];
-            $result[(int) $item->{$id}] = $item;
+            $item->{$children}         = [];
+            $result[(int)$item->{$id}] = $item;
         }
 
         foreach ($result as $id => $item) {
-            $pid = (int) $item->{$parentId};
+            $pid = (int)$item->{$parentId};
 
             if (empty($pid)) {
                 continue;
@@ -296,7 +326,7 @@ class DisplayPageCommandHandler extends CommandHandler
         $repo   = $this->container->get('Repository')->forEntity($component);
         $finder = $repo->findAll();
 
-        foreach ((array) $selection as $key => $value) {
+        foreach ((array)$selection as $key => $value) {
             if (!empty($value) && $value[0] == ':') {
                 $value = $this->vars[substr($value, 1)];
             }
@@ -306,36 +336,14 @@ class DisplayPageCommandHandler extends CommandHandler
         return $finder->getItems();
     }
 
-    private function registerContentTypes()
+    private function loadTemplate($path, $data = [])
     {
-        $container = $this->container;
-        $output    = $this->output;
+        extract($data);
 
-        $this->output->registerContentType('TemplateSelector', function (TemplateSelector $selector) use ($container, $output) {
-            /** @var RepositoryInterface $repo */
-            $repo      = $container->get('Repository')->forEntity(Template::class);
-            $templates = $repo->getAll();
+        ob_start();
+        include $path;
 
-            // @todo Grouping
-            $groups    = [
-                'Available Templates' => $templates,
-            ];
-            $accordion = new Accordion('Accordion Title', null, new \stdClass);
-
-            foreach ($groups as $title => $group) {
-                $compound = new Compound('div', $title, null, new \stdClass);
-
-                foreach ($group as $item) {
-                    $imageData      = new ImageEntity();
-                    $imageData->url = '/' . $item->path . '/preview.png';
-                    $image          = new Image($imageData, $item->path);
-                    $compound->add($image);
-                }
-                $accordion->add($compound);
-            }
-
-            $accordion->accept($output);
-        });
+        return ob_get_clean();
     }
 
     /**
@@ -365,15 +373,15 @@ class DisplayPageCommandHandler extends CommandHandler
 
             ksort($params);
 
-            $sql = preg_replace_callback(
+            $sql  = preg_replace_callback(
                 '~\?~',
                 function () use (&$params) {
                     return array_shift($params);
                 },
                 $sql
             );
-            $sql = preg_replace('~(WHERE|LIMIT|INNER\s+JOIN|LEFT\s+JOIN)~', "\n  \\1", $sql);
-            $sql = preg_replace('~(AND|OR)~', "\n    \\1", $sql);
+            $sql  = preg_replace('~(WHERE|LIMIT|INNER\s+JOIN|LEFT\s+JOIN)~', "\n  \\1", $sql);
+            $sql  = preg_replace('~(AND|OR)~', "\n    \\1", $sql);
             $time = sprintf('%.3f ms', 1000 * $query['executionMS']);
 
             $table .= "<tr><td>$index</td><td><pre>$sql</pre></td><td>$time</td></tr>";

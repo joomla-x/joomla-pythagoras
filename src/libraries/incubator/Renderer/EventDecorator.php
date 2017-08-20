@@ -69,13 +69,16 @@ class EventDecorator implements RendererInterface
      */
     public function registerContentType($type, $handler)
     {
-        $this->dispatcher->dispatch('onRegisterContentType', new RegisterContentTypeEvent($type, $handler));
+        $event = new RegisterContentTypeEvent($type, $handler);
+        $this->dispatcher->dispatch('onRegisterContentType', $event);
 
         try {
             $this->renderer->registerContentType($type, $handler);
-            $this->dispatcher->dispatch('onRegisterContentTypeSuccess', new RegisterContentTypeSuccessEvent($type, $handler));
+            $event = new RegisterContentTypeSuccessEvent($type, $handler);
+            $this->dispatcher->dispatch('onRegisterContentTypeSuccess', $event);
         } catch (\Exception $exception) {
-            $this->dispatcher->dispatch('onRegisterContentTypeFailure', new RegisterContentTypeFailureEvent($type, $exception));
+            $event = new RegisterContentTypeFailureEvent($type, $exception);
+            $this->dispatcher->dispatch('onRegisterContentTypeFailure', $event);
             throw $exception;
         }
     }
@@ -306,15 +309,18 @@ class EventDecorator implements RendererInterface
     {
         if (preg_match('~^visit(.+)~', $method, $match)) {
             $type = $match[1];
-            $this->dispatcher->dispatch('onRenderContentType', new RenderContentTypeEvent($type, $arguments[0]));
+            $event = new RenderContentTypeEvent($type, $arguments[0]);
+            $this->dispatcher->dispatch('onRenderContentType', $event);
 
             try {
                 $result = call_user_func_array([$this->renderer, $method], $arguments);
-                $this->dispatcher->dispatch('onRenderContentTypeSuccess', new RenderContentTypeSuccessEvent($type, $this->renderer));
+                $event  = new RenderContentTypeSuccessEvent($type, $this->renderer);
+                $this->dispatcher->dispatch('onRenderContentTypeSuccess', $event);
 
                 return $result;
             } catch (\Exception $exception) {
-                $this->dispatcher->dispatch('onRenderContentTypeFailure', new RenderContentTypeFailureEvent($type, $exception));
+                $event = new RenderContentTypeFailureEvent($type, $exception);
+                $this->dispatcher->dispatch('onRenderContentTypeFailure', $event);
                 throw $exception;
             }
         } else {

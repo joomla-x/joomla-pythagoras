@@ -9,7 +9,6 @@
 namespace Joomla\Cms\Installer;
 
 use Doctrine\DBAL\Schema\Table;
-use Psr\Container\ContainerInterface;
 use Joomla\DI\Container;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Definition\Parser\BelongsTo;
@@ -19,6 +18,7 @@ use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Service\RepositoryFactory;
 use Joomla\String\Inflector;
 use Joomla\String\Normalise;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Installer
@@ -195,7 +195,7 @@ class Installer
     private function resolveBelongsTo($definition)
     {
         foreach ($definition->relations['belongsTo'] as $relation) {
-            $counterMeta      = $this->entityDefinitions[$relation->entity];
+            $counterMeta = $this->entityDefinitions[$relation->entity];
 
             if ($counterMeta->role == 'lookup') {
                 continue;
@@ -203,14 +203,14 @@ class Installer
 
             $counterRelations = $counterMeta->relations;
 
-            foreach (array_merge($counterRelations['hasOne'], $counterRelations['hasMany']) as $counterRelation) {
-                if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->reference) {
+            foreach (array_merge($counterRelations['hasOne'], $counterRelations['hasMany']) as $hasMany) {
+                if ($hasMany->entity == $definition->name && $hasMany->reference == $relation->reference) {
                     break 2;
                 }
             }
 
             // No existing counter-relation found; create it.
-            $counterRelation = new HasMany(
+            $hasMany = new HasMany(
                 [
                     'name'      => $this->normalise($this->inflector->toPlural($definition->name)),
                     'entity'    => $definition->name,
@@ -218,7 +218,7 @@ class Installer
                 ]
             );
 
-            $this->entityDefinitions[$relation->entity]->relations['hasMany'][$counterRelation->name] = $counterRelation;
+            $this->entityDefinitions[$relation->entity]->relations['hasMany'][$hasMany->name] = $hasMany;
         }
     }
 
@@ -244,22 +244,22 @@ class Installer
             $counterMeta      = $this->entityDefinitions[$counterEntity];
             $counterRelations = $counterMeta->relations;
 
-            foreach ($counterRelations['belongsTo'] as $counterRelation) {
-                if ($counterRelation->entity == $definition->name && $counterRelation->reference == $relation->reference) {
+            foreach ($counterRelations['belongsTo'] as $belongsTo) {
+                if ($belongsTo->entity == $definition->name && $belongsTo->reference == $relation->reference) {
                     break 2;
                 }
             }
 
             // No existing counter-relation found; create it.
-            $counterRelation = new BelongsTo(
+            $belongsTo = new BelongsTo(
                 [
-                    'name'   => $this->normalise($definition->name),
-                    'entity' => $definition->name,
+                    'name'      => $this->normalise($definition->name),
+                    'entity'    => $definition->name,
                     'reference' => $relation->reference,
                 ]
             );
 
-            $this->entityDefinitions[$counterEntity]->relations['belongsTo'][$counterRelation->name] = $counterRelation;
+            $this->entityDefinitions[$counterEntity]->relations['belongsTo'][$belongsTo->name] = $belongsTo;
         }
     }
 
