@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1fdf0f1f912b5b2446e052c2bd9a46f2",
+    "hash": "ab7ce1ff3e679931b38e72592e0c2da6",
     "content-hash": "99fa7a95f99c9a6c8ad3d12ce76d0401",
     "packages": [
         {
@@ -901,12 +901,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-x/orm.git",
-                "reference": "f31e96da6394e613d9eca4bca235788a9eb51902"
+                "reference": "8425c241171f889f91fc7093e72698d536a4ffe2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-x/orm/zipball/f31e96da6394e613d9eca4bca235788a9eb51902",
-                "reference": "f31e96da6394e613d9eca4bca235788a9eb51902",
+                "url": "https://api.github.com/repos/joomla-x/orm/zipball/8425c241171f889f91fc7093e72698d536a4ffe2",
+                "reference": "8425c241171f889f91fc7093e72698d536a4ffe2",
                 "shasum": ""
             },
             "require": {
@@ -947,7 +947,7 @@
                 "orm",
                 "repository"
             ],
-            "time": "2017-08-19 13:54:50"
+            "time": "2017-08-20 02:01:50"
         },
         {
             "name": "joomla/compat",

@@ -33,7 +33,7 @@ before_script:
 
 script:
   - if [ "$RUN_SCRUTINIZER" == "yes" ]; then mkdir -p .travis/logs; fi;
-  - libraries/vendor/bin/robo test
+  - libraries/vendor/bin/robo test:unit
   - if [ "$RUN_SCRUTINIZER" == "yes" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
   - if [ "$RUN_SCRUTINIZER" == "yes" ]; then php ocular.phar code-coverage:upload --format=php-clover .travis/logs/clover.xml; fi;
   - if [ "$RUN_PHPCS" == "yes" ]; then vendor/bin/phpcs -p --report=full --extensions=php --standard=PSR2 src/; fi;
