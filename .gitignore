@@ -2,8 +2,7 @@
 /libraries/vendor
 /logs/*
 /tmp/*
-/data/entities/
-!/data/entities/.gitkeep
+/data/entities/*.xml
 /data/sqlite.db
 /.htaccess
 /config/extensions.ini
